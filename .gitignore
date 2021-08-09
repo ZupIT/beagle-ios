@@ -1,0 +1,30 @@
+.DS_Store
+HELP.md
+target/
+build/
+../out/
+projectFilesBackup/
+out/
+*.orig
+
+### Fastane ###
+/fastlane/report.xml
+codecov_reporter.sh
+fastlane/README.md
+fastlane/test_output/
+
+### Bash ###
+nohup.out
+
+# user settings
+xcuserdata/
+DerivedData/
+
+# Obj-C/Swift specific
+*.hmap
+
+# App packaging
+*.ipa
+*.dSYM.zip
+*.dSYM
+Pods/
