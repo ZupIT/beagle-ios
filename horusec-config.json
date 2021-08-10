@@ -1,0 +1,6 @@
+{
+  "horusecCliFilesOrPathsToIgnore": [
+    "Example/**",
+    "**/TextInput.swift"
+  ]
+}
