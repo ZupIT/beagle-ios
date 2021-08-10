@@ -1,0 +1,10 @@
+{
+  "horusecCliFilesOrPathsToIgnore": [
+    "**/Example/**",
+    "**/BeagleTests/**",
+    "**/Gemfile.lock",
+    "**/TextInput.swift",
+    "**/WebViewUIComponent.swift",
+    "**/BeagleNavigationController.swift"
+  ]
+}
