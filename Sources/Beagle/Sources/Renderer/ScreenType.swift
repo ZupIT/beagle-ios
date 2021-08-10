@@ -19,22 +19,21 @@ public enum ScreenType {
     case declarative(Screen)
     case declarativeText(String)
 
-    public struct Remote: AutoInitiable {
+    public struct Remote {
         let url: String
         let fallback: Screen?
         let additionalData: RemoteScreenAdditionalData?
 
-// sourcery:inline:auto:ScreenType.Remote.Init
-    public init(
-        url: String,
-        fallback: Screen? = nil,
-        additionalData: RemoteScreenAdditionalData? = nil
-    ) {
-        self.url = url
-        self.fallback = fallback
-        self.additionalData = additionalData
-    }
-// sourcery:end
+        @available(*, deprecated, message: "Since version 1.10. Fallback parameter will be removed. Handle your error with serverDrivenStateDidChange in BeagleNavigationController instead")
+        public init(
+            url: String,
+            fallback: Screen? = nil,
+            additionalData: RemoteScreenAdditionalData? = nil
+        ) {
+            self.url = url
+            self.fallback = fallback
+            self.additionalData = additionalData
+        }
     }
 }
 

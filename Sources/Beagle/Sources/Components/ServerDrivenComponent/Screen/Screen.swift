@@ -19,6 +19,7 @@ import Foundation
 /// The screen element will help you define the screen view structure.
 /// By using this component you can define configurations like whether or
 /// not you want to use safe areas or display a tool bar/navigation bar.
+@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
 public struct Screen: HasContext {
     
     /// identifies your screen globally inside your application so that it could have actions set on itself.

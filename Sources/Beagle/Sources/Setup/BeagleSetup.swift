@@ -42,6 +42,7 @@ public func registerCustomAction<A: Action>(
     dependencies.decoder.register(action: actionType, named: name)
 }
 
+@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the BeagleScreenViewController inits with remote or json parameter instead.")
 public func screen(_ type: ScreenType, controllerId: String? = nil) -> BeagleScreenViewController {
     return BeagleScreenViewController(type, controllerId: controllerId)
 }
