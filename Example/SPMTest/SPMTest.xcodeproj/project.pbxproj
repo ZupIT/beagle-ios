@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		93308FA626C1D0C8002A37DD /* beagle-ios in Resources */ = {isa = PBXBuildFile; fileRef = 93308FA526C1D0C8002A37DD /* beagle-ios */; };
 		939937A62625C54A00809705 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939937A52625C54A00809705 /* AppDelegate.swift */; };
 		939937AC2625C54C00809705 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 939937AB2625C54C00809705 /* Assets.xcassets */; };
 		939937B22625C54C00809705 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 939937B02625C54C00809705 /* LaunchScreen.storyboard */; };
@@ -25,12 +26,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		93308FA526C1D0C8002A37DD /* beagle-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "beagle-ios"; path = ../..; sourceTree = "<group>"; };
 		939937A22625C54A00809705 /* SPMTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SPMTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		939937A52625C54A00809705 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		939937AB2625C54C00809705 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		939937B12625C54C00809705 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		939937B32625C54C00809705 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		939937C92625CB9000809705 /* beagle */ = {isa = PBXFileReference; lastKnownFileType = folder; name = beagle; path = ../../..; sourceTree = "<group>"; };
 		93A73A082626090C000A01E6 /* SPMTestUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SPMTestUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		93A73A0A2626090C000A01E6 /* SPMTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMTestUITests.swift; sourceTree = "<group>"; };
 		93A73A0C2626090C000A01E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -58,7 +59,7 @@
 		939937992625C54A00809705 = {
 			isa = PBXGroup;
 			children = (
-				939937C92625CB9000809705 /* beagle */,
+				93308FA526C1D0C8002A37DD /* beagle-ios */,
 				939937A42625C54A00809705 /* SPMTest */,
 				93A73A092626090C000A01E6 /* SPMTestUITests */,
 				939937A32625C54A00809705 /* Products */,
@@ -186,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				939937B22625C54C00809705 /* LaunchScreen.storyboard in Resources */,
+				93308FA626C1D0C8002A37DD /* beagle-ios in Resources */,
 				939937AC2625C54C00809705 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
