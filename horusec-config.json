@@ -3,6 +3,8 @@
     "**/Example/**",
     "**/BeagleTests/**",
     "**/Gemfile.lock",
-    "**/TextInput.swift"
+    "**/TextInput.swift",
+    "**/WebViewUIComponent.swift",
+    "**/BeagleNavigationController.swift"
   ]
 }
