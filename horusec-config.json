@@ -1,6 +1,8 @@
 {
   "horusecCliFilesOrPathsToIgnore": [
-    "Example/**",
+    "**/Example/**",
+    "**/BeagleTests/**",
+    "**/Gemfile.lock",
     "**/TextInput.swift"
   ]
 }
