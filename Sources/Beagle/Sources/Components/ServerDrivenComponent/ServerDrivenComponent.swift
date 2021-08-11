@@ -18,6 +18,7 @@ import UIKit
 
 public protocol ServerDrivenComponent: Decodable, Renderable {}
 
+@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
 public protocol ComposeComponent: ServerDrivenComponent {
     func build() -> ServerDrivenComponent
 }
@@ -29,6 +30,7 @@ extension ComposeComponent {
 }
 
 extension ServerDrivenComponent {
+    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
     public func toScreen() -> Screen {
         let screen = self as? ScreenComponent
         let safeArea = screen?.safeArea
