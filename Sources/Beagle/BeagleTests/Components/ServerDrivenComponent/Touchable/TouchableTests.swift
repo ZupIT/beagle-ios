@@ -26,7 +26,6 @@ final class TouchableTests: XCTestCase {
         ▿ Touchable
           ▿ child: UnknownComponent
             - type: "custom:beagleschematestscomponent"
-          - clickAnalyticsEvent: Optional<AnalyticsClick>.none
           ▿ onPress: 1 element
             ▿ Navigate
               - _beagleAction_: "beagle:popview"
@@ -62,30 +61,21 @@ final class TouchableTests: XCTestCase {
         XCTAssertTrue(resultView.isUserInteractionEnabled)
     }
     
-    func testAnalyticsClickAndActionTrigger() {
+    func testActionTrigger() {
         // Given
-        let analyticsExecutorSpy = AnalyticsExecutorSpy()
-        let dependencies = BeagleScreenDependencies(
-            analytics: analyticsExecutorSpy
-        )
-        
         let controller = BeagleControllerStub()
-        controller.dependencies = dependencies
-        
         let action = ActionSpy()
-        let analyticsAction = AnalyticsClick(category: "some category")
-        let touchable = Touchable(onPress: [action], clickAnalyticsEvent: analyticsAction, child: Text("mocked text"))
+        let touchable = Touchable(onPress: [action], child: Text("mocked text"))
         let view = touchable.toView(renderer: BeagleRenderer(controller: controller))
         
-        let eventsGesture = view.gestureRecognizers?
-            .compactMap { $0 as? EventsGestureRecognizer }
+        let actionsGesture = view.gestureRecognizers?
+            .compactMap { $0 as? ActionsGestureRecognizer }
             .first
         
         // When
-        eventsGesture?.triggerEvents()
+        actionsGesture?.triggerActions()
         
         // Then
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnClick)
         XCTAssertEqual(action.executionCount, 1)
         XCTAssertTrue(action.lastOrigin as AnyObject === view)
     }

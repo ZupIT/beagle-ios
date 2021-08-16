@@ -23,7 +23,6 @@ extension Screen {
             style: style,
             safeArea: safeArea,
             navigationBar: navigationBar,
-            screenAnalyticsEvent: screenAnalyticsEvent,
             child: child,
             context: context
         ))

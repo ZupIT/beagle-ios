@@ -15,7 +15,7 @@
  */
 
 /// Defines a button natively using the server driven information received through Beagle.
-public struct Button: Widget, ClickedOnComponent, AutoDecodable {
+public struct Button: Widget, AutoDecodable {
     
     /// Defines the button text content.
     public let text: Expression<String>
@@ -29,30 +29,8 @@ public struct Button: Widget, ClickedOnComponent, AutoDecodable {
     /// Enables or disables the button.
     public let enabled: Expression<Bool>?
     
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    /// Attribute to define click event name.
-    public var clickAnalyticsEvent: AnalyticsClick?
-    
     /// Properties that all widgets have in common.
     public var widgetProperties: WidgetProperties
-
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    public init(
-        text: Expression<String>,
-        styleId: String? = nil,
-        onPress: [Action]? = nil,
-        enabled: Expression<Bool>? = nil,
-        clickAnalyticsEvent: AnalyticsClick,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.text = text
-        self.styleId = styleId
-        self.onPress = onPress
-        self.enabled = enabled
-        self.clickAnalyticsEvent = clickAnalyticsEvent
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
     
     public init(
         text: Expression<String>,

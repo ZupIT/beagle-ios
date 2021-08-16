@@ -20,7 +20,6 @@ struct ScreenComponent: ServerDrivenComponent, StyleComponent, HasContext, AutoI
     let style: Style?
     let safeArea: SafeArea?
     let navigationBar: NavigationBar?
-    let screenAnalyticsEvent: AnalyticsScreen?
     let child: ServerDrivenComponent
     let context: Context?
 
@@ -30,7 +29,6 @@ struct ScreenComponent: ServerDrivenComponent, StyleComponent, HasContext, AutoI
         style: Style? = nil,
         safeArea: SafeArea? = nil,
         navigationBar: NavigationBar? = nil,
-        screenAnalyticsEvent: AnalyticsScreen? = nil,
         child: ServerDrivenComponent,
         context: Context? = nil
     ) {
@@ -38,7 +36,6 @@ struct ScreenComponent: ServerDrivenComponent, StyleComponent, HasContext, AutoI
         self.style = style
         self.safeArea = safeArea
         self.navigationBar = navigationBar
-        self.screenAnalyticsEvent = screenAnalyticsEvent
         self.child = child
         self.context = context
     }

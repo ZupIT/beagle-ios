@@ -34,34 +34,11 @@ public struct Screen: HasContext {
     /// Enables a action bar/navigation bar into your view. By default it is set as null.
     public let navigationBar: NavigationBar?
     
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    /// Event send event when screen appear/disappear.
-    public let screenAnalyticsEvent: AnalyticsScreen?
-    
     /// Defines the child elements on this screen.
     public let child: ServerDrivenComponent
     
     /// Defines the context that be set to screen.
     public let context: Context?
-
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    public init(
-        identifier: String? = nil,
-        style: Style? = nil,
-        safeArea: SafeArea? = nil,
-        navigationBar: NavigationBar? = nil,
-        screenAnalyticsEvent: AnalyticsScreen,
-        child: ServerDrivenComponent,
-        context: Context? = nil
-    ) {
-        self.identifier = identifier
-        self.style = style
-        self.safeArea = safeArea
-        self.navigationBar = navigationBar
-        self.screenAnalyticsEvent = screenAnalyticsEvent
-        self.child = child
-        self.context = context
-    }
     
     public init(
         identifier: String? = nil,
@@ -77,24 +54,6 @@ public struct Screen: HasContext {
         self.navigationBar = navigationBar
         self.child = child
         self.context = context
-        self.screenAnalyticsEvent = nil
-    }
-    
-    public init(
-        id: String? = nil,
-        style: Style? = nil,
-        safeArea: SafeArea? = nil,
-        navigationBar: NavigationBar? = nil,
-        screenAnalyticsEvent: AnalyticsScreen? = nil,
-        context: Context? = nil,
-        @ChildBuilder
-        _ child: () -> ServerDrivenComponent
-    ) {
-        if let analytics = screenAnalyticsEvent {
-            self.init(identifier: id, style: style, safeArea: safeArea, navigationBar: navigationBar, screenAnalyticsEvent: analytics, child: child(), context: context)
-        } else {
-            self.init(identifier: id, style: style, safeArea: safeArea, navigationBar: navigationBar, child: child(), context: context)
-        }
     }
 
 }

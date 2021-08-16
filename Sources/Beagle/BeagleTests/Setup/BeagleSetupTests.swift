@@ -130,13 +130,12 @@ struct ComponentDummy: ServerDrivenComponent, CustomStringConvertible {
 }
 
 struct ActionDummy: Action, Equatable {
-    
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {}
 }
 
 struct BeagleScreenDependencies: BeagleDependenciesProtocol {
     var isLoggingEnabled: Bool = true
-    var analytics: Analytics?
     var analyticsProvider: AnalyticsProvider?
     var repository: Repository = RepositoryStub()
     var imageDownloader: ImageDownloader = ImageDownloaderStub()

@@ -30,30 +30,31 @@ struct NavigateStep1Screen: DeeplinkScreen {
     
     static var screen = Screen(
         navigationBar: NavigationBar(title: "Navigate with Context"),
-        context: Context(id: "url", value: "initial value")) {
-                 Container {
-                    Button(text: "SetContext",
-                           onPress: [
-                                 SetContext(contextId: "url", path: nil, value: "https://run.mocky.io/v3/490e7dbc-8222-4a64-87bf-c5794d5e0439")
-                           ]
-                    )
-                    Button(text: "Go to @{url}",
-                           onPress: [
-                                 Navigate.pushView(.remote(.init(url: "@{url}", shouldPrefetch: true)))
-                           ]
-                    )
-                 }
-    }
+        child: Container {
+            Button(text: "SetContext",
+                   onPress: [
+                         SetContext(contextId: "url", path: nil, value: "https://run.mocky.io/v3/490e7dbc-8222-4a64-87bf-c5794d5e0439")
+                   ]
+            )
+            Button(text: "Go to @{url}",
+                   onPress: [
+                         Navigate.pushView(.remote(.init(url: "@{url}", shouldPrefetch: true)))
+                   ]
+            )
+         },
+        context: Context(id: "url", value: "initial value")
+    )
     
-    var step1Screen: Screen =
-        Screen(navigationBar: NavigationBar(title: "Step 1")) {
-            Container {
-                createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
-                createButton(text: "PushView (Step 2)", action: Navigate.openNativeRoute(.init(route: .navigateStep2Endpoint)), backgroundColor: .salmonButton)
-                createButton(text: "Navigate With Context", action: Navigate.pushView(.declarative(screen)), backgroundColor: .brownButton)
-            }
+    var step1Screen: Screen = Screen(navigationBar: NavigationBar(title: "Step 1"), child:
+        Container {
+            createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
+            createButton(text: "PushView (Step 2)", action: Navigate.openNativeRoute(.init(route: .navigateStep2Endpoint)), backgroundColor: .salmonButton)
+            createButton(text: "Navigate With Context", action: Navigate.pushView(.declarative(screen)), backgroundColor: .brownButton)
         }
+    )
+    
 }
+
 
 struct NavigateStep2Screen: DeeplinkScreen {
     init(path: String, data: [String: String]?) {
@@ -63,35 +64,33 @@ struct NavigateStep2Screen: DeeplinkScreen {
         return Beagle.screen(.declarative(step2Screen))
     }
     
-    private var step2Screen: Screen =
-        Screen(navigationBar: NavigationBar(title: "Step 2")) {
-            Container {
-                createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
-                createButton(text: "PushView (Step 3)", action: Navigate.pushView(.declarative(step3Screen)), backgroundColor: .salmonButton)
-                createButton(text: "PushStack", action: Navigate.pushStack(.declarative(presentView)), backgroundColor: .lightOrangeButton)
-                createButton(text: "Custom PushStack",
-                             action: Navigate.pushStack(.declarative(presentView), controllerId: "PushStackNavigation"),
-                             backgroundColor: .lightOrangeButton)
-            }
+    private var step2Screen: Screen = Screen(navigationBar: NavigationBar(title: "Step 2"), child:
+        Container {
+            createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
+            createButton(text: "PushView (Step 3)", action: Navigate.pushView(.declarative(step3Screen)), backgroundColor: .salmonButton)
+            createButton(text: "PushStack", action: Navigate.pushStack(.declarative(presentView)), backgroundColor: .lightOrangeButton)
+            createButton(text: "Custom PushStack",
+                         action: Navigate.pushStack(.declarative(presentView), controllerId: "PushStackNavigation"),
+                         backgroundColor: .lightOrangeButton)
         }
+    )
     
-    static var step3Screen: Screen =
-        Screen(navigationBar: NavigationBar(title: "Step 3")) {
-            Container {
-                createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
-                createButton(text: "ResetStack (Step 1)", action: Navigate.resetStack(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .brownButton)
-                createButton(text: "ResetApplication (Step 1)", action: Navigate.resetApplication(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .salmonButton)
-                createButton(text: "PushView (Step 1)", action: Navigate.pushView(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .redButton)
-            }
+    static var step3Screen: Screen = Screen(navigationBar: NavigationBar(title: "Step 3"), child:
+        Container {
+            createButton(text: "PopView", action: Navigate.popView(), backgroundColor: .blueButton)
+            createButton(text: "ResetStack (Step 1)", action: Navigate.resetStack(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .brownButton)
+            createButton(text: "ResetApplication (Step 1)", action: Navigate.resetApplication(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .salmonButton)
+            createButton(text: "PushView (Step 1)", action: Navigate.pushView(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .redButton)
         }
+    )
     
-    static var presentView: Screen =
-        Screen(navigationBar: NavigationBar(title: "Present")) {
-            Container {
-                createButton(text: "PushView (Step 1)", action: Navigate.pushView(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .salmonButton)
-                createButton(text: "PopStack", action: Navigate.popStack(), backgroundColor: .greenWaterButton)
-            }
+    static var presentView: Screen = Screen(navigationBar: NavigationBar(title: "Present"), child:
+        Container {
+            createButton(text: "PushView (Step 1)", action: Navigate.pushView(.declarative(NavigateStep1Screen().step1Screen)), backgroundColor: .salmonButton)
+            createButton(text: "PopStack", action: Navigate.popStack(), backgroundColor: .greenWaterButton)
         }
+    )
+    
 }
 
 private func createButton(text: String, action: Navigate, backgroundColor: String) -> Button {

@@ -18,59 +18,60 @@ import UIKit
 import Beagle
 
 let componentInteractionScreen: Screen = {
-    return Screen(navigationBar: NavigationBar(title: "Component Interaction", showBackButton: true)) {
-        Container {
-            Button(
-                text: "Declarative",
-                onPress: [Navigate.pushView(.declarative(declarativeScreen))]
-            )
-            Button(
-                text: "Display",
-                onPress: [Navigate.pushView(.declarative(displayScreen))]
-            )
-            Button(
-                text: "Text (JSON)",
-                onPress: [Navigate.openNativeRoute(.init(route: .componentInterationEndpoint))]
-            )
-        }
-    }
+    return Screen(navigationBar: NavigationBar(title: "Component Interaction", showBackButton: true), child:
+                    Container {
+                        Button(
+                            text: "Declarative",
+                            onPress: [Navigate.pushView(.declarative(declarativeScreen))]
+                        )
+                        Button(
+                            text: "Display",
+                            onPress: [Navigate.pushView(.declarative(displayScreen))]
+                        )
+                        Button(
+                            text: "Text (JSON)",
+                            onPress: [Navigate.openNativeRoute(.init(route: .componentInterationEndpoint))]
+                        )
+                    }
+                  ) 
 }()
 
 let declarativeScreen: Screen = {
-    return Screen(navigationBar: NavigationBar(title: "Component Interaction", showBackButton: true)) {
-        Container(context: Context(id: "context2", value: nil)) {
-            Container(context: Context(id: "context1", value: "Joao")) {
-                TextInput(
-                    onChange: [
-                        SetContext(
-                            contextId: "context1",
-                            value: "@{onChange.value}"
-                        )
-                    ]
-                )
-                Text("context: @{context1} + \\@{context1}")
-                Text("@{context1}")
-                Text("\\@{context1}")
-                Text("\\\\@{context1}")
-                Text("\\\\\\@{context1}")
-                Text("\\\\\\\\@{context1}")
-                Text("\\\\\\\\\\@{context1}")
-                Button(
-                    text: "1",
-                    onPress: [
-                        SetContext(
-                            contextId: "context1",
-                            value: ["name": "nameUpdated"]
-                        )
-                    ]
-                )
-                MyComponent(person: "@{context1}", personOpt: nil, action: nil, widgetProperties: WidgetProperties())
-                Container(widgetProperties: WidgetProperties(style: Style(cornerRadius: CornerRadius(topLeft: 10, topRight: 50, bottomLeft: 25, bottomRight: 50), borderColor: "#000000", borderWidth: 6, size: Size(width: 100, height: 100), padding: EdgeValue().all(8)))) {
-                    Text("@{context1}")
-                }
-            }
-        }
-    }
+    return Screen(navigationBar: NavigationBar(title: "Component Interaction", showBackButton: true), child:
+                  
+                    Container(context: Context(id: "context2", value: nil)) {
+                        Container(context: Context(id: "context1", value: "Joao")) {
+                            TextInput(
+                                onChange: [
+                                    SetContext(
+                                        contextId: "context1",
+                                        value: "@{onChange.value}"
+                                    )
+                                ]
+                            )
+                            Text("context: @{context1} + \\@{context1}")
+                            Text("@{context1}")
+                            Text("\\@{context1}")
+                            Text("\\\\@{context1}")
+                            Text("\\\\\\@{context1}")
+                            Text("\\\\\\\\@{context1}")
+                            Text("\\\\\\\\\\@{context1}")
+                            Button(
+                                text: "1",
+                                onPress: [
+                                    SetContext(
+                                        contextId: "context1",
+                                        value: ["name": "nameUpdated"]
+                                    )
+                                ]
+                            )
+                            MyComponent(person: "@{context1}", personOpt: nil, action: nil, widgetProperties: WidgetProperties())
+                            Container(widgetProperties: WidgetProperties(style: Style(cornerRadius: CornerRadius(topLeft: 10, topRight: 50, bottomLeft: 25, bottomRight: 50), borderColor: "#000000", borderWidth: 6, size: Size(width: 100, height: 100), padding: EdgeValue().all(8)))) {
+                                Text("@{context1}")
+                            }
+                        }
+                    }
+                  )
 }()
 
 var displayScreen: Screen {

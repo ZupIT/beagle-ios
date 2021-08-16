@@ -15,7 +15,7 @@
  */
 
 /// Defines form local actions, that is, that do not make http requests, such as an action that creates a customized Dialog.
-public struct FormLocalAction: AnalyticsAction, AutoInitiable {
+public struct FormLocalAction: Action, AutoInitiable {
     
     /// Defines the name of the action.
     public let name: String

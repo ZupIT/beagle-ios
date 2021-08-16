@@ -21,7 +21,6 @@ extension Button {
     public func toView(renderer: BeagleRenderer) -> UIView {
         let button = BeagleUIButton(
             onPress: onPress,
-            clickAnalyticsEvent: clickAnalyticsEvent,
             controller: renderer.controller
         )
 
@@ -55,17 +54,14 @@ extension Button {
         }
         
         private var onPress: [Action]?
-        private var clickAnalyticsEvent: AnalyticsClick?
         private weak var controller: BeagleController?
         
         required init(
             onPress: [Action]?,
-            clickAnalyticsEvent: AnalyticsClick? = nil,
             controller: BeagleController?
         ) {
             super.init(frame: .zero)
             self.onPress = onPress
-            self.clickAnalyticsEvent = clickAnalyticsEvent
             self.controller = controller
             self.addTarget(self, action: #selector(triggerTouchUpInsideActions), for: .touchUpInside)
             setDefaultStyle()
@@ -83,10 +79,6 @@ extension Button {
         
         @objc func triggerTouchUpInsideActions() {
             controller?.execute(actions: onPress, event: "onPress", origin: self)
-            
-            if let click = clickAnalyticsEvent {
-                controller?.dependencies.analytics?.trackEventOnClick(click)
-            }
         }
         
         private func applyStyle() {

@@ -36,7 +36,6 @@ class BeagleConfig {
         )
         dependencies.deepLinkHandler = deepLinkHandler
         dependencies.validatorProvider = validator
-        dependencies.analytics = AnalyticsMock()
         dependencies.isLoggingEnabled = true
 
         let innerDependencies = InnerDependencies()

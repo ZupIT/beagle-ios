@@ -46,7 +46,6 @@ extension Button {
         case styleId
         case onPress
         case enabled
-        case clickAnalyticsEvent
     }
 
     public init(from decoder: Decoder) throws {
@@ -56,7 +55,6 @@ extension Button {
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
         onPress = try container.decodeIfPresent(forKey: .onPress)
         enabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .enabled)
-        clickAnalyticsEvent = try container.decodeIfPresent(AnalyticsClick.self, forKey: .clickAnalyticsEvent)
         widgetProperties = try WidgetProperties(from: decoder)
     }
 }
@@ -308,7 +306,6 @@ extension ScreenComponent {
         case style
         case safeArea
         case navigationBar
-        case screenAnalyticsEvent
         case child
         case context
     }
@@ -320,7 +317,6 @@ extension ScreenComponent {
         style = try container.decodeIfPresent(Style.self, forKey: .style)
         safeArea = try container.decodeIfPresent(SafeArea.self, forKey: .safeArea)
         navigationBar = try container.decodeIfPresent(NavigationBar.self, forKey: .navigationBar)
-        screenAnalyticsEvent = try container.decodeIfPresent(AnalyticsScreen.self, forKey: .screenAnalyticsEvent)
         child = try container.decode(forKey: .child)
         context = try container.decodeIfPresent(Context.self, forKey: .context)
     }
@@ -496,7 +492,6 @@ extension Touchable {
 
     enum CodingKeys: String, CodingKey {
         case onPress
-        case clickAnalyticsEvent
         case child
     }
 
@@ -504,7 +499,6 @@ extension Touchable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         onPress = try container.decode(forKey: .onPress)
-        clickAnalyticsEvent = try container.decodeIfPresent(AnalyticsClick.self, forKey: .clickAnalyticsEvent)
         child = try container.decode(forKey: .child)
     }
 }

@@ -15,7 +15,7 @@
  */
 
 /// Action to resolve condition and call onTrue if return true and onFalse if return is false.
-public struct Condition: AnalyticsAction, AutoInitiableAndDecodable {
+public struct Condition: Action, AutoInitiableAndDecodable {
     
     /// Condition should represents a boolean.
     public let condition: Expression<Bool>

@@ -61,7 +61,7 @@ class ActionAttributesTest: XCTestCase {
         let view = try analyticsViewHierarchyWith(context: context).view
 
         var attributes = [String]()
-        if case .enabled(let config?) = (action as? AnalyticsAction)?.analytics {
+        if case .enabled(let config?) = action.analytics {
             attributes = config.attributes ?? []
         }
 

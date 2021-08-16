@@ -15,7 +15,7 @@
  */
 
 /// This action will show alert natively, such as an error alert indicating alternative flows, business system errors and others.
-public struct Confirm: AnalyticsAction, AutoInitiableAndDecodable {
+public struct Confirm: Action, AutoInitiableAndDecodable {
     
     /// Defines the title on the alert.
     public let title: Expression<String>?

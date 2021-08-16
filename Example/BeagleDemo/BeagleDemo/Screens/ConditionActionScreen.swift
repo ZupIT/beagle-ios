@@ -18,7 +18,8 @@ import UIKit
 import Beagle
 
 let conditionActionScreen: Screen = {
-    Screen(navigationBar: NavigationBar(title: "Conditional Action", showBackButton: true)) {
+    Screen(navigationBar: NavigationBar(title: "Conditional Action", showBackButton: true), child:
+           
         Container(context: Context(id: "context", value: true)) {
             Button(
                 text: "Declarative",
@@ -29,13 +30,13 @@ let conditionActionScreen: Screen = {
                 onPress: [Navigate.openNativeRoute(.init(route: .conditionActionEndpoint))]
             )
         }
-    }
+    )
 }()
 
 private let conditionActionDeclarativeScreen: Screen = {
     let title = "The condition is..."
     
-    return Screen(navigationBar: NavigationBar(title: "Conditional Action Declarative", showBackButton: true)) {
+    return Screen(navigationBar: NavigationBar(title: "Conditional Action Declarative", showBackButton: true), child:
         Container(context: Context(id: "context", value: true)) {
             Button(
                 text: "Togle Value",
@@ -52,7 +53,7 @@ private let conditionActionDeclarativeScreen: Screen = {
                 ]
             )
         }
-    }
+    )
 }()
 
 struct ConditionActionText: DeeplinkScreen {

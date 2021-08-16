@@ -17,7 +17,7 @@
 import UIKit
 
 /// Defines remote action, when you want to do some request when submit the form.
-public struct FormRemoteAction: AnalyticsAction, AutoInitiable {
+public struct FormRemoteAction: Action, AutoInitiable {
     
     /// Defines the URL path to the back-end service which will receive this form inputs.
     public let path: String

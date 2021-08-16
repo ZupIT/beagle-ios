@@ -15,7 +15,7 @@
  */
 
 /// Handles screens navigations actions of the application.
-public enum Navigate: AnalyticsAction {
+public enum Navigate: Action {
     
     /// Opens up an available browser on the device and navigates to a specified URL as Expression.
     case openExternalURL(Expression<String>, analytics: ActionAnalyticsConfig? = nil)

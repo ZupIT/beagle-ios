@@ -56,7 +56,7 @@ class ImageTests: XCTestCase {
     }
     
     func testRenderRemoteImage() {
-        let screen = Screen(navigationBar: NavigationBar(title: "PageView")) {
+        let screen = Screen(navigationBar: NavigationBar(title: "PageView"), child:
             Container(context: Context(id: "currentPage", value: 2), widgetProperties: .init(Flex().grow(1))) {
                 PageIndicator(numberOfPages: 4, currentPage: "@{currentPage}")
                 PageView(
@@ -73,7 +73,7 @@ class ImageTests: XCTestCase {
                     currentPage: "@{currentPage}"
                 )
             }
-        }
+        )
 
         let dependencies = BeagleDependencies()
         dependencies.imageDownloader = ImageDownloaderMock(expectation: expectation(description: "image downloader"))

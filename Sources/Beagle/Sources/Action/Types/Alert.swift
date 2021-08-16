@@ -15,7 +15,7 @@
  */
 
 /// This action will show an alert natively, such as an error alert, indicating alternative flows, business system errors and others.
-public struct Alert: AnalyticsAction, AutoInitiableAndDecodable {
+public struct Alert: Action, AutoInitiableAndDecodable {
     
     /// Defines the title on the alert.
     public let title: Expression<String>?

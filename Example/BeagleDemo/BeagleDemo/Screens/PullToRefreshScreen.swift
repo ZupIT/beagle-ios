@@ -70,6 +70,7 @@ let pullToRefreshScreen: Screen = {
 
 struct CustomAsyncAction: AsyncAction, AutoDecodable {
     var onFinish: [Action]?
+    var analytics: ActionAnalyticsConfig?
     
     func execute(controller: BeagleController, origin: UIView) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {

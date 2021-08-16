@@ -149,7 +149,7 @@ class FormManager {
 
 }
 
-private struct SubmitRemoteFormAction: AnalyticsAction {
+private struct SubmitRemoteFormAction: Action {
     
     let remote: FormRemoteAction
     let inputs: [String: String]

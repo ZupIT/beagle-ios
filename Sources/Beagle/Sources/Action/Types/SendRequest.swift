@@ -15,7 +15,7 @@
  */
 
 /// SendRequest is used to make HTTP requests.
-public struct SendRequest: Action, AutoInitiableAndDecodable, AnalyticsAction {
+public struct SendRequest: Action, AutoInitiableAndDecodable {
     
     /// Server URL.
     public let url: Expression<String>

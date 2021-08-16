@@ -150,40 +150,4 @@ final class ScreenComponentTests: XCTestCase {
         XCTAssertEqual([navigatePath], prefetch.prefetched)
     }
     
-    func testIfAnalyticsScreenShouldBeTriggered() {
-        // Given
-        let analyticsEvent = AnalyticsScreen(screenName: "screen name")
-        let screen = Screen(
-            screenAnalyticsEvent: analyticsEvent,
-            child: ComponentDummy()
-        )
-        
-        let analyticsExecutorSpy = AnalyticsExecutorSpy()
-        let dependencies = BeagleScreenDependencies(
-            analytics: analyticsExecutorSpy
-        )
-        
-        let beagleController = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(screen),
-            dependencies: dependencies
-        ))
-        
-        // When
-        _ = BeagleNavigationController(rootViewController: beagleController)
-        _ = beagleController.view
-        beagleController.beginAppearanceTransition(true, animated: false)
-        beagleController.endAppearanceTransition()
-        
-        // Then
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenAppeared)
-        XCTAssertFalse(analyticsExecutorSpy.didTrackEventOnScreenDisappeared)
-        
-        // When
-        beagleController.beginAppearanceTransition(false, animated: false)
-        beagleController.endAppearanceTransition()
-        
-        // Then
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenAppeared)
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenDisappeared)
-    }
 }

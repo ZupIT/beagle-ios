@@ -26,17 +26,18 @@ struct PageViewScreen: DeeplinkScreen {
     }
     
     var screen: Screen {
-        return Screen(navigationBar: NavigationBar(title: "PageView")) {
-            Container(context: Context(id: "currentPage", value: 2), widgetProperties: .init(Flex().grow(1))) {
-                PageIndicator(numberOfPages: 4, currentPage: "@{currentPage}")
-                PageView(
-                    children: Array(repeating: Page(), count: 4).map { $0.content },
-                    pageIndicator: PageIndicator(),
-                    onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
-                    currentPage: "@{currentPage}"
-                )
-            }
-        }
+        return Screen(navigationBar: NavigationBar(title: "PageView"), child:
+                      
+                        Container(context: Context(id: "currentPage", value: 2), widgetProperties: .init(Flex().grow(1))) {
+                            PageIndicator(numberOfPages: 4, currentPage: "@{currentPage}")
+                            PageView(
+                                children: Array(repeating: Page(), count: 4).map { $0.content },
+                                pageIndicator: PageIndicator(),
+                                onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
+                                currentPage: "@{currentPage}"
+                            )
+                        }
+                      ) 
     }
 }
 

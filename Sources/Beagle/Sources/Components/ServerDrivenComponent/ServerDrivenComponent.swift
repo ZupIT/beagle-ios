@@ -35,27 +35,14 @@ extension ServerDrivenComponent {
         let screen = self as? ScreenComponent
         let safeArea = screen?.safeArea
             ?? SafeArea(top: true, leading: true, bottom: true, trailing: true)
-
-        if let analytics = screen?.screenAnalyticsEvent {
-            return Screen(
-                identifier: screen?.identifier,
-                style: screen?.style,
-                safeArea: safeArea,
-                navigationBar: screen?.navigationBar,
-                screenAnalyticsEvent: analytics,
-                child: screen?.child ?? self,
-                context: screen?.context
-            )
-        } else {
-            return Screen(
-                identifier: screen?.identifier,
-                style: screen?.style,
-                safeArea: safeArea,
-                navigationBar: screen?.navigationBar,
-                child: screen?.child ?? self,
-                context: screen?.context
-            )
-        }
+        return Screen(
+            identifier: screen?.identifier,
+            style: screen?.style,
+            safeArea: safeArea,
+            navigationBar: screen?.navigationBar,
+            child: screen?.child ?? self,
+            context: screen?.context
+        )
     }
 }
 

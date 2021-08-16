@@ -27,7 +27,7 @@ struct GlobalContexScreen: DeeplinkScreen {
     }
     
     var screen: Screen {
-        return Screen(navigationBar: NavigationBar(title: "Global Context", showBackButton: true)) {
+        return Screen(navigationBar: NavigationBar(title: "Global Context", showBackButton: true), child:
             Container {
                 Text("@{global.button}")
                 Button(
@@ -39,12 +39,13 @@ struct GlobalContexScreen: DeeplinkScreen {
                     onPress: [ClearGlobalContextAction()]
                 )
             }
-        }
+        )
     }
     
 }
 
 struct ClearGlobalContextAction: Action {
+    var analytics: ActionAnalyticsConfig?
     
     func execute(controller: BeagleController, origin: UIView) {
         dependencies.globalContext.clear()

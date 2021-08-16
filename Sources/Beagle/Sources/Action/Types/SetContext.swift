@@ -15,7 +15,7 @@
  */
 
 /// The `SetContext` action is responsible for changing the value of a context.
-public struct SetContext: AnalyticsAction {
+public struct SetContext: Action {
     
     /// Id of the context to be changed.
     public let contextId: String

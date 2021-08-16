@@ -15,7 +15,7 @@
  */
 
 /// `SubmitForm` is a specific action of the `SimpleForm` component when executing it calls SimpleForm's onSubmit attribute.
-public struct SubmitForm: AnalyticsAction, AutoInitiable {
+public struct SubmitForm: Action, AutoInitiable {
     
     /// Defines an analytics configuration for this action.
     public let analytics: ActionAnalyticsConfig?

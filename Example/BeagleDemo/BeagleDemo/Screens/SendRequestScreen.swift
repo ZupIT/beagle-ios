@@ -22,9 +22,7 @@ let sendRequestDeclarativeScreen: Screen = {
  
     return Screen(
         navigationBar: NavigationBar(title: "Send Request", showBackButton: true),
-        context: Context(id: "myContext", value: "initial value")
-    ) {
-        Container(widgetProperties: .init(style: containerStyle)) {
+        child: Container(widgetProperties: .init(style: containerStyle)) {
             Button(
                 text: "SendRequest Context on header",
                 styleId: "DesignSystem.Stylish.ButtonAndAppearance",
@@ -71,26 +69,27 @@ let sendRequestDeclarativeScreen: Screen = {
                 ],
                 widgetProperties: .init(style: Style().backgroundColor(.blueButton).size(Size().width(60%)).cornerRadius(.init(radius: 10)))
             )
-        }
-    }
+        },
+        context: Context(id: "myContext", value: "initial value")
+    )
 }()
 
 struct CustomConsoleLogAction: Action {
-    
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {
         print("SendRequestScreen.CustomConsoleAction")
     }
 }
 
 struct OkAction: Action {
-    
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {
         print("onPressOk from Alert clicked")
     }
 }
 
 struct CancelAction: Action {
-    
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {
         print("onPressCancel from Confirm clicked")
     }

@@ -27,61 +27,61 @@ struct SimpleFormScreen: DeeplinkScreen {
     }
     
     var simpleFormScreen: Screen = {
-        return Screen(navigationBar: NavigationBar(title: "Simple Form", showBackButton: true)) {
-            Container {
-                Button(
-                    text: "Declarative Simple Form",
-                    onPress: [Navigate.pushView(.declarative(declarativeScreen))]
-                )
-                Button(
-                    text: "Simple Form with validation",
-                    onPress: [Navigate.openNativeRoute(.init(route: .simpleFormValidationEndpoint))]
-                )
-            }
-        }
+        return Screen(navigationBar: NavigationBar(title: "Simple Form", showBackButton: true), child:
+                        Container {
+                            Button(
+                                text: "Declarative Simple Form",
+                                onPress: [Navigate.pushView(.declarative(declarativeScreen))]
+                            )
+                            Button(
+                                text: "Simple Form with validation",
+                                onPress: [Navigate.openNativeRoute(.init(route: .simpleFormValidationEndpoint))]
+                            )
+                        }
+                      )
     }()
 
     static var declarativeScreen: Screen {
-        return Screen(navigationBar: NavigationBar(title: "Simple Form", showBackButton: true)) {
-            Container {
-                SimpleForm(
-                    context: Context(id: "form", value: ["address": "You address", "message": "You message"]),
-                    onSubmit: [
-                        Alert(
-                            title: "Seu Contexto",
-                            message: "Address: @{form.address} \n Message: @{form.message}",
-                            onPressOk: FirstAction(),
-                            labelOk: "OK")
-                    ]
-                ) {
-                    Button(text: "SimpleForm", onPress: [SubmitForm()])
-                }
-                SimpleForm(
-                    context: Context(id: "form", value: ["address": "beagle@beagle.com.br", "message": "Hello Beagle"]),
-                    onSubmit: [
-                        Alert(
-                            title: "Contexto Beagle",
-                            message: "Address: @{form.address} \n Message: @{form.message}",
-                            onPressOk: SecondAction(),
-                            labelOk: "OK")
-                    ]
-                ) {
-                    Button(text: "SimpleForm", onPress: [SubmitForm()])
-                }
-            }
-        }
+        return Screen(navigationBar: NavigationBar(title: "Simple Form", showBackButton: true), child:
+                        Container {
+                            SimpleForm(
+                                context: Context(id: "form", value: ["address": "You address", "message": "You message"]),
+                                onSubmit: [
+                                    Alert(
+                                        title: "Seu Contexto",
+                                        message: "Address: @{form.address} \n Message: @{form.message}",
+                                        onPressOk: FirstAction(),
+                                        labelOk: "OK")
+                                ]
+                            ) {
+                                Button(text: "SimpleForm", onPress: [SubmitForm()])
+                            }
+                            SimpleForm(
+                                context: Context(id: "form", value: ["address": "beagle@beagle.com.br", "message": "Hello Beagle"]),
+                                onSubmit: [
+                                    Alert(
+                                        title: "Contexto Beagle",
+                                        message: "Address: @{form.address} \n Message: @{form.message}",
+                                        onPressOk: SecondAction(),
+                                        labelOk: "OK")
+                                ]
+                            ) {
+                                Button(text: "SimpleForm", onPress: [SubmitForm()])
+                            }
+                        }
+                      )
     }
 }
 
 struct FirstAction: Action {
-
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {
         print("FirstAction Executed")
     }
 }
 
 struct SecondAction: Action {
-    
+    var analytics: ActionAnalyticsConfig?
     func execute(controller: BeagleController, origin: UIView) {
         print("SecondAction Executed")
     }

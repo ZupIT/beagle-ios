@@ -147,6 +147,7 @@ public final class ComponentDecoderTests: XCTestCase {
     private class TestAction: Action {
         
         let value: Int
+        var analytics: ActionAnalyticsConfig?
         
         func execute(controller: BeagleController, origin: UIView) {
             // Intentionally unimplemented...

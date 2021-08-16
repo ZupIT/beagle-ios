@@ -120,38 +120,6 @@ final class ButtonTests: XCTestCase {
         XCTAssert(action.lastOrigin as AnyObject === view)
     }
     
-    func testAnalyticsClickTrigger() {
-        // Given
-        let analytics = AnalyticsExecutorSpy()
-        let button = Button(text: "Trigger analytics click", clickAnalyticsEvent: .init(category: "some category"))
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
-    }
-    
-    func testAnalyticsActionTrigger() {
-        // Given
-        let action = ActionSpy()
-        let analytics = AnalyticsExecutorSpy()
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-        
-        let button = Button(text: "Trigger analytics click", onPress: [action], clickAnalyticsEvent: .init(category: "some category"))
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
-        XCTAssertEqual(action.executionCount, 1)
-        XCTAssert(action.lastOrigin as AnyObject === view)
-    }
-    
     func testRenderDefaultButtonComponent() {
         // Given
         let button = Button(text: "Default Button")

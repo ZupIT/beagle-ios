@@ -31,25 +31,25 @@ struct ListViewScreen: DeeplinkScreen {
     }
     
     var screen: Screen {
-        return Screen(navigationBar: NavigationBar(title: "ListView")) {
-            Container {
-                Button(text: "Local Data Source", onPress: [
-                    Navigate.pushView(.declarative(localDataSourceScreen))
-                ])
-                Button(text: "Remote Data Source", onPress: [
-                    Navigate.pushView(.declarative(remoteDataSourceScreen))
-                ])
-                Button(text: "Pagination", onPress: [
-                    Navigate.pushView(.declarative(paginationScreen))
-                ])
-                Button(text: "Infinity Scroll", onPress: [
-                    Navigate.pushView(.declarative(infinityScrollScreen))
-                ])
-                Button(text: "Nested", onPress: [
-                    Navigate.pushView(.declarative(nestedScreen))
-                ])
-            }
-        }
+        return Screen(navigationBar: NavigationBar(title: "ListView"), child:
+                        Container {
+                            Button(text: "Local Data Source", onPress: [
+                                Navigate.pushView(.declarative(localDataSourceScreen))
+                            ])
+                            Button(text: "Remote Data Source", onPress: [
+                                Navigate.pushView(.declarative(remoteDataSourceScreen))
+                            ])
+                            Button(text: "Pagination", onPress: [
+                                Navigate.pushView(.declarative(paginationScreen))
+                            ])
+                            Button(text: "Infinity Scroll", onPress: [
+                                Navigate.pushView(.declarative(infinityScrollScreen))
+                            ])
+//                            Button(text: "Nested", onPress: [
+//                                Navigate.pushView(.declarative(nestedScreen))
+//                            ])
+                        }
+                      )
     }
     
     // MARK: - Simple Lists
@@ -115,23 +115,23 @@ struct ListViewScreen: DeeplinkScreen {
         title: String
     ) -> Screen {
         let navigationBar = NavigationBar(title: title)
-        return Screen(navigationBar: navigationBar) {
-            ListView(
-                context: context,
-                onInit: onInit,
-                dataSource: dataSource,
-                template: Container(
-                    widgetProperties: .init(style: Style().margin(EdgeValue().all(10)))
-                ) {
-                    Text("Name: @{item.name}")
-                    Text("Race: @{item.race}")
-                    Text("Mistborn: @{item.isMistborn}")
-                    Text("Planet: @{item.planet}")
-                    Text("Sex: @{item.sex}")
-                    Text("Age: @{item.age}")
-                }
-            )
-        }
+        return Screen(navigationBar: navigationBar, child:
+                        ListView(
+                            context: context,
+                            onInit: onInit,
+                            dataSource: dataSource,
+                            template: Container(
+                                widgetProperties: .init(style: Style().margin(EdgeValue().all(10)))
+                            ) {
+                                Text("Name: @{item.name}")
+                                Text("Race: @{item.race}")
+                                Text("Mistborn: @{item.isMistborn}")
+                                Text("Planet: @{item.planet}")
+                                Text("Sex: @{item.sex}")
+                                Text("Age: @{item.age}")
+                            }
+                        )
+                      )
     }
     
     // MARK: - Paginated
@@ -139,9 +139,7 @@ struct ListViewScreen: DeeplinkScreen {
     var paginationScreen: Screen {
         return Screen(
             navigationBar: NavigationBar(title: "Pagination"),
-            context: Context( id: "database", value: .string(Self.moviesDatabase))
-        ) {
-            return Container(
+            child: Container(
                 context: Context(
                     id: "moviePage",
                     value: ["page": 0, "total_pages": 0, "results": []]
@@ -149,8 +147,9 @@ struct ListViewScreen: DeeplinkScreen {
             ) {
                 pager
                 paginationListView
-            }
-        }
+            },
+            context: Context( id: "database", value: .string(Self.moviesDatabase))
+        )
     }
     
     var paginationListView: ListView {
@@ -263,10 +262,9 @@ struct ListViewScreen: DeeplinkScreen {
     var infinityScrollScreen: Screen {
         return Screen(
             navigationBar: NavigationBar(title: "Infinity Scroll"),
+            child: infinityScrollListView,
             context: Context(id: "database", value: .string(Self.moviesDatabase))
-        ) {
-            infinityScrollListView
-        }
+        )
     }
     
     var infinityScrollListView: ListView {
@@ -298,92 +296,91 @@ struct ListViewScreen: DeeplinkScreen {
     
     // MARK: - Nested
     
-    var nestedScreen: Screen {
-        return Screen(
-            navigationBar: NavigationBar(title: "Nested"),
-            context: Context( id: "database", value: .string(Self.moviesDatabase))
-        ) {
-            nestedListView
-        }
-    }
-    
-    var nestedListView: ListView {
-        return ListView(
-            context: Context(id: "categories", value: []),
-            onInit: [
-                SendRequest(
-                    url: "@{database}/categories.json",
-                    method: .value(.get),
-                    onSuccess: [
-                        SetContext(
-                            contextId: "categories",
-                            value: "@{onSuccess.data}"
-                        )
-                    ]
-                )
-            ],
-            dataSource: "@{categories}",
-            direction: .vertical,
-            template: Container(
-                context: Context(
-                    id: "moviePage",
-                    value: [
-                        "page": 0,
-                        "total_pages": 0,
-                        "results": []
-                    ]
-                )
-            ) {
-                Text(
-                    "@{category.name} (@{length(moviePage.results)}), loaded @{moviePage.page} of @{moviePage.total_pages} pages",
-                    widgetProperties: .init(style: Style().margin(EdgeValue().all(10)))
-                )
-                ListView(
-                    dataSource: "@{moviePage.results}",
-                    direction: .horizontal,
-                    template: Touchable(onPress: [
-                        Alert(
-                            title: "@{movie.original_title}",
-                            message: """
-                            Genre: @{category.name}
-                            Release date: @{movie.release_date}
-                            Rating: @{movie.vote_average}
-
-                            @{movie.overview}
-                            """,
-                            labelOk: "Close"
-                        )
-                    ]) {
-                        Image(
-                            .value(.remote(.init(url: "https://image.tmdb.org/t/p/w500@{movie.poster_path}"))),
-                            widgetProperties: .init(
-                                id: "imagem",
-                                style: Style()
-                                    .size(Size().width(180).height(270))
-                                    .margin(EdgeValue().all(10))
-                            )
-                        )
-                    },
-                    iteratorName: "movie",
-                    onScrollEnd: [
-                        SendRequest(
-                            url: "@{database}@{category.path}.@{sum(moviePage.page, 1)}.json",
-                            method: .value(.get),
-                            onSuccess: [
-                                SetContext(contextId: "moviePage", path: "page", value: "@{onSuccess.data.page}"),
-                                SetContext(contextId: "moviePage", path: "total_pages", value: "@{onSuccess.data.total_pages}"),
-                                SetContext(
-                                    contextId: "moviePage",
-                                    path: "results",
-                                    value: "@{union(moviePage.results, onSuccess.data.results)}"
-                                )
-                            ]
-                        )
-                    ],
-                    scrollEndThreshold: 80
-                )
-            },
-            iteratorName: "category"
-        )
-    }
+//    var nestedScreen: Screen {
+//        return Screen(
+//            navigationBar: NavigationBar(title: "Nested"),
+//            child: nestedListView,
+//            context: Context( id: "database", value: .string(Self.moviesDatabase))
+//        )
+//    }
+//
+//    var nestedListView: ListView {
+//        return ListView(
+//            context: Context(id: "categories", value: []),
+//            onInit: [
+//                SendRequest(
+//                    url: "@{database}/categories.json",
+//                    method: .value(.get),
+//                    onSuccess: [
+//                        SetContext(
+//                            contextId: "categories",
+//                            value: "@{onSuccess.data}"
+//                        )
+//                    ]
+//                )
+//            ],
+//            dataSource: "@{categories}",
+//            direction: .vertical,
+//            template: Container(
+//                context: Context(
+//                    id: "moviePage",
+//                    value: [
+//                        "page": 0,
+//                        "total_pages": 0,
+//                        "results": []
+//                    ]
+//                )
+//            ) {
+//                Text(
+//                    "@{category.name} (@{length(moviePage.results)}), loaded @{moviePage.page} of @{moviePage.total_pages} pages",
+//                    widgetProperties: .init(style: Style().margin(EdgeValue().all(10)))
+//                )
+//                ListView(
+//                    dataSource: "@{moviePage.results}",
+//                    direction: .horizontal,
+//                    template: Touchable(onPress: [
+//                        Alert(
+//                            title: "@{movie.original_title}",
+//                            message: """
+//                            Genre: @{category.name}
+//                            Release date: @{movie.release_date}
+//                            Rating: @{movie.vote_average}
+//
+//                            @{movie.overview}
+//                            """,
+//                            labelOk: "Close"
+//                        )
+//                    ]) {
+//                        Image(
+//                            .value(.remote(.init(url: "https://image.tmdb.org/t/p/w500@{movie.poster_path}"))),
+//                            widgetProperties: .init(
+//                                id: "imagem",
+//                                style: Style()
+//                                    .size(Size().width(180).height(270))
+//                                    .margin(EdgeValue().all(10))
+//                            )
+//                        )
+//                    },
+//                    iteratorName: "movie",
+//                    onScrollEnd: [
+//                        SendRequest(
+//                            url: "@{database}@{category.path}.@{sum(moviePage.page, 1)}.json",
+//                            method: .value(.get),
+//                            onSuccess: [
+//                                SetContext(contextId: "moviePage", path: "page", value: "@{onSuccess.data.page}"),
+//                                SetContext(contextId: "moviePage", path: "total_pages", value: "@{onSuccess.data.total_pages}"),
+//                                SetContext(
+//                                    contextId: "moviePage",
+//                                    path: "results",
+//                                    value: "@{union(moviePage.results, onSuccess.data.results)}"
+//                                )
+//                            ]
+//                        )
+//                    ],
+//                    scrollEndThreshold: 80
+//                )
+//            },
+//            iteratorName: "category"
+//        )
+//    }
 }

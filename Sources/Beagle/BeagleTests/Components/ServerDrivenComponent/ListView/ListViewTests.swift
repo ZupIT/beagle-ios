@@ -264,6 +264,7 @@ final class ListViewTests: XCTestCase {
 
 private struct ActionStub: Action {
     
+    var analytics: ActionAnalyticsConfig?
     let execute: ((BeagleController, UIView) -> Void)?
     
     init(execute: @escaping (BeagleController, UIView) -> Void) {
