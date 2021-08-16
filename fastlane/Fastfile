@@ -25,7 +25,10 @@ platform :ios do
       proj: "Sources/Beagle/Beagle.xcodeproj",
       sonarqube_xml: "true"
     )
-    sonar(project_configuration_path: File.expand_path("sonar-project.properties"))
+    sonar(
+      sonar_login: ENV["SONAR_TOKEN"],
+      project_configuration_path: File.expand_path("sonar-project.properties")
+    )
   end
 
   desc "Check whether Beagle is working via CocoaPods in an Example Project"
