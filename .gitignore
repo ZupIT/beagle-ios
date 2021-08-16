@@ -28,3 +28,6 @@ DerivedData/
 *.dSYM.zip
 *.dSYM
 Pods/
+
+# Sonar Report
+sonar-reports/
