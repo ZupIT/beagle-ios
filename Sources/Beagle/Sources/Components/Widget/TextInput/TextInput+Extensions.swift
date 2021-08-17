@@ -65,7 +65,7 @@ extension TextInput: ServerDrivenComponent {
         }
     }
     
-    class TextInputView: UITextField, UITextFieldDelegate, InputValue, WidgetStateObservable, ValidationErrorListener {
+    class TextInputView: UITextField, UITextFieldDelegate, WidgetStateObservable {
         
         // MARK: - Properties
 
@@ -172,14 +172,6 @@ extension TextInput: ServerDrivenComponent {
         private func applyStyle() {
             guard let styleId = styleId else { return }
             beagle.applyStyle(for: self as UITextField, styleId: styleId, with: controller)
-        }
-        
-        func getValue() -> Any {
-            return text ?? ""
-        }
-        
-        func onValidationError(message: String?) {
-            controller?.dependencies.logger.log(Log.form(.validationInputNotValid(inputName: "TextInput - " + (message ?? "Validation Error"))))
         }
         
         // MARK: - TextField Delegate

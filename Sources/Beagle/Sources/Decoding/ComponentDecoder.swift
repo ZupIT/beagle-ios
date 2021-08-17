@@ -156,9 +156,6 @@ final public class ComponentDecoder: ComponentDecoding {
         registerAction(Navigate.self, key: key(name: "PushView", namespace: .beagle))
         registerAction(Navigate.self, key: key(name: "PopView", namespace: .beagle))
         registerAction(Navigate.self, key: key(name: "PopToView", namespace: .beagle))
-        registerAction(FormValidation.self, key: key(name: "FormValidation", namespace: .beagle))
-        registerAction(FormLocalAction.self, key: key(name: "FormLocalAction", namespace: .beagle))
-        registerAction(FormRemoteAction.self, key: key(name: "FormRemoteAction", namespace: .beagle))
         registerAction(SetContext.self, key: key(name: "SetContext", namespace: .beagle))
         registerAction(SendRequest.self, key: key(name: "SendRequest", namespace: .beagle))
         registerAction(Alert.self, key: key(name: "Alert", namespace: .beagle))
@@ -174,9 +171,6 @@ final public class ComponentDecoder: ComponentDecoding {
     }
     
     private func registerFormModels() {
-        registerComponent(Deprecated.Form.self, key: key(name: "Form", namespace: .beagle))
-        registerComponent(Deprecated.FormSubmit.self, key: key(name: "FormSubmit", namespace: .beagle))
-        registerComponent(Deprecated.FormInput.self, key: key(name: "FormInput", namespace: .beagle))
         registerComponent(SimpleForm.self, key: key(name: "SimpleForm", namespace: .beagle))
     }
     

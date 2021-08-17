@@ -3,7 +3,7 @@
   - appBundle: NSBundle <(null)> (not yet loaded)
   - cacheManager: Optional<CacheManagerProtocol>.none
   ▿ decoder: ComponentDecoder
-    ▿ actionDecoders: 19 key/value pairs
+    ▿ actionDecoders: 16 key/value pairs
       ▿ (2 elements)
         - key: "beagle:addchildren"
         - value: AddChildren
@@ -16,15 +16,6 @@
       ▿ (2 elements)
         - key: "beagle:confirm"
         - value: Confirm
-      ▿ (2 elements)
-        - key: "beagle:formlocalaction"
-        - value: FormLocalAction
-      ▿ (2 elements)
-        - key: "beagle:formremoteaction"
-        - value: FormRemoteAction
-      ▿ (2 elements)
-        - key: "beagle:formvalidation"
-        - value: FormValidation
       ▿ (2 elements)
         - key: "beagle:openexternalurl"
         - value: Navigate
@@ -61,22 +52,13 @@
       ▿ (2 elements)
         - key: "beagle:submitform"
         - value: SubmitForm
-    ▿ componentDecoders: 21 key/value pairs
+    ▿ componentDecoders: 18 key/value pairs
       ▿ (2 elements)
         - key: "beagle:button"
         - value: Button
       ▿ (2 elements)
         - key: "beagle:container"
         - value: Container
-      ▿ (2 elements)
-        - key: "beagle:form"
-        - value: Form
-      ▿ (2 elements)
-        - key: "beagle:forminput"
-        - value: FormInput
-      ▿ (2 elements)
-        - key: "beagle:formsubmit"
-        - value: FormSubmit
       ▿ (2 elements)
         - key: "beagle:gridview"
         - value: GridView
@@ -132,8 +114,6 @@
       - nonConformingFloatDecodingStrategy: NonConformingFloatDecodingStrategy.throw
       - userInfo: 0 key/value pairs
   - deepLinkHandler: Optional<DeepLinkScreenManaging>.none
-  ▿ formDataStoreHandler: FormDataStoreHandler
-    - dataStore: 0 key/value pairs
   ▿ globalContext: DefaultGlobalContext
     - $__lazy_storage_$_context: Optional<Observable<Context>>.none
     - globalId: "global"
@@ -144,7 +124,6 @@
       ▿ dependencies: InnerDependenciesResolver
         - container: (Function)
   - isLoggingEnabled: true
-  - localFormHandler: Optional<LocalFormHandler>.none
   ▿ logger: BeagleLoggerProxy
     ▿ dependencies: InnerDependenciesResolver
       - container: (Function)
@@ -262,6 +241,5 @@
     - styles: 0 key/value pairs
   ▿ urlBuilder: UrlBuilder
     - baseUrl: Optional<URL>.none
-  - validatorProvider: Optional<ValidatorProvider>.none
   - viewConfigurator: (Function)
   - windowManager: WindowManagerDefault

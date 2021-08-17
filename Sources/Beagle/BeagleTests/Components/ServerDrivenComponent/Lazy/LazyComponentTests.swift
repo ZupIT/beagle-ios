@@ -138,8 +138,6 @@ class LazyRepositoryStub: Repository {
     var componentCompletion: ((Result<ServerDrivenComponent, Request.Error>) -> Void)?
     var formCompletion: ((Result<Action, Request.Error>) -> Void)?
     var imageCompletion: ((Result<Data, Request.Error>) -> Void)?
-    
-    private(set) var formData: Request.FormData?
 
     func fetchComponent(
         url: String,
@@ -148,17 +146,6 @@ class LazyRepositoryStub: Repository {
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken? {
         componentCompletion = completion
-        return nil
-    }
-
-    func submitForm(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        data: Request.FormData,
-        completion: @escaping (Result<Action, Request.Error>) -> Void
-    ) -> RequestToken? {
-        formData = data
-        formCompletion = completion
         return nil
     }
     

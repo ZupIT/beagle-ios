@@ -70,21 +70,6 @@ extension DSCollection {
     }
 }
 
-// MARK: DemoTextField Decodable
-extension DemoTextField {
-
-    enum CodingKeys: String, CodingKey {
-        case placeholder
-    }
-
-    internal init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        placeholder = try container.decode(String.self, forKey: .placeholder)
-        widgetProperties = try WidgetProperties(from: decoder)
-    }
-}
-
 // MARK: OtherComponent Decodable
 extension OtherComponent {
 

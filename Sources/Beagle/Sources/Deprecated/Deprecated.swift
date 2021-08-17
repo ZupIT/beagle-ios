@@ -16,9 +16,6 @@
 
 // used to suppress some warnings inside Beagle
 enum Deprecated {
-    typealias Form = Beagle.Form
-    typealias FormInput = Beagle.FormInput
-    typealias FormSubmit = Beagle.FormSubmit
     typealias TabView = Beagle.TabView
     typealias PageIndicatorComponent = Beagle.PageIndicatorComponent
 }

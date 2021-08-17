@@ -142,66 +142,6 @@ extension Context {
     }
 }
 
-// MARK: Form Decodable
-extension Form {
-
-    enum CodingKeys: String, CodingKey {
-        case onSubmit
-        case child
-        case group
-        case additionalData
-        case shouldStoreFields
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        onSubmit = try container.decodeIfPresent(forKey: .onSubmit)
-        child = try container.decode(forKey: .child)
-        group = try container.decodeIfPresent(String.self, forKey: .group)
-        additionalData = try container.decodeIfPresent([String: String].self, forKey: .additionalData)
-        shouldStoreFields = try container.decodeIfPresent(Bool.self, forKey: .shouldStoreFields) ?? false
-    }
-}
-
-// MARK: FormInput Decodable
-extension FormInput {
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case required
-        case validator
-        case errorMessage
-        case child
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        name = try container.decode(String.self, forKey: .name)
-        required = try container.decodeIfPresent(Bool.self, forKey: .required)
-        validator = try container.decodeIfPresent(String.self, forKey: .validator)
-        errorMessage = try container.decodeIfPresent(String.self, forKey: .errorMessage)
-        child = try container.decode(forKey: .child)
-    }
-}
-
-// MARK: FormSubmit Decodable
-extension FormSubmit {
-
-    enum CodingKeys: String, CodingKey {
-        case child
-        case enabled
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        child = try container.decode(forKey: .child)
-        enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled)
-    }
-}
-
 // MARK: Image Decodable
 extension Image {
 

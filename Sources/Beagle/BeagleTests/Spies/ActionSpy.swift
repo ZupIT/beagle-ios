@@ -14,6 +14,21 @@
  * limitations under the License.
  */
 
-public protocol InputValue {
-    func getValue() -> Any
+import Beagle
+import UIKit
+
+class ActionSpy: Action {
+    var analytics: ActionAnalyticsConfig? { return nil }
+    private(set) var executionCount = 0
+    private(set) var lastController: BeagleController?
+    private(set) var lastOrigin: UIView?
+
+    func execute(controller: BeagleController, origin: UIView) {
+        executionCount += 1
+        lastController = controller
+        lastOrigin = origin
+    }
+
+    init() {}
+    required init(from decoder: Decoder) throws {}
 }

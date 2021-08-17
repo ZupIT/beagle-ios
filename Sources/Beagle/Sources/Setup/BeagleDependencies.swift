@@ -21,13 +21,11 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
     DependencyUrlBuilder,
     DependencyNetworkClient,
     DependencyDeepLinkScreenManaging,
-    DependencyLocalFormHandler,
     DependencyNavigationController,
     DependencyNavigation,
     DependencyViewConfigurator,
     DependencyStyleViewConfigurator,
     DependencyTheme,
-    DependencyValidatorProvider,
     DependencyPreFetching,
     DependencyAppBundle,
     DependencyRepository,
@@ -36,7 +34,6 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
     DependencyWindowManager,
     DependencyURLOpener,
     DependencyCacheManager,
-    DependencyFormDataStoreHandler,
     DependencyRenderer,
     DependencyGlobalContext,
     DependencyOperationsProvider,
@@ -50,16 +47,13 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
     public var networkClient: NetworkClient?
     public var appBundle: Bundle
     public var theme: Theme
-    public var validatorProvider: ValidatorProvider?
     public var deepLinkHandler: DeepLinkScreenManaging?
-    public var localFormHandler: LocalFormHandler?
     public var repository: Repository
     public var imageDownloader: ImageDownloader
     public var analyticsProvider: AnalyticsProvider?
     public var navigation: BeagleNavigation
     public var preFetchHelper: BeaglePrefetchHelping
     public var cacheManager: CacheManagerProtocol?
-    public var formDataStoreHandler: FormDataStoreHandling
     public var windowManager: WindowManager
     public var opener: URLOpener
     public var globalContext: GlobalContext
@@ -99,7 +93,6 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
 
         self.urlBuilder = UrlBuilder()
         self.preFetchHelper = BeaglePreFetchHelper(dependencies: resolver)
-        self.localFormHandler = nil
         self.appBundle = Bundle.main
         self.theme = AppTheme(styles: [:])
         self.isLoggingEnabled = true
@@ -107,7 +100,6 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
         self.operationsProvider = OperationsDefault(dependencies: resolver)
 
         self.decoder = ComponentDecoder()
-        self.formDataStoreHandler = FormDataStoreHandler()
         self.windowManager = WindowManagerDefault()
         self.navigation = BeagleNavigator()
         self.globalContext = DefaultGlobalContext()
@@ -144,7 +136,6 @@ private class InnerDependenciesResolver: RepositoryDefault.Dependencies,
     var networkClient: NetworkClient? { return container().networkClient }
     var navigation: BeagleNavigation { return container().navigation }
     var deepLinkHandler: DeepLinkScreenManaging? { return container().deepLinkHandler }
-    var localFormHandler: LocalFormHandler? { return container().localFormHandler }
     var logger: BeagleLoggerType { return container().logger }
     var cacheManager: CacheManagerProtocol? { return container().cacheManager }
     var repository: Repository { return container().repository }

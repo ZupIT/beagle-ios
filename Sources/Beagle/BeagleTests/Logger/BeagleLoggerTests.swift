@@ -23,7 +23,6 @@ class BeagleLoggerTests: XCTestCase {
 
     func testLogs() {
         // Given
-        let form = Deprecated.Form(child: ComponentDummy())
         let path = "path"
 
         let logs: [Log] = [
@@ -31,15 +30,7 @@ class BeagleLoggerTests: XCTestCase {
             Log.network(.httpRequest(request: .init(url: URLRequest(url: URL(string: "test")!)))),
             Log.network(.httpResponse(response: .init(data: nil, response: nil))),
             Log.network(.networkClientWasNotConfigured),
-
-            Log.form(.divergentInputViewAndValueCount(form: form)),
-            Log.form(.inputsNotFound(form: form)),
-            Log.form(.submitNotFound(form: form)),
-            Log.form(.submittedValues(values: ["key1": "value1"])),
-            Log.form(.validationInputNotValid(inputName: "inputName")),
-            Log.form(.validatorNotFound(named: "validatorName")),
-            Log.form(.keyDuplication(data: ["key": "value"])),
-
+            
             Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "identifier")),
             Log.navigation(.didReceiveAction(Navigate.pushView(.remote(.init(url: path))))),
             Log.navigation(.didReceiveAction(Navigate.openNativeRoute(.init(route: path)))),

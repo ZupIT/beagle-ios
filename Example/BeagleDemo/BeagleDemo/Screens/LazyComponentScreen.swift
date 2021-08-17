@@ -28,55 +28,21 @@ struct LazyComponentScreen: DeeplinkScreen {
     
     var screen: Screen {
         return Screen(navigationBar: NavigationBar(title: "Form & LazyComponent"), child:
-                        Form(
-                            onSubmit: [Navigate.pushView(.declarative(screen1))],
-                            child: Container(widgetProperties: .init(Flex().justifyContent(.spaceBetween))) {
+                        
                                 Text("Form & LazyComponent")
-                                FormInput(
-                                    name: "field",
-                                    child: LazyComponent(
-                                        path: .textLazyComponentEndpoint,
-                                        initialState: Text("Loading...")
-                                    )
-                                )
-                                FormSubmit(child:
-                                    Text("FormSubmit")
-                                )
-                            },
-                            group: "firstForm",
-                            shouldStoreFields: true
-                        )
+                                
                       ) 
     }
     
     var screen1: Screen {
         return Screen(
             navigationBar: NavigationBar(title: "Form & LazyComponent"), child:
-                Form(
-                    onSubmit: [FormRemoteAction(path: .textFormEndpoint, method: .get)],
-                    child: Container(widgetProperties: .init(Flex().justifyContent(.spaceBetween))) {
-                        Text("Form & LazyComponent")
-                        FormInput(
-                            name: "field1",
-                            child: LazyComponent(
-                                path: .textLazyComponentEndpoint,
-                                initialState: Text("Loading...")
-                            )
-                        )
-                        FormSubmit(child:
-                            Text("FormSubmit")
-                        )
-                    },
-                    group: "firstForm",
-                    additionalData: ["zip": "38408", "gender": "Male"],
-                    shouldStoreFields: true
-                )
-            
+                Text("Form")
             )
     }
 }
 
-extension UITextView: OnStateUpdatable, InputValue {
+extension UITextView: OnStateUpdatable {
     public func onUpdateState(component: ServerDrivenComponent) -> Bool {
         guard let w = component as? Text else {
             return false
@@ -86,9 +52,5 @@ extension UITextView: OnStateUpdatable, InputValue {
             return true
         }
         return false
-    }
-    
-    public func getValue() -> Any {
-        return text ?? ""
     }
 }

@@ -26,14 +26,6 @@ public protocol Repository {
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken?
 
-    @discardableResult
-    func submitForm(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        data: Request.FormData,
-        completion: @escaping (Result<Action, Request.Error>) -> Void
-    ) -> RequestToken?
-
     @available(*, deprecated, message: "It was deprecated in version 1.3 and will be removed in a future version. Please use fetchImage from ImageDownloader instead.")
     @discardableResult
     func fetchImage(
@@ -99,21 +91,6 @@ public struct RepositoryDefault: Repository {
         }
     }
 
-    @discardableResult
-    public func submitForm(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        data: Request.FormData,
-        completion: @escaping (Result<Action>) -> Void
-    ) -> RequestToken? {
-        return dispatcher.dispatchRequest(path: url, type: .submitForm(data), additionalData: additionalData) {  result in
-            let mapped = result
-                .flatMap { self.handleForm($0.data) }
-
-            DispatchQueue.main.async { completion(mapped) }
-        }
-    }
-
     @available(*, deprecated, message: "It was deprecated in version 1.3 and will be removed in a future version. Please use fetchImage from ImageDownloader instead.")
     @discardableResult
     public func fetchImage(
@@ -154,12 +131,4 @@ public struct RepositoryDefault: Repository {
         }
     }
 
-    private func handleForm(_ data: Data) -> Result<Action> {
-        do {
-            let action = try dependencies.decoder.decodeAction(from: data)
-            return .success(action)
-        } catch {
-            return .failure(.decoding(error))
-        }
-    }
 }

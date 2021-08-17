@@ -26,8 +26,6 @@ class ActionAttributesTest: XCTestCase {
             try doRecord(Alert.self, fromJson: "Alert-1"),
             try doRecord(Condition.self, fromJson: "Condition-1"),
             try doRecord(Confirm.self, fromJson: "Confirm-1"),
-            try doRecord(FormLocalAction.self, fromJson: "FormLocalAction-1"),
-            try doRecord(FormValidation.self, fromJson: "FormValidation-1"),
             try doRecord(Navigate.self, fromJson: "OpenNativeRoute-1"),
             try doRecord(Navigate.self, fromJson: "PopView-1"),
             try doRecord(Navigate.self, fromJson: "PushStack-1"),
