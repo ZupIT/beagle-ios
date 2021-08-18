@@ -87,13 +87,11 @@ lane :deploy do
   sh "git fetch"
 
   tagName = ENV["TAG_NAME"].split("/").last
-  # (versionNumber, platformHotfix) = tagName.split("-")
 
   ENV["VERSION_DEPLOY"] = tagName
 
   sh "git checkout tags/#{tagName} -b newReleaseFromTag#{tagName}"
-
-  sh "fastlane ios release_pods version:#{versionNumber} tag:#{versionNumber}"
+  sh "fastlane ios release_pods version:#{tagName} tag:#{tagName}"
 
   releaseNotes = release_notes(versionDeploy: tagName)
   sh "bash ./delete_release.sh " + tagName
