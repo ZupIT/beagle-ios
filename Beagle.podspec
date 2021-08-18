@@ -45,7 +45,7 @@ Pod::Spec.new do |spec|
 # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   tag = spec.version.to_s
-  source = { :git => "https://github.com/ZupIT/beagle.git", :tag => tag }
+  source = { :git => "https://github.com/ZupIT/beagle-ios.git", :tag => tag }
   spec.source = source
 
 # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
