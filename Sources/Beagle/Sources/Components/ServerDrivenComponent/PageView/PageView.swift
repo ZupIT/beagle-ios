@@ -20,9 +20,6 @@ public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
     /// Defines a List of components (views) that are contained on this PageView.
     public let children: [ServerDrivenComponent]?
     
-    /// Defines in what page the PageView is currently on.
-    public let pageIndicator: PageIndicatorComponent?
-    
     /// Defines the contextData that be set to pageView.
     public let context: Context?
     
@@ -31,21 +28,6 @@ public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
     
     /// Integer number that identifies that selected.
     public let currentPage: Expression<Int>?
-
-    @available(*, deprecated, message: "If you want to use page indicator place it as a separate component and comunicate then using context.")
-    public init(
-        children: [ServerDrivenComponent]? = nil,
-        pageIndicator: PageIndicatorComponent? = nil,
-        context: Context? = nil,
-        onPageChange: [Action]? = nil,
-        currentPage: Expression<Int>? = nil
-    ) {
-        self.children = children
-        self.pageIndicator = pageIndicator
-        self.context = context
-        self.onPageChange = onPageChange
-        self.currentPage = currentPage
-    }
     
     public init(
         children: [ServerDrivenComponent]? = nil,
@@ -54,7 +36,6 @@ public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
         currentPage: Expression<Int>? = nil
     ) {
         self.children = children
-        self.pageIndicator = nil
         self.context = context
         self.onPageChange = onPageChange
         self.currentPage = currentPage
@@ -82,6 +63,3 @@ public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
         self.init(children: children(), context: context, onPageChange: onPageChange, currentPage: currentPage)
     }
 }
-
-@available(*, deprecated, message: "This will be removed in a future version; please refactor this component using new context features.")
-public protocol PageIndicatorComponent: ServerDrivenComponent {}

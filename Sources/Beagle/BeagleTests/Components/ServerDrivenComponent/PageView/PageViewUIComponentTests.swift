@@ -21,7 +21,6 @@ class PageViewUIComponentTests: XCTestCase {
 
     private lazy var pageView = PageViewUIComponent(
         model: .init(pages: pages),
-        indicatorView: PageIndicatorUIComponent(selectedColor: nil, unselectedColor: nil),
         controller: BeagleControllerStub()
     )
 

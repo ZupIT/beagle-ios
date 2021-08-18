@@ -68,7 +68,6 @@ class ImageTests: XCTestCase {
                             Image(.value(.remote(.init(url: "https://www.petlove.com.br/images/"))))
                         }
                     ],
-                    pageIndicator: PageIndicator(),
                     onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
                     currentPage: "@{currentPage}"
                 )

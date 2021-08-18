@@ -52,16 +52,4 @@ class CustomPageIndicatorTests: XCTestCase {
         assertSnapshotImage(view, size: .custom(.init(width: 200, height: 30)))
     }
 
-    func test_pageViewWithCustomIndicator_render() {
-        let page = Text("Page")
-
-        let component = PageView(
-            children: Array(repeating: page, count: 3),
-            pageIndicator: indicator
-        )
-        let view = BeagleView(component)
-        view.backgroundColor = .white
-
-        assertSnapshotImage(view)
-    }
 }

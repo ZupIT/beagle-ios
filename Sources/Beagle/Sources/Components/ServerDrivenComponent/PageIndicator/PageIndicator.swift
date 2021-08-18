@@ -15,7 +15,7 @@
  */
 
 /// The PageIndicator is a component to be used with PageView to sinalize the page selected.
-public class PageIndicator: PageIndicatorComponent, AutoInitiable {
+public class PageIndicator: ServerDrivenComponent, AutoInitiable {
     
     /// Configures the color of the selected dot. Must be filled as HEX (Hexadecimal).
     public var selectedColor: String?

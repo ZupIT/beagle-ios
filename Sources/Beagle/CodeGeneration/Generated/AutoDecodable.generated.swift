@@ -180,7 +180,6 @@ extension PageView {
 
     enum CodingKeys: String, CodingKey {
         case children
-        case pageIndicator
         case context
         case onPageChange
         case currentPage
@@ -190,8 +189,6 @@ extension PageView {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         children = try container.decodeIfPresent(forKey: .children)
-        let rawPageIndicator: ServerDrivenComponent? = try container.decodeIfPresent(forKey: .pageIndicator)
-        pageIndicator = rawPageIndicator as? PageIndicatorComponent
         context = try container.decodeIfPresent(Context.self, forKey: .context)
         onPageChange = try container.decodeIfPresent(forKey: .onPageChange)
         currentPage = try container.decodeIfPresent(Expression<Int>.self, forKey: .currentPage)

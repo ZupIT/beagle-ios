@@ -52,7 +52,7 @@
       ▿ (2 elements)
         - key: "beagle:submitform"
         - value: SubmitForm
-    ▿ componentDecoders: 18 key/value pairs
+    ▿ componentDecoders: 17 key/value pairs
       ▿ (2 elements)
         - key: "beagle:button"
         - value: Button
@@ -92,9 +92,6 @@
       ▿ (2 elements)
         - key: "beagle:tabbar"
         - value: TabBar
-      ▿ (2 elements)
-        - key: "beagle:tabview"
-        - value: TabView
       ▿ (2 elements)
         - key: "beagle:text"
         - value: Text
