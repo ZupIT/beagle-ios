@@ -35,10 +35,6 @@ public struct UnknownAction: Action {
     public let type: String
     public var analytics: ActionAnalyticsConfig? { return nil }
     
-    public init(type: String) {
-        self.type = type
-    }
-    
     public func execute(controller: BeagleController, origin: UIView) {
         controller.dependencies.logger.log(Log.decode(.decodingError(type: "error trying to execute unknown action")))
     }

@@ -25,12 +25,4 @@ public struct Touchable: ServerDrivenComponent, AutoDecodable {
     /// Defines the widget that will trigger the `Action`.
     public let child: ServerDrivenComponent
     
-    public init(
-        onPress: [Action],
-        child: ServerDrivenComponent
-    ) {
-        self.onPress = onPress
-        self.child = child
-    }
-    
 }

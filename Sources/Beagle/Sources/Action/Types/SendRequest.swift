@@ -15,72 +15,30 @@
  */
 
 /// SendRequest is used to make HTTP requests.
-public struct SendRequest: Action, AutoInitiableAndDecodable {
+public struct SendRequest: Action, AutoDecodable {
     
     /// Server URL.
-    public let url: Expression<String>
+    public var url: Expression<String>
     
     /// HTTP method.
-    public let method: Expression<HTTPMethod>?
+    public var method: Expression<HTTPMethod>?
     
     /// Content that will be delivered with the request.
-    public let data: DynamicObject?
+    public var data: DynamicObject?
     
     /// Header items for the request.
-    public let headers: Expression<[String: String]>?
+    public var headers: Expression<[String: String]>?
     
     /// Actions to be executed in request success case.
-    public let onSuccess: [Action]?
+    public var onSuccess: [Action]?
     
     /// Actions to be executed in request error case.
-    public let onError: [Action]?
+    public var onError: [Action]?
     
     /// Actions to be executed in request completion case.
     public var onFinish: [Action]?
     
     /// Defines an analytics configuration for this action.
-    public let analytics: ActionAnalyticsConfig?
+    public var analytics: ActionAnalyticsConfig?
     
-// sourcery:inline:auto:SendRequest.Init
-    public init(
-        url: Expression<String>,
-        method: Expression<HTTPMethod>? = nil,
-        data: DynamicObject? = nil,
-        headers: Expression<[String: String]>? = nil,
-        onSuccess: [Action]? = nil,
-        onError: [Action]? = nil,
-        onFinish: [Action]? = nil,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.url = url
-        self.method = method
-        self.data = data
-        self.headers = headers
-        self.onSuccess = onSuccess
-        self.onError = onError
-        self.onFinish = onFinish
-        self.analytics = analytics
-    }
-// sourcery:end
-    
-    @available(*, deprecated, message: "Since version 1.3, we allow expressions in the parameters method and headers, please consider using the new method for initialization instead.")
-    public init(
-        url: Expression<String>,
-        method: HTTPMethod? = nil,
-        data: DynamicObject? = nil,
-        headers: [String: String]? = nil,
-        onSuccess: [Action]? = nil,
-        onError: [Action]? = nil,
-        onFinish: [Action]? = nil,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.url = url
-        self.method = .value(method ?? .get)
-        self.data = data
-        self.headers = .value(headers ?? ["": ""])
-        self.onSuccess = onSuccess
-        self.onError = onError
-        self.onFinish = onFinish
-        self.analytics = analytics
-    }
 }

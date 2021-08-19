@@ -42,9 +42,6 @@ final class BeagleScreenViewControllerTests: XCTestCase {
             registerAction?(controllerType, controllerId)
         }
         
-        let beagleSCScreenType = BeagleScreenViewController(screenType, controllerId: controllerId)
-        beagleSCScreenType.viewDidLoad()
-        
         let beagleSCComponent = BeagleScreenViewController(component, controllerId: controllerId)
         beagleSCComponent.viewDidLoad()
         
@@ -52,11 +49,9 @@ final class BeagleScreenViewControllerTests: XCTestCase {
         beagleSCViewModel.viewDidLoad()
         
         // Then
-        if case let .navigation(screenTypeNavigation) = beagleSCScreenType.content,
-            case let .navigation(componentNavigation) = beagleSCComponent.content,
+        if case let .navigation(componentNavigation) = beagleSCComponent.content,
             case let .navigation(viewModelNavigation) = beagleSCViewModel.content {
-            givesType = type(of: screenTypeNavigation) == controllerType &&
-                type(of: componentNavigation) == controllerType &&
+            givesType = type(of: componentNavigation) == controllerType &&
                 type(of: viewModelNavigation) == controllerType
         } else {
             givesType = false
@@ -89,7 +84,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
     func test_onViewDidLoad_backGroundColorShouldBeSetToWhite() {
         // Given
         let component = SimpleComponent()
-        let sut = Beagle.screen(.declarative(component.content.toScreen()))
+        let sut = BeagleScreenViewController(component.content)
         
         // When
         sut.viewDidLoad()
@@ -106,7 +101,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
     func test_onViewWillAppear_navigationBarShouldBeHidden() {
         // Given
         let component = SimpleComponent()
-        let sut = Beagle.screen(.declarative(component.content.toScreen()))
+        let sut = BeagleScreenViewController(component.content)
         let navigation = BeagleNavigationController(rootViewController: sut)
         
         // When
@@ -149,14 +144,14 @@ final class BeagleScreenViewControllerTests: XCTestCase {
     }
     
     func test_handleSafeArea() {
-        let sut = safeAreaController(content: Text(""))
+        let sut = safeAreaController(content: Text(text: ""))
         assertSnapshotImage(sut, size: .custom(CGSize(width: 200, height: 200)))
     }
     
     func test_handleKeyboard() {
         let sut = safeAreaController(
             content: Text(
-                "My Content",
+                text: "My Content",
                 alignment: Expression.value(.center),
                 widgetProperties: .init(
                     style: .init(
@@ -199,7 +194,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
                 ))
             )
         )
-        let screenController = BeagleScreenViewController(.declarative(screen))
+        let screenController = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen)))
         screenController.additionalSafeAreaInsets = UIEdgeInsets(top: 10, left: 20, bottom: 30, right: 40)
         let navigation = BeagleNavigationController(rootViewController: screenController)
         navigation.navigationBar.barTintColor = .white
@@ -277,7 +272,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
         }
         let cacheReference = CacheReference(identifier: url, data: jsonData, hash: "123")
         cacheManager.addToCache(cacheReference)
-        let repository = RepositoryStub(componentResult: .success(Text("Remote Component", widgetProperties: .init(style: .init(backgroundColor: "#00FFFF")))))
+        let repository = RepositoryStub(componentResult: .success(Text(text: "Remote Component", widgetProperties: .init(style: .init(backgroundColor: "#00FFFF")))))
         let dependencies = BeagleDependencies()
         dependencies.cacheManager = cacheManager
         dependencies.repository = repository
@@ -293,7 +288,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
     func test_whenLoadScreenFails_itShouldRenderFallbackScreen() {
         let repository = RepositoryStub(componentResult: .failure(.urlBuilderError))
         let fallback = Text(
-            "Fallback screen.\n",
+            text: "Fallback screen.\n",
             widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))
         ).toScreen()
         
@@ -320,7 +315,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
         let json1 = try jsonFromFile(fileName: "declarativeText1")
         let json2 = try jsonFromFile(fileName: "declarativeText2")
 
-        let screen = BeagleScreenViewController(.declarativeText(json1))
+        let screen = BeagleScreenViewController(json1)
         assertSnapshotImage(screen, size: .custom(CGSize(width: 256, height: 512)))
 
         screen.reloadScreen(with: .declarativeText(json2))
@@ -341,7 +336,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
     private let expIntOpNil: Expression<Int>? = nil
 
     private lazy var renderer = BeagleRenderer(controller: controller)
-    private lazy var controller = BeagleScreenViewController(Text(""))
+    private lazy var controller = BeagleScreenViewController(Text(text: ""))
 
     func testText() {
         renderer.observe(self.exp, andUpdate: \.text, in: label)
@@ -428,8 +423,10 @@ final class BeagleScreenViewControllerTests: XCTestCase {
 // MARK: - Testing Helpers
 
 struct SimpleComponent {
-    var content = Container(children:
-        [Text("Mock")]
+    var content = Container(
+        children: [
+            Text(text: "Mock")
+        ]
     )
 }
 

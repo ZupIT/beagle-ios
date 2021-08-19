@@ -21,30 +21,10 @@ public struct Image: Widget, AutoDecodable {
     public let path: Expression<ImagePath>
     
     /// Defines how the declared image will fit the view.
-    public let mode: ImageContentMode?
+    public var mode: ImageContentMode?
     
     /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
-    
-    public init(
-        _ path: Expression<ImagePath>,
-        mode: ImageContentMode? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.path = path
-        self.mode = mode
-        self.widgetProperties = widgetProperties
-    }
-    
-    public init(
-        _ path: ImagePath,
-        mode: ImageContentMode? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.path = .value(path)
-        self.mode = mode
-        self.widgetProperties = widgetProperties
-    }
+    public var widgetProperties: WidgetProperties = WidgetProperties()
     
     public enum ImagePath: Decodable {
         case remote(Remote)
@@ -69,6 +49,18 @@ public struct Image: Widget, AutoDecodable {
                 throw DecodingError.dataCorruptedError(forKey: .type, in: container, debugDescription: "Invalid image type")
             }
         }
+    }
+}
+
+extension Image {
+    init(
+        _ path: ImagePath,
+        mode: ImageContentMode? = nil,
+        widgetProperties: WidgetProperties = WidgetProperties()
+    ) {
+        self.path = .value(path)
+        self.mode = mode
+        self.widgetProperties = widgetProperties
     }
 }
 

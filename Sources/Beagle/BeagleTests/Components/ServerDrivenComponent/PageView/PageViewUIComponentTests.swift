@@ -25,14 +25,10 @@ class PageViewUIComponentTests: XCTestCase {
     )
 
     private lazy var pages: [BeagleScreenViewController] = [
-        makeScreen(Text("Index: 1")),
-        makeScreen(Text("Index: 2")),
-        makeScreen(Text("Index: 3"))
+        BeagleScreenViewController(Text(text: "Index: 1")),
+        BeagleScreenViewController(Text(text: "Index: 2")),
+        BeagleScreenViewController(Text(text: "Index: 3"))
     ]
-
-    private func makeScreen(_ component: ServerDrivenComponent) -> BeagleScreenViewController {
-        return Beagle.screen(.declarative(component.toScreen()))
-    }
 
     private lazy var pager = pageView.pageViewController
 

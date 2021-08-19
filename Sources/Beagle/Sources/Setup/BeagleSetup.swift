@@ -21,28 +21,3 @@ public var dependencies: BeagleDependenciesProtocol = BeagleDependencies() {
         }
     }
 }
-
-// MARK: - Public Functions
-
-/// Register a custom component
-@available(*, deprecated, message: "use decoder.register in BeagleDependencies instead")
-public func registerCustomComponent<C: ServerDrivenComponent>(
-    _ name: String,
-    componentType: C.Type
-) {
-    dependencies.decoder.register(component: componentType, named: name)
-}
-
-/// Register a custom action
-@available(*, deprecated, message: "use decoder.register in BeagleDependencies instead")
-public func registerCustomAction<A: Action>(
-    _ name: String,
-    actionType: A.Type
-) {
-    dependencies.decoder.register(action: actionType, named: name)
-}
-
-@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the BeagleScreenViewController inits with remote or json parameter instead.")
-public func screen(_ type: ScreenType, controllerId: String? = nil) -> BeagleScreenViewController {
-    return BeagleScreenViewController(type, controllerId: controllerId)
-}

@@ -34,7 +34,7 @@ final class LazyComponentTests: XCTestCase {
         // Given / When
         let sut = LazyComponent(
             path: "component",
-            initialState: Text("text")
+            initialState: Text(text: "text")
         )
 
         // Then
@@ -43,7 +43,7 @@ final class LazyComponentTests: XCTestCase {
     }
     
     func test_lazyLoad_shouldReplaceTheInitialContent() {
-        var initialState = Text("Loading...")
+        var initialState = Text(text: "Loading...")
         initialState.widgetProperties.style = .init(backgroundColor: "#00FF00")
         let sut = LazyComponent(path: "", initialState: initialState)
         let repository = LazyRepositoryStub()
@@ -59,7 +59,7 @@ final class LazyComponentTests: XCTestCase {
         assertSnapshotImage(screenController, size: .custom(size))
         
         screenController.view.setContext(Context(id: "ctx", value: "value of ctx"))
-        var lazyLoaded = Text("Lazy Loaded! @{ctx}")
+        var lazyLoaded = Text(text: "Lazy Loaded! @{ctx}")
         lazyLoaded.widgetProperties.style = .init(backgroundColor: "#FFFF00")
         repository.componentCompletion?(.success(lazyLoaded))
         

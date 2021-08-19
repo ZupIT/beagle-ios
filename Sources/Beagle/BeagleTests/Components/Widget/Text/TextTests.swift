@@ -41,7 +41,7 @@ class TextTests: XCTestCase {
     
     func testTextContent() {
         // Given
-        let component = Text("Test")
+        let component = Text(text: "Test")
         
         // When
         let label = renderer.render(component) as? UITextView
@@ -78,7 +78,7 @@ class TextTests: XCTestCase {
     
     func testTextAlignment() {
         // Given
-        let component = Text("Test", alignment: Expression.value(.left))
+        let component = Text(text: "Test", alignment: Expression.value(.left))
         
         // When
        let label = renderer.render(component) as? UITextView
@@ -89,7 +89,7 @@ class TextTests: XCTestCase {
 
     func testRenderTextComponent() {
         let text = Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             styleId: "test.text.style",
             alignment: Expression.value(.right),
             textColor: "#579F2B",
@@ -106,7 +106,7 @@ class TextTests: XCTestCase {
         //Given
         let container = Container(
              children: [
-                 Text("@{textExpressions.value}", alignment: "@{textExpressions.alignment}", textColor: "@{textExpressions.color}")
+                Text(text: "@{textExpressions.value}", alignment: "@{textExpressions.alignment}", textColor: "@{textExpressions.color}")
              ],
              context: Context(id: "textExpressions", value: .dictionary(["value": "text via expression", "color": "#000000", "alignment": .string(Text.Alignment.center.rawValue)]))
          )

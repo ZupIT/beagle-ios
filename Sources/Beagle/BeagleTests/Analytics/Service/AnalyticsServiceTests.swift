@@ -132,7 +132,7 @@ class AnalyticsServiceTests: XCTestCase {
 
     private func triggerAction(_ action: Action? = nil) {
         sut.createRecord(action: .init(
-            action: action ?? SendRequest(url: "PATH", method: .delete),
+            action: action ?? SendRequest(url: "PATH", method: .value(.delete)),
             event: nil,
             origin: ViewDummy(),
             controller: BeagleScreenViewController(ComponentDummy())

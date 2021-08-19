@@ -21,28 +21,15 @@ public struct Button: Widget, AutoDecodable {
     public let text: Expression<String>
     
     /// References a native style configured to be applied on this button.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Attribute to define actions when this component is pressed.
-    public let onPress: [Action]?
+    public var onPress: [Action]?
     
     /// Enables or disables the button.
-    public let enabled: Expression<Bool>?
+    public var enabled: Expression<Bool>?
     
     /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var widgetProperties: WidgetProperties = WidgetProperties()
     
-    public init(
-        text: Expression<String>,
-        styleId: String? = nil,
-        onPress: [Action]? = nil,
-        enabled: Expression<Bool>? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.text = text
-        self.styleId = styleId
-        self.onPress = onPress
-        self.enabled = enabled
-        self.widgetProperties = widgetProperties
-    }
 }

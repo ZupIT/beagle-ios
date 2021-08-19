@@ -35,7 +35,7 @@ final class TouchableTests: XCTestCase {
 
     func testTouchableView() {
         //Given //When
-        let touchable = Touchable(onPress: [Navigate.popView()], child: Text("Touchable"))
+        let touchable = Touchable(onPress: [Navigate.popView()], child: Text(text: "Touchable"))
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         let view = renderer.render(touchable)
@@ -65,7 +65,7 @@ final class TouchableTests: XCTestCase {
         // Given
         let controller = BeagleControllerStub()
         let action = ActionSpy()
-        let touchable = Touchable(onPress: [action], child: Text("mocked text"))
+        let touchable = Touchable(onPress: [action], child: Text(text: "mocked text"))
         let view = touchable.toView(renderer: BeagleRenderer(controller: controller))
         
         let actionsGesture = view.gestureRecognizers?

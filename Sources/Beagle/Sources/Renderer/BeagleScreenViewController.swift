@@ -73,18 +73,6 @@ public class BeagleScreenViewController: BeagleController {
         }
     }
     
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil) {
-        self.init(.declarative(component.toScreen()), controllerId: controllerId)
-        self.navigationControllerId = controllerId
-    }
-    
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ screenType: ScreenType, controllerId: String? = nil) {
-        self.init(viewModel: .init(screenType: screenType), controllerId: controllerId)
-        self.navigationControllerId = controllerId
-    }
-    
     public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil) {
         self.init(viewModel: .init(screenType: .remote(remote)), controllerId: controllerId)
         self.navigationControllerId = controllerId
@@ -92,6 +80,11 @@ public class BeagleScreenViewController: BeagleController {
     
     public convenience init(_ json: String, controllerId: String? = nil) {
         self.init(viewModel: .init(screenType: .declarativeText(json)), controllerId: controllerId)
+        self.navigationControllerId = controllerId
+    }
+    
+    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil) {
+        self.init(viewModel: .init(screenType: .declarative(component.toScreen())), controllerId: controllerId)
         self.navigationControllerId = controllerId
     }
     

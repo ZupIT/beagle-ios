@@ -26,7 +26,7 @@ extension PullToRefresh {
         if configRefreshControl(refreshControl, for: childView) {
             return childView
         } else {
-            let scroll = renderer.render(ScrollView { child })
+            let scroll = renderer.render(ScrollView(children: [child]))
             configRefreshControl(refreshControl, for: scroll)
             return scroll
         }

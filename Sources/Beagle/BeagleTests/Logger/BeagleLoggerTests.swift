@@ -32,11 +32,11 @@ class BeagleLoggerTests: XCTestCase {
             Log.network(.networkClientWasNotConfigured),
             
             Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "identifier")),
-            Log.navigation(.didReceiveAction(Navigate.pushView(.remote(.init(url: path))))),
+            Log.navigation(.didReceiveAction(Navigate.pushView(.remote(.init(url: "\(path)"))))),
             Log.navigation(.didReceiveAction(Navigate.openNativeRoute(.init(route: path)))),
             Log.navigation(.didReceiveAction(Navigate.openNativeRoute(.init(route: path, data: ["key": "value"])))),
             Log.navigation(.unableToPrefetchWhenUrlIsExpression),
-            Log.navigation(.didNotFindDeepLinkScreen(path: path)),
+            Log.navigation(.didNotFindDeepLinkScreen(path: "\(path)")),
 
             Log.navigation(.didNavigateToExternalUrl(path: "externalURL")),
             Log.navigation(.invalidExternalUrl(path: "invalidExternalURLPath")),

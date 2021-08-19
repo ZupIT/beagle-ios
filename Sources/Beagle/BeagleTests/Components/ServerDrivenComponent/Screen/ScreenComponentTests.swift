@@ -23,7 +23,7 @@ final class ScreenComponentTests: XCTestCase {
     func test_initWithBuilders_shouldReturnExpectedInstance() {
         // Given / When
         let component = ScreenComponent(
-            child: Text("text")
+            child: Text(text: "text")
         )
 
         // Then
@@ -37,7 +37,7 @@ final class ScreenComponentTests: XCTestCase {
             child: Container(
                 children: [
                     Container(
-                        children: [Text("Line 0,\nLine 1,\nLine 2,\nLine 3,\nLine 4.")],
+                        children: [Text(text: "Line 0,\nLine 1,\nLine 2,\nLine 3,\nLine 4.")],
                         widgetProperties: .init(
                             style: Style()
                                 .backgroundColor("#FF0000")
@@ -54,7 +54,7 @@ final class ScreenComponentTests: XCTestCase {
             )
         )
 
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 200, height: 150)))
     }
     
@@ -71,10 +71,10 @@ final class ScreenComponentTests: XCTestCase {
         let component = ScreenComponent(
             safeArea: SafeArea.none,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("")
+            child: Text(text: "")
         )
         
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 300, height: 200)))
     }
     
@@ -84,10 +84,10 @@ final class ScreenComponentTests: XCTestCase {
         let component = ScreenComponent(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("test")
+            child: Text(text: "test")
         )
         
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 300, height: 200)))
     }
     
@@ -101,7 +101,7 @@ final class ScreenComponentTests: XCTestCase {
         let screen = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("test"),
+            child: Text(text: "test"),
             context: Context(id: "image", value: "shuttle")
         )
         
@@ -139,7 +139,7 @@ final class ScreenComponentTests: XCTestCase {
         let renderer = BeagleRenderer(controller: controller)
         
         let navigatePath = "button-item-prefetch"
-        let navigate = Navigate.pushView(.remote(.init(url: navigatePath, shouldPrefetch: true)))
+        let navigate = Navigate.pushView(.remote(.init(url: "\(navigatePath)", shouldPrefetch: true)))
         let barItem = NavigationBarItem(text: "Item", action: navigate)
         let screen = ScreenComponent(
             navigationBar: NavigationBar(title: "Prefetch", navigationBarItems: [barItem]),

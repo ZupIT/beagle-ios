@@ -106,27 +106,14 @@ extension Route {
         /// - If __false__, Beagle will only request this screen when the Navigate action gets triggered (e.g: user taps a button).
         /// - If __true__, Beagle will trigger the request as soon as it renders the component that have
         /// this action. (e.g: when a button appears on the screen it will trigger)
-        public let shouldPrefetch: Bool?
+        public var shouldPrefetch: Bool?
         
         /// A screen that should be rendered in case of request fail.
-        public let fallback: Screen?
+        public var fallback: Screen?
 
         /// Used to pass additional http data on requests
-        public let httpAdditionalData: HttpAdditionalData?
-        
-        /// Constructs a new path to a remote screen.
-        ///
-        /// - Parameters:
-        ///   - url: Contains the navigation endpoint. Since its a _ExpressibleString_ type you can pass a Expression<String> or a regular String.
-        ///   - shouldPrefetch: Changes _when_ this screen is requested.
-        ///   - fallback: A screen that should be rendered in case of request fail.
-        ///   - httpAdditionalData: Used to pass additional http data on requests
-        public init(url: StringOrExpression, shouldPrefetch: Bool? = nil, fallback: Screen? = nil, httpAdditionalData: HttpAdditionalData? = nil) {
-            self.url = "\(url)"
-            self.shouldPrefetch = shouldPrefetch
-            self.fallback = fallback
-            self.httpAdditionalData = httpAdditionalData
-        }
+        public var httpAdditionalData: HttpAdditionalData?
+
     }
 }
 

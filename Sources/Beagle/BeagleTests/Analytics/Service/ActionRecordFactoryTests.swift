@@ -207,7 +207,7 @@ class RecordFactoryHelpers: XCTestCase {
     func actionWithConfig(_ config: ActionAnalyticsConfig?) {
         action = SendRequest(
             url: "PATH",
-            method: .delete,
+            method: .value(.delete),
             analytics: config
         )
     }

@@ -70,7 +70,7 @@ class BeaglePreviewViewController: UIViewController, HasDependencies, WSConnecti
 
     private func embedChildViewController() {
 
-        viewController = BeagleScreenViewController(.declarativeText(""))
+        viewController = BeagleScreenViewController("")
 
         guard let viewController = self.viewController else {
             return

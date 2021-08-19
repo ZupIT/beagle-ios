@@ -56,22 +56,30 @@ class ImageTests: XCTestCase {
     }
     
     func testRenderRemoteImage() {
-        let screen = Screen(navigationBar: NavigationBar(title: "PageView"), child:
-            Container(context: Context(id: "currentPage", value: 2), widgetProperties: .init(Flex().grow(1))) {
-                PageIndicator(numberOfPages: 4, currentPage: "@{currentPage}")
-                PageView(
-                    children: [
-                        Container(widgetProperties: .init(Flex().justifyContent(.spaceBetween).grow(1))) {
-                            Text("Text with alignment attribute set to center", alignment: Expression.value(.center))
-                            Text("Text with alignment attribute set to right", alignment: Expression.value(.right))
-                            Text("Text with alignment attribute set to left", alignment: Expression.value(.left))
-                            Image(.value(.remote(.init(url: "https://www.petlove.com.br/images/"))))
-                        }
-                    ],
-                    onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
-                    currentPage: "@{currentPage}"
-                )
-            }
+        let screen = Screen(
+            navigationBar: NavigationBar(title: "PageView"),
+            child: Container(
+                children: [
+                    PageIndicator(numberOfPages: 4, currentPage: "@{currentPage}"),
+                    PageView(
+                        children: [
+                            Container(
+                                children: [
+                                    Text(text: "Text with alignment attribute set to center", alignment: Expression.value(.center)),
+                                    Text(text: "Text with alignment attribute set to right", alignment: Expression.value(.right)),
+                                    Text(text: "Text with alignment attribute set to left", alignment: Expression.value(.left)),
+                                    Image(.remote(.init(url: "https://www.petlove.com.br/images/")))
+                                ],
+                                widgetProperties: .init(Flex().justifyContent(.spaceBetween).grow(1))
+                            )
+                        ],
+                        onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
+                        currentPage: "@{currentPage}"
+                    )
+                ],
+                context: Context(id: "currentPage", value: 2),
+                widgetProperties: .init(Flex().grow(1))
+            )
         )
 
         let dependencies = BeagleDependencies()
@@ -148,13 +156,13 @@ class ImageTests: XCTestCase {
     
     func testImageWithPathCancelRequest() {
         //Given
-        let image = Image("@{img.path}")
+        let image = Image(path: "@{img.path}")
         let dependency = BeagleDependencies()
         let imageDownloader = ImageDownloaderStub(imageResult: .success(Data()))
         dependency.imageDownloader = imageDownloader
         let container = Container(children: [image])
         let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen()), dependencies: dependency))
-        let action = SetContext(contextId: "img", path: "path", value: ["_beagleImagePath_": "local", "mobileId": "shuttle"])
+        let action = SetContext(contextId: "img", path: Path(rawValue: "path"), value: ["_beagleImagePath_": "local", "mobileId": "shuttle"])
         let view = image.toView(renderer: controller.renderer)
         
         //When

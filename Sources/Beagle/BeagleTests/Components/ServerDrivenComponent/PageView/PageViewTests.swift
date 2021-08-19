@@ -47,9 +47,9 @@ class PageViewTests: XCTestCase {
     private let indicator = PageIndicator(selectedColor: "#d1cebd", unselectedColor: "#f6eedf")
 
     private let page = Container(children: [
-        Text("First text"),
+        Text(text: "First text"),
         Button(text: "Button"),
-        Text("Second text")
+        Text(text: "Second text")
     ]).applyFlex(Flex(flexDirection: .column, justifyContent: .center))
 
     func test_viewWithPages() {
@@ -57,7 +57,7 @@ class PageViewTests: XCTestCase {
             children: Array(repeating: page, count: 5)
         )
 
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen)
     }
     
@@ -66,17 +66,17 @@ class PageViewTests: XCTestCase {
             children: []
         )
 
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen)
     }
     
     func test_pageViewWithContext() {
         let pageView = PageView(
-            children: [Text("Context: @{ctx}")],
+            children: [Text(text: "Context: @{ctx}")],
             context: Context(id: "ctx", value: "value of ctx")
         )
         
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 50)))
     }
     

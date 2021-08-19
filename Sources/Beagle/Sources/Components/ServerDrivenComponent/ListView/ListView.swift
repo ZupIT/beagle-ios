@@ -138,26 +138,6 @@ public struct ListView: Widget, HasContext, InitiableComponent, AutoInitiable {
             iteratorName: Self.randomIteratorName()
         )
     }
-
-    #if swift(<5.3)
-    @available(*, deprecated, message: "use the dataSource and templates instead of children")
-    public init(
-        direction: Direction = .vertical,
-        @ChildBuilder
-        _ children: () -> ServerDrivenComponent
-    ) {
-        self.init(children: [children()], direction: direction)
-    }
-    #endif
-
-    @available(*, deprecated, message: "use the dataSource and templates instead of children")
-    public init(
-        direction: Direction = .vertical,
-        @ChildrenBuilder
-        _ children: () -> [ServerDrivenComponent]
-    ) {
-        self.init(children: children(), direction: direction)
-    }
     
 }
 

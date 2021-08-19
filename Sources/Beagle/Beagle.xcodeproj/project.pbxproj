@@ -116,7 +116,6 @@
 		9356CDE2262482820021EFC6 /* WebView.json in Resources */ = {isa = PBXBuildFile; fileRef = 9356CC8B262482810021EFC6 /* WebView.json */; };
 		9356CDE4262482820021EFC6 /* PageIndicatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC90262482810021EFC6 /* PageIndicatorTests.swift */; };
 		9356CDE6262482820021EFC6 /* CustomPageIndicator.json in Resources */ = {isa = PBXBuildFile; fileRef = 9356CC93262482810021EFC6 /* CustomPageIndicator.json */; };
-		9356CDE9262482820021EFC6 /* ComposeComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC98262482810021EFC6 /* ComposeComponentTests.swift */; };
 		9356CDEA262482820021EFC6 /* TouchableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC9A262482810021EFC6 /* TouchableTests.swift */; };
 		9356CDEB262482820021EFC6 /* TouchableDecoderTest.json in Resources */ = {isa = PBXBuildFile; fileRef = 9356CC9C262482810021EFC6 /* TouchableDecoderTest.json */; };
 		9356CDED262482820021EFC6 /* TabBar.json in Resources */ = {isa = PBXBuildFile; fileRef = 9356CCA2262482810021EFC6 /* TabBar.json */; };
@@ -219,7 +218,6 @@
 		9398CAA5255338B80003A010 /* EdgeValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAA1255338B80003A010 /* EdgeValue.swift */; };
 		9398CAA6255338B80003A010 /* UnitValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAA2255338B80003A010 /* UnitValue.swift */; };
 		9398CAA8255338C00003A010 /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAA7255338C00003A010 /* Style.swift */; };
-		9398CAAC255351DE0003A010 /* FunctionBuilders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAAB255351DE0003A010 /* FunctionBuilders.swift */; };
 		9398CAB2255427C10003A010 /* AutoDecodable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAB0255427C10003A010 /* AutoDecodable.generated.swift */; };
 		9398CAB3255427C10003A010 /* Equality.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAB1255427C10003A010 /* Equality.generated.swift */; };
 		9398CAB825543B640003A010 /* PageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CAB725543B640003A010 /* PageIndicator.swift */; };
@@ -436,7 +434,6 @@
 		9356CC8B262482810021EFC6 /* WebView.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = WebView.json; sourceTree = "<group>"; };
 		9356CC90262482810021EFC6 /* PageIndicatorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageIndicatorTests.swift; sourceTree = "<group>"; };
 		9356CC93262482810021EFC6 /* CustomPageIndicator.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CustomPageIndicator.json; sourceTree = "<group>"; };
-		9356CC98262482810021EFC6 /* ComposeComponentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeComponentTests.swift; sourceTree = "<group>"; };
 		9356CC9A262482810021EFC6 /* TouchableTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TouchableTests.swift; sourceTree = "<group>"; };
 		9356CC9C262482810021EFC6 /* TouchableDecoderTest.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TouchableDecoderTest.json; sourceTree = "<group>"; };
 		9356CCA2262482810021EFC6 /* TabBar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TabBar.json; sourceTree = "<group>"; };
@@ -568,12 +565,10 @@
 		9398CAA1255338B80003A010 /* EdgeValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EdgeValue.swift; sourceTree = "<group>"; };
 		9398CAA2255338B80003A010 /* UnitValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnitValue.swift; sourceTree = "<group>"; };
 		9398CAA7255338C00003A010 /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
-		9398CAAB255351DE0003A010 /* FunctionBuilders.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunctionBuilders.swift; sourceTree = "<group>"; };
 		9398CAB0255427C10003A010 /* AutoDecodable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDecodable.generated.swift; sourceTree = "<group>"; };
 		9398CAB1255427C10003A010 /* Equality.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equality.generated.swift; sourceTree = "<group>"; };
 		9398CAB725543B640003A010 /* PageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageIndicator.swift; sourceTree = "<group>"; };
 		9398CB0F255591310003A010 /* RepresentableByParsableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepresentableByParsableString.swift; sourceTree = "<group>"; };
-		9399377F26248FDA00809705 /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
 		93A2EE1B24EC4BB00085B3CF /* AddChildren+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddChildren+Extensions.swift"; sourceTree = "<group>"; };
 		93B9743F23A2833600B0D1CF /* NetworkClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		93D24A502513DF47005A5CBD /* AutoLayoutWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutWrapper.swift; sourceTree = "<group>"; };
@@ -1028,13 +1023,11 @@
 		9356CC4E262482810021EFC6 /* ServerDrivenComponent */ = {
 			isa = PBXGroup;
 			children = (
-				9399377F26248FDA00809705 /* __Snapshots__ */,
 				9356CC6B262482810021EFC6 /* PageView */,
 				93369CE0268127AB00BBDB42 /* PullToRefresh */,
 				9356CC7F262482810021EFC6 /* Scroll */,
 				9356CC88262482810021EFC6 /* WebView */,
 				9356CC8F262482810021EFC6 /* PageIndicator */,
-				9356CC98262482810021EFC6 /* ComposeComponentTests.swift */,
 				9356CC99262482810021EFC6 /* Touchable */,
 				9356CCA0262482810021EFC6 /* TabBar */,
 				B755B5882686600400A7EDC5 /* GridView */,
@@ -1946,7 +1939,6 @@
 		E5A6F4A62358A530008906F8 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				9398CAAB255351DE0003A010 /* FunctionBuilders.swift */,
 				E531D6B22359FE09007EEBA7 /* Extensions */,
 				E531D6AF2359FD0E007EEBA7 /* Loading */,
 				C8311A67240999CF00E95C15 /* Observable */,
@@ -2244,7 +2236,6 @@
 				C8605F6A23B5423100FD4C4F /* LayoutManager.swift in Sources */,
 				931B6E32237610B300DE73FD /* FunctiontalUtils.swift in Sources */,
 				9398CA53255325190003A010 /* Expression.swift in Sources */,
-				9398CAAC255351DE0003A010 /* FunctionBuilders.swift in Sources */,
 				9398CAA6255338B80003A010 /* UnitValue.swift in Sources */,
 				C08D4E882485944B00AAAC0A /* Text+Extensions.swift in Sources */,
 				A057D59324C7169E001F6835 /* ComponentHostController.swift in Sources */,
@@ -2462,7 +2453,6 @@
 				9356CD7B262482820021EFC6 /* OperationComparisonEvaluationTests.swift in Sources */,
 				93369CE2268128A400BBDB42 /* PullToRefreshTests.swift in Sources */,
 				9356CBB4262481BE0021EFC6 /* SendRequestTests.swift in Sources */,
-				9356CDE9262482820021EFC6 /* ComposeComponentTests.swift in Sources */,
 				9356CE49262482820021EFC6 /* StyleBuildersExtensionTests.swift in Sources */,
 				9356CE6F262482820021EFC6 /* BeaglePrefetchHelperTests.swift in Sources */,
 			);

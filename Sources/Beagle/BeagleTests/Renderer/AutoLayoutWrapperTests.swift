@@ -24,11 +24,14 @@ class AutoLayoutWrapperTests: XCTestCase {
     
     func testWrapperViewWithDefault() { // column and noWrap
         // Given
-        let component = Container(widgetProperties: .init(style: defaultStyle)) {
-            Text("Yoga")
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-        }
+        let component = Container(
+            children: [
+                Text(text: "Yoga"),
+                AutoLayoutComponent(),
+                AutoLayoutComponent()
+            ],
+            widgetProperties: .init(style: defaultStyle)
+        )
         let viewController = BeagleScreenViewController(component)
         
         // When/ Then
@@ -37,11 +40,14 @@ class AutoLayoutWrapperTests: XCTestCase {
     
     func testWrapperViewWithColumnAndWrap() {
         // Given
-        let component = Container(widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.column).flexWrap(.wrap)))) {
-            Text("Yoga")
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-        }
+        let component = Container(
+            children: [
+                Text(text: "Yoga"),
+                AutoLayoutComponent(),
+                AutoLayoutComponent()
+            ],
+            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.column).flexWrap(.wrap)))
+        )
         let viewController = BeagleScreenViewController(component)
         
         // When/ Then
@@ -50,12 +56,15 @@ class AutoLayoutWrapperTests: XCTestCase {
     
     func testWrapperViewWithRowAndNoWrap() {
         // Given
-        let component = Container(widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.noWrap)))) {
-            Text("Yoga")
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-        }
+        let component = Container(
+            children: [
+                Text(text: "Yoga"),
+                AutoLayoutComponent(),
+                AutoLayoutComponent(),
+                AutoLayoutComponent()
+            ],
+            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.noWrap)))
+        )
         let viewController = BeagleScreenViewController(component)
         
         // When/ Then
@@ -64,12 +73,15 @@ class AutoLayoutWrapperTests: XCTestCase {
     
     func testWrapperViewWithRowAndWrap() {
         // Given
-        let component = Container(widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.wrap)))) {
-            Text("Yoga")
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-            AutoLayoutComponent()
-        }
+        let component = Container(
+            children: [
+                Text(text: "Yoga"),
+                AutoLayoutComponent(),
+                AutoLayoutComponent(),
+                AutoLayoutComponent()
+            ],
+            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.wrap)))
+        )
         let viewController = BeagleScreenViewController(component)
         
         // When/ Then
@@ -78,10 +90,13 @@ class AutoLayoutWrapperTests: XCTestCase {
     
     func testWrapperViewResizing() {
         // Given
-        let component = Container(widgetProperties: .init(id: "container", style: defaultStyle.flex(Flex().flexDirection(.row)))) {
-            Text("Yoga")
-            AutoLayoutComponent()
-        }
+        let component = Container(
+            children: [
+                Text(text: "Yoga"),
+                AutoLayoutComponent()
+            ],
+            widgetProperties: .init(id: "container", style: defaultStyle.flex(Flex().flexDirection(.row)))
+        )
         let viewController = BeagleScreenViewController(component)
         
         // When/ Then

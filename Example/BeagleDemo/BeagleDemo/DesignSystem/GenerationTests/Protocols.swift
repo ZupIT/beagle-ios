@@ -38,5 +38,6 @@ struct TextComponentsDefault: TextComponents {
 
 struct ActionDummyDefault: ActionDummy {
     var analytics: ActionAnalyticsConfig?
+    
     func execute(controller: BeagleController, origin: UIView) {}
 }

@@ -15,7 +15,7 @@
  */
 
 /// GridView is a Layout component that will define a list of views natively. These views could be any ServerDrivenComponent.
-public struct GridView: Widget, HasContext, InitiableComponent, AutoInitiable {
+public struct GridView: Widget, HasContext, InitiableComponent {
     
     public typealias Direction = ScrollAxis
     
@@ -23,16 +23,16 @@ public struct GridView: Widget, HasContext, InitiableComponent, AutoInitiable {
     public var context: Context?
     
     /// Allows to define a list of actions to be performed when the GridView is displayed.
-    public let onInit: [Action]?
+    public var onInit: [Action]?
     
     /// It's an expression that points to a list of values used to populate the GridView.
     public let dataSource: Expression<[DynamicObject]>
     
     /// Points to a unique value present in each dataSource item used as a suffix in the component ids within the GridView.
-    public let key: String?
+    public var key: String?
     
     /// Direction of the grid scroll.
-    public let direction: Direction?
+    public var direction: Direction?
     
     /// Number of spans laid out by this grid.
     public let spanCount: Int
@@ -43,77 +43,20 @@ public struct GridView: Widget, HasContext, InitiableComponent, AutoInitiable {
     public let templates: [Template]
     
     /// Is the context identifier of each cell.
-    public let iteratorName: String?
+    public var iteratorName: String?
     
     /// List of actions performed when the list is scrolled to the end.
-    public let onScrollEnd: [Action]?
+    public var onScrollEnd: [Action]?
     
     /// Sets the scrolled percentage of the list to trigger onScrollEnd.
-    public let scrollEndThreshold: Int?
+    public var scrollEndThreshold: Int?
     
     /// This attribute enables or disables the scroll indicator.
-    public let isScrollIndicatorVisible: Bool?
+    public var isScrollIndicatorVisible: Bool?
     
     /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var widgetProperties: WidgetProperties = WidgetProperties()
     
-// sourcery:inline:auto:GridView.Init
-    public init(
-        context: Context? = nil,
-        onInit: [Action]? = nil,
-        dataSource: Expression<[DynamicObject]>,
-        key: String? = nil,
-        direction: Direction? = nil,
-        spanCount: Int,
-        templates: [Template],
-        iteratorName: String? = nil,
-        onScrollEnd: [Action]? = nil,
-        scrollEndThreshold: Int? = nil,
-        isScrollIndicatorVisible: Bool? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.context = context
-        self.onInit = onInit
-        self.dataSource = dataSource
-        self.key = key
-        self.direction = direction
-        self.spanCount = spanCount
-        self.templates = templates
-        self.iteratorName = iteratorName
-        self.onScrollEnd = onScrollEnd
-        self.scrollEndThreshold = scrollEndThreshold
-        self.isScrollIndicatorVisible = isScrollIndicatorVisible
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
-    
-    @available(*, deprecated, message: "use the spanCount instead of numColumns")
-    public init(
-        context: Context? = nil,
-        onInit: [Action]? = nil,
-        dataSource: Expression<[DynamicObject]>,
-        key: String? = nil,
-        numColumns: Int,
-        templates: [Template],
-        iteratorName: String? = nil,
-        onScrollEnd: [Action]? = nil,
-        scrollEndThreshold: Int? = nil,
-        isScrollIndicatorVisible: Bool? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.context = context
-        self.onInit = onInit
-        self.dataSource = dataSource
-        self.key = key
-        self.direction = nil
-        self.spanCount = numColumns
-        self.templates = templates
-        self.iteratorName = iteratorName
-        self.onScrollEnd = onScrollEnd
-        self.scrollEndThreshold = scrollEndThreshold
-        self.isScrollIndicatorVisible = isScrollIndicatorVisible
-        self.widgetProperties = widgetProperties
-    }
 }
 
 extension GridView: Decodable {

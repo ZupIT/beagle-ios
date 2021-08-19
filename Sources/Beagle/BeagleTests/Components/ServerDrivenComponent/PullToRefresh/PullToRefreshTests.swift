@@ -32,7 +32,7 @@ class PullToRefreshTests: XCTestCase {
         let component = PullToRefresh(
             isRefreshing: false,
             color: "#FF0000",
-            child: Text("Text")
+            child: Text(text: "Text")
         )
         
         let controller = BeagleScreenViewController(component)
@@ -45,7 +45,7 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: ListView { Text("text") }
+            child: ListView(children: [Text(text: "text")])
         ).toView(renderer: controller.renderer)
         
         // Then
@@ -56,7 +56,7 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: ScrollView { Text("text") }
+            child: ScrollView(children: [Text(text: "text")])
         ).toView(renderer: controller.renderer)
         
         // Then
@@ -68,7 +68,7 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: Text("text")
+            child: Text(text: "text")
         ).toView(renderer: controller.renderer)
         
         // Then

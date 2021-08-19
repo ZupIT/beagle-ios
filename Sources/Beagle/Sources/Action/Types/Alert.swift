@@ -15,36 +15,21 @@
  */
 
 /// This action will show an alert natively, such as an error alert, indicating alternative flows, business system errors and others.
-public struct Alert: Action, AutoInitiableAndDecodable {
+public struct Alert: Action, AutoDecodable {
     
     /// Defines the title on the alert.
-    public let title: Expression<String>?
+    public var title: Expression<String>?
     
     /// Defines the alert message.
-    public let message: Expression<String>
+    public var message: Expression<String>
     
     /// Defines the action of the button positive in the alert.
-    public let onPressOk: Action?
+    public var onPressOk: Action?
     
     /// Defines the text of the button positive in the alert.
-    public let labelOk: String?
+    public var labelOk: String?
     
     /// Defines an analytics configuration for this action.
-    public let analytics: ActionAnalyticsConfig?
+    public var analytics: ActionAnalyticsConfig?
 
-// sourcery:inline:auto:Alert.Init
-    public init(
-        title: Expression<String>? = nil,
-        message: Expression<String>,
-        onPressOk: Action? = nil,
-        labelOk: String? = nil,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.title = title
-        self.message = message
-        self.onPressOk = onPressOk
-        self.labelOk = labelOk
-        self.analytics = analytics
-    }
-// sourcery:end
 }

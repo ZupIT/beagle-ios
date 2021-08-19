@@ -17,22 +17,12 @@
 import Foundation
 
 /// Defines a `WebView` natively using the server driven information received through Beagle.
-public struct WebView: Widget, AutoInitiableAndDecodable {
+public struct WebView: Widget, AutoDecodable {
     
     /// Defines the initial page that the WebView will load when presented .
     public let url: Expression<String>
     
     /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var widgetProperties: WidgetProperties = WidgetProperties()
 
-// sourcery:inline:auto:WebView.Init
-    public init(
-        url: Expression<String>,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.url = url
-        self.widgetProperties = widgetProperties
-    }
-
-// sourcery:end
 }

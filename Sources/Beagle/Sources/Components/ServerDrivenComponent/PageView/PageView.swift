@@ -18,48 +18,15 @@
 public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
     
     /// Defines a List of components (views) that are contained on this PageView.
-    public let children: [ServerDrivenComponent]?
+    public var children: [ServerDrivenComponent]?
     
     /// Defines the contextData that be set to pageView.
-    public let context: Context?
+    public var context: Context?
     
     /// List of actions that are performed when you are on the selected page.
-    public let onPageChange: [Action]?
+    public var onPageChange: [Action]?
     
     /// Integer number that identifies that selected.
-    public let currentPage: Expression<Int>?
+    public var currentPage: Expression<Int>?
     
-    public init(
-        children: [ServerDrivenComponent]? = nil,
-        context: Context? = nil,
-        onPageChange: [Action]? = nil,
-        currentPage: Expression<Int>? = nil
-    ) {
-        self.children = children
-        self.context = context
-        self.onPageChange = onPageChange
-        self.currentPage = currentPage
-    }
-    
-    #if swift(<5.3)
-    public init(
-        context: Context? = nil,
-        onPageChange: [Action]? = nil,
-        currentPage: Expression<Int>? = nil,
-        @ChildBuilder
-        _ children: () -> ServerDrivenComponent
-    ) {
-        self.init(children: [children()], context: context, onPageChange: onPageChange, currentPage: currentPage)
-    }
-    #endif
-    
-    public init(
-        context: Context? = nil,
-        onPageChange: [Action]? = nil,
-        currentPage: Expression<Int>? = nil,
-        @ChildrenBuilder
-        _ children: () -> [ServerDrivenComponent]
-    ) {
-        self.init(children: children(), context: context, onPageChange: onPageChange, currentPage: currentPage)
-    }
 }

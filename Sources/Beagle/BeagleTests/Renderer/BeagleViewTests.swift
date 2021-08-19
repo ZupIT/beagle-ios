@@ -22,7 +22,7 @@ class BeagleViewTests: XCTestCase {
 
     func testControllerChildren() {
         // Given
-        let text = Text("I'm a text")
+        let text = Text(text: "I'm a text")
         let beagleView = BeagleView(text)
         let viewController = UIViewController()
         
@@ -39,7 +39,7 @@ class BeagleViewTests: XCTestCase {
     
     func testViewLayout() {
         // Given
-        let text = Text("I'm a text")
+        let text = Text(text: "I'm a text")
         let beagleView = BeagleView(text)
         let viewController = UIViewController()
         viewController.view.backgroundColor = .white

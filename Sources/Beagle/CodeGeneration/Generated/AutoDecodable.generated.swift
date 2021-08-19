@@ -119,10 +119,10 @@ extension Container {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         children = try container.decodeIfPresent(forKey: .children)
-        widgetProperties = try WidgetProperties(from: decoder)
         onInit = try container.decodeIfPresent(forKey: .onInit)
         context = try container.decodeIfPresent(Context.self, forKey: .context)
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
+        widgetProperties = try WidgetProperties(from: decoder)
     }
 }
 

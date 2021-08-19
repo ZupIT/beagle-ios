@@ -24,18 +24,9 @@ public struct UnitValue: Decodable, Equatable {
     // MARK: - Public Properties
     public let value: Double
     public let type: UnitType
-    
-    // MARK: - Initialization
-    
-    public init(
-        value: Double,
-        type: UnitType
-    ) {
-        self.value = value
-        self.type = type
-    }
-    
+
 }
+
 public enum UnitType: String, Decodable {
     case auto = "AUTO"
     case real = "REAL"

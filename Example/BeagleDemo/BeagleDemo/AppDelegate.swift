@@ -26,17 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BeagleConfig.start()
         
-        let mainScreenViewController = MainScreen().screenController()
-        mainScreenViewController.title = "Beagle"
-        
-        let nativeViewController = NativeViewController()
-        nativeViewController.title = "Native"
-        
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [mainScreenViewController, UINavigationController(rootViewController: nativeViewController)]
-        
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = tabBarController
+        window?.rootViewController = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint))
         window?.makeKeyAndVisible()
         
         return true

@@ -23,9 +23,9 @@ final class ListViewTests: XCTestCase {
     private let imageSize = ImageSize.custom(CGSize(width: 300, height: 300))
 
     private let just3Rows: [ServerDrivenComponent] = [
-        Text("Item 1", widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))),
-        Text("Item 2", widgetProperties: .init(style: .init(backgroundColor: "#00FF00"))),
-        Text("Item 3", widgetProperties: .init(style: .init(backgroundColor: "#0000FF")))
+        Text(text: "Item 1", widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))),
+        Text(text: "Item 2", widgetProperties: .init(style: .init(backgroundColor: "#00FF00"))),
+        Text(text: "Item 3", widgetProperties: .init(style: .init(backgroundColor: "#0000FF")))
     ]
     
     private let manyRows: [ServerDrivenComponent] = (0..<20).map { i in
@@ -71,7 +71,7 @@ final class ListViewTests: XCTestCase {
             template: Container(
                 children: [
                     Text(
-                        "@{item}",
+                        text: "@{item}",
                         widgetProperties: WidgetProperties(
                             style: Style(
                                 backgroundColor: "#bfdcae"
@@ -424,7 +424,7 @@ extension ListViewTests {
         let background = 255 - text
         let backgroundColor = "#\(String(repeating: String(format: "%02X", background), count: 3))"
         return Text(
-            .value(string),
+            text: .value(string),
             textColor: .value(textColor),
             widgetProperties: .init(style: Style(backgroundColor: backgroundColor))
         )
