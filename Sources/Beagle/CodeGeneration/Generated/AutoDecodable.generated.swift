@@ -367,11 +367,9 @@ extension TextInput {
     enum CodingKeys: String, CodingKey {
         case value
         case placeholder
-        case disabled
         case enabled
         case readOnly
         case type
-        case hidden
         case styleId
         case onChange
         case onBlur
@@ -385,11 +383,9 @@ extension TextInput {
 
         value = try container.decodeIfPresent(Expression<String>.self, forKey: .value)
         placeholder = try container.decodeIfPresent(Expression<String>.self, forKey: .placeholder)
-        disabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .disabled)
         enabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .enabled)
         readOnly = try container.decodeIfPresent(Expression<Bool>.self, forKey: .readOnly)
         type = try container.decodeIfPresent(Expression<TextInputType>.self, forKey: .type)
-        hidden = try container.decodeIfPresent(Expression<Bool>.self, forKey: .hidden)
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
         onChange = try container.decodeIfPresent(forKey: .onChange)
         onBlur = try container.decodeIfPresent(forKey: .onBlur)

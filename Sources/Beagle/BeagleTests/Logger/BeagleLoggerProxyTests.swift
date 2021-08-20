@@ -20,40 +20,18 @@ import XCTest
 
 class BeagleLoggerProxyTests: XCTestCase {
 
-    let dependencies = BeagleDependencies()
-
-    func testLog_WhenLogEnableIsFalse() {
+    func testLog() {
 
         // Given
         let spy = BeagleLoggerSpy()
-        let sut = BeagleLoggerProxy(logger: spy, dependencies: dependencies)
+        let sut = BeagleLoggerProxy(logger: spy)
 
         // When
-        dependencies.isLoggingEnabled = false
-        Beagle.dependencies = dependencies
         sut.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "route")))
 
         // Then
-        XCTAssert(spy.didCalledLog == false)
-    }
-
-    func testLog_WhenLogEnableIsTrue() {
-
-        // Given
-        let spy = BeagleLoggerSpy()
-        let sut = BeagleLoggerProxy(logger: spy, dependencies: dependencies)
-
-        // When
-        dependencies.isLoggingEnabled = true
-        sut.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "route")))
-
-        // Then
-        XCTAssert(spy.didCalledLog)
-    }
-
-    override func tearDown() {
-        Beagle.dependencies = dependencies
-        super.tearDown()
+        XCTAssert(spy.didCalledLog == true)
+        
     }
 
 }

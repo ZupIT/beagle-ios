@@ -1,8 +1,6 @@
 ▿ TextInput
-  - disabled: Optional<Expression<Bool>>.none
   - enabled: Optional<Expression<Bool>>.none
   - error: Optional<Expression<String>>.none
-  - hidden: Optional<Expression<Bool>>.none
   - onBlur: Optional<Array<Action>>.none
   ▿ onChange: Optional<Array<Action>>
     ▿ some: 1 element

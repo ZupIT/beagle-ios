@@ -16,11 +16,6 @@
 
 import UIKit
 
-@available(*, deprecated, message: "use functionality from BeagleNavigation to customize BeagleNavigationController type")
-public protocol DependencyNavigationController {
-    var navigationControllerType: BeagleNavigationController.Type { get }
-}
-
 public protocol BeagleNavigation {
     var defaultAnimation: BeagleNavigatorAnimation? { get set }
     
@@ -113,7 +108,7 @@ class BeagleNavigator: BeagleNavigation {
             if let providedBuilder = defaultBuilder {
                 return providedBuilder()
             } else {
-                return dependencies.navigationControllerType.init()
+                return BeagleNavigationController()
             }
         }
     }

@@ -26,13 +26,6 @@ public protocol Repository {
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken?
 
-    @available(*, deprecated, message: "It was deprecated in version 1.3 and will be removed in a future version. Please use fetchImage from ImageDownloader instead.")
-    @discardableResult
-    func fetchImage(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        completion: @escaping (Result<Data, Request.Error>) -> Void
-    ) -> RequestToken?
 }
 
 public protocol DependencyRepository {
@@ -89,16 +82,6 @@ public struct RepositoryDefault: Repository {
 
             DispatchQueue.main.async { completion(mapped) }
         }
-    }
-
-    @available(*, deprecated, message: "It was deprecated in version 1.3 and will be removed in a future version. Please use fetchImage from ImageDownloader instead.")
-    @discardableResult
-    public func fetchImage(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        completion: @escaping (Result<Data>) -> Void
-    ) -> RequestToken? {
-        return Beagle.dependencies.imageDownloader.fetchImage(url: url, additionalData: additionalData, completion: completion)
     }
     
     // MARK: Private Methods

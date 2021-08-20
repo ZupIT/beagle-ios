@@ -25,10 +25,6 @@ public struct TextInput: Widget, AutoDecodable {
     public var placeholder: Expression<String>?
     
     /// Enables or disables the field.
-    @available(*, deprecated, message: "It was deprecated in version 1.7.0 and will be removed in a future version. Use field enabled to control is enabled or not in this layout.")
-    public var disabled: Expression<Bool>?
-    
-    /// Enables or disables the field.
     public var enabled: Expression<Bool>?
     
     /// Check if the Input will be editable or read only.
@@ -37,10 +33,6 @@ public struct TextInput: Widget, AutoDecodable {
     /// This attribute identifies the type of text that we will receive in the editable text area.
     /// On Android and iOS, this field also assigns the type of keyboard that will be displayed to the us.
     public var type: Expression<TextInputType>?
-
-    /// Enables the component to be visible or not.
-    @available(*, deprecated, message: "It was deprecated in version 1.6.0 and will be removed in a future version. Use field display to control visibility.")
-    public var hidden: Expression<Bool>?
     
     /// References a style configured to be applied on this view.
     public var styleId: String?

@@ -45,7 +45,12 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: ListView(children: [Text(text: "text")])
+            child: ListView(
+                dataSource: .value(
+                    [ ["value": "text"] ]
+                ),
+                templates: [ Template(view: Text(text: "@{item.value}")) ]
+            )
         ).toView(renderer: controller.renderer)
         
         // Then

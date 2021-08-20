@@ -21,7 +21,6 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
     DependencyUrlBuilder,
     DependencyNetworkClient,
     DependencyDeepLinkScreenManaging,
-    DependencyNavigationController,
     DependencyNavigation,
     DependencyViewConfigurator,
     DependencyStyleViewConfigurator,
@@ -36,8 +35,7 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
     DependencyCacheManager,
     DependencyRenderer,
     DependencyGlobalContext,
-    DependencyOperationsProvider,
-    DependencyLoggingCondition {
+    DependencyOperationsProvider {
 }
 
 open class BeagleDependencies: BeagleDependenciesProtocol {
@@ -59,12 +57,9 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
     public var globalContext: GlobalContext
     public var operationsProvider: OperationsProvider
     
-    @available(*, deprecated, message: "It was deprecated in version 1.7.0 and will be removed in a future version. if you don't want to use logger in the protocol BeagleLoggerType just pass null or configure it in your application")
-    public var isLoggingEnabled: Bool
-    
     public var logger: BeagleLoggerType {
         didSet {
-            logger = BeagleLoggerProxy(logger: logger, dependencies: self)
+            logger = BeagleLoggerProxy(logger: logger)
         }
     }
 
@@ -82,9 +77,6 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
         return ViewConfigurator(view: $0)
     }
 
-    @available(*, deprecated, message: "use functionality from BeagleNavigation to customize BeagleNavigationController type")
-    public var navigationControllerType: BeagleNavigationController.Type = BeagleNavigationController.self
-
     private let resolver: InnerDependenciesResolver
 
     public init(networkClient: NetworkClient? = nil, cacheManager: CacheManagerProtocol? = nil, logger: BeagleLoggerType? = nil) {
@@ -95,8 +87,7 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
         self.preFetchHelper = BeaglePreFetchHelper(dependencies: resolver)
         self.appBundle = Bundle.main
         self.theme = AppTheme(styles: [:])
-        self.isLoggingEnabled = true
-        self.logger = BeagleLoggerProxy(logger: logger, dependencies: resolver)
+        self.logger = BeagleLoggerProxy(logger: logger)
         self.operationsProvider = OperationsDefault(dependencies: resolver)
 
         self.decoder = ComponentDecoder()
@@ -124,8 +115,7 @@ private class InnerDependenciesResolver: RepositoryDefault.Dependencies,
     DependencyDeepLinkScreenManaging,
     DependencyRepository,
     DependencyWindowManager,
-    DependencyURLOpener,
-    DependencyLoggingCondition {
+    DependencyURLOpener {
         
     var container: () -> BeagleDependenciesProtocol = {
         fatalError("You should set this closure to get the dependencies container")
@@ -141,5 +131,4 @@ private class InnerDependenciesResolver: RepositoryDefault.Dependencies,
     var repository: Repository { return container().repository }
     var windowManager: WindowManager { return container().windowManager }
     var opener: URLOpener { return container().opener }
-    var isLoggingEnabled: Bool { return container().isLoggingEnabled }
 }

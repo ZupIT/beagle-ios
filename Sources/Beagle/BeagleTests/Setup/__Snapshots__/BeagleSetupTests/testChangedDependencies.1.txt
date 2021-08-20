@@ -18,16 +18,12 @@
     ▿ dispatcher: RequestDispatcher
       ▿ dependencies: InnerDependenciesResolver
         - container: (Function)
-  - isLoggingEnabled: true
   ▿ logger: BeagleLoggerProxy
-    ▿ dependencies: InnerDependenciesResolver
-      - container: (Function)
     - logger: Optional<BeagleLoggerType>.none
   ▿ navigation: BeagleNavigator
     - builders: 0 key/value pairs
     - defaultAnimation: Optional<BeagleNavigatorAnimation>.none
     - defaultBuilder: Optional<() -> BeagleNavigationController>.none
-  - navigationControllerType: BeagleNavigationController
   ▿ networkClient: Optional<NetworkClient>
     - some: NetworkClientDummy
   ▿ opener: URLOpenerDumb

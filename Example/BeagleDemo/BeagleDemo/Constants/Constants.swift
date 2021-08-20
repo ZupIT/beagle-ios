@@ -20,31 +20,8 @@ extension String {
     // MARK: - BeagleConfig
     static let baseURL = "http://localhost:8080/"
     
-    // MARK: - Image
-    static let networkImageBeagle = "https://www.petlove.com.br/images/breeds/193436/profile/original/beagle-p.jpg?1532538271"
-    
     // MARK: - Endpoint
-    static let lazyComponentEndpoint = "lazycomponent"
-    static let pageViewEndpoint = "pageview"
-    static let tabBarEndpoint = "tabbar"
-    static let listViewEndpoint = "listview"
-    static let gridViewEndpoint = "gridview"
-    static let formEndpoint = "form"
-    static let customComponentEndpoint = "customComponent"
     static let componentsEndpoint = "/components"
-    static let screenDeeplinkEndpoint = "screen-deep-link"
-    static let navigateStep1Endpoint = "navigateScreenStep1"
-    static let navigateStep2Endpoint = "navigateScreenStep2"
-    static let globalContextEndpoint = "globalContext"
-    static let beagleView = "beagleView"
-    static let textFormEndpoint = "https://t001-2751a.firebaseapp.com/action/shownativedialog.json"
-    static let textLazyComponentEndpoint = "https://run.mocky.io/v3/bd78fba6-da3d-4cb3-8807-85923366fe13"
-    static let webViewEndpoint = "webViewComponent"
-    static let componentInterationEndpoint = "componentInteractionText"
-    static let conditionActionEndpoint = "conditionActionText"
-    static let simpleFormEndpoint = "simpleFormComponent"
-    static let simpleFormValidationEndpoint = "simpleFormValidationComponent"
-    static let imageEndpoint = "image"
 
     // MARK: - URL
     static let webViewURL = "https://maps.google.com/"

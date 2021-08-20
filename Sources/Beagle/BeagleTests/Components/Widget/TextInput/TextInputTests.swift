@@ -113,33 +113,16 @@ class TextInputTests: XCTestCase {
         assertSnapshotImage(controller.view, size: ImageSize.custom(CGSize(width: 300, height: 70)))
     }
     
-    func test_renderTextInputWithDisabledTrue() {
+    func test_renderTextInputWithEnabledFalse() {
         // Given
         let textInput = TextInput(
             value: "disabled",
-            disabled: true,
+            enabled: false,
             widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
         )
                 
         // When // Then
         let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
-        assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
-    }
-    
-    func test_renderTextInputWithDisabled() {
-        // Given
-        let textInput = TextInput(
-            value: "@{textinput.value}",
-            disabled: "@{textinput.disabled}",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
-        )
-                
-        // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
-        controller.view.setContext(Context(id: "textinput", value: ["value": "enabled", "disabled": false]))
-        assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
-        
-        controller.view.setContext(Context(id: "textinput", value: ["value": "disabled", "disabled": true]))
         assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
     }
     

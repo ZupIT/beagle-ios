@@ -69,9 +69,9 @@ final class BeagleScreenViewControllerTests: XCTestCase {
             Beagle.dependencies.navigation.registerNavigationController(builder: { controllerType.init() }, forId: controllerId)
         }
         
-        let sut2 = initWith(gives: dependencies.navigationControllerType)
+        let sut2 = initWith(gives: BeagleNavigationController.self)
         
-        let sut3 = initWith(controllerId: controllerId, gives: dependencies.navigationControllerType) { controllerType, _ in
+        let sut3 = initWith(controllerId: controllerId, gives: BeagleNavigationController.self) { controllerType, _ in
             Beagle.dependencies.navigation.registerNavigationController(builder: { controllerType.init() }, forId: "OtherId")
         }
         

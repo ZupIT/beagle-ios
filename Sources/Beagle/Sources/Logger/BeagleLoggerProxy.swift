@@ -19,17 +19,13 @@ import Foundation
 public class BeagleLoggerProxy: BeagleLoggerType {
     
     public let logger: BeagleLoggerType?
-    let dependencies: DependencyLoggingCondition
     
-    init(logger: BeagleLoggerType?, dependencies: DependencyLoggingCondition) {
+    init(logger: BeagleLoggerType?) {
         self.logger = logger
-        self.dependencies = dependencies
     }
     
     public func log(_ log: LogType) {
-        if dependencies.isLoggingEnabled {
-            logger?.log(log)
-        }
+        logger?.log(log)
     }
 
 }

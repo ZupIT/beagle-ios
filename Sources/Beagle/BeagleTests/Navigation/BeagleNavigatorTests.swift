@@ -333,19 +333,6 @@ final class BeagleNavigatorTests: XCTestCase {
         // Then
         XCTAssertTrue(result === defaultNavigation)
     }
-
-    func testDefaultNavigationWithDeprecated() {
-        // Given
-        let dependencies = BeagleDependencies()
-        dependencies.navigationControllerType = BeagleNavigationStub.self
-        Beagle.dependencies = dependencies
-
-        // When
-        let result = dependencies.navigation.navigationController(forId: nil)
-
-        // Then
-        XCTAssertTrue(result is BeagleNavigationStub)
-    }
     
     func testIfNavigationIsPushedWithSetContext() {
         // Given

@@ -68,24 +68,28 @@ final class ListViewTests: XCTestCase {
             onInit: onInit,
             dataSource: Expression("@{initialContext}"),
             direction: direction,
-            template: Container(
-                children: [
-                    Text(
-                        text: "@{item}",
+            templates: [
+                Template(
+                    view: Container(
+                        children: [
+                            Text(
+                                text: "@{item}",
+                                widgetProperties: WidgetProperties(
+                                    style: Style(
+                                        backgroundColor: "#bfdcae"
+                                    )
+                                )
+                            )
+                        ],
                         widgetProperties: WidgetProperties(
                             style: Style(
-                                backgroundColor: "#bfdcae"
+                                backgroundColor: "#81b214",
+                                margin: EdgeValue().all(10)
                             )
                         )
                     )
-                ],
-                widgetProperties: WidgetProperties(
-                    style: Style(
-                        backgroundColor: "#81b214",
-                        margin: EdgeValue().all(10)
-                    )
                 )
-            ),
+            ],
             onScrollEnd: onScrollEnd,
             isScrollIndicatorVisible: isScrollIndicatorVisible,
             widgetProperties: WidgetProperties(
@@ -248,7 +252,7 @@ final class ListViewTests: XCTestCase {
         // Given
         let component = ListView(
             dataSource: .value([.empty]),
-            template: ComponentDummy()
+            templates: [Template(view: ComponentDummy())]
         )
         
         // When
@@ -256,6 +260,134 @@ final class ListViewTests: XCTestCase {
         
         // Then
         XCTAssertNil(component.widgetProperties.style?.flex?.grow)
+    }
+    
+    func testDirectionHorizontal() throws {
+        // Given
+        let component = makeList(just3Rows, .horizontal)
+    
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    func testDirectionVertical() throws {
+        // Given
+        let component = makeList(just3Rows, .vertical)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    // MARK: - Many Rows
+
+    func testDirectionHorizontalWithManyRows() {
+        // Given
+        let component = makeList(manyRows, .horizontal)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    func testDirectionVerticalWithManyRows() {
+        // Given
+        let component = makeList(manyRows, .vertical)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    // MARK: - Many Large Rows
+
+    func testDirectionHorizontalWithManyLargeRows() {
+        // Given
+        let component = makeList(manyLargeRows, .horizontal)
+    
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    func testDirectionVerticalWithManyLargeRows() {
+        // Given
+        let component = makeList(manyLargeRows, .vertical)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    // MARK: Rows with Different Sizes
+
+    func testDirectionHorizontalWithRowsWithDifferentSizes() {
+        // Given
+        let component = makeList(rowsWithDifferentSizes, .horizontal)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+
+    func testDirectionVerticalWithRowsWithDifferentSizes() {
+        // Given
+        let component = makeList(rowsWithDifferentSizes, .vertical)
+
+        // When
+        let view = renderListView(component)
+
+        // Then
+        assertSnapshotImage(view, size: imageSize)
+    }
+    
+    func testDecodingJsonListViewWithTemplate() throws {
+        let component: ListView = try componentFromJsonFile(fileName: "listViewWithTemplate")
+        assertSnapshot(matching: component, as: .dump)
+    }
+    
+    // MARK: - Helper
+
+    private static func createText(_ string: String, position: Double) -> Text {
+        let text = Int(round(position * 255))
+        let textColor = "#\(String(repeating: String(format: "%02X", text), count: 3))"
+        let background = 255 - text
+        let backgroundColor = "#\(String(repeating: String(format: "%02X", background), count: 3))"
+        return Text(
+            text: .value(string),
+            textColor: .value(textColor),
+            widgetProperties: .init(style: Style(backgroundColor: backgroundColor))
+        )
+    }
+    
+    private func templatesForChildren(_ children: [ServerDrivenComponent], _ direction: ScrollAxis?) -> [Template] {
+        let style = Style(flex: Flex(flexDirection: direction?.flexDirection))
+        return [
+            Template(view: Container(children: children, widgetProperties: .init(style: style)))
+        ]
+    }
+    
+    private func makeList(_ children: [ServerDrivenComponent], _ direction: ScrollAxis?) -> ListView {
+        ListView(
+            dataSource: .value([.empty]),
+            direction: direction,
+            templates: templatesForChildren(children, direction)
+        )
     }
     
 }
@@ -277,156 +409,5 @@ private struct ActionStub: Action {
     
     func execute(controller: BeagleController, origin: UIView) {
         execute?(controller, origin)
-    }
-}
-
-// MARK: - Tests deprecated
-extension ListViewTests {
-    
-    func testDirectionHorizontal() throws {
-        // Given
-        let component = ListView(
-            children: just3Rows,
-            direction: .horizontal
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    func testDirectionVertical() throws {
-        // Given
-        let component = ListView(
-            children: just3Rows,
-            direction: .vertical
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    // MARK: - Many Rows
-
-    func testDirectionHorizontalWithManyRows() {
-        // Given
-        let component = ListView(
-            children: manyRows,
-            direction: .horizontal
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    func testDirectionVerticalWithManyRows() {
-        // Given
-        let component = ListView(
-            children: manyRows,
-            direction: .vertical
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    // MARK: - Many Large Rows
-
-    func testDirectionHorizontalWithManyLargeRows() {
-        // Given
-        let component = ListView(
-            children: manyLargeRows,
-            direction: .horizontal
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    func testDirectionVerticalWithManyLargeRows() {
-        // Given
-        let component = ListView(
-            children: manyLargeRows,
-            direction: .vertical
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    // MARK: Rows with Different Sizes
-
-    func testDirectionHorizontalWithRowsWithDifferentSizes() {
-        // Given
-        let component = ListView(
-            children: rowsWithDifferentSizes,
-            direction: .horizontal
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-
-    func testDirectionVerticalWithRowsWithDifferentSizes() {
-        // Given
-        let component = ListView(
-            children: rowsWithDifferentSizes,
-            direction: .vertical
-        )
-
-        // When
-        let view = renderListView(component)
-
-        // Then
-        assertSnapshotImage(view, size: imageSize)
-    }
-    
-    func testDecodingJsonListView() throws {
-        let component: ListView = try componentFromJsonFile(fileName: "listViewComponent")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func testDecodingJsonListViewWithoutChildren() throws {
-        let component: ListView = try componentFromJsonFile(fileName: "listViewWithoutChildren")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func testDecodingJsonListViewWithTemplate() throws {
-        let component: ListView = try componentFromJsonFile(fileName: "listViewWithTemplate")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    // MARK: - Helper
-
-    private static func createText(_ string: String, position: Double) -> Text {
-        let text = Int(round(position * 255))
-        let textColor = "#\(String(repeating: String(format: "%02X", text), count: 3))"
-        let background = 255 - text
-        let backgroundColor = "#\(String(repeating: String(format: "%02X", background), count: 3))"
-        return Text(
-            text: .value(string),
-            textColor: .value(textColor),
-            widgetProperties: .init(style: Style(backgroundColor: backgroundColor))
-        )
     }
 }
