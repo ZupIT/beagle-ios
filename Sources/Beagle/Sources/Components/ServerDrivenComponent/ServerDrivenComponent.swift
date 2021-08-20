@@ -20,17 +20,10 @@ public protocol ServerDrivenComponent: Decodable, Renderable {}
 
 extension ServerDrivenComponent {
     func toScreen() -> Screen {
-        let screen = self as? ScreenComponent
-        let safeArea = screen?.safeArea
-            ?? SafeArea(top: true, leading: true, bottom: true, trailing: true)
-        return Screen(
-            identifier: screen?.identifier,
-            style: screen?.style,
-            safeArea: safeArea,
-            navigationBar: screen?.navigationBar,
-            child: screen?.child ?? self,
-            context: screen?.context
-        )
+        guard let screen = self as? Screen else {
+            return Screen(child: self)
+        }
+        return screen
     }
 }
 

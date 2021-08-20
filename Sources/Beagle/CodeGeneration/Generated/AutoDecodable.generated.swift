@@ -235,30 +235,6 @@ extension Route.NewPath.HttpAdditionalData {
     }
 }
 
-// MARK: ScreenComponent Decodable
-extension ScreenComponent {
-
-    enum CodingKeys: String, CodingKey {
-        case identifier
-        case style
-        case safeArea
-        case navigationBar
-        case child
-        case context
-    }
-
-    internal init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
-        style = try container.decodeIfPresent(Style.self, forKey: .style)
-        safeArea = try container.decodeIfPresent(SafeArea.self, forKey: .safeArea)
-        navigationBar = try container.decodeIfPresent(NavigationBar.self, forKey: .navigationBar)
-        child = try container.decode(forKey: .child)
-        context = try container.decodeIfPresent(Context.self, forKey: .context)
-    }
-}
-
 // MARK: ScrollView Decodable
 extension ScrollView {
 

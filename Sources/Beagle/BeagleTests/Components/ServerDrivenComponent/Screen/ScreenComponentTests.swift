@@ -22,7 +22,7 @@ final class ScreenComponentTests: XCTestCase {
 
     func test_initWithBuilders_shouldReturnExpectedInstance() {
         // Given / When
-        let component = ScreenComponent(
+        let component = Screen(
             child: Text(text: "text")
         )
 
@@ -31,7 +31,7 @@ final class ScreenComponentTests: XCTestCase {
     }
     
     func test_contentShouldUseOnlyTheSpaceRequiredByFlexRules() {
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "Test Flex"),
             child: Container(
@@ -68,7 +68,7 @@ final class ScreenComponentTests: XCTestCase {
         
         let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", action: ActionDummy())
         
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.none,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
             child: Text(text: "")
@@ -81,7 +81,7 @@ final class ScreenComponentTests: XCTestCase {
     func test_navigationBarButtonItemWithText() {
         let barItem = NavigationBarItem(text: "shuttle", action: ActionDummy())
         
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
             child: Text(text: "test")
@@ -141,7 +141,7 @@ final class ScreenComponentTests: XCTestCase {
         let navigatePath = "button-item-prefetch"
         let navigate = Navigate.pushView(.remote(.init(url: "\(navigatePath)", shouldPrefetch: true)))
         let barItem = NavigationBarItem(text: "Item", action: navigate)
-        let screen = ScreenComponent(
+        let screen = Screen(
             navigationBar: NavigationBar(title: "Prefetch", navigationBarItems: [barItem]),
             child: ComponentDummy()
         )

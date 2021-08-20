@@ -243,7 +243,7 @@ public class BeagleScreenViewController: BeagleController {
     private func renderScreenIfNeeded() {
         if content == nil, let screen = screen {
             updateNavigationBar(animated: true)
-            content = .view(screen.toView(renderer: renderer))
+            content = .view(renderer.render(screen))
         }
     }
     

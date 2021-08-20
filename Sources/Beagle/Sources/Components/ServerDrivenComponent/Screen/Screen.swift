@@ -14,46 +14,51 @@
  * limitations under the License.
  */
 
-import Foundation
-
 /// The screen element will help you define the screen view structure.
 /// By using this component you can define configurations like whether or
 /// not you want to use safe areas or display a tool bar/navigation bar.
-@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
-public struct Screen: HasContext {
+public struct Screen: ServerDrivenComponent, StyleComponent, HasContext {
     
     /// identifies your screen globally inside your application so that it could have actions set on itself.
-    public let identifier: String?
+    public var identifier: String?
     
     /// Enables a few visual options to be changed.
-    public let style: Style?
+    public var style: Style?
     
     /// Enables safe area to help you place your views within the visible portion of the overall interface.
-    public let safeArea: SafeArea?
+    public var safeArea: SafeArea? = SafeArea(top: true, leading: true, bottom: true, trailing: true)
     
     /// Enables a action bar/navigation bar into your view. By default it is set as null.
-    public let navigationBar: NavigationBar?
+    public var navigationBar: NavigationBar?
     
     /// Defines the child elements on this screen.
-    public let child: ServerDrivenComponent
+    public var child: ServerDrivenComponent
     
     /// Defines the context that be set to screen.
-    public let context: Context?
-    
-    public init(
-        identifier: String? = nil,
-        style: Style? = nil,
-        safeArea: SafeArea? = nil,
-        navigationBar: NavigationBar? = nil,
-        child: ServerDrivenComponent,
-        context: Context? = nil
-    ) {
-        self.identifier = identifier
-        self.style = style
-        self.safeArea = safeArea
-        self.navigationBar = navigationBar
-        self.child = child
-        self.context = context
+    public var context: Context?
+
+}
+
+extension Screen {
+
+    enum CodingKeys: String, CodingKey {
+        case identifier
+        case style
+        case safeArea
+        case navigationBar
+        case child
+        case context
     }
 
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        safeArea = try container.decodeIfPresent(SafeArea.self, forKey: .safeArea) ??
+            SafeArea(top: true, leading: true, bottom: true, trailing: true)
+        navigationBar = try container.decodeIfPresent(NavigationBar.self, forKey: .navigationBar)
+        child = try container.decode(forKey: .child)
+        context = try container.decodeIfPresent(Context.self, forKey: .context)
+    }
 }

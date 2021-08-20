@@ -175,7 +175,7 @@ final public class ComponentDecoder: ComponentDecoding {
     }
     
     private func registerLayoutTypes() {
-        registerComponent(ScreenComponent.self, key: key(name: "ScreenComponent", namespace: .beagle))
+        registerComponent(Screen.self, key: key(name: "ScreenComponent", namespace: .beagle))
         registerComponent(ScrollView.self, key: key(name: "ScrollView", namespace: .beagle))
     }
     

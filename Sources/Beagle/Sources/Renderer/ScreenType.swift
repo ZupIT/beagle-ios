@@ -21,8 +21,8 @@ public enum ScreenType {
 
     public struct Remote {
         let url: String
-        let fallback: Screen?
-        let additionalData: RemoteScreenAdditionalData?
+        var fallback: Screen?
+        var additionalData: RemoteScreenAdditionalData?
 
         @available(*, deprecated, message: "Since version 1.10. Fallback parameter will be removed. Handle your error with serverDrivenStateDidChange in BeagleNavigationController instead")
         public init(

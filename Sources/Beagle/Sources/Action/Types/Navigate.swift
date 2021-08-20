@@ -268,8 +268,8 @@ extension Route: Decodable, CustomReflectable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let screen = try? container.decode(ScreenComponent.self, forKey: .screen) {
-            self = .declarative(screen.toScreen())
+        if let screen = try? container.decode(Screen.self, forKey: .screen) {
+            self = .declarative(screen)
         } else {
             let newPath: Route.NewPath = try .init(from: decoder)
             self = .remote(newPath)
@@ -307,7 +307,7 @@ extension Route.NewPath: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.url = try container.decode(Expression<String>.self, forKey: .url)
         self.shouldPrefetch = try container.decodeIfPresent(Bool.self, forKey: .shouldPrefetch)
-        self.fallback = try container.decodeIfPresent(ScreenComponent.self, forKey: .fallback)?.toScreen()
+        self.fallback = try container.decodeIfPresent(Screen.self, forKey: .fallback)
         self.httpAdditionalData = try container.decodeIfPresent(HttpAdditionalData.self, forKey: .httpAdditionalData)
     }
 }

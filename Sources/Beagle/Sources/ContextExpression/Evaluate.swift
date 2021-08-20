@@ -34,10 +34,6 @@ public extension DynamicObject {
         }
     }
 
-    @available(*, deprecated, message: "use evaluate(with view: UIView) instead")
-    func get(with view: UIView) -> DynamicObject {
-        return evaluate(with: view)
-    }
 }
 
 // MARK: - Internal

@@ -28,7 +28,7 @@
     - value: PullToRefresh
   ▿ (2 elements)
     - key: "beagle:screencomponent"
-    - value: ScreenComponent
+    - value: Screen
   ▿ (2 elements)
     - key: "beagle:scrollview"
     - value: ScrollView

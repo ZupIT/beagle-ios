@@ -209,18 +209,10 @@ extension WidgetProperties {
     }
 }
 
-public struct Template: AutoInitiableAndDecodable {
+public struct Template: AutoDecodable {
 
-    public let `case`: Expression<Bool>?
+    public var `case`: Expression<Bool>?
+    
     public let view: ServerDrivenComponent
 
-// sourcery:inline:auto:Template.Init
-    public init(
-        `case`: Expression<Bool>? = nil,
-        view: ServerDrivenComponent
-    ) {
-        self.`case` = `case`
-        self.view = view
-    }
-// sourcery:end
 }
