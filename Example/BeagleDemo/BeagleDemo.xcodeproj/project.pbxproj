@@ -240,7 +240,6 @@
 				6E2C784B241984F800448728 /* Constants */,
 				E75619862408363E0025E0A9 /* DesignSystem */,
 				932925BC2327E0E500A61F01 /* LaunchScreen.storyboard */,
-				A0642DC9239689E60028AFF3 /* Screens */,
 			);
 			path = BeagleDemo;
 			sourceTree = "<group>";
@@ -315,13 +314,6 @@
 				93E4898B25431B4B00293568 /* CacheDiskManagerTests.swift */,
 			);
 			path = Tests;
-			sourceTree = "<group>";
-		};
-		A0642DC9239689E60028AFF3 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Screens;
 			sourceTree = "<group>";
 		};
 		C09F40FC249AAAC2002605EE /* GenerationTests */ = {

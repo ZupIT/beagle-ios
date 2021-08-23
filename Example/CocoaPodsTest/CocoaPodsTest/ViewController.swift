@@ -20,9 +20,11 @@ import Beagle
 struct MainScreen {
 
     func screenController() -> UIViewController {
-        let screen = Screen(
-            child: Text("Beagle Integration Tests")
-        )
-        return BeagleScreenViewController(.declarative(screen))
+        BeagleScreenViewController("""
+        {
+            "_beagleComponent_": "beagle:Text",
+            "text": "Beagle Integration Tests"
+        }
+        """)
     }
 }

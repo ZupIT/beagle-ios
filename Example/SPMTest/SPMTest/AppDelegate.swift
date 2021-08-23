@@ -26,10 +26,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = BeagleScreenViewController(Container {
-            Text("Test:")
-            Text("Beagle SPM library integration", widgetProperties: .init(id: "textId"))
-        })
+        self.window?.rootViewController = BeagleScreenViewController("""
+        {
+            "_beagleComponent_": "beagle:container",
+            "children": [
+                {
+                    "_beagleComponent_": "beagle:Text",
+                    "text": "Test:"
+                },
+                {
+                    "_beagleComponent_": "beagle:Text",
+                    "text": "Beagle SPM library integration",
+                    "id": "textId"
+                }
+            ]
+        }
+        """)
+        
         self.window?.makeKeyAndVisible()
         
         return true
