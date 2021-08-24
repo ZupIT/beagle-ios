@@ -77,6 +77,35 @@ final class AddChildrenTests: XCTestCase {
         let sut = AddChildren(componentId: "id", value: [])
         XCTAssertEqual(sut.mode, .append)
     }
+    
+    // Integrated
+    func testValueExpression() {
+        let sut = BeagleScreenViewController("""
+        {
+            "_beagleComponent_": "beagle:container",
+            "children": [],
+            "onInit": [
+                {
+                    "_beagleAction_": "beagle:addChildren",
+                    "componentId": "containerId",
+                    "value": [
+                        {
+                            "_beagleComponent_": "beagle:text",
+                            "text": "global: @{global}"
+                        }
+                    ],
+                    "mode": "REPLACE"
+                }
+            ],
+            "id": "containerId"
+        }
+        """)
+        
+        assertSnapshotImage(sut, size: imageSize)
+        Beagle.dependencies.globalContext.set("value")
+        
+        assertSnapshotImage(sut, size: imageSize)
+    }
 
     private func runTest(
         mode: AddChildren.Mode,

@@ -41,7 +41,11 @@ extension AddChildren {
     
     private func evaluateValue(origin: UIView) -> [ServerDrivenComponent]? {
         if let staticValue = staticValue { return staticValue }
-        guard case .array(let dynamicObjects) = value.evaluate(with: origin) else { return nil }
+        var rootEvaluated = value
+        if case .expression(let expression) = value {
+            rootEvaluated = origin.evaluateExpression(expression)
+        }
+        guard case .array(let dynamicObjects) = rootEvaluated else { return nil }
         return dynamicObjects
             .compactMap { obj -> AnyDecodableContainer? in obj.transform() }
             .compactMap { $0.content as? ServerDrivenComponent }
