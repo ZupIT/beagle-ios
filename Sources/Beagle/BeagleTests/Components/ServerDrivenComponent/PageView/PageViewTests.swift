@@ -35,31 +35,6 @@ class PageViewTests: XCTestCase {
           - context: Optional<Context>.none
           - currentPage: Optional<Expression<Int>>.none
           - onPageChange: Optional<Array<Action>>.none
-          - pageIndicator: Optional<PageIndicatorComponent>.none
-        """)
-    }
-
-    func test_whenDecodingJson_thenItShouldReturnPageViewWithIndicator() throws {
-        let component: PageView = try componentFromJsonFile(fileName: "PageViewWith3PagesAndIndicator")
-        _assertInlineSnapshot(matching: component, as: .dump, with: """
-        ▿ PageView
-          ▿ children: Optional<Array<ServerDrivenComponent>>
-            ▿ some: 3 elements
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-          - context: Optional<Context>.none
-          - currentPage: Optional<Expression<Int>>.none
-          - onPageChange: Optional<Array<Action>>.none
-          ▿ pageIndicator: Optional<PageIndicatorComponent>
-            ▿ some: PageIndicator
-              - currentPage: Optional<Expression<Int>>.none
-              - numberOfPages: Optional<Int>.none
-              - selectedColor: Optional<String>.none
-              - unselectedColor: Optional<String>.none
         """)
     }
 
@@ -72,48 +47,36 @@ class PageViewTests: XCTestCase {
     private let indicator = PageIndicator(selectedColor: "#d1cebd", unselectedColor: "#f6eedf")
 
     private let page = Container(children: [
-        Text("First text"),
+        Text(text: "First text"),
         Button(text: "Button"),
-        Text("Second text")
+        Text(text: "Second text")
     ]).applyFlex(Flex(flexDirection: .column, justifyContent: .center))
 
     func test_viewWithPages() {
         let pageView = PageView(
-            children: Array(repeating: page, count: 5),
-            pageIndicator: nil
+            children: Array(repeating: page, count: 5)
         )
 
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
-        assertSnapshotImage(screen)
-    }
-
-    func test_viewWithPagesAndIndicator() {
-        let pageView = PageView(
-            children: Array(repeating: page, count: 5),
-            pageIndicator: indicator
-        )
-
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen)
     }
     
     func test_viewWithNoPages() {
         let pageView = PageView(
-            children: [],
-            pageIndicator: indicator
+            children: []
         )
 
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen)
     }
     
     func test_pageViewWithContext() {
         let pageView = PageView(
-            children: [Text("Context: @{ctx}")],
+            children: [Text(text: "Context: @{ctx}")],
             context: Context(id: "ctx", value: "value of ctx")
         )
         
-        let screen = Beagle.screen(.declarative(pageView.toScreen()))
+        let screen = BeagleScreenViewController(pageView)
         assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 50)))
     }
     
@@ -122,7 +85,7 @@ class PageViewTests: XCTestCase {
         let controller = BeagleScreenViewController(ComponentDummy())
         navigation.viewControllers = [controller]
         
-        let pageView = PageView(children: [ComponentDummy()], pageIndicator: nil)
+        let pageView = PageView(children: [ComponentDummy()])
         let view = pageView.toView(renderer: controller.renderer)
         let componentView = view.subviews.compactMap {
             $0 as? PageViewUIComponent

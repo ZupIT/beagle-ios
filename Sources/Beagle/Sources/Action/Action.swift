@@ -18,16 +18,12 @@ import UIKit
 
 /// Markup to define an action to be triggered in response to some event
 public protocol Action: Decodable {
-
-    func execute(controller: BeagleController, origin: UIView)
-}
-
-// TODO: 2.0 - merge with Action protocol
-public protocol AnalyticsAction: Action {
     /// can be used to override the global `AnalyticsConfig`.
     ///
     /// - when `nil`: analytics behavior for this action will be determined by global `AnalyticsConfig`.
     var analytics: ActionAnalyticsConfig? { get }
+    
+    func execute(controller: BeagleController, origin: UIView)
 }
 
 public protocol AsyncAction: Action {
@@ -38,10 +34,6 @@ public protocol AsyncAction: Action {
 public struct UnknownAction: Action {
     public let type: String
     public var analytics: ActionAnalyticsConfig? { return nil }
-    
-    public init(type: String) {
-        self.type = type
-    }
     
     public func execute(controller: BeagleController, origin: UIView) {
         controller.dependencies.logger.log(Log.decode(.decodingError(type: "error trying to execute unknown action")))

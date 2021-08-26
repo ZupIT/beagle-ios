@@ -32,19 +32,14 @@ public class HttpRequestBuilder {
         if case .rawRequest(let requestData) = requestType {
             return Result(url, requestData)
         }
-        
-        var newUrl = url
-        var body = additionalData?.httpData?.body
 
         let headers = makeHeaders(additionalData: additionalData)
 
-        setupParametersFor(requestType: requestType, url: &newUrl, body: &body)
-
         return Result(
-            url: newUrl,
+            url: url,
             method: httpMethod(type: requestType, data: additionalData),
             headers: headers,
-            body: body
+            body: additionalData?.httpData?.body
         )
     }
     
@@ -97,9 +92,6 @@ public class HttpRequestBuilder {
 
     private func httpMethod(type: Request.RequestType, data: HttpAdditionalData?) -> String {
         switch (type, data) {
-
-        case (.submitForm(let form), _):
-            return form.method.rawValue
             
         case (.rawRequest(let requestData), _):
             return requestData.method ?? "GET"
@@ -109,22 +101,6 @@ public class HttpRequestBuilder {
 
         case (_, let data?):
             return data.httpData?.method.rawValue ?? "GET"
-        }
-    }
-
-    private func setupParametersFor(
-        requestType: Request.RequestType,
-        url: inout URL,
-        body: inout Data?
-    ) {
-        guard case .submitForm(let form) = requestType else { return }
-
-        switch form.method {
-        case .post, .put:
-            configureBodyParameters(form.values, in: &body)
-
-        case .get, .delete:
-            configureURLParameters(form.values, in: &url)
         }
     }
 

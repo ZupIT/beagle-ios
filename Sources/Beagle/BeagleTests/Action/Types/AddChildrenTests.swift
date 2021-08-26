@@ -66,11 +66,11 @@ final class AddChildrenTests: XCTestCase {
     }
 
     func testModeAppendWithContext() {
-        runTest(mode: .append, text: Text("@{contextId}"))
+        runTest(mode: .append, text: Text(text: "@{contextId}"))
     }
 
     func testModeReplaceWithContext() {
-        runTest(mode: .replace, text: Text("@{contextId}"))
+        runTest(mode: .replace, text: Text(text: "@{contextId}"))
     }
 
     func testIfDefaultIsAppend() {
@@ -109,7 +109,7 @@ final class AddChildrenTests: XCTestCase {
 
     private func runTest(
         mode: AddChildren.Mode,
-        text: Text = Text("NEW"),
+        text: Text = Text(text: "NEW"),
         testName: String = #function,
         line: UInt = #line
     ) {
@@ -117,11 +117,10 @@ final class AddChildrenTests: XCTestCase {
         let sut = AddChildren(componentId: "componentId", value: [text], mode: mode)
 
         let controller = BeagleScreenViewController(Container(
+            children: [Text(text: "initial")],
             context: Context(id: "contextId", value: "CONTEXT"),
             widgetProperties: WidgetProperties(id: "componentId")
-        ) {
-            Text("initial")
-        })
+        ))
 
         assertSnapshotImage(controller, size: imageSize, testName: testName, line: line)
 

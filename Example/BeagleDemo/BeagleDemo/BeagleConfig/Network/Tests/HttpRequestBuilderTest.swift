@@ -59,27 +59,9 @@ final class HttpRequestBuilderTest: XCTestCase {
     }
 
     private func createAllPossibleRequests() -> [Request.RequestType] {
-        let forms = createAllForms().map { Request.RequestType.submitForm($0) }
-
-        var types: [Request.RequestType] = [
+        [
             .fetchComponent, .fetchImage
         ]
-
-        types.append(contentsOf: forms)
-        return types
-    }
-
-    private func createAllForms() -> [Request.FormData] {
-        let methods = FormRemoteAction.Method.allCases
-        let values = [["key": "value"], [:]]
-
-        var forms = [Request.FormData]()
-        methods.forEach { m in
-            values.forEach { v in
-                forms.append(.init(method: m, values: v))
-            }
-        }
-        return forms
     }
 
     private struct TestData: AnySnapshotStringConvertible {

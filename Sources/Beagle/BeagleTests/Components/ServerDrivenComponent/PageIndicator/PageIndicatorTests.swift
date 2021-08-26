@@ -47,13 +47,5 @@ class PageIndicatorTests: XCTestCase {
         )
         assertSnapshot(matching: component, as: .dump)
     }
-    
-    func test_pageViewWithCustomIndicator_decoder() throws {
-        let component: PageView = try componentFromJsonFile(
-            fileName: "PageViewWithCustomIndicator",
-            decoder: dependencies.decoder
-        )
-        assertSnapshot(matching: component.pageIndicator, as: .dump)
-    }
 
 }

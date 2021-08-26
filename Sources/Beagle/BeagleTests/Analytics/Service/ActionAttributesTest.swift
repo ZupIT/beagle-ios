@@ -26,8 +26,6 @@ class ActionAttributesTest: XCTestCase {
             try doRecord(Alert.self, fromJson: "Alert-1"),
             try doRecord(Condition.self, fromJson: "Condition-1"),
             try doRecord(Confirm.self, fromJson: "Confirm-1"),
-            try doRecord(FormLocalAction.self, fromJson: "FormLocalAction-1"),
-            try doRecord(FormValidation.self, fromJson: "FormValidation-1"),
             try doRecord(Navigate.self, fromJson: "OpenNativeRoute-1"),
             try doRecord(Navigate.self, fromJson: "PopView-1"),
             try doRecord(Navigate.self, fromJson: "PushStack-1"),
@@ -61,7 +59,7 @@ class ActionAttributesTest: XCTestCase {
         let view = try analyticsViewHierarchyWith(context: context).view
 
         var attributes = [String]()
-        if case .enabled(let config?) = (action as? AnalyticsAction)?.analytics {
+        if case .enabled(let config?) = action.analytics {
             attributes = config.attributes ?? []
         }
 

@@ -22,9 +22,7 @@ public protocol PageViewUIComponentDelegate: AnyObject {
 
 class PageViewUIComponent: UIView {
 
-    var model: Model {
-        didSet { updateView() }
-    }
+    var model: Model
 
     struct Model {
         var pages: [UIViewController]
@@ -44,24 +42,18 @@ class PageViewUIComponent: UIView {
     
     var onPageChange: ((_ currentPage: Int) -> Void)?
 
-    private let indicatorView: PageIndicatorUIView?
     weak var pageViewDelegate: PageViewUIComponentDelegate?
 
     // MARK: - Init
 
     init(
         model: Model,
-        indicatorView: PageIndicatorUIView?,
         controller: BeagleController?
     ) {
         self.model = model
-        self.indicatorView = indicatorView
         super.init(frame: .zero)
-        
-        self.indicatorView?.outputReceiver = self
 
         setupLayout(controller: controller)
-        updateView()
     }
 
     @available(*, unavailable)
@@ -95,19 +87,9 @@ class PageViewUIComponent: UIView {
         return size
     }
 
-    // MARK: - Update
-
-    private func updateView() {
-        indicatorView?.model = .init(
-            numberOfPages: model.pages.count,
-            currentPage: model.currentPage
-        )
-    }
 }
 
-// MARK: - PageIndicator Delegate
-
-extension PageViewUIComponent: PageIndicatorOutput {
+extension PageViewUIComponent {
 
     func swipeToPage(at index: Int) {
         guard let destinationVc = model.pages[safe: index] else { return }

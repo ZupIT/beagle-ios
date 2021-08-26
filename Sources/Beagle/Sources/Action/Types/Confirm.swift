@@ -15,46 +15,27 @@
  */
 
 /// This action will show alert natively, such as an error alert indicating alternative flows, business system errors and others.
-public struct Confirm: AnalyticsAction, AutoInitiableAndDecodable {
+public struct Confirm: Action, AutoDecodable {
     
     /// Defines the title on the alert.
-    public let title: Expression<String>?
+    public var title: Expression<String>?
     
     /// Defines the alert message.
-    public let message: Expression<String>
+    public var message: Expression<String>
     
     /// Defines the action of the button positive in the alert.
-    public let onPressOk: Action?
+    public var onPressOk: Action?
     
     /// Defines the action of the button negative in the alert.
-    public let onPressCancel: Action?
+    public var onPressCancel: Action?
     
     /// Defines the text of the button positive in the alert.
-    public let labelOk: String?
+    public var labelOk: String?
     
     /// Defines the text of the button negative in the alert.
-    public let labelCancel: String?
+    public var labelCancel: String?
     
     /// Defines an analytics configuration for this action.
-    public let analytics: ActionAnalyticsConfig?
+    public var analytics: ActionAnalyticsConfig?
 
-// sourcery:inline:auto:Confirm.Init
-    public init(
-        title: Expression<String>? = nil,
-        message: Expression<String>,
-        onPressOk: Action? = nil,
-        onPressCancel: Action? = nil,
-        labelOk: String? = nil,
-        labelCancel: String? = nil,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.title = title
-        self.message = message
-        self.onPressOk = onPressOk
-        self.onPressCancel = onPressCancel
-        self.labelOk = labelOk
-        self.labelCancel = labelCancel
-        self.analytics = analytics
-    }
-// sourcery:end
 }

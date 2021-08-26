@@ -18,39 +18,19 @@ import UIKit
 
 extension Touchable {
     
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    public init(
-        onPress: [Action],
-        clickAnalyticsEvent: AnalyticsClick? = nil,
-        renderableChild: ServerDrivenComponent
-    ) {
-        if let analytics = clickAnalyticsEvent {
-            self = Touchable(onPress: onPress, clickAnalyticsEvent: analytics, child: renderableChild)
-        } else {
-            self = Touchable(onPress: onPress, child: renderableChild)
-        }
-    }
-    
     public func toView(renderer: BeagleRenderer) -> UIView {
         let childView = renderer.render(child)
-        var events: [Event] = onPress.map { action in
-            .action(action)
-        }
-        if let clickAnalyticsEvent = clickAnalyticsEvent {
-            events.append(.analytics(clickAnalyticsEvent))
-        }
-        
-        register(events: events, inView: childView, controller: renderer.controller)
+        register(actions: onPress, inView: childView, controller: renderer.controller)
         prefetchComponent(helper: renderer.dependencies.preFetchHelper)
         return childView
     }
     
-    private func register(events: [Event], inView view: UIView, controller: BeagleController?) {
-        let eventsGestureRecognizer = EventsGestureRecognizer(
-            events: events,
+    private func register(actions: [Action], inView view: UIView, controller: BeagleController?) {
+        let actionsGestureRecognizer = ActionsGestureRecognizer(
+            actions: actions,
             controller: controller
         )
-        view.addGestureRecognizer(eventsGestureRecognizer)
+        view.addGestureRecognizer(actionsGestureRecognizer)
         view.isUserInteractionEnabled = true
     }
     
@@ -58,6 +38,24 @@ extension Touchable {
         onPress.forEach { action in
             guard let newPath = (action as? Navigate)?.newPath else { return }
             helper?.prefetchComponent(newPath: newPath)
+        }
+    }
+}
+
+final class ActionsGestureRecognizer: UITapGestureRecognizer {
+    let actions: [Action]
+    weak var controller: BeagleController?
+    
+    init(actions: [Action], controller: BeagleController?) {
+        self.actions = actions
+        self.controller = controller
+        super.init(target: nil, action: nil)
+        addTarget(self, action: #selector(triggerActions))
+    }
+    
+    @objc func triggerActions() {
+        if let origin = view {
+            controller?.execute(actions: actions, event: "onPress", origin: origin)
         }
     }
 }

@@ -15,31 +15,20 @@
  */
 
 /// The `SetContext` action is responsible for changing the value of a context.
-public struct SetContext: AnalyticsAction {
+public struct SetContext: Action {
     
     /// Id of the context to be changed.
-    public let contextId: String
+    public var contextId: String
     
     /// Specific path to be changed inside of an context.
-    public let path: Path?
+    public var path: Path?
     
     /// New value to be applied in the context.
-    public let value: DynamicObject
+    public var value: DynamicObject
     
     /// Defines an analytics configuration for this action.
-    public let analytics: ActionAnalyticsConfig?
+    public var analytics: ActionAnalyticsConfig?
 
-    public init(
-        contextId: String,
-        path: String? = nil,
-        value: DynamicObject,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.contextId = contextId
-        self.path = path.flatMap { Path(rawValue: $0) }
-        self.value = value
-        self.analytics = analytics
-    }
 }
 
 extension SetContext: CustomReflectable {

@@ -23,14 +23,14 @@ extension Container {
         let style = (widgetProperties.style ?? Style()).flex(flex)
         return Container(
             children: children,
+            onInit: onInit,
+            context: context,
+            styleId: styleId,
             widgetProperties: .init(
                 id: widgetProperties.id,
                 style: style,
                 accessibility: widgetProperties.accessibility
-            ),
-            context: context,
-            onInit: onInit,
-            styleId: styleId
+            )
         )
     }
 }

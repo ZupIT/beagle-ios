@@ -33,22 +33,8 @@ public struct Request {
 
     public enum RequestType {
         case fetchComponent
-        case submitForm(FormData)
         case fetchImage
         case rawRequest(RequestData)
-    }
-
-    public struct FormData {
-        public let method: FormRemoteAction.Method
-        public let values: [String: String]
-
-        public init(
-            method: FormRemoteAction.Method,
-            values: [String: String]
-        ) {
-            self.method = method
-            self.values = values
-        }
     }
     
     public struct RequestData {

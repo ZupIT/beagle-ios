@@ -20,14 +20,23 @@ public enum ScreenType {
     case declarativeText(String)
 
     public struct Remote {
-        let url: String
-        let fallback: Screen?
-        let additionalData: RemoteScreenAdditionalData?
+        public let url: String
+        public var additionalData: RemoteScreenAdditionalData?
+        
+        var fallback: Screen?
 
-        @available(*, deprecated, message: "Since version 1.10. Fallback parameter will be removed. Handle your error with serverDrivenStateDidChange in BeagleNavigationController instead")
         public init(
             url: String,
-            fallback: Screen? = nil,
+            additionalData: RemoteScreenAdditionalData? = nil
+        ) {
+            self.url = url
+            self.fallback = nil
+            self.additionalData = additionalData
+        }
+        
+        init(
+            url: String,
+            fallback: Screen?,
             additionalData: RemoteScreenAdditionalData? = nil
         ) {
             self.url = url

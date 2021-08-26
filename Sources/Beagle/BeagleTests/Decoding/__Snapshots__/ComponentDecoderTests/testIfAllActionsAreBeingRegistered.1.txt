@@ -1,4 +1,4 @@
-▿ 19 key/value pairs
+▿ 16 key/value pairs
   ▿ (2 elements)
     - key: "beagle:addchildren"
     - value: AddChildren
@@ -11,15 +11,6 @@
   ▿ (2 elements)
     - key: "beagle:confirm"
     - value: Confirm
-  ▿ (2 elements)
-    - key: "beagle:formlocalaction"
-    - value: FormLocalAction
-  ▿ (2 elements)
-    - key: "beagle:formremoteaction"
-    - value: FormRemoteAction
-  ▿ (2 elements)
-    - key: "beagle:formvalidation"
-    - value: FormValidation
   ▿ (2 elements)
     - key: "beagle:openexternalurl"
     - value: Navigate

@@ -19,7 +19,7 @@ import UIKit
 
 // MARK: - CustomPageIndicator Component
 
-public struct CustomPageIndicator: Deprecated.PageIndicatorComponent {
+public struct CustomPageIndicator: ServerDrivenComponent {
 
     // MARK: - Public Properties
 
@@ -46,8 +46,6 @@ public struct CustomPageIndicator: Deprecated.PageIndicatorComponent {
 class CustomPageIndicatorUIComponent: UIView, PageIndicatorUIView {
     
     typealias Model = PageIndicatorUIViewModel
-
-    weak var outputReceiver: PageIndicatorOutput?
     
     var model: Model? { didSet {
         guard let model = model else { return }
@@ -89,7 +87,6 @@ class CustomPageIndicatorUIComponent: UIView, PageIndicatorUIView {
     required init() {
         super.init(frame: .zero)
         setupLayout()
-        setButtonActions()
     }
 
     @available(*, unavailable)
@@ -108,21 +105,6 @@ class CustomPageIndicatorUIComponent: UIView, PageIndicatorUIView {
         stackView.anchor(
             top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor
         )
-    }
-
-    private func setButtonActions() {
-        leftButton.addTarget(self, action: #selector(leftButtonTouch), for: .touchDown)
-        rightButton.addTarget(self, action: #selector(rightButtonTouch), for: .touchDown)
-    }
-    
-    @objc private func leftButtonTouch() {
-        guard let model = model else { return }
-        outputReceiver?.swipeToPage(at: model.currentPage - 1)
-    }
-    
-    @objc private func rightButtonTouch() {
-        guard let model = model else { return }
-        outputReceiver?.swipeToPage(at: model.currentPage + 1)
     }
     
     // MARK: Update

@@ -53,8 +53,8 @@ final class ContainerTests: XCTestCase {
     func test_initWithChildren_shouldReturnContainerAndSetDependenciesProperly() {
         // Given
         let sut = Container(children: [
-            Text("Some texts."),
-            Text("More texts.")
+            Text(text: "Some texts."),
+            Text(text: "More texts.")
         ], widgetProperties: .init(style: Style(flex: Flex())))
         
         let mirror = Mirror(reflecting: sut)
@@ -72,7 +72,7 @@ final class ContainerTests: XCTestCase {
     func test_applyFlex_shouldReturnContainer() {
         // Given
         let component = Container(children: [
-            Text("Some texts")
+            Text(text: "Some texts")
         ])
         // When
         let container = component.applyFlex(Flex(justifyContent: .center))
@@ -96,9 +96,9 @@ final class ContainerTests: XCTestCase {
     func test_renderContainer() throws {
         let container = Container(
             children: [
-                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et felis tortor. Maecenas laoreet metus in augue mattis, quis imperdiet urna ornare. Sed commodo fringilla massa, sit amet molestie nunc. Quisque euismod eros felis. Nam dapibus venenatis consequat."),
-                Text("Donec orci elit, scelerisque vel mattis at, ornare in libero. Cras vestibulum justo et lacus accumsan malesuada. Pellentesque gravida risus tincidunt sapien commodo iaculis. Praesent eget consectetur ligula, vitae fringilla urna. Donec erat arcu, fermentum sed orci in, euismod dictum augue. Aenean ac ullamcorper ante, sit amet commodo elit. Mauris et nibh ac ante luctus fermentum varius nec mauris."),
-                Text("Sed vel nisl tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fringilla velit vulputate ultricies auctor. Sed et enim lacinia risus hendrerit efficitur vitae vel tellus.")
+                Text(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et felis tortor. Maecenas laoreet metus in augue mattis, quis imperdiet urna ornare. Sed commodo fringilla massa, sit amet molestie nunc. Quisque euismod eros felis. Nam dapibus venenatis consequat."),
+                Text(text: "Donec orci elit, scelerisque vel mattis at, ornare in libero. Cras vestibulum justo et lacus accumsan malesuada. Pellentesque gravida risus tincidunt sapien commodo iaculis. Praesent eget consectetur ligula, vitae fringilla urna. Donec erat arcu, fermentum sed orci in, euismod dictum augue. Aenean ac ullamcorper ante, sit amet commodo elit. Mauris et nibh ac ante luctus fermentum varius nec mauris."),
+                Text(text: "Sed vel nisl tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fringilla velit vulputate ultricies auctor. Sed et enim lacinia risus hendrerit efficitur vitae vel tellus.")
             ],
             widgetProperties: .init(
                 style: .init(
@@ -110,14 +110,14 @@ final class ContainerTests: XCTestCase {
             )
         )
 
-        let screen = Beagle.screen(.declarative(container.toScreen()))
+        let screen = BeagleScreenViewController(container)
         assertSnapshotImage(screen, size: .custom(ViewImageConfig.iPhoneXr.size!))
     }
     
     func test_renderContainer_withBorder() throws {
         // Given
         let container = Container(
-            children: [Text("Content")],
+            children: [Text(text: "Content")],
             widgetProperties: .init(
                 style: .init(
                     backgroundColor: "#0000FF50",
@@ -163,9 +163,11 @@ final class ContainerTests: XCTestCase {
         controller.dependencies = BeagleScreenDependencies(theme: theme)
         
         let style = "test.container.style"
-        let container = Container(styleId: style, widgetProperties: WidgetProperties(style: Style().size(Size().width(100).height(100)))) {
-            Text("teste", textColor: "#FFFFFF")
-        }
+        let container = Container(
+            children: [Text(text: "teste", textColor: "#FFFFFF")],
+            styleId: style,
+            widgetProperties: WidgetProperties(style: Style().size(Size().width(100).height(100)))
+        )
 
         // When
         let view = renderer.render(container)

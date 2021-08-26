@@ -63,13 +63,12 @@ public protocol InitiableComponent {
 }
 
 /// Properties that all widgets have and are important to Beagle.
-public struct WidgetProperties: HasWidgetProperties, AutoDecodable, Equatable, AutoInitiable {
+public struct WidgetProperties: HasWidgetProperties, AutoDecodable, Equatable {
 
     public var id: String?
     public var style: Style?
     public var accessibility: Accessibility?
 
-// sourcery:inline:auto:WidgetProperties.Init
     public init(
         id: String? = nil,
         style: Style? = nil,
@@ -79,9 +78,8 @@ public struct WidgetProperties: HasWidgetProperties, AutoDecodable, Equatable, A
         self.style = style
         self.accessibility = accessibility
     }
-// sourcery:end
     
-    public init(
+    init(
         _ flex: Flex
     ) {
         self.init(style: Style(flex: flex))

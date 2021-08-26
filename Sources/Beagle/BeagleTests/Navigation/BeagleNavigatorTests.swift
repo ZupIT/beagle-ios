@@ -78,7 +78,7 @@ final class BeagleNavigatorTests: XCTestCase {
         let sut = BeagleNavigator()
         let controller = BeagleControllerStub(dependencies: dependencies)
 
-        let resetDeclarative = Navigate.resetApplication(.declarative(Screen(child: Text("Declarative"))))
+        let resetDeclarative = Navigate.resetApplication(.declarative(Screen(child: Text(text: "Declarative"))))
 
         // When
         sut.navigate(action: resetDeclarative, controller: controller, origin: nil)
@@ -89,7 +89,7 @@ final class BeagleNavigatorTests: XCTestCase {
 
     func test_swapView_shouldReplaceNavigationStack() {
         let swapRemote = Navigate.resetStack(.remote(.init(url: "https://example.com/screen.json")))
-        let swapDeclarative = Navigate.resetStack(.declarative(Screen(child: Text("Declarative"))))
+        let swapDeclarative = Navigate.resetStack(.declarative(Screen(child: Text(text: "Declarative"))))
         
         swapViewTest(swapRemote)
         swapViewTest(swapDeclarative)
@@ -113,7 +113,7 @@ final class BeagleNavigatorTests: XCTestCase {
 
     func test_addView_shouldPushScreenInNavigation() {
         let addViewRemote = Navigate.pushView(.remote(.init(url: "https://example.com/screen.json")))
-        let addViewDeclarative = Navigate.pushView(.declarative(Screen(child: Text("Declarative"))))
+        let addViewDeclarative = Navigate.pushView(.declarative(Screen(child: Text(text: "Declarative"))))
         
         addViewTest(addViewRemote)
         addViewTest(addViewDeclarative)
@@ -254,10 +254,10 @@ final class BeagleNavigatorTests: XCTestCase {
     func test_popToView_byIdentifier() {
         // Given
         let sut = BeagleNavigator()
-        let vc1 = BeagleControllerStub(.declarative(Screen(identifier: "1", child: Text("Screen 1"))))
-        let vc2 = BeagleControllerStub(.declarative(Screen(identifier: "2", child: Text("Screen 2"))))
+        let vc1 = BeagleControllerStub(.declarative(Screen(identifier: "1", child: Text(text: "Screen 1"))))
+        let vc2 = BeagleControllerStub(.declarative(Screen(identifier: "2", child: Text(text: "Screen 2"))))
         let vc3 = UIViewController()
-        let vc4 = BeagleControllerStub(.declarative(Screen(identifier: "4", child: Text("Screen 4"))))
+        let vc4 = BeagleControllerStub(.declarative(Screen(identifier: "4", child: Text(text: "Screen 4"))))
         let action = Navigate.popToView("2")
         
         let navigation = UINavigationController()
@@ -273,7 +273,7 @@ final class BeagleNavigatorTests: XCTestCase {
 
     func test_pushStack_shouldPresentTheScreen() {
         let presentViewRemote = Navigate.pushStack(.remote(.init(url: "https://example.com/screen.json")))
-        let presentViewDeclarative = Navigate.pushStack(.declarative(Screen(child: Text("Declarative"))))
+        let presentViewDeclarative = Navigate.pushStack(.declarative(Screen(child: Text(text: "Declarative"))))
         
         pushStackTest(presentViewRemote)
         pushStackTest(presentViewDeclarative)
@@ -332,19 +332,6 @@ final class BeagleNavigatorTests: XCTestCase {
 
         // Then
         XCTAssertTrue(result === defaultNavigation)
-    }
-
-    func testDefaultNavigationWithDeprecated() {
-        // Given
-        let dependencies = BeagleDependencies()
-        dependencies.navigationControllerType = BeagleNavigationStub.self
-        Beagle.dependencies = dependencies
-
-        // When
-        let result = dependencies.navigation.navigationController(forId: nil)
-
-        // Then
-        XCTAssertTrue(result is BeagleNavigationStub)
     }
     
     func testIfNavigationIsPushedWithSetContext() {

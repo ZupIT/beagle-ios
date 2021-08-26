@@ -94,18 +94,11 @@ class BeagleScreenViewModel {
     }
     
     public func trackEventOnScreenAppeared() {
-        if let event = screen?.screenAnalyticsEvent {
-            screenAppearEventIsPending = false
-            dependencies.analytics?.trackEventOnScreenAppeared(event)
-        }
+        screenAppearEventIsPending = false
         AnalyticsService.shared?.createRecord(screen: screenType)
     }
     
-    public func trackEventOnScreenDisappeared() {
-        if let event = screen?.screenAnalyticsEvent {
-            dependencies.analytics?.trackEventOnScreenDisappeared(event)
-        }
-    }
+    public func trackEventOnScreenDisappeared() {}
 
     // MARK: Core
     

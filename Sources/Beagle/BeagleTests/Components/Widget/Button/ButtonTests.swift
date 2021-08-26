@@ -96,7 +96,7 @@ final class ButtonTests: XCTestCase {
         controller.dependencies = BeagleScreenDependencies(preFetchHelper: prefetch)
         
         let navigatePath = "path-to-prefetch"
-        let navigate = Navigate.pushStack(.remote(.init(url: navigatePath)))
+        let navigate = Navigate.pushStack(.remote(.init(url: "\(navigatePath)")))
         let button = Button(text: "prefetch", onPress: [navigate])
 
         // When
@@ -116,38 +116,6 @@ final class ButtonTests: XCTestCase {
         view?.triggerTouchUpInsideActions()
 
         // Then
-        XCTAssertEqual(action.executionCount, 1)
-        XCTAssert(action.lastOrigin as AnyObject === view)
-    }
-    
-    func testAnalyticsClickTrigger() {
-        // Given
-        let analytics = AnalyticsExecutorSpy()
-        let button = Button(text: "Trigger analytics click", clickAnalyticsEvent: .init(category: "some category"))
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
-    }
-    
-    func testAnalyticsActionTrigger() {
-        // Given
-        let action = ActionSpy()
-        let analytics = AnalyticsExecutorSpy()
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-        
-        let button = Button(text: "Trigger analytics click", onPress: [action], clickAnalyticsEvent: .init(category: "some category"))
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
         XCTAssertEqual(action.executionCount, 1)
         XCTAssert(action.lastOrigin as AnyObject === view)
     }

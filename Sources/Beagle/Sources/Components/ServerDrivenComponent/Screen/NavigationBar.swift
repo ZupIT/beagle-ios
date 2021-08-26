@@ -18,48 +18,33 @@ import Foundation
 import UIKit
 
 /// Typically displayed at the top of the window, containing buttons for navigating within a hierarchy of screens.
-public struct NavigationBar: Decodable, AutoInitiable {
+public struct NavigationBar: Decodable {
     
     /// Defines the title on the navigation bar.
     public let title: String
     
     /// Could define a custom layout for your action bar/navigation bar.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Enables a back button into your action bar/navigation bar.
-    public let showBackButton: Bool?
+    public var showBackButton: Bool?
     
     /// Defines accessibility details for the back button.
-    public let backButtonAccessibility: Accessibility?
+    public var backButtonAccessibility: Accessibility?
     
     /// Defines a List of navigation bar items.
-    public let navigationBarItems: [NavigationBarItem]?
+    public var navigationBarItems: [NavigationBarItem]?
 
-// sourcery:inline:auto:NavigationBar.Init
-    public init(
-        title: String,
-        styleId: String? = nil,
-        showBackButton: Bool? = nil,
-        backButtonAccessibility: Accessibility? = nil,
-        navigationBarItems: [NavigationBarItem]? = nil
-    ) {
-        self.title = title
-        self.styleId = styleId
-        self.showBackButton = showBackButton
-        self.backButtonAccessibility = backButtonAccessibility
-        self.navigationBarItems = navigationBarItems
-    }
-// sourcery:end
 }
 
 /// Defines a item that could be showed in navigation bar.
 public struct NavigationBarItem: Decodable, AccessibilityComponent, IdentifiableComponent {
     
     /// Id use to identifier the current component.
-    public let id: String?
+    public var id: String?
     
     /// Defines an image for your navigation bar.
-    public let image: StringOrExpression?
+    public var image: StringOrExpression?
     
     /// Defines the text of the item.
     public let text: String
@@ -68,22 +53,11 @@ public struct NavigationBarItem: Decodable, AccessibilityComponent, Identifiable
     public let action: Action
     
     /// Defines Accessibility details for the item.
-    public let accessibility: Accessibility?
-
-    public init(
-        id: String? = nil,
-        image: String? = nil,
-        text: String,
-        action: Action,
-        accessibility: Accessibility? = nil
-    ) {
-        self.id = id
-        self.image = image
-        self.text = text
-        self.action = action
-        self.accessibility = accessibility
-    }
+    public var accessibility: Accessibility?
     
+}
+
+extension NavigationBarItem {
     enum CodingKeys: String, CodingKey {
         case id
         case image
@@ -107,5 +81,4 @@ public struct NavigationBarItem: Decodable, AccessibilityComponent, Identifiable
         let nestedContainer = try? container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .image)
         image = try nestedContainer?.decodeIfPresent(String.self, forKey: .mobileId)
     }
-
 }

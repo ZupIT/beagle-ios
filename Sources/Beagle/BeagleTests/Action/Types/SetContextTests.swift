@@ -24,10 +24,13 @@ final class SetContextTests: XCTestCase {
     
     func testSetContext() {
         // Given
-        let component = Container(context: Context(id: "context", value: "value")) {
-            Text("SetContext:")
-            Text("@{context}")
-        }
+        let component = Container(
+            children: [
+                Text(text: "SetContext:"),
+                Text(text: "@{context}")
+            ],
+            context: Context(id: "context", value: "value")
+        )
         let controller = BeagleScreenViewController(component)
         let navigation = UINavigationController(rootViewController: controller)
         let action = SetContext(contextId: "context", value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
@@ -40,10 +43,13 @@ final class SetContextTests: XCTestCase {
     
     func testSetContextWithMultipleExpression() {
         // Given
-        let component = Container(context: Context(id: "context", value: "John")) {
-            Text("SetContext:")
-            Text("@{context}")
-        }
+        let component = Container(
+            children: [
+                Text(text: "SetContext:"),
+                Text(text: "@{context}")
+            ],
+            context: Context(id: "context", value: "John")
+        )
         let controller = BeagleScreenViewController(component)
         let navigation = UINavigationController(rootViewController: controller)
         let action = SetContext(contextId: "context", value: "@{context} Doe")

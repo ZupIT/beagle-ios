@@ -1,13 +1,10 @@
 ▿ BeagleDependencies
-  - analytics: Optional<Analytics>.none
   - analyticsProvider: Optional<AnalyticsProvider>.none
   - appBundle: NSBundle <(null)> (not yet loaded)
   - cacheManager: Optional<CacheManagerProtocol>.none
   - decoder: ComponentDecodingDummy
   ▿ deepLinkHandler: Optional<DeepLinkScreenManaging>
     - some: DeepLinkHandlerDummy
-  ▿ formDataStoreHandler: FormDataStoreHandler
-    - dataStore: 0 key/value pairs
   ▿ globalContext: GlobalContextDummy
     ▿ context: Observable<Context>
       - observers: 0 elements
@@ -21,19 +18,12 @@
     ▿ dispatcher: RequestDispatcher
       ▿ dependencies: InnerDependenciesResolver
         - container: (Function)
-  - isLoggingEnabled: true
-  ▿ localFormHandler: Optional<LocalFormHandler>
-    ▿ some: LocalFormHandlerSpy
-      - actionsHandledCount: 0
   ▿ logger: BeagleLoggerProxy
-    ▿ dependencies: InnerDependenciesResolver
-      - container: (Function)
     - logger: Optional<BeagleLoggerType>.none
   ▿ navigation: BeagleNavigator
     - builders: 0 key/value pairs
     - defaultAnimation: Optional<BeagleNavigatorAnimation>.none
     - defaultBuilder: Optional<() -> BeagleNavigationController>.none
-  - navigationControllerType: BeagleNavigationController
   ▿ networkClient: Optional<NetworkClient>
     - some: NetworkClientDummy
   ▿ opener: URLOpenerDumb
@@ -61,9 +51,6 @@
   ▿ urlBuilder: UrlBuilder
     ▿ baseUrl: Optional<URL>
       - some: www.test.com
-  ▿ validatorProvider: Optional<ValidatorProvider>
-    ▿ some: ValidatorProviding
-      - handlers: 0 key/value pairs
   - viewConfigurator: (Function)
   ▿ windowManager: WindowManagerDumb
     ▿ window: Optional<WindowProtocol>

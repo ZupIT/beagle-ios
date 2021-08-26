@@ -1,5 +1,4 @@
 ▿ Button
-  - clickAnalyticsEvent: Optional<AnalyticsClick>.none
   ▿ enabled: Optional<Expression<Bool>>
     ▿ some: Expression<Bool>
       - value: false

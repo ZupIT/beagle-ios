@@ -156,9 +156,6 @@ final public class ComponentDecoder: ComponentDecoding {
         registerAction(Navigate.self, key: key(name: "PushView", namespace: .beagle))
         registerAction(Navigate.self, key: key(name: "PopView", namespace: .beagle))
         registerAction(Navigate.self, key: key(name: "PopToView", namespace: .beagle))
-        registerAction(FormValidation.self, key: key(name: "FormValidation", namespace: .beagle))
-        registerAction(FormLocalAction.self, key: key(name: "FormLocalAction", namespace: .beagle))
-        registerAction(FormRemoteAction.self, key: key(name: "FormRemoteAction", namespace: .beagle))
         registerAction(SetContext.self, key: key(name: "SetContext", namespace: .beagle))
         registerAction(SendRequest.self, key: key(name: "SendRequest", namespace: .beagle))
         registerAction(Alert.self, key: key(name: "Alert", namespace: .beagle))
@@ -174,14 +171,11 @@ final public class ComponentDecoder: ComponentDecoding {
     }
     
     private func registerFormModels() {
-        registerComponent(Deprecated.Form.self, key: key(name: "Form", namespace: .beagle))
-        registerComponent(Deprecated.FormSubmit.self, key: key(name: "FormSubmit", namespace: .beagle))
-        registerComponent(Deprecated.FormInput.self, key: key(name: "FormInput", namespace: .beagle))
         registerComponent(SimpleForm.self, key: key(name: "SimpleForm", namespace: .beagle))
     }
     
     private func registerLayoutTypes() {
-        registerComponent(ScreenComponent.self, key: key(name: "ScreenComponent", namespace: .beagle))
+        registerComponent(Screen.self, key: key(name: "ScreenComponent", namespace: .beagle))
         registerComponent(ScrollView.self, key: key(name: "ScrollView", namespace: .beagle))
     }
     
@@ -192,7 +186,6 @@ final public class ComponentDecoder: ComponentDecoding {
         registerComponent(GridView.self, key: key(name: "GridView", namespace: .beagle))
         registerComponent(Text.self, key: key(name: "Text", namespace: .beagle))
         registerComponent(PageView.self, key: key(name: "PageView", namespace: .beagle))
-        registerComponent(Deprecated.TabView.self, key: key(name: "TabView", namespace: .beagle))
         registerComponent(TabBar.self, key: key(name: "TabBar", namespace: .beagle))
         registerComponent(PageIndicator.self, key: key(name: "PageIndicator", namespace: .beagle))
         registerComponent(LazyComponent.self, key: key(name: "LazyComponent", namespace: .beagle))

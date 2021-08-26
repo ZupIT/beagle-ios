@@ -19,5 +19,4 @@
             - some: true
           ▿ trailing: Optional<Bool>
             - some: true
-      - screenAnalyticsEvent: Optional<AnalyticsScreen>.none
       - style: Optional<Style>.none

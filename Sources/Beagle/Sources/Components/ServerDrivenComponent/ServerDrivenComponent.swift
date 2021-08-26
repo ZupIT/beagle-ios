@@ -18,44 +18,12 @@ import UIKit
 
 public protocol ServerDrivenComponent: Decodable, Renderable {}
 
-@available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
-public protocol ComposeComponent: ServerDrivenComponent {
-    func build() -> ServerDrivenComponent
-}
-
-extension ComposeComponent {
-    public func toView(renderer: BeagleRenderer) -> UIView {
-        return renderer.render(build())
-    }
-}
-
 extension ServerDrivenComponent {
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
-    public func toScreen() -> Screen {
-        let screen = self as? ScreenComponent
-        let safeArea = screen?.safeArea
-            ?? SafeArea(top: true, leading: true, bottom: true, trailing: true)
-
-        if let analytics = screen?.screenAnalyticsEvent {
-            return Screen(
-                identifier: screen?.identifier,
-                style: screen?.style,
-                safeArea: safeArea,
-                navigationBar: screen?.navigationBar,
-                screenAnalyticsEvent: analytics,
-                child: screen?.child ?? self,
-                context: screen?.context
-            )
-        } else {
-            return Screen(
-                identifier: screen?.identifier,
-                style: screen?.style,
-                safeArea: safeArea,
-                navigationBar: screen?.navigationBar,
-                child: screen?.child ?? self,
-                context: screen?.context
-            )
+    func toScreen() -> Screen {
+        guard let screen = self as? Screen else {
+            return Screen(child: self)
         }
+        return screen
     }
 }
 

@@ -20,14 +20,10 @@ extension PageView {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
         let view = UIView()
-        let indicatorView = pageIndicator.ifSome {
-            renderer.render($0) as? PageIndicatorUIView & UIView
-        }
         let pagesView = PageViewUIComponent(
             model: .init(pages: (children ?? []).map {
                 ComponentHostController($0, renderer: renderer)
             }),
-            indicatorView: indicatorView,
             controller: renderer.controller
         )
         pagesView.onPageChange = { [weak view] page in
@@ -45,15 +41,6 @@ extension PageView {
 
         view.addSubview(pagesView)
         renderer.dependencies.style(pagesView).setup(Style(flex: Flex(grow: 1)))
-
-        if let indicatorView = indicatorView {
-            view.addSubview(indicatorView)
-            let style = Style()
-                .size(Size().height(40))
-                .margin(EdgeValue().top(10))
-                .flex(Flex().shrink(0))
-            renderer.dependencies.style(indicatorView).setup(style)
-        }
 
         return view
     }

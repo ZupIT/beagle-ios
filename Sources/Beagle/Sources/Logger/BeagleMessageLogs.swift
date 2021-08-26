@@ -31,7 +31,6 @@ public enum Log {
 
     case network(_ network: Network)
     case decode(_ decoding: Decoding)
-    case form(_ form: Form)
     case navigation(_ navigator: Navigator)
     case cache(_ cache: Cache)
     case expression(_ expression: Expression)
@@ -47,17 +46,6 @@ public enum Log {
         case httpResponse(response: NetworkResponse)
         case couldNotBuildUrl(url: String)
         case networkClientWasNotConfigured
-    }
-
-    public enum Form {
-        case validatorNotFound(named: String)
-        case validationInputNotValid(inputName: String)
-        case submitNotFound(form: Beagle.Form)
-        case inputsNotFound(form: Beagle.Form)
-        case divergentInputViewAndValueCount(form: Beagle.Form)
-        case submittedValues(values: [String: String])
-        case keyDuplication(data: [String: String])
-        case unableToSaveData
     }
 
     public enum Navigator {
@@ -144,7 +132,6 @@ extension Log: LogType {
     public var category: String {
         switch self {
         case .decode: return "Decoding"
-        case .form: return "Form"
         case .navigation: return "Navigation"
         case .network: return "Network"
         case .cache: return "Cache"
@@ -161,19 +148,6 @@ extension Log: LogType {
         case .network(.httpResponse(let response)):
             return response.logMessage
         case .network(let log):
-            return String(describing: log)
-
-        case .form(.submitNotFound(let form)):
-            return "You probably forgot to declare your Submit widget in form: \n\t \(form)"
-        case .form(.inputsNotFound(let form)):
-            return "You probably forgot to declare your FormInput widgets in form: \n\t \(form)"
-        case .form(.divergentInputViewAndValueCount(let form)):
-            return "Number of formInput and values are different. You probably declared formInputs with the same name in form: \n\t \(form)"
-        case .form(.unableToSaveData):
-            return "Unable to save form data. A group name must be given"
-        case .form(.keyDuplication(let data)):
-            return "Found a key duplication when merging form data:\n\(data)"
-        case .form(let log):
             return String(describing: log)
 
         case .navigation(.didNotFindDeepLinkScreen(let path)):
@@ -219,14 +193,6 @@ extension Log: LogType {
             }
 
         case .decode(.decodingError): return .error
-
-        case .form(let form):
-            switch form {
-            case .validatorNotFound, .submitNotFound, .inputsNotFound, .divergentInputViewAndValueCount:
-                return .error
-            case .submittedValues, .validationInputNotValid, .unableToSaveData, .keyDuplication:
-                return .info
-            }
 
         case .navigation(let nav):
             switch nav {

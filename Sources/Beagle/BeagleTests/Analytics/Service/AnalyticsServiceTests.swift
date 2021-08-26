@@ -61,7 +61,7 @@ class AnalyticsServiceTests: XCTestCase {
         assertActionAttributes(equalTo: """
         {
           "attributes" : {
-            "path" : "PATH"
+            "url" : "PATH"
           }
         }
         """)
@@ -69,21 +69,17 @@ class AnalyticsServiceTests: XCTestCase {
 
     func testConfigWithDifferentActions() {
         // Given
-        let caseSensitive = "beagle:FoRmReMoTeAcTion"
-        // And
         globalConfig(.init(actions: [
-            caseSensitive: [],
             "beagle:SENDREQUEST": [],
             .beagleActionName(SetContext.self): []
         ]))
 
         // When
-        triggerAction(FormRemoteAction(path: "path", method: .get))
         triggerAction(SendRequest(url: .value("url"), method: .value(.delete)))
         triggerAction(SetContext(contextId: "context", value: true))
 
         // Then
-        XCTAssertEqual(receivedRecords().count, 3)
+        XCTAssertEqual(receivedRecords().count, 2)
     }
 
     func testGlobalConfigJson() throws {
@@ -134,9 +130,9 @@ class AnalyticsServiceTests: XCTestCase {
         }
     }
 
-    private func triggerAction(_ action: AnalyticsAction? = nil) {
+    private func triggerAction(_ action: Action? = nil) {
         sut.createRecord(action: .init(
-            action: action ?? FormRemoteAction(path: "PATH", method: .delete),
+            action: action ?? SendRequest(url: "PATH", method: .value(.delete)),
             event: nil,
             origin: ViewDummy(),
             controller: BeagleScreenViewController(ComponentDummy())
@@ -154,7 +150,7 @@ class AnalyticsServiceTests: XCTestCase {
 
     private func enabledGlobalConfig() {
         provider.config = .init(actions: [
-            "beagle:formremoteaction": ["path"]
+            "beagle:sendrequest": ["url"]
         ])
     }
 

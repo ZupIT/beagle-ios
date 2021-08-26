@@ -119,7 +119,7 @@ extension GridViewTests {
                     view: Container(
                         children: [
                             Text(
-                                "@{item}",
+                                text: "@{item}",
                                 widgetProperties: WidgetProperties(
                                     style: Style(
                                         backgroundColor: "#bfdcae"

@@ -45,23 +45,10 @@ final class RepositoryTests: XCTestCase {
             fetchComponentExpectation.fulfill()
         }
 
-        let submitFormExpectation = expectation(description: "submitForm")
-        var formError: Request.Error?
-        let formData = Request.FormData(
-            method: .post, values: [:]
-        )
-
-        repository.submitForm(url: invalidURL, additionalData: nil, data: formData) {
-            if case let .failure(error) = $0 {
-                formError = error
-            }
-            submitFormExpectation.fulfill()
-        }
-        wait(for: [fetchComponentExpectation, submitFormExpectation], timeout: 1.0)
+        wait(for: [fetchComponentExpectation], timeout: 1.0)
                 
         // Then
         XCTAssertEqual(expectedError.localizedDescription, fetchError?.localizedDescription)
-        XCTAssertEqual(expectedError.localizedDescription, formError?.localizedDescription)
     }
     
     func test_whenRequestSucceeds_withValidData_itShouldReturnSomeComponent() {
@@ -190,7 +177,6 @@ final class RepositoryStub: Repository {
 
     private(set) var didCallDispatch = false
     private(set) var token = Token()
-    private(set) var formData = Request.FormData(method: .post, values: [:])
 
     class Token: RequestToken {
         var didCallCancel = false
@@ -216,20 +202,6 @@ final class RepositoryStub: Repository {
     ) -> RequestToken? {
         didCallDispatch = true
         if let result = componentResult {
-            completion(result)
-        }
-        return token
-    }
-
-    func submitForm(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        data: Request.FormData,
-        completion: @escaping (Result<Action, Request.Error>) -> Void
-    ) -> RequestToken? {
-        didCallDispatch = true
-        formData = data
-        if let result = formResult {
             completion(result)
         }
         return token

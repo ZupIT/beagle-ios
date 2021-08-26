@@ -15,56 +15,21 @@
  */
 
 /// Defines a button natively using the server driven information received through Beagle.
-public struct Button: Widget, ClickedOnComponent, AutoDecodable {
+public struct Button: Widget, AutoDecodable {
     
     /// Defines the button text content.
     public let text: Expression<String>
     
     /// References a native style configured to be applied on this button.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Attribute to define actions when this component is pressed.
-    public let onPress: [Action]?
+    public var onPress: [Action]?
     
     /// Enables or disables the button.
-    public let enabled: Expression<Bool>?
-    
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    /// Attribute to define click event name.
-    public var clickAnalyticsEvent: AnalyticsClick?
+    public var enabled: Expression<Bool>?
     
     /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
-
-    @available(*, deprecated, message: "Since version 1.6, a new infrastructure for analytics (Analytics 2.0) was provided, for more info check https://docs.usebeagle.io/v1.9/resources/analytics/")
-    public init(
-        text: Expression<String>,
-        styleId: String? = nil,
-        onPress: [Action]? = nil,
-        enabled: Expression<Bool>? = nil,
-        clickAnalyticsEvent: AnalyticsClick,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.text = text
-        self.styleId = styleId
-        self.onPress = onPress
-        self.enabled = enabled
-        self.clickAnalyticsEvent = clickAnalyticsEvent
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
+    public var widgetProperties: WidgetProperties = WidgetProperties()
     
-    public init(
-        text: Expression<String>,
-        styleId: String? = nil,
-        onPress: [Action]? = nil,
-        enabled: Expression<Bool>? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.text = text
-        self.styleId = styleId
-        self.onPress = onPress
-        self.enabled = enabled
-        self.widgetProperties = widgetProperties
-    }
 }

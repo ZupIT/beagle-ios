@@ -46,7 +46,6 @@ extension Button {
         case styleId
         case onPress
         case enabled
-        case clickAnalyticsEvent
     }
 
     public init(from decoder: Decoder) throws {
@@ -56,7 +55,6 @@ extension Button {
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
         onPress = try container.decodeIfPresent(forKey: .onPress)
         enabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .enabled)
-        clickAnalyticsEvent = try container.decodeIfPresent(AnalyticsClick.self, forKey: .clickAnalyticsEvent)
         widgetProperties = try WidgetProperties(from: decoder)
     }
 }
@@ -121,10 +119,10 @@ extension Container {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         children = try container.decodeIfPresent(forKey: .children)
-        widgetProperties = try WidgetProperties(from: decoder)
         onInit = try container.decodeIfPresent(forKey: .onInit)
         context = try container.decodeIfPresent(Context.self, forKey: .context)
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
+        widgetProperties = try WidgetProperties(from: decoder)
     }
 }
 
@@ -141,66 +139,6 @@ extension Context {
 
         id = try container.decode(String.self, forKey: .id)
         value = try container.decode(DynamicObject.self, forKey: .value)
-    }
-}
-
-// MARK: Form Decodable
-extension Form {
-
-    enum CodingKeys: String, CodingKey {
-        case onSubmit
-        case child
-        case group
-        case additionalData
-        case shouldStoreFields
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        onSubmit = try container.decodeIfPresent(forKey: .onSubmit)
-        child = try container.decode(forKey: .child)
-        group = try container.decodeIfPresent(String.self, forKey: .group)
-        additionalData = try container.decodeIfPresent([String: String].self, forKey: .additionalData)
-        shouldStoreFields = try container.decodeIfPresent(Bool.self, forKey: .shouldStoreFields) ?? false
-    }
-}
-
-// MARK: FormInput Decodable
-extension FormInput {
-
-    enum CodingKeys: String, CodingKey {
-        case name
-        case required
-        case validator
-        case errorMessage
-        case child
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        name = try container.decode(String.self, forKey: .name)
-        required = try container.decodeIfPresent(Bool.self, forKey: .required)
-        validator = try container.decodeIfPresent(String.self, forKey: .validator)
-        errorMessage = try container.decodeIfPresent(String.self, forKey: .errorMessage)
-        child = try container.decode(forKey: .child)
-    }
-}
-
-// MARK: FormSubmit Decodable
-extension FormSubmit {
-
-    enum CodingKeys: String, CodingKey {
-        case child
-        case enabled
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        child = try container.decode(forKey: .child)
-        enabled = try container.decodeIfPresent(Bool.self, forKey: .enabled)
     }
 }
 
@@ -242,7 +180,6 @@ extension PageView {
 
     enum CodingKeys: String, CodingKey {
         case children
-        case pageIndicator
         case context
         case onPageChange
         case currentPage
@@ -252,8 +189,6 @@ extension PageView {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         children = try container.decodeIfPresent(forKey: .children)
-        let rawPageIndicator: ServerDrivenComponent? = try container.decodeIfPresent(forKey: .pageIndicator)
-        pageIndicator = rawPageIndicator as? PageIndicatorComponent
         context = try container.decodeIfPresent(Context.self, forKey: .context)
         onPageChange = try container.decodeIfPresent(forKey: .onPageChange)
         currentPage = try container.decodeIfPresent(Expression<Int>.self, forKey: .currentPage)
@@ -297,32 +232,6 @@ extension Route.NewPath.HttpAdditionalData {
         method = try container.decodeIfPresent(HTTPMethod.self, forKey: .method)
         headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
         body = try container.decodeIfPresent(DynamicObject.self, forKey: .body)
-    }
-}
-
-// MARK: ScreenComponent Decodable
-extension ScreenComponent {
-
-    enum CodingKeys: String, CodingKey {
-        case identifier
-        case style
-        case safeArea
-        case navigationBar
-        case screenAnalyticsEvent
-        case child
-        case context
-    }
-
-    internal init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
-        style = try container.decodeIfPresent(Style.self, forKey: .style)
-        safeArea = try container.decodeIfPresent(SafeArea.self, forKey: .safeArea)
-        navigationBar = try container.decodeIfPresent(NavigationBar.self, forKey: .navigationBar)
-        screenAnalyticsEvent = try container.decodeIfPresent(AnalyticsScreen.self, forKey: .screenAnalyticsEvent)
-        child = try container.decode(forKey: .child)
-        context = try container.decodeIfPresent(Context.self, forKey: .context)
     }
 }
 
@@ -458,11 +367,9 @@ extension TextInput {
     enum CodingKeys: String, CodingKey {
         case value
         case placeholder
-        case disabled
         case enabled
         case readOnly
         case type
-        case hidden
         case styleId
         case onChange
         case onBlur
@@ -476,11 +383,9 @@ extension TextInput {
 
         value = try container.decodeIfPresent(Expression<String>.self, forKey: .value)
         placeholder = try container.decodeIfPresent(Expression<String>.self, forKey: .placeholder)
-        disabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .disabled)
         enabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .enabled)
         readOnly = try container.decodeIfPresent(Expression<Bool>.self, forKey: .readOnly)
         type = try container.decodeIfPresent(Expression<TextInputType>.self, forKey: .type)
-        hidden = try container.decodeIfPresent(Expression<Bool>.self, forKey: .hidden)
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
         onChange = try container.decodeIfPresent(forKey: .onChange)
         onBlur = try container.decodeIfPresent(forKey: .onBlur)
@@ -496,7 +401,6 @@ extension Touchable {
 
     enum CodingKeys: String, CodingKey {
         case onPress
-        case clickAnalyticsEvent
         case child
     }
 
@@ -504,7 +408,6 @@ extension Touchable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         onPress = try container.decode(forKey: .onPress)
-        clickAnalyticsEvent = try container.decodeIfPresent(AnalyticsClick.self, forKey: .clickAnalyticsEvent)
         child = try container.decode(forKey: .child)
     }
 }

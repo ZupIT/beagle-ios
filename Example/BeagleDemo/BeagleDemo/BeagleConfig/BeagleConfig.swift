@@ -24,9 +24,6 @@ class BeagleConfig {
     static func start() {
         let deepLinkHandler = registerDeepLink()
 
-        let validator = ValidatorProviding()
-        validator[FormScreen.textValidatorName] = FormScreen.textValidator
-
         let dependencies = BeagleDependencies()
         dependencies.theme = AppTheme.theme
         dependencies.urlBuilder = UrlBuilder(baseUrl: URL(string: .baseURL))
@@ -35,9 +32,6 @@ class BeagleConfig {
             modalPresentationStyle: .formSheet
         )
         dependencies.deepLinkHandler = deepLinkHandler
-        dependencies.validatorProvider = validator
-        dependencies.analytics = AnalyticsMock()
-        dependencies.isLoggingEnabled = true
 
         let innerDependencies = InnerDependencies()
         dependencies.networkClient = NetworkClientDefault(dependencies: innerDependencies)
@@ -54,32 +48,11 @@ class BeagleConfig {
 
     private static func registerDeepLink() -> DeeplinkScreenManager {
         let deepLink = DeeplinkScreenManager.shared
-        deepLink[.lazyComponentEndpoint] = LazyComponentScreen.self
-        deepLink[.pageViewEndpoint] = PageViewScreen.self
-        deepLink[.tabBarEndpoint] = TabBarScreen.self
-        deepLink[.formEndpoint] = FormScreen.self
-        deepLink[.customComponentEndpoint] = CustomComponentScreen.self
-        deepLink[.screenDeeplinkEndpoint] = ScreenDeepLink.self
-        deepLink[.listViewEndpoint] = ListViewScreen.self
-        deepLink[.gridViewEndpoint] = GridViewScreen.self
-        deepLink[.webViewEndpoint] = WebViewScreen.self
-        deepLink[.componentInterationEndpoint] = ComponentInteractionText.self
-        deepLink[.conditionActionEndpoint] = ConditionActionText.self
-        deepLink[.simpleFormEndpoint] = SimpleFormScreen.self
-        deepLink[.navigateStep1Endpoint] = NavigateStep1Screen.self
-        deepLink[.navigateStep2Endpoint] = NavigateStep2Screen.self
-        deepLink[.imageEndpoint] = ImageScreen.self
-        deepLink[.globalContextEndpoint] = GlobalContexScreen.self
-        deepLink[.beagleView] = BeagleViewScreen.self
-        deepLink[.simpleFormValidationEndpoint] = SimpleFormValidationText.self
         return deepLink
     }
 
     private static func registerCustomComponents(in dependencies: BeagleDependencies) {
         dependencies.decoder.register(component: DSCollection.self)
-        dependencies.decoder.register(component: MyComponent.self)
-        dependencies.decoder.register(action: CustomConsoleLogAction.self)
-        dependencies.decoder.register(component: DemoTextField.self, named: "SampleTextField")
     }
 
     private static func registerCustomControllers(in dependencies: BeagleDependencies) {

@@ -15,7 +15,7 @@
  */
 
 /// The `AddChildren` action is responsible for adding a component to a component hierarchy.
-public struct AddChildren: AnalyticsAction {
+public struct AddChildren: Action {
     
     /// Defines the widget's id, in which you want to add the views.
     public let componentId: String

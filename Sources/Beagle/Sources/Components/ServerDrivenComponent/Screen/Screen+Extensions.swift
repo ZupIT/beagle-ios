@@ -16,7 +16,7 @@
 
 import UIKit
 
-extension ScreenComponent {
+extension Screen {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
 

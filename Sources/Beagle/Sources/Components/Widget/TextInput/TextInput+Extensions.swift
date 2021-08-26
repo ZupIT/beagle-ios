@@ -34,23 +34,13 @@ extension TextInput: ServerDrivenComponent {
         renderer.observe(value, andUpdate: \.text, in: view)
         renderer.observe(placeholder, andUpdate: \.placeholder, in: view)
         renderer.observe(type, andUpdate: \.inputType, in: view)
-        renderer.observe(disabled, andUpdateManyIn: view) { disabled in
-            let enabled = !(disabled ?? false)
-            view.layoutUpdate(with: enabled)
-        }
         
         renderer.observe(enabled, andUpdateManyIn: view) { enabled in
-            if self.disabled != nil { return }
             view.layoutUpdate(with: enabled ?? true)
         }
         renderer.observe(readOnly, andUpdateManyIn: view) { readOnly in
             if let readOnly = readOnly {
                 view.isEnabled = !readOnly
-            }
-        }
-        renderer.observe(hidden, andUpdateManyIn: view) { isHidden in
-            if let isHidden = isHidden {
-                view.isHidden = isHidden
             }
         }
         renderer.observe(error, andUpdateManyIn: view) { errorMessage in
@@ -65,7 +55,7 @@ extension TextInput: ServerDrivenComponent {
         }
     }
     
-    class TextInputView: UITextField, UITextFieldDelegate, InputValue, WidgetStateObservable, ValidationErrorListener {
+    class TextInputView: UITextField, UITextFieldDelegate, WidgetStateObservable {
         
         // MARK: - Properties
 
@@ -172,14 +162,6 @@ extension TextInput: ServerDrivenComponent {
         private func applyStyle() {
             guard let styleId = styleId else { return }
             beagle.applyStyle(for: self as UITextField, styleId: styleId, with: controller)
-        }
-        
-        func getValue() -> Any {
-            return text ?? ""
-        }
-        
-        func onValidationError(message: String?) {
-            controller?.dependencies.logger.log(Log.form(.validationInputNotValid(inputName: "TextInput - " + (message ?? "Validation Error"))))
         }
         
         // MARK: - TextField Delegate

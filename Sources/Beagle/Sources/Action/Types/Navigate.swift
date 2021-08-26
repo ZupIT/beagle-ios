@@ -15,7 +15,7 @@
  */
 
 /// Handles screens navigations actions of the application.
-public enum Navigate: AnalyticsAction {
+public enum Navigate: Action {
     
     /// Opens up an available browser on the device and navigates to a specified URL as Expression.
     case openExternalURL(Expression<String>, analytics: ActionAnalyticsConfig? = nil)
@@ -106,27 +106,14 @@ extension Route {
         /// - If __false__, Beagle will only request this screen when the Navigate action gets triggered (e.g: user taps a button).
         /// - If __true__, Beagle will trigger the request as soon as it renders the component that have
         /// this action. (e.g: when a button appears on the screen it will trigger)
-        public let shouldPrefetch: Bool?
+        public var shouldPrefetch: Bool?
         
         /// A screen that should be rendered in case of request fail.
-        public let fallback: Screen?
+        public var fallback: Screen?
 
         /// Used to pass additional http data on requests
-        public let httpAdditionalData: HttpAdditionalData?
-        
-        /// Constructs a new path to a remote screen.
-        ///
-        /// - Parameters:
-        ///   - url: Contains the navigation endpoint. Since its a _ExpressibleString_ type you can pass a Expression<String> or a regular String.
-        ///   - shouldPrefetch: Changes _when_ this screen is requested.
-        ///   - fallback: A screen that should be rendered in case of request fail.
-        ///   - httpAdditionalData: Used to pass additional http data on requests
-        public init(url: StringOrExpression, shouldPrefetch: Bool? = nil, fallback: Screen? = nil, httpAdditionalData: HttpAdditionalData? = nil) {
-            self.url = "\(url)"
-            self.shouldPrefetch = shouldPrefetch
-            self.fallback = fallback
-            self.httpAdditionalData = httpAdditionalData
-        }
+        public var httpAdditionalData: HttpAdditionalData?
+
     }
 }
 
@@ -281,8 +268,8 @@ extension Route: Decodable, CustomReflectable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        if let screen = try? container.decode(ScreenComponent.self, forKey: .screen) {
-            self = .declarative(screen.toScreen())
+        if let screen = try? container.decode(Screen.self, forKey: .screen) {
+            self = .declarative(screen)
         } else {
             let newPath: Route.NewPath = try .init(from: decoder)
             self = .remote(newPath)
@@ -320,7 +307,7 @@ extension Route.NewPath: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.url = try container.decode(Expression<String>.self, forKey: .url)
         self.shouldPrefetch = try container.decodeIfPresent(Bool.self, forKey: .shouldPrefetch)
-        self.fallback = try container.decodeIfPresent(ScreenComponent.self, forKey: .fallback)?.toScreen()
+        self.fallback = try container.decodeIfPresent(Screen.self, forKey: .fallback)
         self.httpAdditionalData = try container.decodeIfPresent(HttpAdditionalData.self, forKey: .httpAdditionalData)
     }
 }

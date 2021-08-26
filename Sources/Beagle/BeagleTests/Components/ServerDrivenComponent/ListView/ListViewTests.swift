@@ -23,9 +23,9 @@ final class ListViewTests: XCTestCase {
     private let imageSize = ImageSize.custom(CGSize(width: 300, height: 300))
 
     private let just3Rows: [ServerDrivenComponent] = [
-        Text("Item 1", widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))),
-        Text("Item 2", widgetProperties: .init(style: .init(backgroundColor: "#00FF00"))),
-        Text("Item 3", widgetProperties: .init(style: .init(backgroundColor: "#0000FF")))
+        Text(text: "Item 1", widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))),
+        Text(text: "Item 2", widgetProperties: .init(style: .init(backgroundColor: "#00FF00"))),
+        Text(text: "Item 3", widgetProperties: .init(style: .init(backgroundColor: "#0000FF")))
     ]
     
     private let manyRows: [ServerDrivenComponent] = (0..<20).map { i in
@@ -68,24 +68,28 @@ final class ListViewTests: XCTestCase {
             onInit: onInit,
             dataSource: Expression("@{initialContext}"),
             direction: direction,
-            template: Container(
-                children: [
-                    Text(
-                        "@{item}",
+            templates: [
+                Template(
+                    view: Container(
+                        children: [
+                            Text(
+                                text: "@{item}",
+                                widgetProperties: WidgetProperties(
+                                    style: Style(
+                                        backgroundColor: "#bfdcae"
+                                    )
+                                )
+                            )
+                        ],
                         widgetProperties: WidgetProperties(
                             style: Style(
-                                backgroundColor: "#bfdcae"
+                                backgroundColor: "#81b214",
+                                margin: EdgeValue().all(10)
                             )
                         )
                     )
-                ],
-                widgetProperties: WidgetProperties(
-                    style: Style(
-                        backgroundColor: "#81b214",
-                        margin: EdgeValue().all(10)
-                    )
                 )
-            ),
+            ],
             onScrollEnd: onScrollEnd,
             isScrollIndicatorVisible: isScrollIndicatorVisible,
             widgetProperties: WidgetProperties(
@@ -248,7 +252,7 @@ final class ListViewTests: XCTestCase {
         // Given
         let component = ListView(
             dataSource: .value([.empty]),
-            template: ComponentDummy()
+            templates: [Template(view: ComponentDummy())]
         )
         
         // When
@@ -258,37 +262,10 @@ final class ListViewTests: XCTestCase {
         XCTAssertNil(component.widgetProperties.style?.flex?.grow)
     }
     
-}
-
-// MARK: - Testing Helpers
-
-private struct ActionStub: Action {
-    
-    let execute: ((BeagleController, UIView) -> Void)?
-    
-    init(execute: @escaping (BeagleController, UIView) -> Void) {
-        self.execute = execute
-    }
-    
-    init(from decoder: Decoder) throws {
-        execute = nil
-    }
-    
-    func execute(controller: BeagleController, origin: UIView) {
-        execute?(controller, origin)
-    }
-}
-
-// MARK: - Tests deprecated
-extension ListViewTests {
-    
     func testDirectionHorizontal() throws {
         // Given
-        let component = ListView(
-            children: just3Rows,
-            direction: .horizontal
-        )
-
+        let component = makeList(just3Rows, .horizontal)
+    
         // When
         let view = renderListView(component)
 
@@ -298,10 +275,7 @@ extension ListViewTests {
 
     func testDirectionVertical() throws {
         // Given
-        let component = ListView(
-            children: just3Rows,
-            direction: .vertical
-        )
+        let component = makeList(just3Rows, .vertical)
 
         // When
         let view = renderListView(component)
@@ -314,10 +288,7 @@ extension ListViewTests {
 
     func testDirectionHorizontalWithManyRows() {
         // Given
-        let component = ListView(
-            children: manyRows,
-            direction: .horizontal
-        )
+        let component = makeList(manyRows, .horizontal)
 
         // When
         let view = renderListView(component)
@@ -328,10 +299,7 @@ extension ListViewTests {
 
     func testDirectionVerticalWithManyRows() {
         // Given
-        let component = ListView(
-            children: manyRows,
-            direction: .vertical
-        )
+        let component = makeList(manyRows, .vertical)
 
         // When
         let view = renderListView(component)
@@ -344,11 +312,8 @@ extension ListViewTests {
 
     func testDirectionHorizontalWithManyLargeRows() {
         // Given
-        let component = ListView(
-            children: manyLargeRows,
-            direction: .horizontal
-        )
-
+        let component = makeList(manyLargeRows, .horizontal)
+    
         // When
         let view = renderListView(component)
 
@@ -358,10 +323,7 @@ extension ListViewTests {
 
     func testDirectionVerticalWithManyLargeRows() {
         // Given
-        let component = ListView(
-            children: manyLargeRows,
-            direction: .vertical
-        )
+        let component = makeList(manyLargeRows, .vertical)
 
         // When
         let view = renderListView(component)
@@ -374,10 +336,7 @@ extension ListViewTests {
 
     func testDirectionHorizontalWithRowsWithDifferentSizes() {
         // Given
-        let component = ListView(
-            children: rowsWithDifferentSizes,
-            direction: .horizontal
-        )
+        let component = makeList(rowsWithDifferentSizes, .horizontal)
 
         // When
         let view = renderListView(component)
@@ -388,26 +347,13 @@ extension ListViewTests {
 
     func testDirectionVerticalWithRowsWithDifferentSizes() {
         // Given
-        let component = ListView(
-            children: rowsWithDifferentSizes,
-            direction: .vertical
-        )
+        let component = makeList(rowsWithDifferentSizes, .vertical)
 
         // When
         let view = renderListView(component)
 
         // Then
         assertSnapshotImage(view, size: imageSize)
-    }
-    
-    func testDecodingJsonListView() throws {
-        let component: ListView = try componentFromJsonFile(fileName: "listViewComponent")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func testDecodingJsonListViewWithoutChildren() throws {
-        let component: ListView = try componentFromJsonFile(fileName: "listViewWithoutChildren")
-        assertSnapshot(matching: component, as: .dump)
     }
     
     func testDecodingJsonListViewWithTemplate() throws {
@@ -423,9 +369,45 @@ extension ListViewTests {
         let background = 255 - text
         let backgroundColor = "#\(String(repeating: String(format: "%02X", background), count: 3))"
         return Text(
-            .value(string),
+            text: .value(string),
             textColor: .value(textColor),
             widgetProperties: .init(style: Style(backgroundColor: backgroundColor))
         )
+    }
+    
+    private func templatesForChildren(_ children: [ServerDrivenComponent], _ direction: ScrollAxis?) -> [Template] {
+        let style = Style(flex: Flex(flexDirection: direction?.flexDirection))
+        return [
+            Template(view: Container(children: children, widgetProperties: .init(style: style)))
+        ]
+    }
+    
+    private func makeList(_ children: [ServerDrivenComponent], _ direction: ScrollAxis?) -> ListView {
+        ListView(
+            dataSource: .value([.empty]),
+            direction: direction,
+            templates: templatesForChildren(children, direction)
+        )
+    }
+    
+}
+
+// MARK: - Testing Helpers
+
+private struct ActionStub: Action {
+    
+    var analytics: ActionAnalyticsConfig?
+    let execute: ((BeagleController, UIView) -> Void)?
+    
+    init(execute: @escaping (BeagleController, UIView) -> Void) {
+        self.execute = execute
+    }
+    
+    init(from decoder: Decoder) throws {
+        execute = nil
+    }
+    
+    func execute(controller: BeagleController, origin: UIView) {
+        execute?(controller, origin)
     }
 }

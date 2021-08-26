@@ -32,8 +32,6 @@ final class BeagleSetupTests: XCTestCase {
         dep.appBundle = Bundle()
         dep.deepLinkHandler = DeepLinkHandlerDummy()
         dep.theme = AppThemeDummy()
-        dep.validatorProvider = ValidatorProviding()
-        dep.localFormHandler = LocalFormHandlerSpy()
         if let url = URL(string: "www.test.com") {
             dep.urlBuilder.baseUrl = url
         }
@@ -71,12 +69,6 @@ final class DeepLinkHandlerDummy: DeepLinkScreenManaging {
     func getNativeScreen(with path: String, data: [String: String]?) throws -> UIViewController {
         return UIViewController()
     }
-}
-
-final class FormDataStoreHandlerDummy: FormDataStoreHandling {
-    func formManagerDidSubmitForm(group: String?) { }
-    func save(data: [String: String], group: String) { }
-    func read(group: String) -> [String: String]? { return nil }
 }
 
 final class ComponentDecodingDummy: ComponentDecoding {
@@ -130,29 +122,26 @@ struct ComponentDummy: ServerDrivenComponent, CustomStringConvertible {
 }
 
 struct ActionDummy: Action, Equatable {
+    var analytics: ActionAnalyticsConfig?
     
     func execute(controller: BeagleController, origin: UIView) {}
 }
 
 struct BeagleScreenDependencies: BeagleDependenciesProtocol {
     var isLoggingEnabled: Bool = true
-    var analytics: Analytics?
     var analyticsProvider: AnalyticsProvider?
     var repository: Repository = RepositoryStub()
     var imageDownloader: ImageDownloader = ImageDownloaderStub()
     var theme: Theme = AppThemeDummy()
-    var validatorProvider: ValidatorProvider?
     var preFetchHelper: BeaglePrefetchHelping = PreFetchHelperDummy()
     var appBundle: Bundle = Bundle(for: ImageTests.self)
     var cacheManager: CacheManagerProtocol?
     var decoder: ComponentDecoding = ComponentDecodingDummy()
     var logger: BeagleLoggerType = BeagleLoggerDumb()
-    var formDataStoreHandler: FormDataStoreHandling = FormDataStoreHandlerDummy()
     var navigationControllerType = BeagleNavigationController.self
     var urlBuilder: UrlBuilderProtocol = UrlBuilder()
     var networkClient: NetworkClient? = NetworkClientDummy()
     var deepLinkHandler: DeepLinkScreenManaging?
-    var localFormHandler: LocalFormHandler?
     var navigation: BeagleNavigation = BeagleNavigationDummy()
     var windowManager: WindowManager = WindowManagerDumb()
     var opener: URLOpener = URLOpenerDumb()

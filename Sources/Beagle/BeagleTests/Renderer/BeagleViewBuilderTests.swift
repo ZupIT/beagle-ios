@@ -21,7 +21,7 @@ final class BeagleViewBuilderTests: XCTestCase {
 
     func test_buildFromRootComponent_shouldReturnTheExpectedRootView() {
         // Given
-        let component = Text("Text")
+        let component = Text(text: "Text")
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         
