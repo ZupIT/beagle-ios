@@ -2,10 +2,7 @@
   "route" : {
     "fallback" : {
       "child" : {
-        "text" : "Fallback Screen Content",
-        "widgetProperties" : {
-
-        }
+        "text" : "Fallback Screen Content"
       },
       "identifier" : "fallback-screen-id",
       "navigationBar" : {

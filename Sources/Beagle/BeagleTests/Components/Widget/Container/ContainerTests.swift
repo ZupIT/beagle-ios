@@ -55,29 +55,18 @@ final class ContainerTests: XCTestCase {
         let sut = Container(children: [
             Text(text: "Some texts."),
             Text(text: "More texts.")
-        ], widgetProperties: .init(style: Style(flex: Flex())))
+        ], style: Style(flex: Flex()))
         
         let mirror = Mirror(reflecting: sut)
         
         // When
-        let style = mirror.firstChild(of: WidgetProperties.self)?.style
+        let style = mirror.firstChild(of: Style.self)
         let component = mirror.firstChild(of: [ServerDrivenComponent].self)
 
         // Then
         XCTAssertTrue(sut.children?.count == 2)
         XCTAssertNotNil(style)
         XCTAssertNotNil(component)
-    }
-    
-    func test_applyFlex_shouldReturnContainer() {
-        // Given
-        let component = Container(children: [
-            Text(text: "Some texts")
-        ])
-        // When
-        let container = component.applyFlex(Flex(justifyContent: .center))
-        // Then
-        XCTAssertNotNil(container.style?.flex)
     }
     
     func test_toView_shouldReturnTheExpectedView() throws {
@@ -100,13 +89,11 @@ final class ContainerTests: XCTestCase {
                 Text(text: "Donec orci elit, scelerisque vel mattis at, ornare in libero. Cras vestibulum justo et lacus accumsan malesuada. Pellentesque gravida risus tincidunt sapien commodo iaculis. Praesent eget consectetur ligula, vitae fringilla urna. Donec erat arcu, fermentum sed orci in, euismod dictum augue. Aenean ac ullamcorper ante, sit amet commodo elit. Mauris et nibh ac ante luctus fermentum varius nec mauris."),
                 Text(text: "Sed vel nisl tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fringilla velit vulputate ultricies auctor. Sed et enim lacinia risus hendrerit efficitur vitae vel tellus.")
             ],
-            widgetProperties: .init(
-                style: .init(
-                    backgroundColor: "#0000FF50",
-                    cornerRadius: .init(radius: 30.0),
-                    margin: EdgeValue().horizontal(20),
-                    flex: Flex().grow(1).justifyContent(.spaceEvenly)
-                )
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 30.0),
+                margin: EdgeValue().horizontal(20),
+                flex: Flex().grow(1).justifyContent(.spaceEvenly)
             )
         )
 
@@ -118,15 +105,13 @@ final class ContainerTests: XCTestCase {
         // Given
         let container = Container(
             children: [Text(text: "Content")],
-            widgetProperties: .init(
-                style: .init(
-                    backgroundColor: "#0000FF50",
-                    cornerRadius: .init(topLeft: 15, topRight: 35, bottomLeft: 25, bottomRight: 50),
-                    borderColor: "#FF0000",
-                    borderWidth: 4,
-                    size: .init(width: 100%, height: 100%),
-                    padding: EdgeValue().all(4)
-                )
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(topLeft: 15, topRight: 35, bottomLeft: 25, bottomRight: 50),
+                borderColor: "#FF0000",
+                borderWidth: 4,
+                size: .init(width: 100%, height: 100%),
+                padding: EdgeValue().all(4)
             )
         )
         
@@ -166,7 +151,7 @@ final class ContainerTests: XCTestCase {
         let container = Container(
             children: [Text(text: "teste", textColor: "#FFFFFF")],
             styleId: style,
-            widgetProperties: WidgetProperties(style: Style().size(Size().width(100).height(100)))
+            style: Style().size(Size().width(100).height(100))
         )
 
         // When

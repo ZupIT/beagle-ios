@@ -153,11 +153,9 @@ final class BeagleScreenViewControllerTests: XCTestCase {
             content: Text(
                 text: "My Content",
                 alignment: Expression.value(.center),
-                widgetProperties: .init(
-                    style: .init(
-                        backgroundColor: "#00FFFF",
-                        flex: Flex(grow: 1)
-                    )
+                style: .init(
+                    backgroundColor: "#00FFFF",
+                    flex: Flex(grow: 1)
                 )
             )
         )
@@ -187,11 +185,11 @@ final class BeagleScreenViewControllerTests: XCTestCase {
             navigationBar: NavigationBar(title: "Test Safe Area"),
             child: Container(
                 children: [content],
-                widgetProperties: .init(style: Style(
+                style: Style(
                     backgroundColor: "#00FF00",
                     margin: .init(all: 10),
                     flex: Flex(grow: 1)
-                ))
+                )
             )
         )
         let screenController = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen)))
@@ -272,7 +270,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
         }
         let cacheReference = CacheReference(identifier: url, data: jsonData, hash: "123")
         cacheManager.addToCache(cacheReference)
-        let repository = RepositoryStub(componentResult: .success(Text(text: "Remote Component", widgetProperties: .init(style: .init(backgroundColor: "#00FFFF")))))
+        let repository = RepositoryStub(componentResult: .success(Text(text: "Remote Component", style: .init(backgroundColor: "#00FFFF"))))
         let dependencies = BeagleDependencies()
         dependencies.cacheManager = cacheManager
         dependencies.repository = repository
@@ -289,7 +287,7 @@ final class BeagleScreenViewControllerTests: XCTestCase {
         let repository = RepositoryStub(componentResult: .failure(.urlBuilderError))
         let fallback = Text(
             text: "Fallback screen.\n",
-            widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))
+            style: .init(backgroundColor: "#FF0000")
         ).toScreen()
         
         let dependencies = BeagleDependencies()

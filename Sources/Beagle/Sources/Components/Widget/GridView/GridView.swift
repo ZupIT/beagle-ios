@@ -15,7 +15,7 @@
  */
 
 /// GridView is a Layout component that will define a list of views natively. These views could be any ServerDrivenComponent.
-public struct GridView: Widget, HasContext, InitiableComponent {
+public struct GridView: Widget, HasContext, InitiableComponent, AutoDecodable {
     
     public typealias Direction = ScrollAxis
     
@@ -54,48 +54,8 @@ public struct GridView: Widget, HasContext, InitiableComponent {
     /// This attribute enables or disables the scroll indicator.
     public var isScrollIndicatorVisible: Bool?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
-}
-
-extension GridView: Decodable {
-
-    enum CodingKeys: String, CodingKey {
-        case context
-        case onInit
-        case dataSource
-        case key
-        case direction
-        case spanCount
-        case numColumns
-        case templates
-        case iteratorName
-        case onScrollEnd
-        case scrollEndThreshold
-        case isScrollIndicatorVisible
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        context = try container.decodeIfPresent(Context.self, forKey: .context)
-        onInit = try container.decodeIfPresent(forKey: .onInit)
-        dataSource = try container.decode(Expression<[DynamicObject]>.self, forKey: .dataSource)
-        key = try container.decodeIfPresent(String.self, forKey: .key)
-        
-        if let spanCount = try? container.decode(Int.self, forKey: .spanCount) {
-            self.spanCount = spanCount
-            self.direction = try container.decodeIfPresent(Direction.self, forKey: .direction)
-        } else {
-            self.spanCount = try container.decode(Int.self, forKey: .numColumns)
-            self.direction = nil
-        }
-        templates = try container.decode([Template].self, forKey: .templates)
-        iteratorName = try container.decodeIfPresent(String.self, forKey: .iteratorName)
-        onScrollEnd = try container.decodeIfPresent(forKey: .onScrollEnd)
-        scrollEndThreshold = try container.decodeIfPresent(Int.self, forKey: .scrollEndThreshold)
-        isScrollIndicatorVisible = try container.decodeIfPresent(Bool.self, forKey: .isScrollIndicatorVisible)
-        widgetProperties = try WidgetProperties(from: decoder)
-    }
 }

@@ -244,7 +244,6 @@
 		A0EB6BD925910FC8001A3E65 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0EB6BD625910FC8001A3E65 /* AnalyticsService.swift */; };
 		A0F45498237B87E900B146A1 /* BeagleNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F45497237B87E800B146A1 /* BeagleNavigator.swift */; };
 		B755B58A2686602700A7EDC5 /* GridViewDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B755B5892686602700A7EDC5 /* GridViewDecodeTests.swift */; };
-		B755B58D268661B800A7EDC5 /* gridViewNumColumns.json in Resources */ = {isa = PBXBuildFile; fileRef = B755B58C268661B800A7EDC5 /* gridViewNumColumns.json */; };
 		B755B591268667D400A7EDC5 /* gridViewSpanCount.json in Resources */ = {isa = PBXBuildFile; fileRef = B755B590268667D400A7EDC5 /* gridViewSpanCount.json */; };
 		C0291889247D5BFA00C3AA13 /* ComponentFromJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0291888247D5BFA00C3AA13 /* ComponentFromJsonFile.swift */; };
 		C048EBDB242BD78500A24075 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C048EBDA242BD78500A24075 /* Analytics.swift */; };
@@ -350,6 +349,7 @@
 		931B6E31237610B300DE73FD /* FunctiontalUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctiontalUtils.swift; sourceTree = "<group>"; };
 		9322336426CC23FC00CB95EF /* ActionSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSpy.swift; sourceTree = "<group>"; };
 		9322336626CC5A1F00CB95EF /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
+		9322336A26D7D19200CB95EF /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
 		9327116423F1C9D100778B56 /* Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Widget.swift; sourceTree = "<group>"; };
 		932925CF2327E11000A61F01 /* Beagle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Beagle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		932925D22327E11000A61F01 /* Beagle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Beagle.h; sourceTree = "<group>"; };
@@ -587,7 +587,6 @@
 		A0EB6BD625910FC8001A3E65 /* AnalyticsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		A0F45497237B87E800B146A1 /* BeagleNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeagleNavigator.swift; sourceTree = "<group>"; };
 		B755B5892686602700A7EDC5 /* GridViewDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewDecodeTests.swift; sourceTree = "<group>"; };
-		B755B58C268661B800A7EDC5 /* gridViewNumColumns.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gridViewNumColumns.json; sourceTree = "<group>"; };
 		B755B590268667D400A7EDC5 /* gridViewSpanCount.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gridViewSpanCount.json; sourceTree = "<group>"; };
 		C0291888247D5BFA00C3AA13 /* ComponentFromJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentFromJsonFile.swift; sourceTree = "<group>"; };
 		C048EBDA242BD78500A24075 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
@@ -1657,6 +1656,7 @@
 		B755B5882686600400A7EDC5 /* GridView */ = {
 			isa = PBXGroup;
 			children = (
+				9322336A26D7D19200CB95EF /* __Snapshots__ */,
 				B755B5892686602700A7EDC5 /* GridViewDecodeTests.swift */,
 				B755B58B268660A700A7EDC5 /* JSON */,
 			);
@@ -1666,7 +1666,6 @@
 		B755B58B268660A700A7EDC5 /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				B755B58C268661B800A7EDC5 /* gridViewNumColumns.json */,
 				B755B590268667D400A7EDC5 /* gridViewSpanCount.json */,
 			);
 			path = JSON;
@@ -2110,7 +2109,6 @@
 				9356CDE6262482820021EFC6 /* CustomPageIndicator.json in Resources */,
 				9356CE58262482820021EFC6 /* declarativeText2.json in Resources */,
 				9356CE1D262482820021EFC6 /* ImageTests.xcassets in Resources */,
-				B755B58D268661B800A7EDC5 /* gridViewNumColumns.json in Resources */,
 				9356CE36262482820021EFC6 /* TextComponent.json in Resources */,
 				9356CBB8262481BE0021EFC6 /* pushViewWithAdditionalData.json in Resources */,
 				9356CE2C262482820021EFC6 /* buttonComponent.json in Resources */,

@@ -81,38 +81,23 @@ public class Style: Decodable, AutoEquatable, AutoInitiable {
 }
 
 /// The CornerRadius apply rounded borders to the widget
-public struct CornerRadius: Decodable, AutoEquatable, AutoInitiable {
+public struct CornerRadius: Decodable, AutoEquatable {
     
     /// Defines the default size of the all corner radius
-    public let radius: Double?
+    public var radius: Double?
     
     /// Defines the size of the top left radius
-    public let topLeft: Double?
+    public var topLeft: Double?
     
     /// Defines the size of the top right radius
-    public let topRight: Double?
+    public var topRight: Double?
     
     /// Defines the size of the bottom left radius
-    public let bottomLeft: Double?
+    public var bottomLeft: Double?
     
     /// Defines the size of the bottom right radius
-    public let bottomRight: Double?
+    public var bottomRight: Double?
 
-// sourcery:inline:auto:CornerRadius.Init
-    public init(
-        radius: Double? = nil,
-        topLeft: Double? = nil,
-        topRight: Double? = nil,
-        bottomLeft: Double? = nil,
-        bottomRight: Double? = nil
-    ) {
-        self.radius = radius
-        self.topLeft = topLeft
-        self.topRight = topRight
-        self.bottomLeft = bottomLeft
-        self.bottomRight = bottomRight
-    }
-// sourcery:end
 }
 
 // MARK: - Display

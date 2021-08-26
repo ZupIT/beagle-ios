@@ -54,8 +54,9 @@ public struct TextInput: Widget, AutoDecodable {
     /// The error will be visible only if showError is true.
     public var showError: Expression<Bool>?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
 }
 

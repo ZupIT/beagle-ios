@@ -65,7 +65,7 @@ final class CacheManagerDefaultTests: XCTestCase {
             timeOutComponent.fulfill()
         }
         
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testMaxAgeFromServer() {

@@ -16,33 +16,19 @@
 
 // MARK: - Widget
 
-public protocol Widget: ServerDrivenComponent, HasWidgetProperties {
-    var widgetProperties: WidgetProperties { get set }
+public protocol Widget: ServerDrivenComponent, IdentifiableComponent, StyleComponent, AccessibilityComponent {
+    var id: String? { get set }
+    var style: Style? { get set }
+    var accessibility: Accessibility? { get set }
 }
-
-// MARK: - Widget Properties
-public extension Widget {
-
-    var style: Style? {
-        get { return widgetProperties.style }
-        set { widgetProperties.style = newValue }
-    }
-
-    var accessibility: Accessibility? {
-        get { return widgetProperties.accessibility }
-        set { widgetProperties.accessibility = newValue }
-    }
-
-    var id: String? {
-        get { return widgetProperties.id }
-        set { widgetProperties.id = newValue }
-    }
-}
-
-public protocol HasWidgetProperties: StyleComponent, AccessibilityComponent, IdentifiableComponent { }
 
 public protocol HasContext {
     var context: Context? { get }
+}
+
+public protocol IdentifiableComponent {
+    /// string that uniquely identifies a component
+    var id: String? { get }
 }
 
 public protocol StyleComponent {
@@ -53,35 +39,6 @@ public protocol AccessibilityComponent {
     var accessibility: Accessibility? { get }
 }
 
-public protocol IdentifiableComponent {
-    /// string that uniquely identifies a component
-    var id: String? { get }
-}
-
 public protocol InitiableComponent {
     var onInit: [Action]? { get }
-}
-
-/// Properties that all widgets have and are important to Beagle.
-public struct WidgetProperties: HasWidgetProperties, AutoDecodable, Equatable {
-
-    public var id: String?
-    public var style: Style?
-    public var accessibility: Accessibility?
-
-    public init(
-        id: String? = nil,
-        style: Style? = nil,
-        accessibility: Accessibility? = nil
-    ) {
-        self.id = id
-        self.style = style
-        self.accessibility = accessibility
-    }
-    
-    init(
-        _ flex: Flex
-    ) {
-        self.init(style: Style(flex: flex))
-    }
 }

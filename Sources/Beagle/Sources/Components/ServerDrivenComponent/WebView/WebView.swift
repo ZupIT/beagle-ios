@@ -22,7 +22,8 @@ public struct WebView: Widget, AutoDecodable {
     /// Defines the initial page that the WebView will load when presented .
     public let url: Expression<String>
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
 
 }

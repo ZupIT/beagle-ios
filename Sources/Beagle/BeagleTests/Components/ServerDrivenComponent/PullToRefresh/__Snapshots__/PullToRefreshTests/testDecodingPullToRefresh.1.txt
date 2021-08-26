@@ -1,6 +1,9 @@
 ▿ PullToRefresh
   ▿ child: Text
+    - accessibility: Optional<Accessibility>.none
     - alignment: Optional<Expression<Alignment>>.none
+    - id: Optional<String>.none
+    - style: Optional<Style>.none
     - styleId: Optional<String>.none
     ▿ text: Expression<String>
       ▿ expression: ContextExpression
@@ -13,10 +16,6 @@
                   ▿ Node
                     - key: "value"
     - textColor: Optional<Expression<String>>.none
-    ▿ widgetProperties: WidgetProperties
-      - accessibility: Optional<Accessibility>.none
-      - id: Optional<String>.none
-      - style: Optional<Style>.none
   ▿ color: Optional<Expression<String>>
     ▿ some: Expression<String>
       ▿ expression: ContextExpression
