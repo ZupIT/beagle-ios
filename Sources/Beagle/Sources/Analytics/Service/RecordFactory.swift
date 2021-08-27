@@ -68,7 +68,7 @@ private func screenInfo(_ screenType: ScreenType) -> String? {
     case .remote(let remote):
         return remote.url
     case .declarative(let declarative):
-        return declarative.identifier
+        return declarative.id
     case .declarativeText:
         return ""
     }
