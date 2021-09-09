@@ -35,7 +35,6 @@ class BeagleConfig {
 
         let innerDependencies = InnerDependencies()
         dependencies.networkClient = NetworkClientDefault(dependencies: innerDependencies)
-        dependencies.cacheManager = CacheManagerDefault(dependencies: innerDependencies)
         dependencies.logger = innerDependencies.logger
         dependencies.analyticsProvider = AnalyticsProviderDemo()
 
