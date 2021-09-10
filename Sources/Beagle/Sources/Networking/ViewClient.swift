@@ -93,7 +93,7 @@ public struct ViewClientDefault: ViewClient {
                 .flatMap { self.decodeComponent(from: $0.data) }
             
             if cacheInsert, case .success(_) = mapped {
-                cache.insert(mapped, forKey: url)
+                self.cache.insert(mapped, forKey: url)
             }
             
             DispatchQueue.main.async { completion(mapped) }
