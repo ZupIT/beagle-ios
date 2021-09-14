@@ -1,0 +1,25 @@
+{
+    "_beagleComponent_": "beagle:screenComponent",
+    "child": {
+        "_beagleComponent_": "beagle:text",
+        "text": "Screen Content"
+    },
+    "id": "screen-id",
+    "navigationBar": {
+        "showBackButton": true,
+        "title": "Screen Title",
+        "navigationBarItems": [
+            {
+                "image": "imagepath",
+                "text": "imageText",
+                "action": {
+                    "_beagleAction_": "beagle:pushView",
+                    "route": {
+                        "url": "http://localhost:8080/test/example",
+                        "shouldPrefetch": false
+                    }
+                }
+            }
+        ]
+    }
+}

@@ -254,10 +254,10 @@ final class BeagleNavigatorTests: XCTestCase {
     func test_popToView_byIdentifier() {
         // Given
         let sut = BeagleNavigator()
-        let vc1 = BeagleControllerStub(.declarative(Screen(identifier: "1", child: Text(text: "Screen 1"))))
-        let vc2 = BeagleControllerStub(.declarative(Screen(identifier: "2", child: Text(text: "Screen 2"))))
+        let vc1 = BeagleControllerStub(.declarative(Screen(id: "1", child: Text(text: "Screen 1"))))
+        let vc2 = BeagleControllerStub(.declarative(Screen(id: "2", child: Text(text: "Screen 2"))))
         let vc3 = UIViewController()
-        let vc4 = BeagleControllerStub(.declarative(Screen(identifier: "4", child: Text(text: "Screen 4"))))
+        let vc4 = BeagleControllerStub(.declarative(Screen(id: "4", child: Text(text: "Screen 4"))))
         let action = Navigate.popToView("2")
         
         let navigation = UINavigationController()

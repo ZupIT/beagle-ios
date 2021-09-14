@@ -13,7 +13,7 @@
                 "_beagleComponent_": "beagle:text",
                 "text": "Fallback Screen Content"
             },
-            "identifier": "fallback-screen-id",
+            "id": "fallback-screen-id",
             "navigationBar": {
                 "showBackButton": true,
                 "title": "Fallback Screen Title"

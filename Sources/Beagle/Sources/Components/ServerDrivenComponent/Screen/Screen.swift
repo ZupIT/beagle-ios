@@ -20,7 +20,7 @@
 public struct Screen: ServerDrivenComponent, StyleComponent, HasContext {
     
     /// identifies your screen globally inside your application so that it could have actions set on itself.
-    public var identifier: String?
+    public var id: String?
     
     /// Enables a few visual options to be changed.
     public var style: Style?
@@ -42,7 +42,7 @@ public struct Screen: ServerDrivenComponent, StyleComponent, HasContext {
 extension Screen {
 
     enum CodingKeys: String, CodingKey {
-        case identifier
+        case id
         case style
         case safeArea
         case navigationBar
@@ -53,7 +53,7 @@ extension Screen {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        identifier = try container.decodeIfPresent(String.self, forKey: .identifier)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
         style = try container.decodeIfPresent(Style.self, forKey: .style)
         safeArea = try container.decodeIfPresent(SafeArea.self, forKey: .safeArea) ??
             SafeArea(top: true, leading: true, bottom: true, trailing: true)

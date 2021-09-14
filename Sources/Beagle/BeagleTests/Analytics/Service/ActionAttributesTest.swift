@@ -70,7 +70,7 @@ class ActionAttributesTest: XCTestCase {
 
 func analyticsViewHierarchyWith(context: Context?) throws -> (view: UIView, controller: BeagleController) {
     let child = AnalyticsTestComponent()
-    let screen = Screen(identifier: "analytics-actions", child: child, context: context)
+    let screen = Screen(id: "analytics-actions", child: child, context: context)
     
     let dependencies = BeagleDependencies()
     dependencies.decoder.register(component: AnalyticsTestComponent.self)
