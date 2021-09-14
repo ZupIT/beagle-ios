@@ -142,10 +142,9 @@ class BeagleScreenViewModel {
         dependencies: BeagleDependenciesProtocol,
         completion: @escaping (Result<Screen, Request.Error>) -> Void
     ) -> RequestToken? {
-        return dependencies.repository.fetchComponent(
+        return dependencies.viewClient.fetch(
             url: remote.url,
-            additionalData: remote.additionalData,
-            useCache: true
+            additionalData: remote.additionalData
         ) {
             completion($0.map { $0.toScreen() })
         }

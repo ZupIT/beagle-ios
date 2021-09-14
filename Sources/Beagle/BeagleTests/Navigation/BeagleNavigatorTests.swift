@@ -54,8 +54,8 @@ final class BeagleNavigatorTests: XCTestCase {
         // Given
         let windowMock = WindowMock()
         let windowManager = WindowManagerDumb(window: windowMock)
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository, windowManager: windowManager)
+        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
+        let dependencies = BeagleScreenDependencies(viewClient: viewClient, windowManager: windowManager)
         
         let sut = BeagleNavigator()
         let controller = BeagleControllerStub(dependencies: dependencies)
@@ -99,8 +99,8 @@ final class BeagleNavigatorTests: XCTestCase {
         let sut = BeagleNavigator()
         let firstViewController = UIViewController()
         
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
+        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
+        let dependencies = BeagleScreenDependencies(viewClient: viewClient)
         let secondViewController = BeagleControllerStub(dependencies: dependencies)
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [firstViewController, secondViewController]
@@ -121,8 +121,8 @@ final class BeagleNavigatorTests: XCTestCase {
     
     private func addViewTest(_ navigate: Navigate) {
         let sut = BeagleNavigator()
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
+        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
+        let dependencies = BeagleScreenDependencies(viewClient: viewClient)
         let firstViewController = BeagleControllerStub(dependencies: dependencies)
         let navigation = BeagleNavigationController(rootViewController: firstViewController)
         
@@ -254,10 +254,10 @@ final class BeagleNavigatorTests: XCTestCase {
     func test_popToView_byIdentifier() {
         // Given
         let sut = BeagleNavigator()
-        let vc1 = BeagleControllerStub(.declarative(Screen(identifier: "1", child: Text(text: "Screen 1"))))
-        let vc2 = BeagleControllerStub(.declarative(Screen(identifier: "2", child: Text(text: "Screen 2"))))
+        let vc1 = BeagleControllerStub(.declarative(Screen(id: "1", child: Text(text: "Screen 1"))))
+        let vc2 = BeagleControllerStub(.declarative(Screen(id: "2", child: Text(text: "Screen 2"))))
         let vc3 = UIViewController()
-        let vc4 = BeagleControllerStub(.declarative(Screen(identifier: "4", child: Text(text: "Screen 4"))))
+        let vc4 = BeagleControllerStub(.declarative(Screen(id: "4", child: Text(text: "Screen 4"))))
         let action = Navigate.popToView("2")
         
         let navigation = UINavigationController()
@@ -281,8 +281,8 @@ final class BeagleNavigatorTests: XCTestCase {
     
     private func pushStackTest(_ navigate: Navigate) {
         let sut = BeagleNavigator()
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
+        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
+        let dependencies = BeagleScreenDependencies(viewClient: viewClient)
         let navigationSpy = BeagleControllerNavigationSpy(dependencies: dependencies)
         
         sut.navigate(action: navigate, controller: navigationSpy, origin: nil)
@@ -337,7 +337,7 @@ final class BeagleNavigatorTests: XCTestCase {
     func testIfNavigationIsPushedWithSetContext() {
         // Given
         let sut = BeagleNavigator()
-        let dependencies = BeagleScreenDependencies(repository: RepositoryStub(componentResult: .success(ComponentDummy())))
+        let dependencies = BeagleScreenDependencies(viewClient: ViewClientStub(componentResult: .success(ComponentDummy())))
 
         let url: DynamicObject = .string("https://example.com/screen.json")
         let pushViewRemote = Navigate.pushView(.remote(.init(url: "@{url}", shouldPrefetch: false)))

@@ -25,7 +25,7 @@ extension LazyComponent {
     }
     
     private func lazyLoad(initialState view: UIView, renderer: BeagleRenderer) {
-        renderer.dependencies.repository.fetchComponent(url: path, additionalData: nil, useCache: false) {
+        renderer.dependencies.viewClient.fetch(url: path, additionalData: nil) {
             [weak view] result in
             guard let view = view else { return }
             switch result {

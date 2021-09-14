@@ -19,6 +19,11 @@ import SnapshotTesting
 @testable import Beagle
 
 final class ScreenComponentTests: XCTestCase {
+    
+    func testScreenDecoding() throws {
+        let screen: Screen = try componentFromJsonFile(fileName: "screen")
+        assertSnapshot(matching: screen, as: .dump)
+    }
 
     func test_initWithBuilders_shouldReturnExpectedInstance() {
         // Given / When

@@ -24,7 +24,7 @@ public protocol BeaglePrefetchHelping {
 
 public class BeaglePreFetchHelper: BeaglePrefetchHelping {
     
-    public typealias Dependencies = DependencyRepository & DependencyLogger
+    public typealias Dependencies = DependencyViewClient & DependencyLogger
     let dependencies: Dependencies
     
     public init(dependencies: Dependencies) {
@@ -38,8 +38,6 @@ public class BeaglePreFetchHelper: BeaglePrefetchHelping {
             return
         }
         
-        dependencies.repository.fetchComponent(url: path, additionalData: nil, useCache: true) { _ in
-            // Intentionally unimplemented...
-        }
+        dependencies.viewClient.prefetch(url: path, additionalData: nil)
     }
 }

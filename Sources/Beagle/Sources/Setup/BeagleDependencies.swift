@@ -27,12 +27,11 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
     DependencyTheme,
     DependencyPreFetching,
     DependencyAppBundle,
-    DependencyRepository,
+    DependencyViewClient,
     DependencyImageDownloader,
     DependencyLogger,
     DependencyWindowManager,
     DependencyURLOpener,
-    DependencyCacheManager,
     DependencyRenderer,
     DependencyGlobalContext,
     DependencyOperationsProvider {
@@ -46,12 +45,11 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
     public var appBundle: Bundle
     public var theme: Theme
     public var deepLinkHandler: DeepLinkScreenManaging?
-    public var repository: Repository
+    public var viewClient: ViewClient
     public var imageDownloader: ImageDownloader
     public var analyticsProvider: AnalyticsProvider?
     public var navigation: BeagleNavigation
     public var preFetchHelper: BeaglePrefetchHelping
-    public var cacheManager: CacheManagerProtocol?
     public var windowManager: WindowManager
     public var opener: URLOpener
     public var globalContext: GlobalContext
@@ -79,7 +77,7 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
 
     private let resolver: InnerDependenciesResolver
 
-    public init(networkClient: NetworkClient? = nil, cacheManager: CacheManagerProtocol? = nil, logger: BeagleLoggerType? = nil) {
+    public init(networkClient: NetworkClient? = nil, logger: BeagleLoggerType? = nil) {
         let resolver = InnerDependenciesResolver()
         self.resolver = resolver
 
@@ -96,9 +94,8 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
         self.globalContext = DefaultGlobalContext()
         
         self.networkClient = networkClient
-        self.repository = RepositoryDefault(dependencies: resolver)
+        self.viewClient = ViewClientDefault(dependencies: resolver)
         self.imageDownloader = ImageDownloaderDefault(dependencies: resolver)
-        self.cacheManager = cacheManager
         self.opener = URLOpenerDefault(dependencies: resolver)
 
         self.resolver.container = { [unowned self] in self }
@@ -111,9 +108,9 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
 /// dependencies within dependencies.
 /// The problem happened because we needed to pass `self` as dependency before `init` has concluded.
 /// - Example: see where `resolver` is being used in the `BeagleDependencies` `init`.
-private class InnerDependenciesResolver: RepositoryDefault.Dependencies,
+private class InnerDependenciesResolver: ViewClientDefault.Dependencies,
     DependencyDeepLinkScreenManaging,
-    DependencyRepository,
+    DependencyViewClient,
     DependencyWindowManager,
     DependencyURLOpener {
         
@@ -127,8 +124,7 @@ private class InnerDependenciesResolver: RepositoryDefault.Dependencies,
     var navigation: BeagleNavigation { return container().navigation }
     var deepLinkHandler: DeepLinkScreenManaging? { return container().deepLinkHandler }
     var logger: BeagleLoggerType { return container().logger }
-    var cacheManager: CacheManagerProtocol? { return container().cacheManager }
-    var repository: Repository { return container().repository }
+    var viewClient: ViewClient { return container().viewClient }
     var windowManager: WindowManager { return container().windowManager }
     var opener: URLOpener { return container().opener }
 }

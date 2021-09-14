@@ -37,7 +37,7 @@ class ScreenRecordFactoryTests: XCTestCase {
     func testScreenDeclarative() {
         // Given
         screen = .declarative(Screen(
-            identifier: "DECLARATIVE",
+            id: "DECLARATIVE",
             child: ComponentDummy()
         ))
 

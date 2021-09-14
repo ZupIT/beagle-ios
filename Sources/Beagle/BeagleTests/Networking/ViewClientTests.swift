@@ -17,11 +17,11 @@
 import XCTest
 @testable import Beagle
 
-final class RepositoryTests: XCTestCase {
+final class ViewClientTests: XCTestCase {
 
     private var dependencies = BeagleDependencies()
 
-    private lazy var sut = RepositoryDefault(dependencies: dependencies)
+    private lazy var sut = ViewClientDefault(dependencies: dependencies)
 
     private let url = "www.something.com"
 
@@ -31,14 +31,14 @@ final class RepositoryTests: XCTestCase {
         let invalidURL = "🥶"
         let beagleDependencies = BeagleDependencies()
         beagleDependencies.urlBuilder = UrlBuilderStub(baseUrl: nil, resultURL: nil)
-        let repository = RepositoryDefault(dependencies: beagleDependencies)
+        let viewClient = ViewClientDefault(dependencies: beagleDependencies)
         
         let fetchComponentExpectation = expectation(description: "fetchComponent")
         var fetchError: Request.Error?
         let expectedError = Request.Error.urlBuilderError
         
         // When
-        repository.fetchComponent(url: invalidURL, additionalData: nil) {
+        viewClient.fetch(url: invalidURL, additionalData: nil) {
             if case let .failure(error) = $0 {
                 fetchError = error
             }
@@ -68,7 +68,7 @@ final class RepositoryTests: XCTestCase {
 
         // When
         var componentReturned: ServerDrivenComponent?
-        sut.fetchComponent(url: url, additionalData: nil) { result in
+        sut.fetch(url: url, additionalData: nil) { result in
             if case .success(let component) = result {
                 componentReturned = component
             }
@@ -96,7 +96,7 @@ final class RepositoryTests: XCTestCase {
         // When
         var errorThrown: Request.Error?
 
-        sut.fetchComponent(url: url, additionalData: nil) { result in
+        sut.fetch(url: url, additionalData: nil) { result in
             if case let .failure(error) = result {
                 errorThrown = error
             }
@@ -127,7 +127,7 @@ final class RepositoryTests: XCTestCase {
         let expec = expectation(description: "fetch")
 
         // When
-        sut.fetchComponent(url: url, additionalData: additionalData) { _ in
+        sut.fetch(url: url, additionalData: additionalData) { _ in
             expec.fulfill()
         }
         wait(for: [expec], timeout: 1.0)
@@ -170,12 +170,13 @@ final class ComponentDecodingStub: ComponentDecoding {
     }
 }
 
-final class RepositoryStub: Repository {
+final class ViewClientStub: ViewClient {
 
     var componentResult: Result<ServerDrivenComponent, Request.Error>?
     var formResult: Result<Action, Request.Error>?
 
     private(set) var didCallDispatch = false
+    private(set) var didCallPrefetch = false
     private(set) var token = Token()
 
     class Token: RequestToken {
@@ -194,10 +195,9 @@ final class RepositoryStub: Repository {
         self.formResult = formResult
     }
 
-    func fetchComponent(
+    func fetch(
         url: String,
         additionalData: RemoteScreenAdditionalData?,
-        useCache: Bool,
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken? {
         didCallDispatch = true
@@ -207,13 +207,10 @@ final class RepositoryStub: Repository {
         return token
     }
     
-    func fetchImage(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        completion: @escaping (Result<Data, Request.Error>) -> Void
-    ) -> RequestToken? {
-        return nil
+    func prefetch(url: String, additionalData: RemoteScreenAdditionalData?) {
+        didCallPrefetch = true
     }
+    
 }
 
 class NetworkClientStub: NetworkClient {
@@ -232,40 +229,9 @@ class NetworkClientStub: NetworkClient {
         return nil
     }
 }
- enum TestErrors: Swift.Error {
-     case generic
- }
 
-class CacheManagerSpy: CacheManagerProtocol {
-    
-    var references = [Reference]()
-
-    class Reference {
-        let cache: CacheReference
-        var isValid: Bool
-
-        init(cache: CacheReference, isValid: Bool) {
-            self.cache = cache
-            self.isValid = isValid
-        }
-    }
-    
-    func addToCache(_ reference: CacheReference) {
-        guard first(reference.identifier) == nil else { return }
-        references.append(.init(cache: reference, isValid: false))
-    }
-    
-    func getReference(identifiedBy id: String) -> CacheReference? {
-        return first(id)?.cache
-    }
-    
-    func isValid(reference: CacheReference) -> Bool {
-        return first(reference.identifier)?.isValid ?? false
-    }
-
-    private func first(_ id: String) -> Reference? {
-        return references.first { $0.cache.identifier == id }
-    }
+enum TestErrors: Swift.Error {
+    case generic
 }
 
 private struct UrlBuilderStub: UrlBuilderProtocol {
