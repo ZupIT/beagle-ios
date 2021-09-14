@@ -65,7 +65,7 @@ class TextInputTests: XCTestCase {
             placeholder: "password",
             type: .value(.password),
             styleId: "test.textInput.style",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(80))))
+            style: .init(size: Size().width(300).height(80)))
         
         // When
         let view = renderer.render(textInput)
@@ -81,7 +81,7 @@ class TextInputTests: XCTestCase {
             placeholder: "type here",
             type: .value(.text),
             styleId: "test.textInput.style",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(80))))
+            style: .init(size: Size().width(300).height(80)))
         
         guard let textField = renderer.render(textInput) as? UITextField else {
             XCTFail("Unable to type cast to UITextField.")
@@ -103,7 +103,7 @@ class TextInputTests: XCTestCase {
             type: .value(.password),
             error: .value("Password must have 6 characters."),
             showError: .value(true),
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(35)))
+            style: .init(size: Size().width(300).height(35))
         )
                 
         // When
@@ -118,7 +118,7 @@ class TextInputTests: XCTestCase {
         let textInput = TextInput(
             value: "disabled",
             enabled: false,
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
+            style: .init(size: Size().width(100).height(50))
         )
                 
         // When // Then
@@ -132,7 +132,7 @@ class TextInputTests: XCTestCase {
             value: "@{textinput.value}",
             enabled: "@{textinput.enabled}",
             styleId: "customStyle",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
+            style: .init(size: Size().width(100).height(50))
         )
         
         func customStyle() -> (UITextField?) -> Void {

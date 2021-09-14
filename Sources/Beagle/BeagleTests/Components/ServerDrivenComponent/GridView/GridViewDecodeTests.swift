@@ -25,9 +25,4 @@ final class GridViewDecodeTests: XCTestCase {
         assertSnapshot(matching: component, as: .dump)
     }
     
-    func testDecodingDeprecatedJson() throws {
-        let component: GridView = try componentFromJsonFile(fileName: "gridViewNumColumns")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
 }

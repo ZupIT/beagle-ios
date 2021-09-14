@@ -50,7 +50,7 @@ class PageViewTests: XCTestCase {
         Text(text: "First text"),
         Button(text: "Button"),
         Text(text: "Second text")
-    ]).applyFlex(Flex(flexDirection: .column, justifyContent: .center))
+    ], style: Style().flex(Flex(flexDirection: .column, justifyContent: .center)))
 
     func test_viewWithPages() {
         let pageView = PageView(

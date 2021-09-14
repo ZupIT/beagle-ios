@@ -51,8 +51,9 @@ public struct ListView: Widget, HasContext, InitiableComponent {
     /// This attribute enables or disables the scroll indicator.
     public var isScrollIndicatorVisible: Bool?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
         
 }
 
@@ -79,6 +80,9 @@ extension ListView: Decodable {
         case onScrollEnd
         case scrollEndThreshold
         case isScrollIndicatorVisible
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
@@ -93,26 +97,12 @@ extension ListView: Decodable {
         onScrollEnd = try container.decodeIfPresent(forKey: .onScrollEnd)
         scrollEndThreshold = try container.decodeIfPresent(Int.self, forKey: .scrollEndThreshold)
         isScrollIndicatorVisible = try container.decodeIfPresent(Bool.self, forKey: .isScrollIndicatorVisible)
-        widgetProperties = try WidgetProperties(listFrom: decoder)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style) ?? Style()
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
         
         self.templates = try container.decodeIfPresent([Template].self, forKey: .templates) ?? []
         self.dataSource = try container.decode(Expression<[DynamicObject]>.self, forKey: .dataSource)
         
-    }
-}
-
-extension WidgetProperties {
-   private enum DefaultCodingKeys: String, CodingKey {
-        case id
-        case style
-        case accessibility
-    }
-
-    internal init(listFrom decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: DefaultCodingKeys.self)
-
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-        style = try container.decodeIfPresent(Style.self, forKey: .style) ?? Style()
-        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }

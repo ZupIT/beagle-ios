@@ -1,22 +1,21 @@
 ▿ Container
+  - accessibility: Optional<Accessibility>.none
   - children: Optional<Array<ServerDrivenComponent>>.none
   - context: Optional<Context>.none
+  - id: Optional<String>.none
   - onInit: Optional<Array<Action>>.none
+  ▿ style: Optional<Style>
+    ▿ some: Style
+      ▿ backgroundColor: Optional<String>
+        - some: "#0000FF50"
+      - borderColor: Optional<String>.none
+      - borderWidth: Optional<Double>.none
+      - cornerRadius: Optional<CornerRadius>.none
+      - display: Optional<Expression<Display>>.none
+      - flex: Optional<Flex>.none
+      - margin: Optional<EdgeValue>.none
+      - padding: Optional<EdgeValue>.none
+      - position: Optional<EdgeValue>.none
+      - positionType: Optional<PositionType>.none
+      - size: Optional<Size>.none
   - styleId: Optional<String>.none
-  ▿ widgetProperties: WidgetProperties
-    - accessibility: Optional<Accessibility>.none
-    - id: Optional<String>.none
-    ▿ style: Optional<Style>
-      ▿ some: Style
-        ▿ backgroundColor: Optional<String>
-          - some: "#0000FF50"
-        - borderColor: Optional<String>.none
-        - borderWidth: Optional<Double>.none
-        - cornerRadius: Optional<CornerRadius>.none
-        - display: Optional<Expression<Display>>.none
-        - flex: Optional<Flex>.none
-        - margin: Optional<EdgeValue>.none
-        - padding: Optional<EdgeValue>.none
-        - position: Optional<EdgeValue>.none
-        - positionType: Optional<PositionType>.none
-        - size: Optional<Size>.none

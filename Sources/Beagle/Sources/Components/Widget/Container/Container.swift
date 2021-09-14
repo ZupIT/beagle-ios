@@ -29,7 +29,8 @@ public struct Container: Widget, HasContext, InitiableComponent, AutoDecodable {
     /// References a native style configured to be applied on this container.
     public var styleId: String?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
 
 }

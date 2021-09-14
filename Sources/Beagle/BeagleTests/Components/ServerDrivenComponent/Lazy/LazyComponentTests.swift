@@ -43,8 +43,7 @@ final class LazyComponentTests: XCTestCase {
     }
     
     func test_lazyLoad_shouldReplaceTheInitialContent() {
-        var initialState = Text(text: "Loading...")
-        initialState.widgetProperties.style = .init(backgroundColor: "#00FF00")
+        let initialState = Text(text: "Loading...", style: Style().backgroundColor("#00FF00"))
         let sut = LazyComponent(path: "", initialState: initialState)
         let viewClient = LazyViewClientStub()
         let dependecies = BeagleDependencies()
@@ -59,8 +58,7 @@ final class LazyComponentTests: XCTestCase {
         assertSnapshotImage(screenController, size: .custom(size))
         
         screenController.view.setContext(Context(id: "ctx", value: "value of ctx"))
-        var lazyLoaded = Text(text: "Lazy Loaded! @{ctx}")
-        lazyLoaded.widgetProperties.style = .init(backgroundColor: "#FFFF00")
+        let lazyLoaded = Text(text: "Lazy Loaded! @{ctx}", style: Style().backgroundColor("#FFFF00"))
         viewClient.componentCompletion?(.success(lazyLoaded))
         
         let consumeMainQueue = expectation(description: "consumeMainQueue")

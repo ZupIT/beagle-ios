@@ -16,15 +16,6 @@
 * limitations under the License.
 */
 
-// MARK: DSCollection Equatable
-
-extension DSCollection: Equatable {
-     public static func == (lhs: DSCollection, rhs: DSCollection) -> Bool {
-        guard lhs.dataSource == rhs.dataSource else { return false }
-        guard lhs.widgetProperties == rhs.widgetProperties else { return false }
-        return true
-    }
-}
 // MARK: DSCollectionDataSource Equatable
 
 extension DSCollectionDataSource: Equatable {

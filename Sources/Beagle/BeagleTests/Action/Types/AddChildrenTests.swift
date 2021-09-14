@@ -101,9 +101,10 @@ final class AddChildrenTests: XCTestCase {
         }
         """)
         
+        dependencies = BeagleDependencies()
         assertSnapshotImage(sut, size: imageSize)
-        Beagle.dependencies.globalContext.set("value")
         
+        dependencies.globalContext.set("value")
         assertSnapshotImage(sut, size: imageSize)
     }
 
@@ -119,7 +120,7 @@ final class AddChildrenTests: XCTestCase {
         let controller = BeagleScreenViewController(Container(
             children: [Text(text: "initial")],
             context: Context(id: "contextId", value: "CONTEXT"),
-            widgetProperties: WidgetProperties(id: "componentId")
+            id: "componentId"
         ))
 
         assertSnapshotImage(controller, size: imageSize, testName: testName, line: line)

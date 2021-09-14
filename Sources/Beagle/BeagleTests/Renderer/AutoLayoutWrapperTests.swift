@@ -30,7 +30,7 @@ class AutoLayoutWrapperTests: XCTestCase {
                 AutoLayoutComponent(),
                 AutoLayoutComponent()
             ],
-            widgetProperties: .init(style: defaultStyle)
+            style: defaultStyle
         )
         let viewController = BeagleScreenViewController(component)
         
@@ -46,7 +46,7 @@ class AutoLayoutWrapperTests: XCTestCase {
                 AutoLayoutComponent(),
                 AutoLayoutComponent()
             ],
-            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.column).flexWrap(.wrap)))
+            style: defaultStyle.flex(Flex().flexDirection(.column).flexWrap(.wrap))
         )
         let viewController = BeagleScreenViewController(component)
         
@@ -63,7 +63,7 @@ class AutoLayoutWrapperTests: XCTestCase {
                 AutoLayoutComponent(),
                 AutoLayoutComponent()
             ],
-            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.noWrap)))
+            style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.noWrap))
         )
         let viewController = BeagleScreenViewController(component)
         
@@ -80,7 +80,7 @@ class AutoLayoutWrapperTests: XCTestCase {
                 AutoLayoutComponent(),
                 AutoLayoutComponent()
             ],
-            widgetProperties: .init(style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.wrap)))
+            style: defaultStyle.flex(Flex().flexDirection(.row).flexWrap(.wrap))
         )
         let viewController = BeagleScreenViewController(component)
         
@@ -95,7 +95,8 @@ class AutoLayoutWrapperTests: XCTestCase {
                 Text(text: "Yoga"),
                 AutoLayoutComponent()
             ],
-            widgetProperties: .init(id: "container", style: defaultStyle.flex(Flex().flexDirection(.row)))
+            id: "container",
+            style: defaultStyle.flex(Flex().flexDirection(.row))
         )
         let viewController = BeagleScreenViewController(component)
         
@@ -108,7 +109,9 @@ class AutoLayoutWrapperTests: XCTestCase {
 }
 
 struct AutoLayoutComponent: Widget {
-    var widgetProperties: WidgetProperties = WidgetProperties()
+    var id: String?
+    var style: Style?
+    var accessibility: Accessibility?
     
     func toView(renderer: BeagleRenderer) -> UIView {
         return AutoLayoutWrapper(view: AutoLayoutSample())

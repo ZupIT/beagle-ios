@@ -120,29 +120,22 @@ extension GridViewTests {
                         children: [
                             Text(
                                 text: "@{item}",
-                                widgetProperties: WidgetProperties(
-                                    style: Style(
-                                        backgroundColor: "#bfdcae"
-                                    )
-                                )
+                                style: Style(backgroundColor: "#bfdcae")
                             )
                         ],
-                        widgetProperties: WidgetProperties(
-                            style: Style(
-                                backgroundColor: "#81b214",
-                                margin: EdgeValue().all(10)
-                            )
+                        style: Style(
+                            backgroundColor: "#81b214",
+                            margin: EdgeValue().all(10)
                         )
+                        
                     )
                 )
             ],
             onScrollEnd: onScrollEnd,
             isScrollIndicatorVisible: isScrollIndicatorVisible,
-            widgetProperties: WidgetProperties(
-                style: Style(
-                    backgroundColor: "#206a5d",
-                    flex: Flex().grow(1)
-                )
+            style: Style(
+                backgroundColor: "#206a5d",
+                flex: Flex().grow(1)
             )
         )
     }

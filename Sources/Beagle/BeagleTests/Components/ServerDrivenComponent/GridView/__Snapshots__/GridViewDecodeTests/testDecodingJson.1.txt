@@ -1,4 +1,5 @@
 ▿ GridView
+  - accessibility: Optional<Accessibility>.none
   ▿ context: Optional<Context>
     ▿ some: Context
       - id: "grid"
@@ -13,6 +14,7 @@
               - nodes: 0 elements
   ▿ direction: Optional<ScrollAxis>
     - some: ScrollAxis.horizontal
+  - id: Optional<String>.none
   - isScrollIndicatorVisible: Optional<Bool>.none
   - iteratorName: Optional<String>.none
   - key: Optional<String>.none
@@ -20,20 +22,16 @@
   - onScrollEnd: Optional<Array<Action>>.none
   - scrollEndThreshold: Optional<Int>.none
   - spanCount: 5
+  - style: Optional<Style>.none
   ▿ templates: 1 element
     ▿ Template
       - case: Optional<Expression<Bool>>.none
       ▿ view: Container
+        - accessibility: Optional<Accessibility>.none
         ▿ children: Optional<Array<ServerDrivenComponent>>
           - some: 0 elements
         - context: Optional<Context>.none
+        - id: Optional<String>.none
         - onInit: Optional<Array<Action>>.none
+        - style: Optional<Style>.none
         - styleId: Optional<String>.none
-        ▿ widgetProperties: WidgetProperties
-          - accessibility: Optional<Accessibility>.none
-          - id: Optional<String>.none
-          - style: Optional<Style>.none
-  ▿ widgetProperties: WidgetProperties
-    - accessibility: Optional<Accessibility>.none
-    - id: Optional<String>.none
-    - style: Optional<Style>.none

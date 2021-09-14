@@ -1,14 +1,13 @@
 ▿ Screen
   ▿ child: Text
+    - accessibility: Optional<Accessibility>.none
     - alignment: Optional<Expression<Alignment>>.none
+    - id: Optional<String>.none
+    - style: Optional<Style>.none
     - styleId: Optional<String>.none
     ▿ text: Expression<String>
       - value: "Screen Content"
     - textColor: Optional<Expression<String>>.none
-    ▿ widgetProperties: WidgetProperties
-      - accessibility: Optional<Accessibility>.none
-      - id: Optional<String>.none
-      - style: Optional<Style>.none
   - context: Optional<Context>.none
   ▿ id: Optional<String>
     - some: "screen-id"

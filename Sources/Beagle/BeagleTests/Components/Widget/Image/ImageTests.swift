@@ -70,7 +70,7 @@ class ImageTests: XCTestCase {
                                     Text(text: "Text with alignment attribute set to left", alignment: Expression.value(.left)),
                                     Image(.remote(.init(url: "https://www.petlove.com.br/images/")))
                                 ],
-                                widgetProperties: .init(Flex().justifyContent(.spaceBetween).grow(1))
+                                style: Style().flex(Flex().justifyContent(.spaceBetween).grow(1))
                             )
                         ],
                         onPageChange: [SetContext(contextId: "currentPage", value: "@{onPageChange}")],
@@ -78,7 +78,7 @@ class ImageTests: XCTestCase {
                     )
                 ],
                 context: Context(id: "currentPage", value: 2),
-                widgetProperties: .init(Flex().grow(1))
+                style: Style().flex(Flex().grow(1))
             )
         )
 
