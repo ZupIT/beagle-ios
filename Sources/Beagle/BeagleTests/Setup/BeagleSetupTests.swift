@@ -38,7 +38,6 @@ final class BeagleSetupTests: XCTestCase {
         dep.networkClient = NetworkClientDummy()
         dep.style = { _ in return StyleViewConfiguratorDummy() }
         dep.decoder = ComponentDecodingDummy()
-        dep.cacheManager = nil
         dep.windowManager = WindowManagerDumb()
         dep.opener = URLOpenerDumb()
         dep.globalContext = GlobalContextDummy()
@@ -84,18 +83,6 @@ final class ComponentDecodingDummy: ComponentDecoding {
     func nameForAction(ofType type: Action.Type) -> String? { return nil }
 }
 
-final class CacheManagerDummy: CacheManagerProtocol {
-    func addToCache(_ reference: CacheReference) { }
-    
-    func getReference(identifiedBy id: String) -> CacheReference? {
-        return nil
-    }
-    
-    func isValid(reference: CacheReference) -> Bool {
-        return true
-    }
-}
-
 final class PreFetchHelperDummy: BeaglePrefetchHelping {
     func prefetchComponent(newPath: Route.NewPath) { }
 }
@@ -130,12 +117,11 @@ struct ActionDummy: Action, Equatable {
 struct BeagleScreenDependencies: BeagleDependenciesProtocol {
     var isLoggingEnabled: Bool = true
     var analyticsProvider: AnalyticsProvider?
-    var repository: Repository = RepositoryStub()
+    var viewClient: ViewClient = ViewClientStub()
     var imageDownloader: ImageDownloader = ImageDownloaderStub()
     var theme: Theme = AppThemeDummy()
     var preFetchHelper: BeaglePrefetchHelping = PreFetchHelperDummy()
     var appBundle: Bundle = Bundle(for: ImageTests.self)
-    var cacheManager: CacheManagerProtocol?
     var decoder: ComponentDecoding = ComponentDecodingDummy()
     var logger: BeagleLoggerType = BeagleLoggerDumb()
     var navigationControllerType = BeagleNavigationController.self

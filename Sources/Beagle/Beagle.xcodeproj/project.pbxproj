@@ -19,8 +19,6 @@
 		3DB1BF7C25B0F544008248C6 /* ActionAnalyticsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB1BF7B25B0F544008248C6 /* ActionAnalyticsConfig.swift */; };
 		3DE35AE625BF62AD009A93B6 /* Evaluate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE35AE525BF62AD009A93B6 /* Evaluate.swift */; };
 		576F61052487004900273BA0 /* ContextObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 576F61042487004900273BA0 /* ContextObserver.swift */; };
-		57A8097F243CF44A0034D180 /* CacheReference.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A8097E243CF44A0034D180 /* CacheReference.swift */; };
-		57A80981243CF4620034D180 /* DependencyCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57A80980243CF4620034D180 /* DependencyCacheManager.swift */; };
 		57E7F970247D9EDC00FBD398 /* UIView+Context.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57E7F96F247D9EDC00FBD398 /* UIView+Context.swift */; };
 		5C5B90E72638920C0005BD93 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B90E62638920C0005BD93 /* GridView.swift */; };
 		5C5B90E92638931E0005BD93 /* GridView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5B90E82638931E0005BD93 /* GridView+Extensions.swift */; };
@@ -102,8 +100,7 @@
 		9356CDBB262482820021EFC6 /* UrlBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC48262482810021EFC6 /* UrlBuilderTests.swift */; };
 		9356CDBC262482820021EFC6 /* ImageDownloaderTests.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9356CC49262482810021EFC6 /* ImageDownloaderTests.xcassets */; };
 		9356CDBD262482820021EFC6 /* ImageDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC4A262482810021EFC6 /* ImageDownloaderTests.swift */; };
-		9356CDBE262482820021EFC6 /* NetworkCacheTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC4B262482810021EFC6 /* NetworkCacheTest.swift */; };
-		9356CDBF262482820021EFC6 /* RepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC4C262482810021EFC6 /* RepositoryTests.swift */; };
+		9356CDBF262482820021EFC6 /* ViewClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC4C262482810021EFC6 /* ViewClientTests.swift */; };
 		9356CDCF262482820021EFC6 /* PageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC6C262482810021EFC6 /* PageViewTests.swift */; };
 		9356CDD0262482820021EFC6 /* PageViewUIComponentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC6D262482810021EFC6 /* PageViewUIComponentTests.swift */; };
 		9356CDD1262482820021EFC6 /* CustomPageIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9356CC6F262482810021EFC6 /* CustomPageIndicator.swift */; };
@@ -285,7 +282,6 @@
 		C89E80A72397FFFD00C2D0ED /* PageIndicator+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89E80A62397FFFD00C2D0ED /* PageIndicator+Extensions.swift */; };
 		C89FFA922412DC2300C1B53B /* ViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89FFA912412DC2300C1B53B /* ViewConfigurator.swift */; };
 		C89FFA942412EA4200C1B53B /* UrlBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = C89FFA932412EA4200C1B53B /* UrlBuilder.swift */; };
-		C8ECF2CD24BD1D9800525CF5 /* NetworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ECF2CC24BD1D9800525CF5 /* NetworkCache.swift */; };
 		E52236C223745A7F00E555BB /* ListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52236C123745A7F00E555BB /* ListViewCell.swift */; };
 		E52236C423745CBB00E555BB /* NSObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52236C323745CBB00E555BB /* NSObjectExtension.swift */; };
 		E52236CB23745DED00E555BB /* HTTPRequestCanceling.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52236CA23745DED00E555BB /* HTTPRequestCanceling.swift */; };
@@ -297,7 +293,7 @@
 		E531D6BA2359FEE1007EEBA7 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = E531D6B92359FEE1007EEBA7 /* UIView+Loading.swift */; };
 		E531D6C1235A3230007EEBA7 /* NSErrorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E531D6BF235A30DB007EEBA7 /* NSErrorExtension.swift */; };
 		E5A6F4A92358A547008906F8 /* FatalErrorUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6F4A82358A547008906F8 /* FatalErrorUtil.swift */; };
-		E5A6F4CB2358F621008906F8 /* Repository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6F4CA2358F621008906F8 /* Repository.swift */; };
+		E5A6F4CB2358F621008906F8 /* ViewClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6F4CA2358F621008906F8 /* ViewClient.swift */; };
 		E5CB5D65234E7CF6009783A7 /* BeagleScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CB5D64234E7CF6009783A7 /* BeagleScreenViewController.swift */; };
 		E5CB5DAB23550012009783A7 /* BeagleSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CB5DAA23550012009783A7 /* BeagleSetup.swift */; };
 		E5CE41EC2332B9B600295277 /* Beagle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 932925CF2327E11000A61F01 /* Beagle.framework */; };
@@ -330,8 +326,6 @@
 		3DB1BF7B25B0F544008248C6 /* ActionAnalyticsConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAnalyticsConfig.swift; sourceTree = "<group>"; };
 		3DE35AE525BF62AD009A93B6 /* Evaluate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Evaluate.swift; sourceTree = "<group>"; };
 		576F61042487004900273BA0 /* ContextObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextObserver.swift; sourceTree = "<group>"; };
-		57A8097E243CF44A0034D180 /* CacheReference.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheReference.swift; sourceTree = "<group>"; };
-		57A80980243CF4620034D180 /* DependencyCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyCacheManager.swift; sourceTree = "<group>"; };
 		57E7F96F247D9EDC00FBD398 /* UIView+Context.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Context.swift"; sourceTree = "<group>"; };
 		5C5B90E62638920C0005BD93 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		5C5B90E82638931E0005BD93 /* GridView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GridView+Extensions.swift"; sourceTree = "<group>"; };
@@ -417,8 +411,7 @@
 		9356CC48262482810021EFC6 /* UrlBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlBuilderTests.swift; sourceTree = "<group>"; };
 		9356CC49262482810021EFC6 /* ImageDownloaderTests.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ImageDownloaderTests.xcassets; sourceTree = "<group>"; };
 		9356CC4A262482810021EFC6 /* ImageDownloaderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDownloaderTests.swift; sourceTree = "<group>"; };
-		9356CC4B262482810021EFC6 /* NetworkCacheTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkCacheTest.swift; sourceTree = "<group>"; };
-		9356CC4C262482810021EFC6 /* RepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryTests.swift; sourceTree = "<group>"; };
+		9356CC4C262482810021EFC6 /* ViewClientTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewClientTests.swift; sourceTree = "<group>"; };
 		9356CC6C262482810021EFC6 /* PageViewTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewTests.swift; sourceTree = "<group>"; };
 		9356CC6D262482810021EFC6 /* PageViewUIComponentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageViewUIComponentTests.swift; sourceTree = "<group>"; };
 		9356CC6F262482810021EFC6 /* CustomPageIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomPageIndicator.swift; sourceTree = "<group>"; };
@@ -486,7 +479,6 @@
 		9356CD4E262482810021EFC6 /* BindingConfiguratorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BindingConfiguratorTests.swift; sourceTree = "<group>"; };
 		9356CD63262482820021EFC6 /* BeagleSetupTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeagleSetupTests.swift; sourceTree = "<group>"; };
 		9356CD6A262482820021EFC6 /* BeaglePrefetchHelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeaglePrefetchHelperTests.swift; sourceTree = "<group>"; };
-		9356CEC0262488040021EFC6 /* UrlBuilderTestSpec.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = UrlBuilderTestSpec.json; path = ../../../../../common/tests/UrlBuilderTestSpec.json; sourceTree = "<group>"; };
 		9356CEC6262489440021EFC6 /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
 		9356CEC7262489880021EFC6 /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
 		9356CEC9262489AE0021EFC6 /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
@@ -630,7 +622,6 @@
 		C89FFA932412EA4200C1B53B /* UrlBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlBuilder.swift; sourceTree = "<group>"; };
 		C8D5F01F24A3FD840037B11C /* YogaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = YogaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8E42FCF23C7C89800B1963F /* SnapshotTesting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapshotTesting.framework; path = Carthage/Build/iOS/SnapshotTesting.framework; sourceTree = "<group>"; };
-		C8ECF2CC24BD1D9800525CF5 /* NetworkCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkCache.swift; sourceTree = "<group>"; };
 		E52236C123745A7F00E555BB /* ListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewCell.swift; sourceTree = "<group>"; };
 		E52236C323745CBB00E555BB /* NSObjectExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSObjectExtension.swift; sourceTree = "<group>"; };
 		E52236CA23745DED00E555BB /* HTTPRequestCanceling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPRequestCanceling.swift; sourceTree = "<group>"; };
@@ -642,7 +633,7 @@
 		E531D6B92359FEE1007EEBA7 /* UIView+Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Loading.swift"; sourceTree = "<group>"; };
 		E531D6BF235A30DB007EEBA7 /* NSErrorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSErrorExtension.swift; sourceTree = "<group>"; };
 		E5A6F4A82358A547008906F8 /* FatalErrorUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FatalErrorUtil.swift; sourceTree = "<group>"; };
-		E5A6F4CA2358F621008906F8 /* Repository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repository.swift; sourceTree = "<group>"; };
+		E5A6F4CA2358F621008906F8 /* ViewClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewClient.swift; sourceTree = "<group>"; };
 		E5CB5D64234E7CF6009783A7 /* BeagleScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleScreenViewController.swift; sourceTree = "<group>"; };
 		E5CB5DAA23550012009783A7 /* BeagleSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleSetup.swift; sourceTree = "<group>"; };
 		E5CE41E72332B9B600295277 /* BeagleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeagleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -682,15 +673,6 @@
 				3D21CD3825B769DC00A392CA /* ActionAttributes.swift */,
 			);
 			path = Service;
-			sourceTree = "<group>";
-		};
-		5740E23523F708BE004A0BF0 /* CacheManager */ = {
-			isa = PBXGroup;
-			children = (
-				57A8097E243CF44A0034D180 /* CacheReference.swift */,
-				57A80980243CF4620034D180 /* DependencyCacheManager.swift */,
-			);
-			path = CacheManager;
 			sourceTree = "<group>";
 		};
 		5C5B90E5263891F30005BD93 /* GridView */ = {
@@ -1003,12 +985,10 @@
 		9356CC47262482810021EFC6 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				9356CEC0262488040021EFC6 /* UrlBuilderTestSpec.json */,
 				9356CC48262482810021EFC6 /* UrlBuilderTests.swift */,
 				9356CC49262482810021EFC6 /* ImageDownloaderTests.xcassets */,
 				9356CC4A262482810021EFC6 /* ImageDownloaderTests.swift */,
-				9356CC4B262482810021EFC6 /* NetworkCacheTest.swift */,
-				9356CC4C262482810021EFC6 /* RepositoryTests.swift */,
+				9356CC4C262482810021EFC6 /* ViewClientTests.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -1604,9 +1584,8 @@
 			children = (
 				3D8E5C7D2542341C002B92E2 /* HttpAditionalData.swift */,
 				25BFEDA0252BC0A500365889 /* ImageDownloader.swift */,
-				C8ECF2CC24BD1D9800525CF5 /* NetworkCache.swift */,
 				93B9743F23A2833600B0D1CF /* NetworkClient.swift */,
-				E5A6F4CA2358F621008906F8 /* Repository.swift */,
+				E5A6F4CA2358F621008906F8 /* ViewClient.swift */,
 				C85E1CCC23EB461200C1E323 /* Request.swift */,
 				25BFEDA2252BC4D900365889 /* RequestDispatcher.swift */,
 				C89FFA932412EA4200C1B53B /* UrlBuilder.swift */,
@@ -1617,7 +1596,6 @@
 		93B9741D23A282C700B0D1CF /* Caching */ = {
 			isa = PBXGroup;
 			children = (
-				5740E23523F708BE004A0BF0 /* CacheManager */,
 				C8A5DC4D23E323DE001968C4 /* Prefetch */,
 			);
 			path = Caching;
@@ -2213,7 +2191,6 @@
 				E531D6BA2359FEE1007EEBA7 /* UIView+Loading.swift in Sources */,
 				9398CA3325531E9D0003A010 /* Confirm.swift in Sources */,
 				C8311A6924099A8700E95C15 /* WidgetStateObservable.swift in Sources */,
-				57A8097F243CF44A0034D180 /* CacheReference.swift in Sources */,
 				C08D4E3324857C7700AAAC0A /* UIWindow+Extension.swift in Sources */,
 				9398CA9A255338A50003A010 /* Accessibility.swift in Sources */,
 				9398CA7C25532ECD0003A010 /* SafeArea.swift in Sources */,
@@ -2237,7 +2214,7 @@
 				9398CAA6255338B80003A010 /* UnitValue.swift in Sources */,
 				C08D4E882485944B00AAAC0A /* Text+Extensions.swift in Sources */,
 				A057D59324C7169E001F6835 /* ComponentHostController.swift in Sources */,
-				E5A6F4CB2358F621008906F8 /* Repository.swift in Sources */,
+				E5A6F4CB2358F621008906F8 /* ViewClient.swift in Sources */,
 				E52236C423745CBB00E555BB /* NSObjectExtension.swift in Sources */,
 				A020A4D124FFDDC200B3DF55 /* ListViewController.swift in Sources */,
 				C048EBDB242BD78500A24075 /* Analytics.swift in Sources */,
@@ -2290,7 +2267,6 @@
 				93369CDF2681248000BBDB42 /* PullToRefresh+Extensions.swift in Sources */,
 				9398CAA8255338C00003A010 /* Style.swift in Sources */,
 				9398CAA3255338B80003A010 /* Size.swift in Sources */,
-				C8ECF2CD24BD1D9800525CF5 /* NetworkCache.swift in Sources */,
 				3D21CD3225B73F2100A392CA /* RecordFactory.swift in Sources */,
 				C08D4E8C2485946300AAAC0A /* WebViewUIComponent.swift in Sources */,
 				E52236C223745A7F00E555BB /* ListViewCell.swift in Sources */,
@@ -2342,7 +2318,6 @@
 				6EB3368C24A52D34000A9D17 /* SubmitForm+Extensions.swift in Sources */,
 				E531D6B12359FD18007EEBA7 /* LoadingView.swift in Sources */,
 				C08D4E1E24857B4800AAAC0A /* Container+Extensions.swift in Sources */,
-				57A80981243CF4620034D180 /* DependencyCacheManager.swift in Sources */,
 				E52236CD23745E8E00E555BB /* ListViewUIComponent.swift in Sources */,
 				E522377D237C3C5500E555BB /* Touchable+Extensions.swift in Sources */,
 				C08D4E3224857C7700AAAC0A /* DependencyURLOpener.swift in Sources */,
@@ -2410,9 +2385,8 @@
 				9356CE3B262482820021EFC6 /* SimpleFormTests.swift in Sources */,
 				9356CE54262482820021EFC6 /* BeagleScreenViewControllerTests.swift in Sources */,
 				9356CDB8262482820021EFC6 /* BeagleNavigatorTests.swift in Sources */,
-				9356CDBF262482820021EFC6 /* RepositoryTests.swift in Sources */,
+				9356CDBF262482820021EFC6 /* ViewClientTests.swift in Sources */,
 				9356CE08262482820021EFC6 /* ScreenComponentTests.swift in Sources */,
-				9356CDBE262482820021EFC6 /* NetworkCacheTest.swift in Sources */,
 				9356CD71262482820021EFC6 /* UIView+ContextTests.swift in Sources */,
 				9356CE32262482820021EFC6 /* AccessibilityTests.swift in Sources */,
 				9356CDE1262482820021EFC6 /* WebViewTests.swift in Sources */,
