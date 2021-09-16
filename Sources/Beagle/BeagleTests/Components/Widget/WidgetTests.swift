@@ -1,4 +1,3 @@
-//
 /*
  * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
@@ -17,7 +16,7 @@
 
 import XCTest
 import SnapshotTesting
-import Beagle
+@testable import Beagle
 
 final class WidgetTests: XCTestCase {
 

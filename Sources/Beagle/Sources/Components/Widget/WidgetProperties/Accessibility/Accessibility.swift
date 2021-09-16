@@ -27,24 +27,9 @@ public struct Accessibility: Decodable, Equatable {
     //public var shouldGroupAccessibilityChildren: Bool
     
     /// A Boolean value indicating whether the receiver is an accessibility element that an assistive application can access
-    public var accessible: Bool
+    public var accessible: Bool = true
     
     /// A Boolean value indicating whether header is available for an element
-    public var isHeader: Bool?
+    public var isHeader: Bool? = false
         
-    /// Initializer for Accessibility
-    /// - Parameters:
-    ///   - accessibilityLabel: the identifier of the element. Default is nil
-    ///   - accessibilityValue: the value of the element. Default is nil
-    ///   - shouldGroupAccessibilityChildren: A Boolean value indicating whether VoiceOver should group together the elements that are children of the receiver, regardless of their positions on the screen. Default is false
-    ///   - isAccessibilityElement: A Boolean value indicating whether the receiver is an accessibility element that an assistive application can access. Default is true for UIKit elements.
-    public init(
-        accessibilityLabel: String? = nil,
-        accessible: Bool = true,
-        isHeader: Bool? = false
-    ) {
-        self.accessibilityLabel = accessibilityLabel
-        self.accessible = accessible
-        self.isHeader = isHeader
-    }
 }

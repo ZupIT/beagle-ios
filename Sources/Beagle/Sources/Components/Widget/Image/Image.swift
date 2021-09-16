@@ -15,7 +15,7 @@
  */
 
 /// Defines an `ImageView` using the server driven information received through Beagle.
-public struct Image: Widget, AutoDecodable {
+public struct Image: Widget {
 
     /// Defines where the source of the image is.
     public let path: Expression<ImagePath>
@@ -23,8 +23,9 @@ public struct Image: Widget, AutoDecodable {
     /// Defines how the declared image will fit the view.
     public var mode: ImageContentMode?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
     public enum ImagePath: Decodable {
         case remote(Remote)
@@ -56,11 +57,15 @@ extension Image {
     init(
         _ path: ImagePath,
         mode: ImageContentMode? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
+        id: String? = nil,
+        style: Style? = nil,
+        accessibility: Accessibility? = nil
     ) {
         self.path = .value(path)
         self.mode = mode
-        self.widgetProperties = widgetProperties
+        self.id = id
+        self.style = style
+        self.accessibility = accessibility
     }
 }
 

@@ -1,23 +1,24 @@
 ▿ SimpleForm
+  - accessibility: Optional<Accessibility>.none
   ▿ children: Optional<Array<ServerDrivenComponent>>
     ▿ some: 1 element
       ▿ Button
+        - accessibility: Optional<Accessibility>.none
         - enabled: Optional<Expression<Bool>>.none
+        - id: Optional<String>.none
         ▿ onPress: Optional<Array<Action>>
           ▿ some: 1 element
             ▿ SubmitForm
               - analytics: Optional<ActionAnalyticsConfig>.none
+        - style: Optional<Style>.none
         - styleId: Optional<String>.none
         ▿ text: Expression<String>
           - value: "Dados"
-        ▿ widgetProperties: WidgetProperties
-          - accessibility: Optional<Accessibility>.none
-          - id: Optional<String>.none
-          - style: Optional<Style>.none
   ▿ context: Optional<Context>
     ▿ some: Context
       - id: "cadastro"
       - value: [email: beagle@zup.com.br, message: Hello Beagle!]
+  - id: Optional<String>.none
   ▿ onSubmit: Optional<Array<Action>>
     ▿ some: 1 element
       ▿ Confirm
@@ -56,7 +57,4 @@
           ▿ some: Expression<String>
             - value: "Cadastro"
   - onValidationError: Optional<Array<Action>>.none
-  ▿ widgetProperties: WidgetProperties
-    - accessibility: Optional<Accessibility>.none
-    - id: Optional<String>.none
-    - style: Optional<Style>.none
+  - style: Optional<Style>.none

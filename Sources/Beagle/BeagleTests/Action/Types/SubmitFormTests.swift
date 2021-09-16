@@ -72,7 +72,7 @@ final class SubmitFormTest: XCTestCase {
                 TextInput(value: "@{context}",
                           error: .value("Error!"),
                           showError: .value(true),
-                          widgetProperties: .init(style: .init(size: Size().width(150).height(35)))),
+                          style: .init(size: Size().width(150).height(35))),
                 Button(text: "submit", onPress: [submitFormAction])
             ]
         )

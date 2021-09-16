@@ -38,10 +38,7 @@ public struct NavigationBar: Decodable {
 }
 
 /// Defines a item that could be showed in navigation bar.
-public struct NavigationBarItem: Decodable, AccessibilityComponent, IdentifiableComponent {
-    
-    /// Id use to identifier the current component.
-    public var id: String?
+public struct NavigationBarItem: Decodable, AccessibilityComponent {
     
     /// Defines an image for your navigation bar.
     public var image: StringOrExpression?
@@ -59,26 +56,18 @@ public struct NavigationBarItem: Decodable, AccessibilityComponent, Identifiable
 
 extension NavigationBarItem {
     enum CodingKeys: String, CodingKey {
-        case id
         case image
         case text
         case action
         case accessibility
     }
-
-    enum LocalImageCodingKey: String, CodingKey {
-        case mobileId
-    }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        id = try container.decodeIfPresent(String.self, forKey: .id)
         text = try container.decode(String.self, forKey: .text)
         action = try container.decode(forKey: .action)
         accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
-        
-        let nestedContainer = try? container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .image)
-        image = try nestedContainer?.decodeIfPresent(String.self, forKey: .mobileId)
+        image = try container.decodeIfPresent(String.self, forKey: .image)
     }
 }

@@ -1,7 +1,30 @@
 ▿ Text
+  - accessibility: Optional<Accessibility>.none
   ▿ alignment: Optional<Expression<Alignment>>
     ▿ some: Expression<Alignment>
       - value: Alignment.right
+  - id: Optional<String>.none
+  ▿ style: Optional<Style>
+    ▿ some: Style
+      ▿ backgroundColor: Optional<String>
+        - some: "#FFFF00"
+      - borderColor: Optional<String>.none
+      - borderWidth: Optional<Double>.none
+      ▿ cornerRadius: Optional<CornerRadius>
+        ▿ some: CornerRadius
+          - bottomLeft: Optional<Double>.none
+          - bottomRight: Optional<Double>.none
+          ▿ radius: Optional<Double>
+            - some: 30.0
+          - topLeft: Optional<Double>.none
+          - topRight: Optional<Double>.none
+      - display: Optional<Expression<Display>>.none
+      - flex: Optional<Flex>.none
+      - margin: Optional<EdgeValue>.none
+      - padding: Optional<EdgeValue>.none
+      - position: Optional<EdgeValue>.none
+      - positionType: Optional<PositionType>.none
+      - size: Optional<Size>.none
   ▿ styleId: Optional<String>
     - some: "test.text.style"
   ▿ text: Expression<String>
@@ -9,27 +32,3 @@
   ▿ textColor: Optional<Expression<String>>
     ▿ some: Expression<String>
       - value: "#579F2B"
-  ▿ widgetProperties: WidgetProperties
-    - accessibility: Optional<Accessibility>.none
-    - id: Optional<String>.none
-    ▿ style: Optional<Style>
-      ▿ some: Style
-        ▿ backgroundColor: Optional<String>
-          - some: "#FFFF00"
-        - borderColor: Optional<String>.none
-        - borderWidth: Optional<Double>.none
-        ▿ cornerRadius: Optional<CornerRadius>
-          ▿ some: CornerRadius
-            - bottomLeft: Optional<Double>.none
-            - bottomRight: Optional<Double>.none
-            ▿ radius: Optional<Double>
-              - some: 30.0
-            - topLeft: Optional<Double>.none
-            - topRight: Optional<Double>.none
-        - display: Optional<Expression<Display>>.none
-        - flex: Optional<Flex>.none
-        - margin: Optional<EdgeValue>.none
-        - padding: Optional<EdgeValue>.none
-        - position: Optional<EdgeValue>.none
-        - positionType: Optional<PositionType>.none
-        - size: Optional<Size>.none

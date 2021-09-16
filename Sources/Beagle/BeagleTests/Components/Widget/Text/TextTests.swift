@@ -93,9 +93,7 @@ class TextTests: XCTestCase {
             styleId: "test.text.style",
             alignment: Expression.value(.right),
             textColor: "#579F2B",
-            widgetProperties: .init(style: Style(
-                backgroundColor: "#FFFF00"
-            ))
+            style: Style(backgroundColor: "#FFFF00")
         )
 
         let view = renderer.render(text)

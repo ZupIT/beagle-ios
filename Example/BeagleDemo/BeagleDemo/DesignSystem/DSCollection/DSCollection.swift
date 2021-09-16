@@ -17,21 +17,13 @@
 import UIKit
 import Beagle
 
-// Conforming to AutoEquatable is optional.
-struct DSCollection: Widget, AutoInitiableAndDecodable, AutoEquatable {
+struct DSCollection: Widget {
 
     let dataSource: DSCollectionDataSource
-    var widgetProperties: WidgetProperties
+    var id: String?
+    var style: Style?
+    var accessibility: Accessibility?
 
-// sourcery:inline:auto:DSCollection.Init
-    internal init(
-        dataSource: DSCollectionDataSource,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.dataSource = dataSource
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
 }
 
 struct DSCollectionDataSource: Decodable, AutoEquatable {

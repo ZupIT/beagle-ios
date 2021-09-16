@@ -46,6 +46,9 @@ extension Button {
         case styleId
         case onPress
         case enabled
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
@@ -55,7 +58,9 @@ extension Button {
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
         onPress = try container.decodeIfPresent(forKey: .onPress)
         enabled = try container.decodeIfPresent(Expression<Bool>.self, forKey: .enabled)
-        widgetProperties = try WidgetProperties(from: decoder)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }
 
@@ -113,6 +118,9 @@ extension Container {
         case onInit
         case context
         case styleId
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
@@ -122,7 +130,9 @@ extension Container {
         onInit = try container.decodeIfPresent(forKey: .onInit)
         context = try container.decodeIfPresent(Context.self, forKey: .context)
         styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
-        widgetProperties = try WidgetProperties(from: decoder)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }
 
@@ -142,20 +152,43 @@ extension Context {
     }
 }
 
-// MARK: Image Decodable
-extension Image {
+// MARK: GridView Decodable
+extension GridView {
 
     enum CodingKeys: String, CodingKey {
-        case path
-        case mode
+        case context
+        case onInit
+        case dataSource
+        case key
+        case direction
+        case spanCount
+        case templates
+        case iteratorName
+        case onScrollEnd
+        case scrollEndThreshold
+        case isScrollIndicatorVisible
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        path = try container.decode(Expression<ImagePath>.self, forKey: .path)
-        mode = try container.decodeIfPresent(ImageContentMode.self, forKey: .mode)
-        widgetProperties = try WidgetProperties(from: decoder)
+        context = try container.decodeIfPresent(Context.self, forKey: .context)
+        onInit = try container.decodeIfPresent(forKey: .onInit)
+        dataSource = try container.decode(Expression<[DynamicObject]>.self, forKey: .dataSource)
+        key = try container.decodeIfPresent(String.self, forKey: .key)
+        direction = try container.decodeIfPresent(Direction.self, forKey: .direction)
+        spanCount = try container.decode(Int.self, forKey: .spanCount)
+        templates = try container.decode([Template].self, forKey: .templates)
+        iteratorName = try container.decodeIfPresent(String.self, forKey: .iteratorName)
+        onScrollEnd = try container.decodeIfPresent(forKey: .onScrollEnd)
+        scrollEndThreshold = try container.decodeIfPresent(Int.self, forKey: .scrollEndThreshold)
+        isScrollIndicatorVisible = try container.decodeIfPresent(Bool.self, forKey: .isScrollIndicatorVisible)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }
 
@@ -291,6 +324,9 @@ extension SimpleForm {
         case onSubmit
         case onValidationError
         case children
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
@@ -300,7 +336,9 @@ extension SimpleForm {
         onSubmit = try container.decodeIfPresent(forKey: .onSubmit)
         onValidationError = try container.decodeIfPresent(forKey: .onValidationError)
         children = try container.decodeIfPresent(forKey: .children)
-        widgetProperties = try WidgetProperties(from: decoder)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }
 
@@ -340,27 +378,6 @@ extension Template {
     }
 }
 
-// MARK: Text Decodable
-extension Text {
-
-    enum CodingKeys: String, CodingKey {
-        case text
-        case styleId
-        case alignment
-        case textColor
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        text = try container.decode(Expression<String>.self, forKey: .text)
-        styleId = try container.decodeIfPresent(String.self, forKey: .styleId)
-        alignment = try container.decodeIfPresent(Expression<Alignment>.self, forKey: .alignment)
-        textColor = try container.decodeIfPresent(Expression<String>.self, forKey: .textColor)
-        widgetProperties = try WidgetProperties(from: decoder)
-    }
-}
-
 // MARK: TextInput Decodable
 extension TextInput {
 
@@ -376,6 +393,9 @@ extension TextInput {
         case onFocus
         case error
         case showError
+        case id
+        case style
+        case accessibility
     }
 
     public init(from decoder: Decoder) throws {
@@ -392,7 +412,9 @@ extension TextInput {
         onFocus = try container.decodeIfPresent(forKey: .onFocus)
         error = try container.decodeIfPresent(Expression<String>.self, forKey: .error)
         showError = try container.decodeIfPresent(Expression<Bool>.self, forKey: .showError)
-        widgetProperties = try WidgetProperties(from: decoder)
+        id = try container.decodeIfPresent(String.self, forKey: .id)
+        style = try container.decodeIfPresent(Style.self, forKey: .style)
+        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
     }
 }
 
@@ -417,20 +439,6 @@ extension WebView {
 
     enum CodingKeys: String, CodingKey {
         case url
-    }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        url = try container.decode(Expression<String>.self, forKey: .url)
-        widgetProperties = try WidgetProperties(from: decoder)
-    }
-}
-
-// MARK: WidgetProperties Decodable
-extension WidgetProperties {
-
-    enum CodingKeys: String, CodingKey {
         case id
         case style
         case accessibility
@@ -439,6 +447,7 @@ extension WidgetProperties {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
+        url = try container.decode(Expression<String>.self, forKey: .url)
         id = try container.decodeIfPresent(String.self, forKey: .id)
         style = try container.decodeIfPresent(Style.self, forKey: .style)
         accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)

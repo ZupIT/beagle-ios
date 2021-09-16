@@ -24,7 +24,7 @@ class ViewConfiguratorTests: XCTestCase {
         let view = UIView()
         let style = Style().borderColor("#000000").borderWidth(2).backgroundColor("#FFFFFF")
         let accessibility = Accessibility(accessibilityLabel: "accessibilityLabel", accessible: true)
-        let component = Text(text: "text", widgetProperties: .init(style: style, accessibility: accessibility))
+        let component = Text(text: "text", style: style, accessibility: accessibility)
         let viewConfigurator = ViewConfigurator(view: view)
         
         // When
@@ -45,7 +45,7 @@ class ViewConfiguratorTests: XCTestCase {
         // Given
         let view = UIView()
         let style = Style().borderColor("#000000").borderWidth(2).cornerRadius(.init(radius: 2))
-        let component = Text(text: "text", widgetProperties: .init(style: style))
+        let component = Text(text: "text", style: style)
         let viewConfigurator = ViewConfigurator(view: view)
         
         // When

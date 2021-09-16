@@ -12,7 +12,7 @@
         ▿ child: UnknownComponent
           - type: "custom:beagleschematestscomponent"
         - context: Optional<Context>.none
-        - identifier: Optional<String>.none
+        - id: Optional<String>.none
         - navigationBar: Optional<NavigationBar>.none
         ▿ safeArea: Optional<SafeArea>
           ▿ some: SafeArea

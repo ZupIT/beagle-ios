@@ -29,7 +29,8 @@ public struct SimpleForm: ServerDrivenComponent, HasContext, AutoDecodable {
     /// Defines the items on the simple form.
     public var children: [ServerDrivenComponent]?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties = WidgetProperties()
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
 }

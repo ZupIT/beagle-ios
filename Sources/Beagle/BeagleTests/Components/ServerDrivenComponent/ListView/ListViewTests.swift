@@ -23,9 +23,9 @@ final class ListViewTests: XCTestCase {
     private let imageSize = ImageSize.custom(CGSize(width: 300, height: 300))
 
     private let just3Rows: [ServerDrivenComponent] = [
-        Text(text: "Item 1", widgetProperties: .init(style: .init(backgroundColor: "#FF0000"))),
-        Text(text: "Item 2", widgetProperties: .init(style: .init(backgroundColor: "#00FF00"))),
-        Text(text: "Item 3", widgetProperties: .init(style: .init(backgroundColor: "#0000FF")))
+        Text(text: "Item 1", style: .init(backgroundColor: "#FF0000")),
+        Text(text: "Item 2", style: .init(backgroundColor: "#00FF00")),
+        Text(text: "Item 3", style: .init(backgroundColor: "#0000FF"))
     ]
     
     private let manyRows: [ServerDrivenComponent] = (0..<20).map { i in
@@ -74,29 +74,23 @@ final class ListViewTests: XCTestCase {
                         children: [
                             Text(
                                 text: "@{item}",
-                                widgetProperties: WidgetProperties(
-                                    style: Style(
-                                        backgroundColor: "#bfdcae"
-                                    )
+                                style: Style(
+                                    backgroundColor: "#bfdcae"
                                 )
                             )
                         ],
-                        widgetProperties: WidgetProperties(
-                            style: Style(
-                                backgroundColor: "#81b214",
-                                margin: EdgeValue().all(10)
-                            )
+                        style: Style(
+                            backgroundColor: "#81b214",
+                            margin: EdgeValue().all(10)
                         )
                     )
                 )
             ],
             onScrollEnd: onScrollEnd,
             isScrollIndicatorVisible: isScrollIndicatorVisible,
-            widgetProperties: WidgetProperties(
-                style: Style(
-                    backgroundColor: "#206a5d",
-                    flex: Flex().grow(1)
-                )
+            style: Style(
+                backgroundColor: "#206a5d",
+                flex: Flex().grow(1)
             )
         )
     }
@@ -259,7 +253,7 @@ final class ListViewTests: XCTestCase {
         _ = renderListView(component)
         
         // Then
-        XCTAssertNil(component.widgetProperties.style?.flex?.grow)
+        XCTAssertNil(component.style?.flex?.grow)
     }
     
     func testDirectionHorizontal() throws {
@@ -371,14 +365,14 @@ final class ListViewTests: XCTestCase {
         return Text(
             text: .value(string),
             textColor: .value(textColor),
-            widgetProperties: .init(style: Style(backgroundColor: backgroundColor))
+            style: Style(backgroundColor: backgroundColor)
         )
     }
     
     private func templatesForChildren(_ children: [ServerDrivenComponent], _ direction: ScrollAxis?) -> [Template] {
         let style = Style(flex: Flex(flexDirection: direction?.flexDirection))
         return [
-            Template(view: Container(children: children, widgetProperties: .init(style: style)))
+            Template(view: Container(children: children, style: style))
         ]
     }
     

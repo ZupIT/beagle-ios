@@ -1,7 +1,6 @@
 ▿ BeagleDependencies
   - analyticsProvider: Optional<AnalyticsProvider>.none
   - appBundle: NSBundle <(null)> (not yet loaded)
-  - cacheManager: Optional<CacheManagerProtocol>.none
   - decoder: ComponentDecodingDummy
   ▿ deepLinkHandler: Optional<DeepLinkScreenManaging>
     - some: DeepLinkHandlerDummy
@@ -34,17 +33,6 @@
     ▿ dependencies: InnerDependenciesResolver
       - container: (Function)
   - renderer: (Function)
-  ▿ repository: RepositoryDefault
-    ▿ dependencies: InnerDependenciesResolver
-      - container: (Function)
-    ▿ dispatcher: RequestDispatcher
-      ▿ dependencies: InnerDependenciesResolver
-        - container: (Function)
-    ▿ networkCache: NetworkCache
-      - cacheHashHeader: "beagle-hash"
-      ▿ dependencies: InnerDependenciesResolver
-        - container: (Function)
-      - serviceMaxCacheAge: "cache-control"
   ▿ resolver: InnerDependenciesResolver
     - container: (Function)
   - style: (Function)
@@ -52,6 +40,14 @@
   ▿ urlBuilder: UrlBuilder
     ▿ baseUrl: Optional<URL>
       - some: www.test.com
+  ▿ viewClient: ViewClientDefault
+    ▿ cache: Cache<String, Result<ServerDrivenComponent, Error>>
+      - wrapped: <NSCache>
+    ▿ dependencies: InnerDependenciesResolver
+      - container: (Function)
+    ▿ dispatcher: RequestDispatcher
+      ▿ dependencies: InnerDependenciesResolver
+        - container: (Function)
   - viewConfigurator: (Function)
   ▿ windowManager: WindowManagerDumb
     ▿ window: Optional<WindowProtocol>

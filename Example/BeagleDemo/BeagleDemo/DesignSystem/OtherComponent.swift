@@ -17,9 +17,11 @@
 import UIKit
 import Beagle
 
-struct OtherComponent: Widget, AutoInitiableAndDecodable {
+struct OtherComponent: Widget {
 
-    var widgetProperties: WidgetProperties
+    var id: String?
+    var style: Style?
+    var accessibility: Accessibility?
 
     func toView(renderer: BeagleRenderer) -> UIView {
         let label = UILabel()
@@ -27,11 +29,4 @@ struct OtherComponent: Widget, AutoInitiableAndDecodable {
         return label
     }
 
-// sourcery:inline:auto:OtherComponent.Init
-    internal init(
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
 }

@@ -43,7 +43,6 @@ extension NavigationBarItem {
             } else {
                 title = barItem.text
             }
-            accessibilityIdentifier = barItem.id
             target = self
             action = #selector(triggerAction)
             ViewConfigurator.applyAccessibility(barItem.accessibility, to: self)
