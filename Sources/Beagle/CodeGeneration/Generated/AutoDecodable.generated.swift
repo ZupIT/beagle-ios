@@ -229,8 +229,8 @@ extension Route.NewPath.HttpAdditionalData {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        method = try container.decodeIfPresent(HTTPMethod.self, forKey: .method)
-        headers = try container.decodeIfPresent([String: String].self, forKey: .headers)
+        method = try container.decodeIfPresent(HTTPMethod.self, forKey: .method) ?? .get
+        headers = try container.decodeIfPresent([String: String].self, forKey: .headers) ?? [:]
         body = try container.decodeIfPresent(DynamicObject.self, forKey: .body)
     }
 }

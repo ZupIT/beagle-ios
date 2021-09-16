@@ -40,7 +40,7 @@ final class ButtonTests: XCTestCase {
         }
     }
     
-    func test_whenDecodingJson_thenItShouldReturnAButton() throws {
+    func testDecodingButton() throws {
         let component: Button = try componentFromJsonFile(fileName: "buttonComponent")
         assertSnapshot(matching: component, as: .dump)
     }

@@ -30,6 +30,7 @@ final class TouchableTests: XCTestCase {
             ▿ Navigate
               - _beagleAction_: "beagle:popview"
               - analytics: Optional<ActionAnalyticsConfig>.none
+              - navigationContext: Optional<NavigationContext>.none
         """)
     }
 

@@ -2,6 +2,11 @@
   - _beagleAction_: "beagle:pushstack"
   - analytics: Optional<ActionAnalyticsConfig>.none
   - controllerId: Optional<String>.none
+  ▿ navigationContext: Optional<NavigationContext>
+    ▿ some: NavigationContext
+      ▿ path: Optional<String>
+        - some: "path"
+      - value: [booleanValue: true, integerValue: 3, stringValue: string]
   ▿ route: Route
     ▿ screen: Screen
       ▿ child: UnknownComponent

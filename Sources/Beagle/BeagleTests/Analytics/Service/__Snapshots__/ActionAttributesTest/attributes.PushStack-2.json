@@ -1,4 +1,10 @@
 {
+  "navigationContext" : {
+    "path" : "path",
+    "value" : {
+      "integerValue" : 1
+    }
+  },
   "route" : {
     "fallback" : {
       "child" : {

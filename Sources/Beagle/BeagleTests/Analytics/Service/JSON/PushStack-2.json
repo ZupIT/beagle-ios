@@ -2,8 +2,15 @@
     "_beagleAction_": "beagle:pushStack",
     "analytics": {
         "attributes": [
-            "route"
+            "route",
+            "navigationContext"
         ]
+    },
+    "navigationContext": {
+        "path": "path",
+        "value": {
+            "integerValue": 1
+        }
     },
     "controllerId": "controller ID - remote",
     "route": {

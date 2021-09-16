@@ -460,6 +460,7 @@ class BeagleControllerStub: BeagleController {
             self.screen = screen
         }
         super.init(nibName: nil, bundle: nil)
+        view.setContext(Context(id: NavigationContext.id, value: nil))
     }
 
     required init?(coder: NSCoder) {

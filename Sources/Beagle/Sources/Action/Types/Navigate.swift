@@ -24,26 +24,26 @@ public enum Navigate: Action {
     case openNativeRoute(OpenNativeRoute, analytics: ActionAnalyticsConfig? = nil)
 
     /// Resets the application's root navigation stack with a new navigation stack that has `Route` as the first view
-    case resetApplication(Route, controllerId: String? = nil, context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case resetApplication(Route, controllerId: String? = nil, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     /// Resets the views stack to create a new flow with the passed route.
-    case resetStack(Route, context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case resetStack(Route, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     /// Presents a new screen that comes from a specified route starting a new flow.
     /// You can specify a controllerId, describing the id of navigation controller used for the new flow.
-    case pushStack(Route, controllerId: String? = nil, context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case pushStack(Route, controllerId: String? = nil, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     /// Unstacks the current view stack.
-    case popStack(context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case popStack(navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
 
     /// Opens a new screen for the given route and stacks that at the top of the hierarchy.
-    case pushView(Route, context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case pushView(Route, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     /// Dismisses the current view.
-    case popView(context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case popView(navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     /// Returns the stack of screens in the application flow for a given screen in a route specified as String.
-    case popToView(Expression<String>, context: Context? = nil, analytics: ActionAnalyticsConfig? = nil)
+    case popToView(Expression<String>, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
     public struct OpenNativeRoute {
         
@@ -81,7 +81,30 @@ public enum Navigate: Action {
             return analytics
         }
     }
+    
 }
+
+public struct NavigationContext {
+    public var path: Path?
+    public var value: DynamicObject
+    
+    static let id = "navigationContext"
+}
+
+extension NavigationContext: CustomReflectable {
+    public var customMirror: Mirror {
+        return Mirror(
+            self,
+            children: [
+                "path": path?.rawValue as Any,
+                "value": value
+            ],
+            displayStyle: .struct
+        )
+    }
+}
+
+extension NavigationContext: Decodable { }
 
 /// Defines a navigation route type which can be `remote` or `declarative`.
 public enum Route {
@@ -121,25 +144,9 @@ extension Route.NewPath {
 
     /// RouteAdditionalData can be used on navigate actions to pass additional http data on requests triggered by Beagle.
     public struct HttpAdditionalData: AutoDecodable {
-        
-        public var method: HTTPMethod?
-        public var headers: [String: String]?
+        public var method: HTTPMethod? = .get
+        public var headers: [String: String]? = [:]
         public var body: DynamicObject?
-        
-        /// Constructs new http additional data
-        /// - Parameters:
-        ///   - method: Contains the HTTP method for the request.
-        ///   - headers: Contains the additional headers for a http request.
-        ///   - body: Contains additional body for a http request.
-        public init(
-            method: HTTPMethod? = .get,
-            headers: [String: String]? = [:],
-            body: DynamicObject?
-        ) {
-            self.method = method
-            self.headers = headers
-            self.body = body
-        }
     }
 }
 
@@ -155,14 +162,14 @@ extension Navigate: Decodable, CustomReflectable {
         case route
         case url
         case controllerId
-        case context
+        case navigationContext
     }
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(String.self, forKey: ._beagleAction_)
         let analytics = try container.decodeIfPresent(ActionAnalyticsConfig.self, forKey: .analytics)
-        let context = try container.decodeIfPresent(Context.self, forKey: .context)
+        let navigationContext = try container.decodeIfPresent(NavigationContext.self, forKey: .navigationContext)
         switch type.lowercased() {
         case "beagle:openexternalurl":
             self = .openExternalURL(try container.decode(Expression<String>.self, forKey: .url), analytics: analytics)
@@ -172,28 +179,28 @@ extension Navigate: Decodable, CustomReflectable {
             self = .resetApplication(
                 try container.decode(Route.self, forKey: .route),
                 controllerId: try container.decodeIfPresent(String.self, forKey: .controllerId),
-                context: context,
+                navigationContext: navigationContext,
                 analytics: analytics
             )
         case "beagle:resetstack":
-            self = .resetStack(try container.decode(Route.self, forKey: .route), context: context, analytics: analytics)
+            self = .resetStack(try container.decode(Route.self, forKey: .route), navigationContext: navigationContext, analytics: analytics)
         case "beagle:pushstack":
             self = .pushStack(
                 try container.decode(Route.self, forKey: .route),
                 controllerId: try container.decodeIfPresent(String.self, forKey: .controllerId),
-                context: context,
+                navigationContext: navigationContext,
                 analytics: analytics
             )
         case "beagle:popstack":
-            self = .popStack(context: context, analytics: analytics)
+            self = .popStack(navigationContext: navigationContext, analytics: analytics)
         case "beagle:pushview":
-            self = .pushView(try container.decode(Route.self, forKey: .route), context: context, analytics: analytics)
+            self = .pushView(try container.decode(Route.self, forKey: .route), navigationContext: navigationContext, analytics: analytics)
         case "beagle:popview":
-            self = .popView(context: context, analytics: analytics)
+            self = .popView(navigationContext: navigationContext, analytics: analytics)
         case "beagle:poptoview":
             self = .popToView(
                 try container.decode(Expression<String>.self, forKey: .route),
-                context: context,
+                navigationContext: navigationContext,
                 analytics: analytics
             )
         default:
@@ -217,53 +224,53 @@ extension Navigate: Decodable, CustomReflectable {
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:opennativeroute"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any)
             ] + Mirror(reflecting: nativeRoute).children
-        case let .resetApplication(route, controllerId: controllerId, context: context, analytics: analytics):
+        case let .resetApplication(route, controllerId: controllerId, navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:resetapplication"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any),
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
                 (label: CodingKeys.route.stringValue, value: route),
                 (label: CodingKeys.controllerId.stringValue, value: controllerId as Any)
             ]
-        case let .resetStack(route, context: context, analytics: analytics):
+        case let .resetStack(route, navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:resetstack"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any),
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
                 (label: CodingKeys.route.stringValue, value: route)
             ]
-        case let .pushStack(route, controllerId: controllerId, context: context, analytics: analytics):
+        case let .pushStack(route, controllerId: controllerId, navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:pushstack"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any),
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
                 (label: CodingKeys.route.stringValue, value: route),
                 (label: CodingKeys.controllerId.stringValue, value: controllerId as Any)
             ]
-        case let .popStack(context: context, analytics: analytics):
+        case let .popStack(navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:popstack"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any)
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any)
             ]
-        case let .pushView(route, context: context, analytics: analytics):
+        case let .pushView(route, navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:pushview"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any),
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
                 (label: CodingKeys.route.stringValue, value: route)
             ]
-        case let .popView(context: context, analytics: analytics):
+        case let .popView(navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:popview"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any)
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any)
             ]
-        case let .popToView(route, context: context, analytics: analytics):
+        case let .popToView(route, navigationContext: navigationContext, analytics: analytics):
             children = [
                 (label: CodingKeys._beagleAction_.stringValue, value: "beagle:poptoview"),
                 (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.context.stringValue, value: context as Any),
+                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
                 (label: CodingKeys.route.stringValue, value: route)
             ]
         }

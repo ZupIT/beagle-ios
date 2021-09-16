@@ -123,6 +123,7 @@
   ▿ logger: BeagleLoggerProxy
     - logger: Optional<BeagleLoggerType>.none
   ▿ navigation: BeagleNavigator
+    - applicationManager: ApplicationManagerDefault
     - builders: 0 key/value pairs
     - defaultAnimation: Optional<BeagleNavigatorAnimation>.none
     - defaultBuilder: Optional<() -> BeagleNavigationController>.none
