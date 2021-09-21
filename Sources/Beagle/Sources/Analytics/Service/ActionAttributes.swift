@@ -72,6 +72,7 @@ private func pathForAttribute(_ attribute: String) -> Path? {
     for node in path.nodes {
         if case .index = node { return nil }
     }
+    
     return path
 }
 

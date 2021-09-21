@@ -16,11 +16,7 @@
 
 // MARK: - Widget
 
-public protocol Widget: ServerDrivenComponent, IdentifiableComponent, StyleComponent, AccessibilityComponent {
-    var id: String? { get set }
-    var style: Style? { get set }
-    var accessibility: Accessibility? { get set }
-}
+public protocol Widget: ServerDrivenComponent, IdentifiableComponent, StyleComponent, AccessibilityComponent {}
 
 public protocol HasContext {
     var context: Context? { get }

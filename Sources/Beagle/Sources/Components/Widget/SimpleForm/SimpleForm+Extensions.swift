@@ -16,7 +16,7 @@
 
 import UIKit
 
-extension SimpleForm: Widget {
+extension SimpleForm {
     
     public func toView(renderer: BeagleRenderer) -> UIView {
         let simpleForm = UIView()

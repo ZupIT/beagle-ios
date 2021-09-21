@@ -5,21 +5,23 @@
             "labelCancel",
             "labelOk",
             "message",
-            "onPressCancel.message",
-            "onPressOk.message",
             "title"
         ]
     },
     "labelCancel": "👎🏻",
     "labelOk": "👍🏻",
     "message": "Message - @{context.headers.pi}",
-    "onPressCancel": {
-        "_beagleAction_": "beagle:alert",
-        "message": "Cancel - @{context.query}"
-    },
-    "onPressOk": {
-        "_beagleAction_": "beagle:alert",
-        "message": "OK - @{context.query}"
-    },
+    "onPressCancel": [
+        {
+            "_beagleAction_": "beagle:alert",
+            "message": "Cancel - @{context.query}"
+        }
+    ],
+    "onPressOk": [
+        {
+            "_beagleAction_": "beagle:alert",
+            "message": "OK - @{context.query}"
+        }
+    ],
     "title": "Title - @{context.headers.platform}"
 }

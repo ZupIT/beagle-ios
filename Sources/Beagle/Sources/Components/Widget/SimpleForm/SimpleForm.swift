@@ -15,7 +15,7 @@
  */
 
 /// Component will define a submit handler for a `SimpleForm`.
-public struct SimpleForm: ServerDrivenComponent, HasContext, AutoDecodable {
+public struct SimpleForm: Widget, HasContext, AutoDecodable {
     
     /// Defines the contextData that be set to form.
     public var context: Context?
