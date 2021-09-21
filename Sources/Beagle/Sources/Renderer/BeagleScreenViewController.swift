@@ -265,11 +265,12 @@ public class BeagleScreenViewController: BeagleController {
     // MARK: - View Setup
     
     private func initView() {
-         if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *) {
             view.backgroundColor = UIColor.systemBackground
-         } else {
+        } else {
             view.backgroundColor = .white
-         }
+        }
+        view.setContext(Context(id: NavigationContext.id, value: nil))
         updateView(state: viewModel.state)
     }
     

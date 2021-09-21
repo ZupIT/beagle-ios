@@ -1,6 +1,11 @@
 ▿ Navigate
   - _beagleAction_: "beagle:pushview"
   - analytics: Optional<ActionAnalyticsConfig>.none
+  ▿ navigationContext: Optional<NavigationContext>
+    ▿ some: NavigationContext
+      ▿ path: Optional<String>
+        - some: "path"
+      - value: string
   ▿ route: Route
     ▿ fallback: Optional<Screen>
       ▿ some: Screen

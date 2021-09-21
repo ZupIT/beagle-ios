@@ -21,6 +21,7 @@
             ▿ action: Navigate
               - _beagleAction_: "beagle:pushview"
               - analytics: Optional<ActionAnalyticsConfig>.none
+              - navigationContext: Optional<NavigationContext>.none
               ▿ route: Route
                 - fallback: Optional<Screen>.none
                 - httpAdditionalData: Optional<HttpAdditionalData>.none

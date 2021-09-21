@@ -71,6 +71,7 @@ class NavigateTests: XCTestCase {
           - analytics: Optional<ActionAnalyticsConfig>.none
           ▿ controllerId: Optional<String>
             - some: "my-controller-id"
+          - navigationContext: Optional<NavigationContext>.none
           ▿ route: Route
             - fallback: Optional<Screen>.none
             - httpAdditionalData: Optional<HttpAdditionalData>.none
@@ -94,6 +95,7 @@ class NavigateTests: XCTestCase {
         ▿ Navigate
           - _beagleAction_: "beagle:resetstack"
           - analytics: Optional<ActionAnalyticsConfig>.none
+          - navigationContext: Optional<NavigationContext>.none
           ▿ route: Route
             - fallback: Optional<Screen>.none
             - httpAdditionalData: Optional<HttpAdditionalData>.none
@@ -107,6 +109,14 @@ class NavigateTests: XCTestCase {
         let action: Navigate = try actionFromString("""
         {
             "_beagleAction_": "beagle:pushStack",
+            "navigationContext": {
+                "path": "path",
+                "value": {
+                    "stringValue": "string",
+                    "booleanValue": true,
+                    "integerValue": 3
+                }
+            },
             "route": {
                 "screen": {
                     "child" : {
@@ -137,6 +147,7 @@ class NavigateTests: XCTestCase {
           - analytics: Optional<ActionAnalyticsConfig>.none
           ▿ controllerId: Optional<String>
             - some: "customid"
+          - navigationContext: Optional<NavigationContext>.none
           ▿ route: Route
             - fallback: Optional<Screen>.none
             - httpAdditionalData: Optional<HttpAdditionalData>.none
@@ -157,6 +168,7 @@ class NavigateTests: XCTestCase {
         ▿ Navigate
           - _beagleAction_: "beagle:popstack"
           - analytics: Optional<ActionAnalyticsConfig>.none
+          - navigationContext: Optional<NavigationContext>.none
         """)
     }
     
@@ -180,7 +192,11 @@ class NavigateTests: XCTestCase {
     func testDecodingPopView() throws {
         let action: Navigate = try actionFromString("""
         {
-            "_beagleAction_": "beagle:popView"
+            "_beagleAction_": "beagle:popView",
+            "navigationContext": {
+                "path": "path",
+                "value": "string"
+            }
         }
         """)
 
@@ -188,6 +204,11 @@ class NavigateTests: XCTestCase {
         ▿ Navigate
           - _beagleAction_: "beagle:popview"
           - analytics: Optional<ActionAnalyticsConfig>.none
+          ▿ navigationContext: Optional<NavigationContext>
+            ▿ some: NavigationContext
+              ▿ path: Optional<String>
+                - some: "path"
+              - value: string
         """)
     }
     
@@ -203,6 +224,7 @@ class NavigateTests: XCTestCase {
         ▿ Navigate
           - _beagleAction_: "beagle:poptoview"
           - analytics: Optional<ActionAnalyticsConfig>.none
+          - navigationContext: Optional<NavigationContext>.none
           ▿ route: Expression<String>
             - value: "viewId"
         """)
