@@ -46,9 +46,11 @@ class WindowManagerDumb: WindowManager {
 class WindowMock: WindowProtocol {
 
     var hasInvokedReplaceRootViewController = false
+    var controller: UIViewController?
 
     func replace(rootViewController viewController: UIViewController, animated: Bool, completion: ((Bool) -> Void)?) {
         hasInvokedReplaceRootViewController = true
+        controller = (viewController as? UINavigationController)?.topViewController
     }
 }
 

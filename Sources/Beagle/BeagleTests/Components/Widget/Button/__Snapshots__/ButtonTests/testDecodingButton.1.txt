@@ -9,6 +9,7 @@
       ▿ Navigate
         - _beagleAction_: "beagle:popstack"
         - analytics: Optional<ActionAnalyticsConfig>.none
+        - navigationContext: Optional<NavigationContext>.none
   ▿ style: Optional<Style>
     ▿ some: Style
       ▿ backgroundColor: Optional<String>

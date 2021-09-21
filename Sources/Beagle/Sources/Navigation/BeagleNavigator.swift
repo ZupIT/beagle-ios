@@ -61,33 +61,35 @@ class BeagleNavigator: BeagleNavigation {
             openExternalURL(path: path, controller: controller)
         case let .openNativeRoute(nativeRoute, _):
             openNativeRoute(controller: controller, origin: origin, animated: animated, nativeRoute: nativeRoute)
-        case let .resetApplication(route, controllerId, _):
+        case let .resetApplication(route, controllerId, navigationContext, _):
             navigate(
                 route: route,
+                navigationContext: navigationContext,
                 controller: controller,
                 animated: animated,
                 origin: origin
             ) { [weak self] origin, destination, animated in
                 self?.resetApplication(origin: origin, destination: destination, controllerId: controllerId, animated: animated)
             }
-        case let .resetStack(route, _):
-            navigate(route: route, controller: controller, animated: animated, origin: origin, transition: resetStack(origin:destination:animated:))
-        case let .pushView(route, _):
-            navigate(route: route, controller: controller, animated: animated, origin: origin, transition: pushView(origin:destination:animated:))
-        case .popView:
-            popView(controller: controller, animated: animated)
-        case let .popToView(route, _):
+        case let .resetStack(route, navigationContext, _):
+            navigate(route: route, navigationContext: navigationContext, controller: controller, animated: animated, origin: origin, transition: resetStack(origin:destination:animated:))
+        case let .pushView(route, navigationContext, _):
+            navigate(route: route, navigationContext: navigationContext, controller: controller, animated: animated, origin: origin, transition: pushView(origin:destination:animated:))
+        case let .popView(navigationContext, _):
+            popView(controller: controller, navigationContext: navigationContext, origin: origin, animated: animated)
+        case let .popToView(route, navigationContext, _):
             let identifier = route.evaluate(with: origin) ?? ""
-            popToView(identifier: identifier, controller: controller, animated: animated)
-        case let .pushStack(route, controllerId, _):
+            popToView(identifier: identifier, controller: controller, navigationContext: navigationContext, origin: origin, animated: animated)
+        case let .pushStack(route, controllerId, navigationContext, _):
             navigate(route: route,
+                     navigationContext: navigationContext,
                      controller: controller,
                      animated: animated,
                      origin: origin) { [weak self] origin, destination, animated in
                 self?.pushStack(origin: origin, destination: destination, controllerId: controllerId, animated: animated)
             }
-        case .popStack:
-            popStack(controller: controller, animated: animated)
+        case let .popStack(navigationContext, _):
+            popStack(controller: controller, navigationContext: navigationContext, origin: origin, animated: animated)
         }
     }
     
@@ -119,17 +121,18 @@ class BeagleNavigator: BeagleNavigation {
 
     private typealias Transition = (BeagleController, UIViewController, Bool) -> Void
     
-    private func navigate(route: Route, controller: BeagleController, animated: Bool, origin: UIView?, transition: @escaping Transition) {
+    private func navigate(route: Route, navigationContext: NavigationContext?, controller: BeagleController, animated: Bool, origin: UIView?, transition: @escaping Transition) {
         viewController(
             route: route,
             controller: controller,
             origin: origin,
             retry: { [weak controller] in
                 guard let controller = controller else { return }
-                self.navigate(route: route, controller: controller, animated: animated, origin: origin, transition: transition)
+                self.navigate(route: route, navigationContext: navigationContext, controller: controller, animated: animated, origin: origin, transition: transition)
             },
             success: {
                 transition(controller, $0, animated)
+                $0.setNavigationContext(navigationContext, origin: origin)
             }
         )
     }
@@ -176,18 +179,21 @@ class BeagleNavigator: BeagleNavigation {
         origin.navigationController?.pushViewController(destination, animated: animated)
     }
     
-    private func popView(controller: BeagleController, animated: Bool) {
+    private func popView(controller: BeagleController, navigationContext: NavigationContext?, origin: UIView?, animated: Bool) {
         guard let navigation = controller.navigationController, navigation.viewControllers.count > 1 else {
-            popStack(controller: controller, animated: animated)
+            popStack(controller: controller, navigationContext: navigationContext, origin: origin, animated: animated)
             return
         }
         if let transition = defaultAnimation?.getTransition(.pop) {
             navigation.view.layer.add(transition, forKey: nil)
         }
+        if let destination = navigation.viewControllers[safe: navigation.viewControllers.count - 2] {
+            destination.setNavigationContext(navigationContext, origin: origin)
+        }
         navigation.popViewController(animated: animated)
     }
     
-    private func popToView(identifier: String, controller: BeagleController, animated: Bool) {
+    private func popToView(identifier: String, controller: BeagleController, navigationContext: NavigationContext?, origin: UIView?, animated: Bool) {
         guard let viewControllers = controller.navigationController?.viewControllers else {
             assertionFailure("Trying to pop when there is nothing to pop"); return
         }
@@ -203,6 +209,7 @@ class BeagleNavigator: BeagleNavigation {
         if let transition = defaultAnimation?.getTransition(.pop) {
             controller.navigationController?.view.layer.add(transition, forKey: nil)
         }
+        target.setNavigationContext(navigationContext, origin: origin)
         controller.navigationController?.popToViewController(target, animated: animated)
     }
     
@@ -223,8 +230,16 @@ class BeagleNavigator: BeagleNavigation {
         origin.present(navigationToPresent, animated: animated)
     }
     
-    private func popStack(controller: UIViewController, animated: Bool) {
-        controller.dismiss(animated: animated)
+    var applicationManager: ApplicationManager = ApplicationManagerDefault()
+    
+    private func popStack(controller: UIViewController, navigationContext: NavigationContext?, origin: UIView?, animated: Bool) {
+        controller.dismiss(animated: animated) {
+            if let destination = self.applicationManager.topViewController(
+                base: UIApplication.shared.keyWindow?.rootViewController
+            ) {
+                destination.setNavigationContext(navigationContext, origin: origin)
+            }
+        }
     }
     
     // MARK: Utils
@@ -315,4 +330,39 @@ class BeagleNavigator: BeagleNavigation {
             headers: path.httpAdditionalData?.headers ?? [:]
         )
     }
+}
+
+private extension UIViewController {
+    func setNavigationContext(_ navigationContext: NavigationContext?, origin: UIView?) {
+        guard var navigationContext = navigationContext else { return }
+        if let origin = origin {
+            navigationContext.value = navigationContext.value.evaluate(with: origin)
+        }
+        let contextObserver = view.getContext(with: NavigationContext.id)
+        if let contextValue = contextObserver?.value.value, let path = navigationContext.path {
+            contextObserver?.value = Context(id: NavigationContext.id, value: contextValue.set(navigationContext.value, with: path))
+        } else {
+            contextObserver?.value = Context(id: NavigationContext.id, value: navigationContext.value)
+        }
+    }
+}
+
+protocol ApplicationManager {
+    func topViewController(base: UIViewController?) -> UIViewController?
+}
+
+struct ApplicationManagerDefault: ApplicationManager {
+    func topViewController(base: UIViewController?) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        } else if let tab = base as? UITabBarController, let selected = tab.selectedViewController {
+            return topViewController(base: selected)
+        } else if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        } else if let child = base?.children[safe: 0] {
+            return topViewController(base: child)
+        }
+        return base
+    }
+    
 }

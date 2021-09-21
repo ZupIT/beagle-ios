@@ -25,10 +25,10 @@ extension Navigate {
 extension Navigate {
     var newPath: Route.NewPath? {
         switch self {
-        case let .resetApplication(route, _, _),
-             let .resetStack(route, _),
-             let .pushStack(route, _, _),
-             let .pushView(route, _):
+        case let .resetApplication(route, _, _, _),
+             let .resetStack(route, _, _),
+             let .pushStack(route, _, _, _),
+             let .pushView(route, _, _):
             return route.path
         default:
             return nil
