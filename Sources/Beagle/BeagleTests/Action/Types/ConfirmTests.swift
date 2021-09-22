@@ -27,8 +27,8 @@ final class ConfirmTests: XCTestCase {
         let confirmAction = Confirm(
             title: "Title",
             message: "Message",
-            onPressOk: onPressOkAction,
-            onPressCancel: onPressCancelAction,
+            onPressOk: [onPressOkAction],
+            onPressCancel: [onPressCancelAction],
             labelOk: "Ok",
             labelCancel: "Cancel"
         )

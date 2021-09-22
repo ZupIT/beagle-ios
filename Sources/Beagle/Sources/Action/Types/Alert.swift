@@ -24,7 +24,7 @@ public struct Alert: Action, AutoDecodable {
     public var message: Expression<String>
     
     /// Defines the action of the button positive in the alert.
-    public var onPressOk: Action?
+    public var onPressOk: [Action]?
     
     /// Defines the text of the button positive in the alert.
     public var labelOk: String?

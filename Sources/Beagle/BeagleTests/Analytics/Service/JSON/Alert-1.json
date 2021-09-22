@@ -4,7 +4,6 @@
         "attributes": [
             "labelOk",
             "message",
-            "onPressOk.message",
             "title"
         ],
         "additionalEntries": {
@@ -13,9 +12,11 @@
     },
     "labelOk": "ok",
     "message": "Message - @{context.headers.pi}",
-    "onPressOk": {
-        "_beagleAction_": "beagle:alert",
-        "message": "@{context.query}"
-    },
+    "onPressOk": [
+        {
+            "_beagleAction_": "beagle:alert",
+            "message": "@{context.query}"
+        }
+    ],
     "title": "Title - @{context.headers.platform}"
 }

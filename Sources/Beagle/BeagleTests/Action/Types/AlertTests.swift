@@ -25,7 +25,7 @@ final class AlertTests: XCTestCase {
         let alert = Alert(
             title: "Title",
             message: "Message",
-            onPressOk: onPressOkAction,
+            onPressOk: [onPressOkAction],
             labelOk: "Ok"
         )
         let view = UIView()
