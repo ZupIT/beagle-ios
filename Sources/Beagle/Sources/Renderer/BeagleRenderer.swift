@@ -138,5 +138,4 @@ public extension BeagleRenderer {
         expression.observe(view: view, controller: controller, updateFunction: updateFunction)
     }
 
-    // TODO: should we make `observeMany` to simplify this to users?
 }

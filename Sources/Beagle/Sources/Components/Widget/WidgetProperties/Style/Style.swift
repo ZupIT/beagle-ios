@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-public class Style: Decodable, AutoEquatable, AutoInitiable {
+public class Style: Decodable, AutoEquatable {
     
     // MARK: - Public Properties
     
@@ -51,8 +51,7 @@ public class Style: Decodable, AutoEquatable, AutoInitiable {
     /// Apply positioning using the flex box concept.
     public var flex: Flex?
 
-// sourcery:inline:auto:Style.Init
-    public init(
+    init(
         backgroundColor: String? = nil,
         cornerRadius: CornerRadius? = nil,
         borderColor: String? = nil,
@@ -77,7 +76,6 @@ public class Style: Decodable, AutoEquatable, AutoInitiable {
         self.display = display
         self.flex = flex
     }
-// sourcery:end
 }
 
 /// The CornerRadius apply rounded borders to the widget

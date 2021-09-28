@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-public struct Context: AutoInitiableAndDecodable, Equatable, Encodable {
+public struct Context: Equatable, Codable {
     
     public let id: String
     public let value: DynamicObject
     
-// sourcery:inline:auto:Context.Init
-    public init(
-        id: String,
-        value: DynamicObject
-    ) {
-        self.id = id
-        self.value = value
-    }
-// sourcery:end
 }

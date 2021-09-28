@@ -113,14 +113,6 @@ extension KeyedDecodingContainer {
     
 }
 
-public struct UnknownComponent: ServerDrivenComponent, AutoInitiable {
+public struct UnknownComponent: ServerDrivenComponent {
     public var type: String
-
-// sourcery:inline:auto:UnknownComponent.Init
-    public init(
-        type: String
-    ) {
-        self.type = type
-    }
-// sourcery:end
 }
