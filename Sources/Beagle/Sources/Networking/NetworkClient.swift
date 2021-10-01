@@ -28,13 +28,12 @@ public protocol NetworkClient {
     ) -> RequestToken?
 }
 
-public struct NetworkError: Error, AutoInitiable {
+public struct NetworkError: Error {
     public let error: Error
     public let data: Data?
     public let request: URLRequest
     public let response: URLResponse?
 
-// sourcery:inline:auto:NetworkError.Init
     public init(
         error: Error,
         data: Data? = nil,
@@ -46,7 +45,6 @@ public struct NetworkError: Error, AutoInitiable {
         self.request = request
         self.response = response
     }
-// sourcery:end
 }
 
 public struct NetworkResponse {

@@ -17,7 +17,7 @@
 import UIKit
 import Beagle
 
-public struct TextContainer: ServerDrivenComponent, AutoInitiableAndDecodable {
+public struct TextContainer: ServerDrivenComponent, AutoDecodable {
 
     public let childrenOfTextContainer: [TextComponents]
     public let headerOfTextContainer: TextComponentHeader
@@ -27,15 +27,4 @@ public struct TextContainer: ServerDrivenComponent, AutoInitiableAndDecodable {
         return UIView()
     }
 
-// sourcery:inline:auto:TextContainer.Init
-    public init(
-        childrenOfTextContainer: [TextComponents],
-        headerOfTextContainer: TextComponentHeader,
-        actions: [ActionDummy]
-    ) {
-        self.childrenOfTextContainer = childrenOfTextContainer
-        self.headerOfTextContainer = headerOfTextContainer
-        self.actions = actions
-    }
-// sourcery:end
 }

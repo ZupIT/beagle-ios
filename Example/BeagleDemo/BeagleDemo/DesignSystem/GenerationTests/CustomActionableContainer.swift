@@ -17,7 +17,7 @@
 import UIKit
 import Beagle
 
-public struct CustomActionableContainer: ServerDrivenComponent, AutoInitiableAndDecodable {
+public struct CustomActionableContainer: ServerDrivenComponent, AutoDecodable {
 
     public let child: [ServerDrivenComponent]
     public let verySpecificAction: ActionDummy
@@ -26,13 +26,4 @@ public struct CustomActionableContainer: ServerDrivenComponent, AutoInitiableAnd
         return UIView()
     }
 
-// sourcery:inline:auto:CustomActionableContainer.Init
-    public init(
-        child: [ServerDrivenComponent],
-        verySpecificAction: ActionDummy
-    ) {
-        self.child = child
-        self.verySpecificAction = verySpecificAction
-    }
-// sourcery:end
 }

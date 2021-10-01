@@ -17,7 +17,7 @@
 import UIKit
 import Beagle
 
-public struct SingleTextContainer: ServerDrivenComponent, AutoInitiableAndDecodable {
+public struct SingleTextContainer: ServerDrivenComponent, AutoDecodable {
 
     public let firstTextContainer: TextComponents
     public let secondTextContainer: TextComponents?
@@ -28,17 +28,4 @@ public struct SingleTextContainer: ServerDrivenComponent, AutoInitiableAndDecoda
         return UIView()
     }
 
-// sourcery:inline:auto:SingleTextContainer.Init
-    public init(
-        firstTextContainer: TextComponents,
-        secondTextContainer: TextComponents? = nil,
-        child: ServerDrivenComponent,
-        actions: [ActionDummy]? = nil
-    ) {
-        self.firstTextContainer = firstTextContainer
-        self.secondTextContainer = secondTextContainer
-        self.child = child
-        self.actions = actions
-    }
-// sourcery:end
 }

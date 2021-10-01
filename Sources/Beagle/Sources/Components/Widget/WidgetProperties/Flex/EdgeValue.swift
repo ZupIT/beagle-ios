@@ -16,7 +16,7 @@
 
 // MARK: - EdgeValue
 /// Specifies the offset value of the edges that an item should have from it’s closest sibling (item) or parent (container).
-public class EdgeValue: Decodable, AutoEquatable, AutoInitiable {
+public class EdgeValue: Decodable, AutoEquatable {
     // MARK: - Public Properties
     public var left: UnitValue?
     public var top: UnitValue?
@@ -32,8 +32,7 @@ public class EdgeValue: Decodable, AutoEquatable, AutoInitiable {
     /// Specify the offset the all edge of the item should have from it’s closest sibling (item) or parent (container).
     public var all: UnitValue?
 
-// sourcery:inline:auto:EdgeValue.Init
-    public init(
+    init(
         left: UnitValue? = nil,
         top: UnitValue? = nil,
         right: UnitValue? = nil,
@@ -50,5 +49,4 @@ public class EdgeValue: Decodable, AutoEquatable, AutoInitiable {
         self.vertical = vertical
         self.all = all
     }
-// sourcery:end
 }

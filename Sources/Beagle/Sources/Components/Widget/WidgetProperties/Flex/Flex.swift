@@ -15,7 +15,7 @@
  */
 
 /// Apply positioning using the flex box concept, with a yoga layout structure.
-public class Flex: Decodable, AutoEquatable, AutoInitiable {
+public class Flex: Decodable, AutoEquatable {
     
     /// Controls the direction in which the children of a node are laid out.This is also referred to as the main axis.
     public var flexDirection: FlexDirection?
@@ -47,8 +47,7 @@ public class Flex: Decodable, AutoEquatable, AutoInitiable {
     /// Describes how to shrink children along the main axis in the case that the total size of the children overflow the size of the container on the main axis.
     public var shrink: Double?
             
-// sourcery:inline:auto:Flex.Init
-    public init(
+    init(
         flexDirection: FlexDirection? = nil,
         flexWrap: Wrap? = nil,
         justifyContent: JustifyContent? = nil,
@@ -71,7 +70,6 @@ public class Flex: Decodable, AutoEquatable, AutoInitiable {
         self.grow = grow
         self.shrink = shrink
     }
-// sourcery:end
 }
 
 // MARK: - Flex Direction
