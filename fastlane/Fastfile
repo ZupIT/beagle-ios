@@ -11,24 +11,8 @@ platform :ios do
       scheme: "All",
       device: "iPhone 11"
     )
-    sonar_coverage_report
     check_if_beagle_works_via_cocoapods_integration
     check_if_beagle_works_via_spm_integration
-  end
-
-  desc "Generate the code coverage report"
-  private_lane :sonar_coverage_report do
-    slather(
-      scheme: "Beagle",
-      workspace: "Beagle.xcworkspace/",
-      output_directory: "sonar-reports", 
-      proj: "Sources/Beagle/Beagle.xcodeproj",
-      sonarqube_xml: "true"
-    )
-    sonar(
-      sonar_login: ENV["SONAR_TOKEN"],
-      project_configuration_path: File.expand_path("sonar-project.properties")
-    )
   end
 
   desc "Check whether Beagle is working via CocoaPods in an Example Project"
@@ -54,13 +38,13 @@ platform :ios do
     )
   end
 
-  desc "Release Pods"
-  lane :release_pods do |options|
-    version = options[:version] # 1.0.0
-     tag = options[:tag] # 1.0.0[-iOS]
-     update_podspec(path: "Beagle.podspec", version: version, tag: tag)
-     pod_push(path: "Beagle.podspec", allow_warnings: true)
-  end
+  # desc "Release Pods"
+  # lane :release_pods do |options|
+  #   version = options[:version] # 1.0.0
+  #    tag = options[:tag] # 1.0.0[-iOS]
+  #    update_podspec(path: "Beagle.podspec", version: version, tag: tag)
+  #    pod_push(path: "Beagle.podspec", allow_warnings: true)
+  # end
 end
 
 def update_podspec(path:, version:, tag:)
