@@ -26,7 +26,7 @@
 		C09F4100249AAB0F002605EE /* TextContainerWithAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F40FF249AAB0F002605EE /* TextContainerWithAction.swift */; };
 		C09F4102249AAC87002605EE /* SingleCustomActionableContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4101249AAC87002605EE /* SingleCustomActionableContainer.swift */; };
 		C09F4104249AACAB002605EE /* SingleTextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4103249AACAB002605EE /* SingleTextContainer.swift */; };
-		C09F4118249BDF26002605EE /* GenerationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4108249BD6FD002605EE /* GenerationTests.swift */; };
+		C09F4118249BDF26002605EE /* CustomComponentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4108249BD6FD002605EE /* CustomComponentsTests.swift */; };
 		C09F411E249BE470002605EE /* TextContainer.json in Resources */ = {isa = PBXBuildFile; fileRef = C09F411C249BE46C002605EE /* TextContainer.json */; };
 		C09F4121249BE758002605EE /* ComponentFromJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4120249BE758002605EE /* ComponentFromJsonFile.swift */; };
 		C09F4125249BF652002605EE /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09F4122249BF64B002605EE /* Protocols.swift */; };
@@ -37,8 +37,6 @@
 		C09F412F249C1B86002605EE /* TextContainerMissingSecondAction.json in Resources */ = {isa = PBXBuildFile; fileRef = C09F412E249C1B86002605EE /* TextContainerMissingSecondAction.json */; };
 		C09F4131249C219D002605EE /* SingleTextContainerWithoutActions.json in Resources */ = {isa = PBXBuildFile; fileRef = C09F4130249C219D002605EE /* SingleTextContainerWithoutActions.json */; };
 		C80AF1342493F0950097D200 /* OtherComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80AF1332493F0950097D200 /* OtherComponent.swift */; };
-		C8A2F6F32464C1F9002198B1 /* Equality.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A2F6F12464C1F9002198B1 /* Equality.generated.swift */; };
-		C8A2F6F42464C1F9002198B1 /* AutoDecodable.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8A2F6F22464C1F9002198B1 /* AutoDecodable.generated.swift */; };
 		C8D5F03624A4005C0037B11C /* Beagle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8D5F03524A4005C0037B11C /* Beagle.framework */; };
 		C8D5F03724A4005C0037B11C /* Beagle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C8D5F03524A4005C0037B11C /* Beagle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E75619892408365B0025E0A9 /* DSCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E75619882408365B0025E0A9 /* DSCollection.swift */; };
@@ -87,6 +85,7 @@
 		932925BD2327E0E500A61F01 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		932925BF2327E0E500A61F01 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93E489832542416800293568 /* BeagleLoggerDefault.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleLoggerDefault.swift; sourceTree = "<group>"; };
+		93F7073027204E3200202E36 /* __Snapshots__ */ = {isa = PBXFileReference; lastKnownFileType = folder; path = __Snapshots__; sourceTree = "<group>"; };
 		A057D59924CA1DE7001F6835 /* CustomBeagleNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBeagleNavigationController.swift; sourceTree = "<group>"; };
 		A0642DC72395A1840028AFF3 /* DeeplinkScreenManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkScreenManager.swift; sourceTree = "<group>"; };
 		C09F40F6249A8FFE002605EE /* TextContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
@@ -94,7 +93,7 @@
 		C09F40FF249AAB0F002605EE /* TextContainerWithAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextContainerWithAction.swift; sourceTree = "<group>"; };
 		C09F4101249AAC87002605EE /* SingleCustomActionableContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleCustomActionableContainer.swift; sourceTree = "<group>"; };
 		C09F4103249AACAB002605EE /* SingleTextContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleTextContainer.swift; sourceTree = "<group>"; };
-		C09F4108249BD6FD002605EE /* GenerationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerationTests.swift; sourceTree = "<group>"; };
+		C09F4108249BD6FD002605EE /* CustomComponentsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomComponentsTests.swift; sourceTree = "<group>"; };
 		C09F410E249BDEE8002605EE /* BeagleDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeagleDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C09F4112249BDEE8002605EE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C09F411C249BE46C002605EE /* TextContainer.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TextContainer.json; sourceTree = "<group>"; };
@@ -107,8 +106,6 @@
 		C09F412E249C1B86002605EE /* TextContainerMissingSecondAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TextContainerMissingSecondAction.json; sourceTree = "<group>"; };
 		C09F4130249C219D002605EE /* SingleTextContainerWithoutActions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SingleTextContainerWithoutActions.json; sourceTree = "<group>"; };
 		C80AF1332493F0950097D200 /* OtherComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherComponent.swift; sourceTree = "<group>"; };
-		C8A2F6F12464C1F9002198B1 /* Equality.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equality.generated.swift; sourceTree = "<group>"; };
-		C8A2F6F22464C1F9002198B1 /* AutoDecodable.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDecodable.generated.swift; sourceTree = "<group>"; };
 		C8D5F03524A4005C0037B11C /* Beagle.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Beagle.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E75619882408365B0025E0A9 /* DSCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCollection.swift; sourceTree = "<group>"; };
 		E756198C240865150025E0A9 /* DSCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -217,7 +214,6 @@
 				932925B12327E0E400A61F01 /* AppDelegate.swift */,
 				932925BA2327E0E500A61F01 /* Assets.xcassets */,
 				3DCE53572543233600D3B0A4 /* BeagleConfig */,
-				C0D0F47E245B48BB00FB57C1 /* CodeGeneration */,
 				6E2C784B241984F800448728 /* Constants */,
 				E75619862408363E0025E0A9 /* DesignSystem */,
 				932925BC2327E0E500A61F01 /* LaunchScreen.storyboard */,
@@ -241,7 +237,7 @@
 			path = Logger;
 			sourceTree = "<group>";
 		};
-		C09F40FC249AAAC2002605EE /* GenerationTests */ = {
+		C09F40FC249AAAC2002605EE /* CustomComponentsTests */ = {
 			isa = PBXGroup;
 			children = (
 				C09F4107249BD6E3002605EE /* Tests */,
@@ -252,13 +248,14 @@
 				C09F40FF249AAB0F002605EE /* TextContainerWithAction.swift */,
 				C09F4101249AAC87002605EE /* SingleCustomActionableContainer.swift */,
 			);
-			path = GenerationTests;
+			path = CustomComponentsTests;
 			sourceTree = "<group>";
 		};
 		C09F4107249BD6E3002605EE /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C09F4108249BD6FD002605EE /* GenerationTests.swift */,
+				93F7073027204E3200202E36 /* __Snapshots__ */,
+				C09F4108249BD6FD002605EE /* CustomComponentsTests.swift */,
 				C09F411B249BE456002605EE /* JSON */,
 			);
 			path = Tests;
@@ -296,23 +293,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		C0D0F47E245B48BB00FB57C1 /* CodeGeneration */ = {
-			isa = PBXGroup;
-			children = (
-				C8A2F6F02464C1F9002198B1 /* Generated */,
-			);
-			path = CodeGeneration;
-			sourceTree = "<group>";
-		};
-		C8A2F6F02464C1F9002198B1 /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				C8A2F6F22464C1F9002198B1 /* AutoDecodable.generated.swift */,
-				C8A2F6F12464C1F9002198B1 /* Equality.generated.swift */,
-			);
-			path = Generated;
-			sourceTree = "<group>";
-		};
 		E75619862408363E0025E0A9 /* DesignSystem */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,7 +300,7 @@
 				C80AF1332493F0950097D200 /* OtherComponent.swift */,
 				FA7AA64725C89F2E00385A36 /* CustomViews */,
 				E75619872408364A0025E0A9 /* DSCollection */,
-				C09F40FC249AAAC2002605EE /* GenerationTests */,
+				C09F40FC249AAAC2002605EE /* CustomComponentsTests */,
 				25B7472E24F6D84E00AFE60A /* NavigationControllers */,
 			);
 			path = DesignSystem;
@@ -351,7 +331,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 932925C22327E0E500A61F01 /* Build configuration list for PBXNativeTarget "BeagleDemo" */;
 			buildPhases = (
-				C0D0F482245B524100FB57C1 /* Sourcery Run Script */,
 				932925AA2327E0E400A61F01 /* Sources */,
 				932925AB2327E0E400A61F01 /* Frameworks */,
 				932925AC2327E0E400A61F01 /* Resources */,
@@ -474,24 +453,6 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		C0D0F482245B524100FB57C1 /* Sourcery Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Sourcery Run Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n../../Sources/Beagle/CodeGeneration/sourceryScript.sh\n";
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -502,7 +463,6 @@
 				C80AF1342493F0950097D200 /* OtherComponent.swift in Sources */,
 				C09F4100249AAB0F002605EE /* TextContainerWithAction.swift in Sources */,
 				3D8E5C80254234A0002B92E2 /* HttpRequestBuilder.swift in Sources */,
-				C8A2F6F42464C1F9002198B1 /* AutoDecodable.generated.swift in Sources */,
 				932925B22327E0E400A61F01 /* AppDelegate.swift in Sources */,
 				A0642DC82395A1840028AFF3 /* DeeplinkScreenManager.swift in Sources */,
 				E756198D240865150025E0A9 /* DSCollectionViewCell.swift in Sources */,
@@ -514,7 +474,6 @@
 				C09F4102249AAC87002605EE /* SingleCustomActionableContainer.swift in Sources */,
 				C09F40FE249AAAEE002605EE /* CustomActionableContainer.swift in Sources */,
 				3D3400D725D2E49F0079CD6F /* AnalyticsProviderDemo.swift in Sources */,
-				C8A2F6F32464C1F9002198B1 /* Equality.generated.swift in Sources */,
 				3D8E5C81254234A3002B92E2 /* NetworkClientDefault.swift in Sources */,
 				93E489842542416800293568 /* BeagleLoggerDefault.swift in Sources */,
 				C09F4125249BF652002605EE /* Protocols.swift in Sources */,
@@ -529,7 +488,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C09F4118249BDF26002605EE /* GenerationTests.swift in Sources */,
+				C09F4118249BDF26002605EE /* CustomComponentsTests.swift in Sources */,
 				C09F4121249BE758002605EE /* ComponentFromJsonFile.swift in Sources */,
 				3D8E5C7C25423198002B92E2 /* HttpRequestBuilderTest.swift in Sources */,
 			);

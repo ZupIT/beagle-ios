@@ -51,7 +51,7 @@ class BeagleConfig {
     }
 
     private static func registerCustomComponents(in dependencies: BeagleDependencies) {
-        dependencies.decoder.register(component: DSCollection.self)
+        dependencies.coder.register(type: DSCollection.self)
     }
 
     private static func registerCustomControllers(in dependencies: BeagleDependencies) {

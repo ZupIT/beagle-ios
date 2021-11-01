@@ -25,7 +25,7 @@ final class BeaglePrefetchHelperTests: XCTestCase {
         let viewClient: ViewClient
     }
 
-    private let decoder = ComponentDecoder()
+    private let decoder = BeagleCoder()
     private let jsonData = """
     {
       "_beagleComponent_": "beagle:text",
@@ -113,8 +113,7 @@ final class BeaglePrefetchHelperTests: XCTestCase {
 
     private func decodeComponent(from data: Data) -> ServerDrivenComponent? {
         do {
-            let component = try decoder.decodeComponent(from: data)
-            return component
+            return try decoder.decode(from: data)
         } catch {
             return nil
         }

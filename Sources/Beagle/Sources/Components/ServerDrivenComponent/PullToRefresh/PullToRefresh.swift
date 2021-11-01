@@ -16,12 +16,13 @@
 
 /// Adds a RefreshControl on the child if it is a ListView, GridView, Text or ScrollView,
 /// otherwise it creates a ScrollView and configures an RefreshControl for it
-public struct PullToRefresh: ServerDrivenComponent, HasContext, AutoDecodable {
+public struct PullToRefresh: ServerDrivenComponent, HasContext {
     
     /// Defines the context of the component.
     public var context: Context?
     
     /// List of actions that are performed when the component is pulled
+    @AutoCodable
     public var onPull: [Action]?
     
     /// Expression that controls when the loading indicator is showing
@@ -31,6 +32,7 @@ public struct PullToRefresh: ServerDrivenComponent, HasContext, AutoDecodable {
     public var color: Expression<String>?
     
     /// Defines the widget that will be configured with the RefreshControl.
+    @AutoCodable
     public var child: ServerDrivenComponent
     
 }

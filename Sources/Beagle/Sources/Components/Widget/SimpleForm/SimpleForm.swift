@@ -15,18 +15,21 @@
  */
 
 /// Component will define a submit handler for a `SimpleForm`.
-public struct SimpleForm: Widget, HasContext, AutoDecodable {
+public struct SimpleForm: Widget, HasContext {
     
     /// Defines the contextData that be set to form.
     public var context: Context?
     
     /// Defines the actions you want to execute when action submit form.
+    @AutoCodable
     public var onSubmit: [Action]?
     
     /// This event is executed every time a form is submitted, but because of a validation error, the onSubmit event is not run.
+    @AutoCodable
     public var onValidationError: [Action]?
     
     /// Defines the items on the simple form.
+    @AutoCodable
     public var children: [ServerDrivenComponent]?
     
     public var id: String?

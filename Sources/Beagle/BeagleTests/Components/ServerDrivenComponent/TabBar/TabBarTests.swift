@@ -111,8 +111,8 @@ class TabBarTests: XCTestCase {
         XCTAssert(passedIndex == index)
     }
     
-    func test_whenDecodingJson_thenItShouldReturnATabBar() throws {
+    func testCodableTabBar() throws {
         let component: TabBar = try componentFromJsonFile(fileName: "TabBar")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
 }

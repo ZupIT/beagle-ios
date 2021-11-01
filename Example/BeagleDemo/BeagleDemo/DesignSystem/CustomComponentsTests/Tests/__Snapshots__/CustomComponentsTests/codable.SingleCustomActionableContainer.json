@@ -1,0 +1,9 @@
+{
+  "_beagleComponent_" : "custom:singlecustomactionablecontainer",
+  "action" : {
+    "_beagleAction_" : "custom:actiondummydefault"
+  },
+  "child" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  }
+}

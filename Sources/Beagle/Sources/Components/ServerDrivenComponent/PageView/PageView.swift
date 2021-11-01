@@ -15,15 +15,17 @@
  */
 
 /// The PageView component is a specialized container to hold pages (views) that will be displayed horizontally.
-public struct PageView: ServerDrivenComponent, AutoDecodable, HasContext {
+public struct PageView: ServerDrivenComponent, HasContext {
     
     /// Defines a List of components (views) that are contained on this PageView.
+    @AutoCodable
     public var children: [ServerDrivenComponent]?
     
     /// Defines the contextData that be set to pageView.
     public var context: Context?
     
     /// List of actions that are performed when you are on the selected page.
+    @AutoCodable
     public var onPageChange: [Action]?
     
     /// Integer number that identifies that selected.

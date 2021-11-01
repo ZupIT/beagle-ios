@@ -15,7 +15,7 @@
  */
 
 /// The SafeArea will enable Safe areas to help you place your views within the visible portion of the overall interface.
-public struct SafeArea: Equatable, Decodable {
+public struct SafeArea: Equatable, Codable {
 
     /// Enables the safeArea constraint only on the TOP of the screen view.
     public var top: Bool?

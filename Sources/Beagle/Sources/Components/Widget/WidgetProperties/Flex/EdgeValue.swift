@@ -16,7 +16,7 @@
 
 // MARK: - EdgeValue
 /// Specifies the offset value of the edges that an item should have from it’s closest sibling (item) or parent (container).
-public class EdgeValue: Decodable, AutoEquatable {
+public class EdgeValue: Codable {
     // MARK: - Public Properties
     public var left: UnitValue?
     public var top: UnitValue?
@@ -48,5 +48,18 @@ public class EdgeValue: Decodable, AutoEquatable {
         self.horizontal = horizontal
         self.vertical = vertical
         self.all = all
+    }
+}
+
+extension EdgeValue: Equatable {
+     public static func == (lhs: EdgeValue, rhs: EdgeValue) -> Bool {
+        guard lhs.left == rhs.left else { return false }
+        guard lhs.top == rhs.top else { return false }
+        guard lhs.right == rhs.right else { return false }
+        guard lhs.bottom == rhs.bottom else { return false }
+        guard lhs.horizontal == rhs.horizontal else { return false }
+        guard lhs.vertical == rhs.vertical else { return false }
+        guard lhs.all == rhs.all else { return false }
+        return true
     }
 }

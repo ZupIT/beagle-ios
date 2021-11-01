@@ -15,7 +15,7 @@
  */
 
 /// Defines a button natively using the server driven information received through Beagle.
-public struct Button: Widget, AutoDecodable {
+public struct Button: Widget {
     
     /// Defines the button text content.
     public let text: Expression<String>
@@ -24,6 +24,7 @@ public struct Button: Widget, AutoDecodable {
     public var styleId: String?
     
     /// Attribute to define actions when this component is pressed.
+    @AutoCodable
     public var onPress: [Action]?
     
     /// Enables or disables the button.

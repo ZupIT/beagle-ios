@@ -2,11 +2,13 @@
   "condition" : true,
   "onFalse" : [
     {
+      "_beagleAction_" : "beagle:alert",
       "message" : "Hello beagle"
     }
   ],
   "onTrue" : [
     {
+      "_beagleAction_" : "beagle:alert",
       "message" : "Hello beagle"
     }
   ]

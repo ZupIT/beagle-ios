@@ -78,7 +78,7 @@ private extension ActionRecordFactory {
 
     func getActionName() -> String? {
         Mirror(reflecting: info.action).descendant("_beagleAction_") as? String
-            ?? info.controller.dependencies.decoder.nameForAction(ofType: type(of: info.action))
+        ?? info.controller.dependencies.coder.name(for: type(of: info.action))
     }
 
     struct EnabledValues {
@@ -115,7 +115,7 @@ private extension ActionRecordFactory {
     func componentInfo() -> AnalyticsRecord.Action.Component {
         let name = info.origin.componentType
             .ifSome(
-                info.controller.dependencies.decoder.nameForComponent(ofType:)
+                info.controller.dependencies.coder.name(for:)
             )
 
         let id = info.origin.accessibilityIdentifier

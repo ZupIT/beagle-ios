@@ -32,6 +32,7 @@ public struct Screen: ServerDrivenComponent, StyleComponent, HasContext {
     public var navigationBar: NavigationBar?
     
     /// Defines the child elements on this screen.
+    @AutoCodable
     public var child: ServerDrivenComponent
     
     /// Defines the context that be set to screen.

@@ -37,7 +37,7 @@ final class BeagleSetupTests: XCTestCase {
         }
         dep.networkClient = NetworkClientDummy()
         dep.style = { _ in return StyleViewConfiguratorDummy() }
-        dep.decoder = ComponentDecodingDummy()
+        dep.coder = BeagleCodingDummy()
         dep.windowManager = WindowManagerDumb()
         dep.opener = URLOpenerDumb()
         dep.globalContext = GlobalContextDummy()
@@ -70,17 +70,29 @@ final class DeepLinkHandlerDummy: DeepLinkScreenManaging {
     }
 }
 
-final class ComponentDecodingDummy: ComponentDecoding {
-    func register<T>(component type: T.Type) where T: ServerDrivenComponent {}
-    func register<A>(action type: A.Type) where A: Action {}
-    func register<T>(component type: T.Type, named typeName: String) where T: ServerDrivenComponent {}
-    func register<A>(action type: A.Type, named typeName: String) where A: Action {}
-    func componentType(forType type: String) -> Decodable.Type? { return nil }
-    func actionType(forType type: String) -> Decodable.Type? { return nil }
-    func decodeComponent(from data: Data) throws -> ServerDrivenComponent { return ComponentDummy() }
-    func decodeAction(from data: Data) throws -> Action { return ActionDummy() }
-    func nameForComponent(ofType type: ServerDrivenComponent.Type) -> String? { return nil }
-    func nameForAction(ofType type: Action.Type) -> String? { return nil }
+final class BeagleCodingDummy: BeagleCoding {
+    func register<T: BeagleCodable>(type: T.Type, named: String?) {}
+    
+    func decode<T>(from data: Data) throws -> T {
+        if T.self == Action.self {
+            // swiftlint:disable force_cast
+            return ActionDummy() as! T
+        }
+        return ComponentDummy() as! T
+        // swiftlint:enable force_cast
+    }
+    
+    func encode<T: BeagleCodable>(value: T) throws -> Data {
+        Data()
+    }
+    
+    func name(for type: BeagleCodable.Type) -> String? {
+        nil
+    }
+    
+    func type(for name: String, baseType: BeagleCoder.BaseType) -> BeagleCodable.Type? {
+        nil
+    }
 }
 
 final class PreFetchHelperDummy: BeaglePrefetchHelping {
@@ -103,6 +115,8 @@ struct ComponentDummy: ServerDrivenComponent, CustomStringConvertible {
         self.resultView = nil
     }
     
+    func encode(to encoder: Encoder) throws {}
+    
     func toView(renderer: BeagleRenderer) -> UIView {
         return resultView ?? UIView()
     }
@@ -122,7 +136,7 @@ struct BeagleScreenDependencies: BeagleDependenciesProtocol {
     var theme: Theme = AppThemeDummy()
     var preFetchHelper: BeaglePrefetchHelping = PreFetchHelperDummy()
     var appBundle: Bundle = Bundle(for: ImageTests.self)
-    var decoder: ComponentDecoding = ComponentDecodingDummy()
+    var coder: BeagleCoding = BeagleCodingDummy()
     var logger: BeagleLoggerType = BeagleLoggerDumb()
     var navigationControllerType = BeagleNavigationController.self
     var urlBuilder: UrlBuilderProtocol = UrlBuilder()

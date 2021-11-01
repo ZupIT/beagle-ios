@@ -40,9 +40,9 @@ final class ButtonTests: XCTestCase {
         }
     }
     
-    func testDecodingButton() throws {
+    func testCodableButton() throws {
         let component: Button = try componentFromJsonFile(fileName: "buttonComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
     func testSetRightButtonTitle() {

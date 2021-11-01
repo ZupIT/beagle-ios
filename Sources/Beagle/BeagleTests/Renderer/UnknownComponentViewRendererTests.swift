@@ -22,7 +22,7 @@ final class UnknownComponentTests: XCTestCase {
     
     func test_toView_shouldReturnTheExpectedView() {
         // Given
-        let component = UnknownComponent(type: String(describing: ComponentDummy()))
+        let component = UnknownComponent(_beagleComponent_: String(describing: ComponentDummy()))
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         

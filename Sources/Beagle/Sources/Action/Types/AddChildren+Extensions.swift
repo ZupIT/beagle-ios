@@ -47,8 +47,8 @@ extension AddChildren {
         }
         guard case .array(let dynamicObjects) = rootEvaluated else { return nil }
         return dynamicObjects
-            .compactMap { obj -> AnyDecodableContainer? in obj.transform() }
-            .compactMap { $0.content as? ServerDrivenComponent }
+            .compactMap { obj -> AutoCodable<ServerDrivenComponent>? in obj.transform() }
+            .compactMap { $0.wrappedValue }
     }
 }
 

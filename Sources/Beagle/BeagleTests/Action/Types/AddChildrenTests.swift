@@ -21,7 +21,7 @@ import SnapshotTesting
 final class AddChildrenTests: XCTestCase {
     
     func testDecodingAddChildrenWithDefaultMode() throws {
-        let action: AddChildren = try actionFromString("""
+        let action: AddChildren = try componentFromString("""
         {
             "_beagleAction_": "beagle:addChildren",
             "componentId": "id",
@@ -37,7 +37,7 @@ final class AddChildrenTests: XCTestCase {
     }
     
     func testDecodingAddChildren() throws {
-        let action: AddChildren = try actionFromString("""
+        let action: AddChildren = try componentFromString("""
         {
             "_beagleAction_": "beagle:addChildren",
             "componentId": "id",

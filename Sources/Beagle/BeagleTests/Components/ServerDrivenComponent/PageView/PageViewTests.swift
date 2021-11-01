@@ -20,22 +20,9 @@ import SnapshotTesting
 
 class PageViewTests: XCTestCase {
     
-    func test_whenDecodingJson_thenItShouldReturnAPageView() throws {
+    func testCodablePageViewWith3Pages() throws {
         let component: PageView = try componentFromJsonFile(fileName: "PageViewWith3Pages")
-        _assertInlineSnapshot(matching: component, as: .dump, with: """
-        ▿ PageView
-          ▿ children: Optional<Array<ServerDrivenComponent>>
-            ▿ some: 3 elements
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-              ▿ UnknownComponent
-                - type: "custom:beagleschematestscomponent"
-          - context: Optional<Context>.none
-          - currentPage: Optional<Expression<Int>>.none
-          - onPageChange: Optional<Array<Action>>.none
-        """)
+        assertSnapshotJson(matching: component)
     }
 
     func test_whenDecodingInvalidJson() throws {

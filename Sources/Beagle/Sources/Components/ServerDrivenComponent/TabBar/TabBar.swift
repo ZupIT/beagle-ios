@@ -16,7 +16,7 @@
 
 /// TabBar is a component responsible to display a tab layout.
 /// It works by displaying tabs that can change a context when clicked.
-public struct TabBar: ServerDrivenComponent, AutoDecodable {
+public struct TabBar: ServerDrivenComponent {
     
     /// Defines yours tabs title and icon.
     public let items: [TabBarItem]
@@ -28,6 +28,7 @@ public struct TabBar: ServerDrivenComponent, AutoDecodable {
     public var currentTab: Expression<Int>?
     
     /// Defines a list of action that will be executed when a tab is selected.
+    @AutoCodable
     public var onTabSelection: [Action]?
 
 }
@@ -44,7 +45,7 @@ public struct TabBarItem {
     
 }
 
-extension TabBarItem: Decodable {
+extension TabBarItem: Codable {
     enum CodingKeys: String, CodingKey {
         case icon
         case title
@@ -52,6 +53,13 @@ extension TabBarItem: Decodable {
     
     enum LocalImageCodingKey: String, CodingKey {
         case mobileId
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        var nestedContainer = container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .icon)
+        try nestedContainer.encodeIfPresent(icon, forKey: .mobileId)
+        try container.encodeIfPresent(title, forKey: .title)
     }
     
     public init(from decoder: Decoder) throws {

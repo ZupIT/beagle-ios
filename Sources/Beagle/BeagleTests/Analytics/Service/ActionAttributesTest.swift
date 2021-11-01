@@ -42,7 +42,7 @@ class ActionAttributesTest: XCTestCase {
     // MARK: - Aux
 
     private func doRecord<A: Action>(_: A.Type, fromJson: String) throws -> (DynamicDictionary, file: String) {
-        let action: A = try actionFromJsonFile(fileName: fromJson)
+        let action: A = try componentFromJsonFile(fileName: fromJson)
 
         let context = Context(
             id: "context",
@@ -73,7 +73,7 @@ func analyticsViewHierarchyWith(context: Context?) throws -> (view: UIView, cont
     let screen = Screen(id: "analytics-actions", child: child, context: context)
     
     let dependencies = BeagleDependencies()
-    dependencies.decoder.register(component: AnalyticsTestComponent.self)
+    dependencies.coder.register(type: AnalyticsTestComponent.self)
 
     let controller = BeagleScreenViewController(
         viewModel: .init(screenType: .declarative(screen), dependencies: dependencies)

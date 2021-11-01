@@ -15,7 +15,7 @@
  */
 
 /// GridView is a Layout component that will define a list of views natively. These views could be any ServerDrivenComponent.
-public struct GridView: Widget, HasContext, InitiableComponent, AutoDecodable {
+public struct GridView: Widget, HasContext, InitiableComponent {
     
     public typealias Direction = ScrollAxis
     
@@ -23,6 +23,7 @@ public struct GridView: Widget, HasContext, InitiableComponent, AutoDecodable {
     public var context: Context?
     
     /// Allows to define a list of actions to be performed when the GridView is displayed.
+    @AutoCodable
     public var onInit: [Action]?
     
     /// It's an expression that points to a list of values used to populate the GridView.
@@ -46,6 +47,7 @@ public struct GridView: Widget, HasContext, InitiableComponent, AutoDecodable {
     public var iteratorName: String?
     
     /// List of actions performed when the list is scrolled to the end.
+    @AutoCodable
     public var onScrollEnd: [Action]?
     
     /// Sets the scrolled percentage of the list to trigger onScrollEnd.

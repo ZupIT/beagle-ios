@@ -114,7 +114,7 @@ class BeagleScreenViewModel {
 
     func loadScreenFromText(_ text: String) -> Screen? {
         guard let data = text.data(using: .utf8) else { return nil }
-        let component = try? self.dependencies.decoder.decodeComponent(from: data)
+        let component: ServerDrivenComponent? = try? self.dependencies.coder.decode(from: data)
         return component?.toScreen()
     }
 

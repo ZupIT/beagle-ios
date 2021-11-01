@@ -22,7 +22,7 @@ final class GridViewDecodeTests: XCTestCase {
     
     func testDecodingJson() throws {
         let component: GridView = try componentFromJsonFile(fileName: "gridViewSpanCount")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
 }

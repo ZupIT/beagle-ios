@@ -1,0 +1,12 @@
+{
+  "_beagleComponent_" : "custom:singletextcontainer",
+  "child" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  },
+  "firstTextContainer" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  },
+  "secondTextContainer" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  }
+}

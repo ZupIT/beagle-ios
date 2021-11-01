@@ -36,7 +36,7 @@ public struct Text: Widget {
 }
 
 extension Text {
-    public enum Alignment: String, Decodable, CaseIterable {
+    public enum Alignment: String, Codable, CaseIterable {
         case left = "LEFT"
         case right = "RIGHT"
         case center = "CENTER"

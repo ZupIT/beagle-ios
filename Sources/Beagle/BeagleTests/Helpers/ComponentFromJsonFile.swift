@@ -15,38 +15,16 @@
  */
 
 @testable import Beagle
+import Foundation
 
 enum ComponentFromJsonError: Error {
     case wrongUrlPath
-    case couldNotMatchComponentType
 }
 
-func componentFromJsonFile<W: ServerDrivenComponent>(
-    fileName: String,
-    decoder: ComponentDecoding = ComponentDecoder()
-) throws -> W {
-    guard let url = Bundle(for: ScreenComponentTests.self).url(
-        forResource: fileName,
-        withExtension: ".json"
-    ) else {
-        throw ComponentFromJsonError.wrongUrlPath
-    }
-
-    let json = try Data(contentsOf: url)
-    let component = try decoder.decodeComponent(from: json)
-
-    guard let typed = component as? W else {
-        throw ComponentFromJsonError.couldNotMatchComponentType
-    }
-
-    return typed
-}
-
-// TODO: Make decoding process generic
-func actionFromJsonFile<W: Action>(
+func componentFromJsonFile<T>(
     fileName: String
-) throws -> W {
-    guard let url = Bundle(for: ComponentDecoderTests.self).url(
+) throws -> T {
+    guard let url = Bundle(for: BeagleCoderTests.self).url(
         forResource: fileName,
         withExtension: ".json"
     ) else {
@@ -54,28 +32,24 @@ func actionFromJsonFile<W: Action>(
     }
 
     let data = try Data(contentsOf: url)
-    return try actionFromData(data)
+    return try componentFromData(data)
 }
 
-func actionFromString<A: Action>(
+func componentFromString<A: BeagleCodable>(
     _ string: String
 ) throws -> A {
     guard let data = string.data(using: .utf8) else {
         throw ComponentFromJsonError.wrongUrlPath
     }
 
-    return try actionFromData(data)
+    return try componentFromData(data)
 }
 
-func actionFromData<A: Action>(
+func componentFromData<T>(
     _ data: Data,
-    decoder: ComponentDecoding = ComponentDecoder()
-) throws -> A {
-    let action = try decoder.decodeAction(from: data)
-    guard let typed = action as? A else {
-        throw ComponentFromJsonError.couldNotMatchComponentType
-    }
-    return typed
+    decoder: BeagleCoding = BeagleCoder()
+) throws -> T {
+    return try decoder.decode(from: data)
 }
 
 func jsonFromFile(
@@ -97,10 +71,9 @@ func jsonFromFile(
 
 /// This method was only created due to some problems with Swift Type Inference.
 /// So when you pass the type as a parameter, swift can infer the correct type.
-func componentFromJsonFile<W: ServerDrivenComponent>(
+func componentFromJsonFile<W: BeagleCodable>(
     componentType: W.Type,
-    fileName: String,
-    decoder: ComponentDecoding = ComponentDecoder()
+    fileName: String
 ) throws -> W {
-    return try componentFromJsonFile(fileName: fileName, decoder: decoder)
+    return try componentFromJsonFile(fileName: fileName)
 }

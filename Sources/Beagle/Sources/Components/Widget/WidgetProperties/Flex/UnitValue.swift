@@ -15,7 +15,7 @@
  */
 
 /// Receive the amount to be applied and the type.
-public struct UnitValue: Decodable, Equatable {
+public struct UnitValue: Codable, Equatable {
     
     // MARK: - Constants
     public static let zero = UnitValue(value: 0.0, type: .real)
@@ -27,7 +27,7 @@ public struct UnitValue: Decodable, Equatable {
 
 }
 
-public enum UnitType: String, Decodable {
+public enum UnitType: String, Codable {
     case auto = "AUTO"
     case real = "REAL"
     case percent = "PERCENT"

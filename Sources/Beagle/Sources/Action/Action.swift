@@ -17,7 +17,7 @@
 import UIKit
 
 /// Markup to define an action to be triggered in response to some event
-public protocol Action: Decodable {
+public protocol Action: BeagleCodable {
     /// can be used to override the global `AnalyticsConfig`.
     ///
     /// - when `nil`: analytics behavior for this action will be determined by global `AnalyticsConfig`.
@@ -32,7 +32,7 @@ public protocol AsyncAction: Action {
 
 /// Defines a representation of an unknown Action
 public struct UnknownAction: Action {
-    public let type: String
+    public let _beagleAction_: String
     public var analytics: ActionAnalyticsConfig? { return nil }
     
     public func execute(controller: BeagleController, origin: UIView) {

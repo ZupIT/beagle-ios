@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-public class Style: Decodable, AutoEquatable {
+public class Style: Codable {
     
     // MARK: - Public Properties
     
@@ -79,7 +79,7 @@ public class Style: Decodable, AutoEquatable {
 }
 
 /// The CornerRadius apply rounded borders to the widget
-public struct CornerRadius: Decodable, AutoEquatable {
+public struct CornerRadius: Codable {
     
     /// Defines the default size of the all corner radius
     public var radius: Double?
@@ -98,9 +98,20 @@ public struct CornerRadius: Decodable, AutoEquatable {
 
 }
 
+extension CornerRadius: Equatable {
+     public static func == (lhs: CornerRadius, rhs: CornerRadius) -> Bool {
+        guard lhs.radius == rhs.radius else { return false }
+        guard lhs.topLeft == rhs.topLeft else { return false }
+        guard lhs.topRight == rhs.topRight else { return false }
+        guard lhs.bottomLeft == rhs.bottomLeft else { return false }
+        guard lhs.bottomRight == rhs.bottomRight else { return false }
+        return true
+    }
+}
+
 // MARK: - Display
 extension Style {
-    public enum Display: String, Decodable {
+    public enum Display: String, Codable {
         case flex = "FLEX"
         case none = "NONE"
     }
@@ -108,8 +119,25 @@ extension Style {
 
 // MARK: - Position
 extension Style {
-    public enum PositionType: String, Decodable {
+    public enum PositionType: String, Codable {
         case relative = "RELATIVE"
         case absolute = "ABSOLUTE"
+    }
+}
+
+extension Style: Equatable {
+     public static func == (lhs: Style, rhs: Style) -> Bool {
+        guard lhs.backgroundColor == rhs.backgroundColor else { return false }
+        guard lhs.cornerRadius == rhs.cornerRadius else { return false }
+        guard lhs.borderColor == rhs.borderColor else { return false }
+        guard lhs.borderWidth == rhs.borderWidth else { return false }
+        guard lhs.size == rhs.size else { return false }
+        guard lhs.margin == rhs.margin else { return false }
+        guard lhs.padding == rhs.padding else { return false }
+        guard lhs.position == rhs.position else { return false }
+        guard lhs.positionType == rhs.positionType else { return false }
+        guard lhs.display == rhs.display else { return false }
+        guard lhs.flex == rhs.flex else { return false }
+        return true
     }
 }

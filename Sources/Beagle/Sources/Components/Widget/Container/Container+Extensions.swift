@@ -16,7 +16,7 @@
 
 import UIKit
 
-extension Container: ServerDrivenComponent {
+extension Container {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
         let containerView = UIView()

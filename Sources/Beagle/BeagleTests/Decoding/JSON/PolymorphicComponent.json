@@ -1,0 +1,28 @@
+{
+    "_beagleComponent_": "custom:PolymorphicComponent",    
+    "string": "string",
+    "component": {
+        "_beagleComponent_": "beagle:text",
+        "text": "component"
+    },
+    "optionalComponent": {
+        "_beagleComponent_": "beagle:text",
+        "text": "optionalComponent"
+    },
+    "arrayComponent": [
+        {
+            "_beagleComponent_": "beagle:text",
+            "text": "arrayComponent"
+        }
+    ],
+    "optionalArrayComponent": null,
+    "action": {
+        "_beagleAction_": "beagle:popview"
+    },
+    "arrayAction": [
+        {
+            "_beagleAction_": "beagle:popview"
+        }
+    ],
+    "optionalArrayAction": null
+}

@@ -16,7 +16,7 @@
 
 import UIKit
 
-public protocol ServerDrivenComponent: Decodable, Renderable {}
+public protocol ServerDrivenComponent: BeagleCodable, Renderable {}
 
 extension ServerDrivenComponent {
     func toScreen() -> Screen {
@@ -35,13 +35,17 @@ public protocol Renderable {
     func toView(renderer: BeagleRenderer) -> UIView
 }
 
+public struct UnknownComponent: ServerDrivenComponent {
+    public var _beagleComponent_: String
+}
+
 extension UnknownComponent {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
         #if DEBUG
         let label = UILabel(frame: .zero)
         label.numberOfLines = 2
-        label.text = "Unknown Component of type:\n \(String(describing: type))"
+        label.text = "Unknown Component of type:\n \(String(describing: _beagleComponent_))"
         label.textColor = .red
         label.backgroundColor = .yellow
         return label

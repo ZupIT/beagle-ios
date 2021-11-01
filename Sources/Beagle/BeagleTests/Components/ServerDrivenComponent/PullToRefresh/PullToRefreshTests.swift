@@ -22,9 +22,9 @@ class PullToRefreshTests: XCTestCase {
     
     private let imageSize = ImageSize.custom(CGSize(width: 80, height: 40))
     
-    func testDecodingPullToRefresh() throws {
+    func testCodablePullToRefresh() throws {
         let component: PullToRefresh = try componentFromJsonFile(fileName: "PullToRefresh")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
 
     func testPullToRefreshSnapshot() throws {

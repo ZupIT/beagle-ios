@@ -38,7 +38,7 @@ public struct ViewClientDefault: ViewClient {
     // MARK: Dependencies
 
     public typealias Dependencies =
-        DependencyDecoder
+        DependencyCoder
         & DependencyNetworkClient
         & DependencyUrlBuilder
         & DependencyLogger
@@ -102,7 +102,7 @@ public struct ViewClientDefault: ViewClient {
 
     private func decodeComponent(from data: Data) -> Result<ServerDrivenComponent> {
         do {
-            return .success(try dependencies.decoder.decodeComponent(from: data))
+            return .success(try dependencies.coder.decode(from: data))
         } catch {
             return .failure(.decoding(error))
         }

@@ -19,7 +19,7 @@ import UIKit
 /// It's a `String` that will be treated internally as an `Expression<String>` if passed a value like "@{someExression}". Otherwise, it will be just a normal `String`.
 public typealias StringOrExpression = String
 
-public enum Expression<T: Decodable> {
+public enum Expression<T: Codable> {
     case value(T)
     case expression(ContextExpression)
 }
@@ -188,9 +188,18 @@ extension Expression: Equatable where T: Equatable {
     }
 }
 
-// MARK: - Decodable
+// MARK: - Codable
 
-extension Expression: Decodable {
+extension Expression: Codable {
+    public func encode(to encoder: Encoder) throws {
+        switch self {
+        case .expression(let expression):
+            try expression.encode(to: encoder)
+        case .value(let value):
+            try value.encode(to: encoder)
+        }
+    }
+    
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         if let expression = try? container.decode(ContextExpression.self) {

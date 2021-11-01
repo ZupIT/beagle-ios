@@ -40,33 +40,14 @@ final class ContainerTests: XCTestCase {
         }
     }
     
-    func test_whenDecodingJson_shouldReturnAContainer() throws {
+    func testCodableContainer() throws {
         let component: Container = try componentFromJsonFile(fileName: "Container")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
-    func test_whenDecodingJson2_shouldReturnAContainer() throws {
+    func testCodableContainerWithoutChildren() throws {
         let component: Container = try componentFromJsonFile(fileName: "ContainerWithoutChildren")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func test_initWithChildren_shouldReturnContainerAndSetDependenciesProperly() {
-        // Given
-        let sut = Container(children: [
-            Text(text: "Some texts."),
-            Text(text: "More texts.")
-        ], style: Style(flex: Flex()))
-        
-        let mirror = Mirror(reflecting: sut)
-        
-        // When
-        let style = mirror.firstChild(of: Style.self)
-        let component = mirror.firstChild(of: [ServerDrivenComponent].self)
-
-        // Then
-        XCTAssertTrue(sut.children?.count == 2)
-        XCTAssertNotNil(style)
-        XCTAssertNotNil(component)
+        assertSnapshotJson(matching: component)
     }
     
     func test_toView_shouldReturnTheExpectedView() throws {

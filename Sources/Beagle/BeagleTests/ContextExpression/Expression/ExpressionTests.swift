@@ -139,7 +139,7 @@ final class ExpressionTests: XCTestCase {
     }
     
     func testDictionarySnapShot() throws {
-        guard let url = Bundle(for: ComponentDecoderTests.self).url(
+        guard let url = Bundle(for: BeagleCoderTests.self).url(
             forResource: "testDictionarySnapShot",
             withExtension: ".json"
         ) else {

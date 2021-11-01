@@ -350,9 +350,9 @@ final class ListViewTests: XCTestCase {
         assertSnapshotImage(view, size: imageSize)
     }
     
-    func testDecodingJsonListViewWithTemplate() throws {
+    func testCodableListViewWithTemplate() throws {
         let component: ListView = try componentFromJsonFile(fileName: "listViewWithTemplate")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
     // MARK: - Helper
@@ -400,6 +400,8 @@ private struct ActionStub: Action {
     init(from decoder: Decoder) throws {
         execute = nil
     }
+    
+    func encode(to encoder: Encoder) throws {}
     
     func execute(controller: BeagleController, origin: UIView) {
         execute?(controller, origin)

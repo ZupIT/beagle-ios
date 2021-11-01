@@ -87,9 +87,9 @@ final class ViewClientTests: XCTestCase {
             .success(.init(data: Data(), response: URLResponse()))
         )
 
-        let decoderStub = ComponentDecodingStub()
+        let decoderStub = BeagleCodingStub()
         decoderStub.errorToThrowOnDecode = NSError(domain: "Mock", code: 1, description: "Mock")
-        dependencies.decoder = decoderStub
+        dependencies.coder = decoderStub
 
         let expec = expectation(description: "fetch")
 
@@ -142,32 +142,30 @@ final class ViewClientTests: XCTestCase {
 
 // MARK: - Testing Helpers
 
-final class ComponentDecodingStub: ComponentDecoding {
-    func register<T>(component type: T.Type) where T: ServerDrivenComponent {}
-    func register<A>(action type: A.Type) where A: Action {}
-    func register<T>(component type: T.Type, named typeName: String) where T: ServerDrivenComponent {}
-    func register<A>(action type: A.Type, named typeName: String) where A: Action {}
-    func componentType(forType type: String) -> Decodable.Type? { return nil }
-    func actionType(forType type: String) -> Decodable.Type? { return nil }
-    func nameForComponent(ofType type: ServerDrivenComponent.Type) -> String? { return nil }
-    func nameForAction(ofType type: Action.Type) -> String? { return nil }
+final class BeagleCodingStub: BeagleCoding {
+    func register<T: BeagleCodable>(type: T.Type, named: String?) {}
     
-    var componentToReturnOnDecode: ServerDrivenComponent?
+    func decode<T>(from data: Data) throws -> T {
+        if let error = errorToThrowOnDecode {
+            throw error
+        }
+        if T.self == Action.self {
+            // swiftlint:disable force_cast
+            return ActionDummy() as! T
+        }
+        return ComponentDummy() as! T
+        // swiftlint:enable force_cast
+    }
+    
+    func encode<T: BeagleCodable>(value: T) throws -> Data {
+        return Data()
+    }
+    
+    func name(for type: BeagleCodable.Type) -> String? { nil }
+    
+    func type(for name: String, baseType: BeagleCoder.BaseType) -> BeagleCodable.Type? { nil }
+    
     var errorToThrowOnDecode: Error?
-    
-    func decodeComponent(from data: Data) throws -> ServerDrivenComponent {
-        if let error = errorToThrowOnDecode {
-            throw error
-        }
-        return ComponentDummy()
-    }
-
-    func decodeAction(from data: Data) throws -> Action {
-        if let error = errorToThrowOnDecode {
-            throw error
-        }
-        return ActionDummy()
-    }
 }
 
 final class ViewClientStub: ViewClient {

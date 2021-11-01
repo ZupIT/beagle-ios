@@ -16,7 +16,7 @@
 
 import UIKit
 
-public struct Accessibility: Decodable, Equatable {
+public struct Accessibility: Codable, Equatable {
     /// The value of the accessibility element, in a localized string.
     //public var accessibilityValue: String?
     

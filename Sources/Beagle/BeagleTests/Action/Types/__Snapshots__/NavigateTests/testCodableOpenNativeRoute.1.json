@@ -1,0 +1,8 @@
+{
+  "_beagleAction_" : "beagle:opennativeroute",
+  "data" : {
+    "a" : "value a"
+  },
+  "route" : "deeplink",
+  "shouldResetApplication" : true
+}

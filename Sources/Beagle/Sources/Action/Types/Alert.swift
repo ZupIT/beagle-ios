@@ -15,7 +15,7 @@
  */
 
 /// This action will show an alert natively, such as an error alert, indicating alternative flows, business system errors and others.
-public struct Alert: Action, AutoDecodable {
+public struct Alert: Action {
     
     /// Defines the title on the alert.
     public var title: Expression<String>?
@@ -24,6 +24,7 @@ public struct Alert: Action, AutoDecodable {
     public var message: Expression<String>
     
     /// Defines the action of the button positive in the alert.
+    @AutoCodable
     public var onPressOk: [Action]?
     
     /// Defines the text of the button positive in the alert.

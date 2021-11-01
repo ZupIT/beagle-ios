@@ -15,12 +15,14 @@
  */
 
 /// The container component is a general container that can hold other components inside.
-public struct Container: Widget, HasContext, InitiableComponent, AutoDecodable {
+public struct Container: Widget, HasContext, InitiableComponent {
     
     /// Defines a list of components that are part of the container.
+    @AutoCodable
     public var children: [ServerDrivenComponent]?
     
     /// it is a parameter that allows you to define a list of actions to be performed when the Widget is displayed.
+    @AutoCodable
     public var onInit: [Action]?
     
     /// Defines the contextData that be set to container.

@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 
 /// Typically displayed at the top of the window, containing buttons for navigating within a hierarchy of screens.
-public struct NavigationBar: Decodable {
+public struct NavigationBar: Codable {
     
     /// Defines the title on the navigation bar.
     public let title: String
@@ -38,7 +38,7 @@ public struct NavigationBar: Decodable {
 }
 
 /// Defines a item that could be showed in navigation bar.
-public struct NavigationBarItem: Decodable, AccessibilityComponent {
+public struct NavigationBarItem: Codable, AccessibilityComponent {
     
     /// Defines an image for your navigation bar.
     public var image: StringOrExpression?
@@ -47,27 +47,10 @@ public struct NavigationBarItem: Decodable, AccessibilityComponent {
     public let text: String
     
     /// Defines an action to be called when the item is clicked on.
-    public let action: Action
+    @AutoCodable
+    public var action: Action
     
     /// Defines Accessibility details for the item.
     public var accessibility: Accessibility?
     
-}
-
-extension NavigationBarItem {
-    enum CodingKeys: String, CodingKey {
-        case image
-        case text
-        case action
-        case accessibility
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        text = try container.decode(String.self, forKey: .text)
-        action = try container.decode(forKey: .action)
-        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
-        image = try container.decodeIfPresent(String.self, forKey: .image)
-    }
 }

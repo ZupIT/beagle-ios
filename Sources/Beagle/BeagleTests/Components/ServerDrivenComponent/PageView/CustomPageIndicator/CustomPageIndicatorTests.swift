@@ -26,16 +26,16 @@ class CustomPageIndicatorTests: XCTestCase {
         defaultColor: "defaultColor"
     )
     
-    private lazy var decoder: ComponentDecoding = {
-        Beagle.dependencies.decoder
+    private lazy var decoder: BeagleCoding = {
+        Beagle.dependencies.coder
     }()
     private lazy var dependencies = BeagleScreenDependencies()
     
     override func setUp() {
         super.setUp()
         Beagle.dependencies = BeagleDependencies()
-        Beagle.dependencies.decoder.register(
-            component: CustomPageIndicator.self,
+        Beagle.dependencies.coder.register(
+            type: CustomPageIndicator.self,
             named: CustomPageIndicatorTests.typeName
         )
     }

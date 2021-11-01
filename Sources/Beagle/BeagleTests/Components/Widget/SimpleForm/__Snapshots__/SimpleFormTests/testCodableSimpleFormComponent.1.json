@@ -1,0 +1,28 @@
+{
+  "_beagleComponent_" : "beagle:simpleform",
+  "children" : [
+    {
+      "_beagleComponent_" : "beagle:button",
+      "onPress" : [
+        {
+          "_beagleAction_" : "beagle:submitform"
+        }
+      ],
+      "text" : "Dados"
+    }
+  ],
+  "context" : {
+    "id" : "cadastro",
+    "value" : {
+      "email" : "beagle@zup.com.br",
+      "message" : "Hello Beagle!"
+    }
+  },
+  "onSubmit" : [
+    {
+      "_beagleAction_" : "beagle:confirm",
+      "message" : "Email: @{cadastro.email}Message: @{cadastro.message}",
+      "title" : "Cadastro"
+    }
+  ]
+}

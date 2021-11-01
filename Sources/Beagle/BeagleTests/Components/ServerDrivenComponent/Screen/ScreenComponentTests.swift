@@ -20,9 +20,9 @@ import SnapshotTesting
 
 final class ScreenComponentTests: XCTestCase {
     
-    func testScreenDecoding() throws {
+    func testCodableScreen() throws {
         let screen: Screen = try componentFromJsonFile(fileName: "screen")
-        assertSnapshot(matching: screen, as: .dump)
+        assertSnapshotJson(matching: screen)
     }
 
     func test_initWithBuilders_shouldReturnExpectedInstance() {

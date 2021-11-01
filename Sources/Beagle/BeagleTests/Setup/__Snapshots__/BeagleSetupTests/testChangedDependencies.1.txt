@@ -1,7 +1,7 @@
 ▿ BeagleDependencies
   - analyticsProvider: Optional<AnalyticsProvider>.none
   - appBundle: NSBundle <(null)> (not yet loaded)
-  - decoder: ComponentDecodingDummy
+  - coder: BeagleCodingDummy
   ▿ deepLinkHandler: Optional<DeepLinkScreenManaging>
     - some: DeepLinkHandlerDummy
   ▿ globalContext: GlobalContextDummy

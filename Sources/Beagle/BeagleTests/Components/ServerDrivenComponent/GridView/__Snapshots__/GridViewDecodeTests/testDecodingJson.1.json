@@ -1,0 +1,22 @@
+{
+  "_beagleComponent_" : "beagle:gridview",
+  "context" : {
+    "id" : "grid",
+    "value" : [
+      "Item"
+    ]
+  },
+  "dataSource" : "@{grid}",
+  "direction" : "HORIZONTAL",
+  "spanCount" : 5,
+  "templates" : [
+    {
+      "view" : {
+        "_beagleComponent_" : "beagle:container",
+        "children" : [
+
+        ]
+      }
+    }
+  ]
+}

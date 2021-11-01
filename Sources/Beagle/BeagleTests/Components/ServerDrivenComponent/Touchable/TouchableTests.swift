@@ -20,18 +20,9 @@ import SnapshotTesting
 
 final class TouchableTests: XCTestCase {
     
-    func testInitFromDecoder() throws {
+    func testCodableTouchable() throws {
         let component: Touchable = try componentFromJsonFile(fileName: "TouchableDecoderTest")
-        _assertInlineSnapshot(matching: component, as: .dump, with: """
-        ▿ Touchable
-          ▿ child: UnknownComponent
-            - type: "custom:beagleschematestscomponent"
-          ▿ onPress: 1 element
-            ▿ Navigate
-              - _beagleAction_: "beagle:popview"
-              - analytics: Optional<ActionAnalyticsConfig>.none
-              - navigationContext: Optional<NavigationContext>.none
-        """)
+        assertSnapshotJson(matching: component)
     }
 
     func testTouchableView() {

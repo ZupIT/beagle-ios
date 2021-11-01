@@ -35,9 +35,9 @@ class SimpleFormTests: XCTestCase {
         XCTAssertEqual(resultingView.subviews.count, numberOfChilds)
     }
     
-    func test_whenDecodingJson_shouldReturnASimpleForm() throws {
+    func testCodableSimpleFormComponent() throws {
         let component: SimpleForm = try componentFromJsonFile(fileName: "simpleFormComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
 }

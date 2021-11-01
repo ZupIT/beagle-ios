@@ -16,7 +16,7 @@
 
 import UIKit
 
-extension TextInput: ServerDrivenComponent {
+extension TextInput {
     public func toView(renderer: BeagleRenderer) -> UIView {
         let textInputView = TextInputView(onChange: onChange,
                                           onBlur: onBlur,

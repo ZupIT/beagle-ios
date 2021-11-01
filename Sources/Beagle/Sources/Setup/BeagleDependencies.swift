@@ -16,7 +16,7 @@
 
 import UIKit
 
-public protocol BeagleDependenciesProtocol: DependencyDecoder,
+public protocol BeagleDependenciesProtocol: DependencyCoder,
     DependencyAnalyticsExecutor,
     DependencyUrlBuilder,
     DependencyNetworkClient,
@@ -39,7 +39,7 @@ public protocol BeagleDependenciesProtocol: DependencyDecoder,
 
 open class BeagleDependencies: BeagleDependenciesProtocol {
 
-    public var decoder: ComponentDecoding
+    public var coder: BeagleCoding
     public var urlBuilder: UrlBuilderProtocol
     public var networkClient: NetworkClient?
     public var appBundle: Bundle
@@ -88,7 +88,7 @@ open class BeagleDependencies: BeagleDependenciesProtocol {
         self.logger = BeagleLoggerProxy(logger: logger)
         self.operationsProvider = OperationsDefault(dependencies: resolver)
 
-        self.decoder = ComponentDecoder()
+        self.coder = BeagleCoder()
         self.windowManager = WindowManagerDefault()
         self.navigation = BeagleNavigator()
         self.globalContext = DefaultGlobalContext()
@@ -118,7 +118,7 @@ private class InnerDependenciesResolver: ViewClientDefault.Dependencies,
         fatalError("You should set this closure to get the dependencies container")
     }
 
-    var decoder: ComponentDecoding { return container().decoder }
+    var coder: BeagleCoding { return container().coder }
     var urlBuilder: UrlBuilderProtocol { return container().urlBuilder }
     var networkClient: NetworkClient? { return container().networkClient }
     var navigation: BeagleNavigation { return container().navigation }

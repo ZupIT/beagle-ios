@@ -1,0 +1,7 @@
+{
+  "_beagleAction_" : "beagle:resetapplication",
+  "controllerId" : "my-controller-id",
+  "route" : {
+    "url" : "schema:\/\/path"
+  }
+}

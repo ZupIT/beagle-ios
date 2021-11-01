@@ -29,8 +29,8 @@ class PageIndicatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dependencies.decoder.register(
-            component: CustomPageIndicator.self,
+        dependencies.coder.register(
+            type: CustomPageIndicator.self,
             named: PageIndicatorTests.typeName
         )
     }
@@ -42,8 +42,7 @@ class PageIndicatorTests: XCTestCase {
     
     func test_indicator_decoder() throws {
         let component: CustomPageIndicator = try componentFromJsonFile(
-            fileName: PageIndicatorTests.typeName,
-            decoder: dependencies.decoder
+            fileName: PageIndicatorTests.typeName
         )
         assertSnapshot(matching: component, as: .dump)
     }

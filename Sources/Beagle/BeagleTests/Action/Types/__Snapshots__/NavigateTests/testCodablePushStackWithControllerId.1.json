@@ -1,0 +1,7 @@
+{
+  "_beagleAction_" : "beagle:pushstack",
+  "controllerId" : "customid",
+  "route" : {
+    "url" : "schema:\/\/path"
+  }
+}

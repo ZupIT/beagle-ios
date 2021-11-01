@@ -38,9 +38,9 @@ class TextInputTests: XCTestCase {
     private lazy var controller = BeagleControllerStub(dependencies: dependencies)
     private lazy var renderer = BeagleRenderer(controller: controller)
     
-    func test_whenDecodingJson_shouldReturnAText() throws {
+    func testCodableTextInput() throws {
         let component: TextInput = try componentFromJsonFile(fileName: "TextInputComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
     func testTextInputTypes() {

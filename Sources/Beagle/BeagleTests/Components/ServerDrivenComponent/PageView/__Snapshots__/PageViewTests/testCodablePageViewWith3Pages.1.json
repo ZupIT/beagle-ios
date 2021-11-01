@@ -1,0 +1,14 @@
+{
+  "_beagleComponent_" : "beagle:pageview",
+  "children" : [
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    },
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    },
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    }
+  ]
+}

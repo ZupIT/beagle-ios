@@ -15,7 +15,7 @@
  */
 
 /// Types that uses `RawRepresentable` to facilitate usage with strings that could be parsed by `Parser` logic.
-/// By using `rawValue`, the compiler can automatically synthesize conformances to `Decodable` and `Equatable`.
+/// By using `rawValue`, the compiler can automatically synthesize conformances to `Codable` and `Equatable`.
 ///
 /// - Note:
 /// Here is an example that uses a string instead of working with enum cases:

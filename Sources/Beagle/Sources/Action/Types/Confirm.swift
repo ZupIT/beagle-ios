@@ -15,7 +15,7 @@
  */
 
 /// This action will show alert natively, such as an error alert indicating alternative flows, business system errors and others.
-public struct Confirm: Action, AutoDecodable {
+public struct Confirm: Action {
     
     /// Defines the title on the alert.
     public var title: Expression<String>?
@@ -24,9 +24,11 @@ public struct Confirm: Action, AutoDecodable {
     public var message: Expression<String>
     
     /// Defines the action of the button positive in the alert.
+    @AutoCodable
     public var onPressOk: [Action]?
     
     /// Defines the action of the button negative in the alert.
+    @AutoCodable
     public var onPressCancel: [Action]?
     
     /// Defines the text of the button positive in the alert.

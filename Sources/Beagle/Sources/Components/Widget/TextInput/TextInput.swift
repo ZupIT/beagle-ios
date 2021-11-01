@@ -16,7 +16,7 @@
 
 /// Input is a component that displays an editable text area for the user. These text fields are used to collect
 /// inputs that the user insert using the keyboard.
-public struct TextInput: Widget, AutoDecodable {
+public struct TextInput: Widget {
     
     /// Item referring to the input value that will be entered in the editable text area of the `TextInput`.
     public var value: Expression<String>?
@@ -38,12 +38,15 @@ public struct TextInput: Widget, AutoDecodable {
     public var styleId: String?
     
     /// Actions array that this field can trigger when its value is altered.
+    @AutoCodable
     public var onChange: [Action]?
     
     /// Action array that this field can trigger when its focus is removed.
+    @AutoCodable
     public var onBlur: [Action]?
     
     /// Actions array that this field can trigger when this field is on focus.
+    @AutoCodable
     public var onFocus: [Action]?
     
     /// Is a text that should be rendered, below the text input. It tells the user about the error.
@@ -60,7 +63,7 @@ public struct TextInput: Widget, AutoDecodable {
     
 }
 
-public enum TextInputType: String, Decodable {
+public enum TextInputType: String, Codable {
     case date = "DATE"
     case email = "EMAIL"
     case password = "PASSWORD"

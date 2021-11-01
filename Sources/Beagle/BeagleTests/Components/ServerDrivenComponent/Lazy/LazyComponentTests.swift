@@ -20,14 +20,9 @@ import SnapshotTesting
 
 final class LazyComponentTests: XCTestCase {
     
-    func test_whenDecodingJson_thenItShouldReturnALazyComponent() throws {
+    func testCodableLazyComponent() throws {
         let component: LazyComponent = try componentFromJsonFile(fileName: "lazyComponent")
-        _assertInlineSnapshot(matching: component, as: .dump, with: """
-        ▿ LazyComponent
-          ▿ initialState: UnknownComponent
-            - type: "custom:beagleschematestscomponent"
-          - path: "/path"
-        """)
+        assertSnapshotJson(matching: component)
     }
     
     func test_initWithInitialStateBuilder_shouldReturnExpectedInstance() {

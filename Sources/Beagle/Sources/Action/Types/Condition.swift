@@ -15,15 +15,17 @@
  */
 
 /// Action to resolve condition and call onTrue if return true and onFalse if return is false.
-public struct Condition: Action, AutoDecodable {
+public struct Condition: Action {
     
     /// Condition should represents a boolean.
     public var condition: Expression<Bool>
     
     /// Defines the actions triggered if the condition returns true.
+    @AutoCodable
     public var onTrue: [Action]?
     
     /// Defines the actions triggered if the condition returns false.
+    @AutoCodable
     public var onFalse: [Action]?
     
     /// Defines an analytics configuration for this action.

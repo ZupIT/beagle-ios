@@ -1,0 +1,25 @@
+{
+  "_beagleAction_" : "beagle:pushstack",
+  "navigationContext" : {
+    "path" : "path",
+    "value" : {
+      "booleanValue" : true,
+      "integerValue" : 3,
+      "stringValue" : "string"
+    }
+  },
+  "route" : {
+    "screen" : {
+      "_beagleComponent_" : "beagle:screencomponent",
+      "child" : {
+        "_beagleComponent_" : "custom:beagleschematestscomponent"
+      },
+      "safeArea" : {
+        "bottom" : true,
+        "leading" : true,
+        "top" : true,
+        "trailing" : true
+      }
+    }
+  }
+}

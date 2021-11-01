@@ -45,7 +45,7 @@ public enum Navigate: Action {
     /// Returns the stack of screens in the application flow for a given screen in a route specified as String.
     case popToView(Expression<String>, navigationContext: NavigationContext? = nil, analytics: ActionAnalyticsConfig? = nil)
     
-    public struct OpenNativeRoute {
+    public struct OpenNativeRoute: Codable {
         
         /// Deeplink identifier.
         public let route: Expression<String>
@@ -84,27 +84,12 @@ public enum Navigate: Action {
     
 }
 
-public struct NavigationContext {
+public struct NavigationContext: Codable {
     public var path: Path?
     public var value: DynamicObject
     
     static let id = "navigationContext"
 }
-
-extension NavigationContext: CustomReflectable {
-    public var customMirror: Mirror {
-        return Mirror(
-            self,
-            children: [
-                "path": path?.rawValue as Any,
-                "value": value
-            ],
-            displayStyle: .struct
-        )
-    }
-}
-
-extension NavigationContext: Decodable { }
 
 /// Defines a navigation route type which can be `remote` or `declarative`.
 public enum Route {
@@ -119,7 +104,7 @@ public enum Route {
 extension Route {
     
     /// Constructs a new path to a remote screen.
-    public struct NewPath {
+    public struct NewPath: Codable {
         
         /// Contains the navigation endpoint.
         public let url: Expression<String>
@@ -143,18 +128,16 @@ extension Route {
 extension Route.NewPath {
 
     /// RouteAdditionalData can be used on navigate actions to pass additional http data on requests triggered by Beagle.
-    public struct HttpAdditionalData: AutoDecodable {
+    public struct HttpAdditionalData: Codable {
         public var method: HTTPMethod? = .get
         public var headers: [String: String]? = [:]
         public var body: DynamicObject?
     }
 }
 
-// MARK: Decodable
+// MARK: Codable
 
-extension Navigate.OpenNativeRoute: Decodable {}
-
-extension Navigate: Decodable, CustomReflectable {
+extension Navigate: Codable {
     
     enum CodingKeys: CodingKey {
         case _beagleAction_
@@ -209,83 +192,55 @@ extension Navigate: Decodable, CustomReflectable {
                                                    debugDescription: "Can't decode '\(type)'")
         }
     }
-
-    public var customMirror: Mirror {
-        let children: [Mirror.Child]
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(analytics, forKey: .analytics)
+        
         switch self {
-        case let .openExternalURL(url, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:openexternalurl"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.url.stringValue, value: url)
-            ]
-        case let .openNativeRoute(nativeRoute, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:opennativeroute"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any)
-            ] + Mirror(reflecting: nativeRoute).children
-        case let .resetApplication(route, controllerId: controllerId, navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:resetapplication"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
-                (label: CodingKeys.route.stringValue, value: route),
-                (label: CodingKeys.controllerId.stringValue, value: controllerId as Any)
-            ]
-        case let .resetStack(route, navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:resetstack"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
-                (label: CodingKeys.route.stringValue, value: route)
-            ]
-        case let .pushStack(route, controllerId: controllerId, navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:pushstack"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
-                (label: CodingKeys.route.stringValue, value: route),
-                (label: CodingKeys.controllerId.stringValue, value: controllerId as Any)
-            ]
-        case let .popStack(navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:popstack"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any)
-            ]
-        case let .pushView(route, navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:pushview"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
-                (label: CodingKeys.route.stringValue, value: route)
-            ]
-        case let .popView(navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:popview"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any)
-            ]
-        case let .popToView(route, navigationContext: navigationContext, analytics: analytics):
-            children = [
-                (label: CodingKeys._beagleAction_.stringValue, value: "beagle:poptoview"),
-                (label: CodingKeys.analytics.stringValue, value: analytics as Any),
-                (label: CodingKeys.navigationContext.stringValue, value: navigationContext as Any),
-                (label: CodingKeys.route.stringValue, value: route)
-            ]
+        case let .openExternalURL(expression, _):
+            try container.encode("beagle:openexternalurl", forKey: ._beagleAction_)
+            try container.encode(expression, forKey: .url)
+        case let .openNativeRoute(openNativeRoute, _):
+            try container.encode("beagle:opennativeroute", forKey: ._beagleAction_)
+            try openNativeRoute.encode(to: encoder)
+        case let .resetApplication(route, controllerId, navigationContext, _):
+            try container.encode("beagle:resetapplication", forKey: ._beagleAction_)
+            try container.encode(route, forKey: .route)
+            try container.encodeIfPresent(controllerId, forKey: .controllerId)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .resetStack(route, navigationContext, _):
+            try container.encode("beagle:resetstack", forKey: ._beagleAction_)
+            try container.encode(route, forKey: .route)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .pushStack(route, controllerId, navigationContext, _):
+            try container.encode("beagle:pushstack", forKey: ._beagleAction_)
+            try container.encode(route, forKey: .route)
+            try container.encodeIfPresent(controllerId, forKey: .controllerId)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .popStack(navigationContext, _):
+            try container.encode("beagle:popstack", forKey: ._beagleAction_)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .pushView(route, navigationContext, _):
+            try container.encode("beagle:pushview", forKey: ._beagleAction_)
+            try container.encode(route, forKey: .route)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .popView(navigationContext, _):
+            try container.encode("beagle:popview", forKey: ._beagleAction_)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
+        case let .popToView(expression, navigationContext, _):
+            try container.encode("beagle:poptoview", forKey: ._beagleAction_)
+            try container.encode(expression, forKey: .route)
+            try container.encodeIfPresent(navigationContext, forKey: .navigationContext)
         }
-        return Mirror(self, children: children, displayStyle: .struct)
+        
     }
 }
 
-extension Route: Decodable, CustomReflectable {
+extension Route: Codable {
     
     enum CodingKeys: CodingKey {
-        case type
-        case path
-        case shouldPrefetch
         case screen
-        case data
     }
     
     public init(from decoder: Decoder) throws {
@@ -297,39 +252,14 @@ extension Route: Decodable, CustomReflectable {
             self = .remote(newPath)
         }
     }
-
-    public var customMirror: Mirror {
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .remote(let newPath):
-            return Mirror(
-                self,
-                children: Mirror(reflecting: newPath).children,
-                displayStyle: .struct
-            )
+            try newPath.encode(to: encoder)
         case .declarative(let screen):
-            return Mirror(
-                self,
-                children: [CodingKeys.screen.stringValue: screen],
-                displayStyle: .struct
-            )
+            try container.encode(screen, forKey: .screen)
         }
-    }
-}
-
-extension Route.NewPath: Decodable {
-    
-    enum CodingKeys: CodingKey {
-        case url
-        case shouldPrefetch
-        case fallback
-        case httpAdditionalData
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.url = try container.decode(Expression<String>.self, forKey: .url)
-        self.shouldPrefetch = try container.decodeIfPresent(Bool.self, forKey: .shouldPrefetch)
-        self.fallback = try container.decodeIfPresent(Screen.self, forKey: .fallback)
-        self.httpAdditionalData = try container.decodeIfPresent(HttpAdditionalData.self, forKey: .httpAdditionalData)
     }
 }

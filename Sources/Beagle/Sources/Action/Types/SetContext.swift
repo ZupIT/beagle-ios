@@ -30,18 +30,3 @@ public struct SetContext: Action {
     public var analytics: ActionAnalyticsConfig?
 
 }
-
-extension SetContext: CustomReflectable {
-    public var customMirror: Mirror {
-        return Mirror(
-            self,
-            children: [
-                "contextId": contextId,
-                "path": path?.rawValue as Any,
-                "value": value,
-                "analytics": analytics as Any
-            ],
-            displayStyle: .struct
-        )
-    }
-}

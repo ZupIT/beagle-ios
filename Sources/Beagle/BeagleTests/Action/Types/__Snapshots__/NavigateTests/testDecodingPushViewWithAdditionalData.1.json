@@ -1,0 +1,19 @@
+{
+  "_beagleAction_" : "beagle:pushview",
+  "route" : {
+    "httpAdditionalData" : {
+      "body" : {
+        "confirmPassword" : "password",
+        "email" : "john@email.com",
+        "name" : "John",
+        "password" : "password"
+      },
+      "headers" : {
+        "test" : "test"
+      },
+      "method" : "POST"
+    },
+    "shouldPrefetch" : false,
+    "url" : "http:\/\/localhost:8080\/test\/example"
+  }
+}

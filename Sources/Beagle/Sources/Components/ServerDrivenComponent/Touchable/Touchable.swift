@@ -17,12 +17,14 @@
 import Foundation
 
 /// The `Touchable` component defines a click listener.
-public struct Touchable: ServerDrivenComponent, AutoDecodable {
+public struct Touchable: ServerDrivenComponent {
     
     /// Defines an `Action` to be executed when the child component is clicked.
-    public let onPress: [Action]
+    @AutoCodable
+    public var onPress: [Action]
     
     /// Defines the widget that will trigger the `Action`.
-    public let child: ServerDrivenComponent
+    @AutoCodable
+    public var child: ServerDrivenComponent
     
 }

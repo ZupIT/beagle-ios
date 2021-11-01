@@ -26,15 +26,17 @@ struct DSCollection: Widget {
 
 }
 
-struct DSCollectionDataSource: Decodable, AutoEquatable {
+struct DSCollectionDataSource: Codable {
     
-    struct Card: Decodable, Equatable {
+    struct Card: Codable, Equatable {
         let name: String
         let age: Int
     }
     
     let cards: [Card]
 }
+
+extension DSCollectionDataSource: Equatable {}
 
 extension DSCollection: Renderable {
     func toView(renderer: BeagleRenderer) -> UIView {

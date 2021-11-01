@@ -15,7 +15,7 @@
  */
 
 /// Apply positioning using the flex box concept, with a yoga layout structure.
-public class Flex: Decodable, AutoEquatable {
+public class Flex: Codable {
     
     /// Controls the direction in which the children of a node are laid out.This is also referred to as the main axis.
     public var flexDirection: FlexDirection?
@@ -74,7 +74,7 @@ public class Flex: Decodable, AutoEquatable {
 
 // MARK: - Flex Direction
 extension Flex {
-    public enum FlexDirection: String, Decodable {
+    public enum FlexDirection: String, Codable {
         case row = "ROW"
         case rowReverse = "ROW_REVERSE"
         case column = "COLUMN"
@@ -84,7 +84,7 @@ extension Flex {
 
 // MARK: - Flex Wrap
 extension Flex {
-    public enum Wrap: String, Decodable {
+    public enum Wrap: String, Codable {
         case noWrap = "NO_WRAP"
         case wrap = "WRAP"
         case wrapReverse = "WRAP_REVERSE"
@@ -93,7 +93,7 @@ extension Flex {
 
 // MARK: - Flex JustifyContent
 extension Flex {
-    public enum JustifyContent: String, Decodable {
+    public enum JustifyContent: String, Codable {
         case flexStart = "FLEX_START"
         case center = "CENTER"
         case flexEnd = "FLEX_END"
@@ -105,7 +105,7 @@ extension Flex {
 
 // MARK: - Flex AlignItems
 extension Flex {
-    public enum AlignItems: String, Decodable {
+    public enum AlignItems: String, Codable {
         case flexStart = "FLEX_START"
         case center = "CENTER"
         case flexEnd = "FLEX_END"
@@ -116,7 +116,7 @@ extension Flex {
 
 // MARK: - Flex AlignSelf
 extension Flex {
-    public enum AlignSelf: String, Decodable {
+    public enum AlignSelf: String, Codable {
         case flexStart = "FLEX_START"
         case center = "CENTER"
         case flexEnd = "FLEX_END"
@@ -128,12 +128,28 @@ extension Flex {
 
 // MARK: - Flex AlignContent
 extension Flex {
-    public enum AlignContent: String, Decodable {
+    public enum AlignContent: String, Codable {
         case flexStart = "FLEX_START"
         case center = "CENTER"
         case flexEnd = "FLEX_END"
         case spaceBetween = "SPACE_BETWEEN"
         case spaceAround = "SPACE_AROUND"
         case stretch = "STRETCH"
+    }
+}
+
+extension Flex: Equatable {
+     public static func == (lhs: Flex, rhs: Flex) -> Bool {
+        guard lhs.flexDirection == rhs.flexDirection else { return false }
+        guard lhs.flexWrap == rhs.flexWrap else { return false }
+        guard lhs.justifyContent == rhs.justifyContent else { return false }
+        guard lhs.alignItems == rhs.alignItems else { return false }
+        guard lhs.alignSelf == rhs.alignSelf else { return false }
+        guard lhs.alignContent == rhs.alignContent else { return false }
+        guard lhs.basis == rhs.basis else { return false }
+        guard lhs.flex == rhs.flex else { return false }
+        guard lhs.grow == rhs.grow else { return false }
+        guard lhs.shrink == rhs.shrink else { return false }
+        return true
     }
 }

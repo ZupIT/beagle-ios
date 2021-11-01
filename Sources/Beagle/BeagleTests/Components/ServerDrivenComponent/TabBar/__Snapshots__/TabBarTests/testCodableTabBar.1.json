@@ -1,0 +1,23 @@
+{
+  "_beagleComponent_" : "beagle:tabbar",
+  "items" : [
+    {
+      "icon" : {
+        "mobileId" : "beagle"
+      },
+      "title" : "tab 1"
+    },
+    {
+      "icon" : {
+        "mobileId" : "beagle"
+      },
+      "title" : "tab 2"
+    },
+    {
+      "icon" : {
+        "mobileId" : "beagle"
+      },
+      "title" : "tab 3"
+    }
+  ]
+}

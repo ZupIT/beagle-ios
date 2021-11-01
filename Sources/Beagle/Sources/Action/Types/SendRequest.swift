@@ -15,7 +15,7 @@
  */
 
 /// SendRequest is used to make HTTP requests.
-public struct SendRequest: Action, AutoDecodable {
+public struct SendRequest: Action {
     
     /// Server URL.
     public var url: Expression<String>
@@ -30,12 +30,15 @@ public struct SendRequest: Action, AutoDecodable {
     public var headers: Expression<[String: String]>?
     
     /// Actions to be executed in request success case.
+    @AutoCodable
     public var onSuccess: [Action]?
     
     /// Actions to be executed in request error case.
+    @AutoCodable
     public var onError: [Action]?
     
     /// Actions to be executed in request completion case.
+    @AutoCodable
     public var onFinish: [Action]?
     
     /// Defines an analytics configuration for this action.

@@ -14,80 +14,39 @@
  * limitations under the License.
  */
 
-import Beagle
-@testable import BeagleDemo
+@testable import Beagle
+import Foundation
 
 enum ComponentFromJsonError: Error {
     case wrongUrlPath
-    case couldNotMatchComponentType
 }
 
-func componentFromJsonFile<W: ServerDrivenComponent>(
-    fileName: String,
-    decoder: ComponentDecoding = ComponentDecoder()
-) throws -> W {
-    guard let url = Bundle(for: GenerationTests.self).url(
-        forResource: fileName,
-        withExtension: ".json"
-    ) else {
-        throw ComponentFromJsonError.wrongUrlPath
-    }
-
-    let json = try Data(contentsOf: url)
-    let component = try decoder.decodeComponent(from: json)
-
-    guard let typed = component as? W else {
-        print(W.self)
-        throw ComponentFromJsonError.couldNotMatchComponentType
-    }
-
-    return typed
-}
-
-func actionFromJsonFile<W: Action>(
-    fileName: String,
-    decoder: ComponentDecoding = ComponentDecoder()
-) throws -> W {
-    guard let url = Bundle(for: GenerationTests.self).url(
-        forResource: fileName,
-        withExtension: ".json"
-    ) else {
-        throw ComponentFromJsonError.wrongUrlPath
-    }
-
-    let json = try Data(contentsOf: url)
-    let action = try decoder.decodeAction(from: json)
-
-    guard let typed = action as? W else {
-        throw ComponentFromJsonError.couldNotMatchComponentType
-    }
-
-    return typed
-}
-
-func jsonFromFile(
+func componentFromJsonFile<T>(
     fileName: String
-) throws -> String {
-
-    guard let url = Bundle(for: GenerationTests.self).url(
+) throws -> T {
+    guard let url = Bundle(for: CustomComponentsTests.self).url(
         forResource: fileName,
-        withExtension: "json"
+        withExtension: ".json"
     ) else {
         throw ComponentFromJsonError.wrongUrlPath
     }
 
-    let jsonData = try Data(contentsOf: url)
-    let json = String(bytes: jsonData, encoding: .utf8) ?? ""
+    let data = try Data(contentsOf: url)
+    return try componentFromData(data)
+}
 
-    return json
+func componentFromData<T>(
+    _ data: Data,
+    _ decoder: BeagleCoding = Beagle.dependencies.coder
+) throws -> T {
+    return try decoder.decode(from: data)
 }
 
 /// This method was only created due to some problems with Swift Type Inference.
 /// So when you pass the type as a parameter, swift can infer the correct type.
 func componentFromJsonFile<W: ServerDrivenComponent>(
     componentType: W.Type,
-    fileName: String,
-    decoder: ComponentDecoding = ComponentDecoder()
+    fileName: String
 ) throws -> W {
-    return try componentFromJsonFile(fileName: fileName, decoder: decoder)
+    return try componentFromJsonFile(fileName: fileName)
 }

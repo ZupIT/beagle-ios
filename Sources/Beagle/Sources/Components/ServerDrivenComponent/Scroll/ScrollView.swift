@@ -15,9 +15,10 @@
  */
 
 /// Component is a specialized container that will display its components in a Scroll.
-public struct ScrollView: ServerDrivenComponent, AutoDecodable, HasContext {
+public struct ScrollView: ServerDrivenComponent, HasContext {
     
     /// Defines a list of components to be displayed in the `ScrollView`.
+    @AutoCodable
     public var children: [ServerDrivenComponent]?
     
     /// Defines the scroll roll direction on screen.
@@ -31,7 +32,7 @@ public struct ScrollView: ServerDrivenComponent, AutoDecodable, HasContext {
 
 }
 
-public enum ScrollAxis: String, Decodable {
+public enum ScrollAxis: String, Codable {
     case vertical = "VERTICAL"
     case horizontal = "HORIZONTAL"
     
