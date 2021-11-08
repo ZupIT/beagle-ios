@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check License and license year on Pull Requests
-        uses: ZupIT/header-license-checker@4d3fba2b34ca1df1b61c87fe348a107b6f870eb2
+        uses: ZupIT/header-license-checker@4d3fba2b34ca1df1b61c87fe348a107b6f870eb2 # Version 0.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
         env:
