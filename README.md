@@ -18,8 +18,8 @@
 
 ### 1. [**About**](#-about)
 ### 2. [**Usage**](#-usage)
->#### i. [**Building your first app using Beagle**](#-building-your-first-app-using-beagle)
->#### ii. [**Requirements**](#-requirements)
+>#### i. [**Requirements**](#-requirements) 
+>#### ii. [**Installation**](#-building-your-first-app-using-beagle)
 ### 3. [**Documentation**](#-documentation)
 ### 4. [**Contributing**](#-contributing)
 ### 5. [**Code of Conduct**](#code-of-conduct)
@@ -36,7 +36,7 @@ It is also possible to create, test and update native application components and
 
 ## **Usage**
 
-### 📋 **Requirements**
+### **Requirements**
 
 Before you start to configure Beagle for your iOS system, it’s important to check out if you have installed all the current versions of the following programs: ‌
 
@@ -44,7 +44,7 @@ Before you start to configure Beagle for your iOS system, it’s important to ch
 - Xcode 11.0+
 - Swift 5.0+
 
-### 🎉 **Building your first app using Beagle**
+### **Installation**
 
 Follow the [**Getting Started guide**](https://docs.usebeagle.io/get-started/installing-beagle). Install Beagle according to your project, find below short guides for the most common scenarios:
 
@@ -54,7 +54,7 @@ Follow the [**Getting Started guide**](https://docs.usebeagle.io/get-started/ins
 [new-app]: https://docs.usebeagle.io/get-started/new-project
 [existing]: https://docs.usebeagle.io/get-started/using-beagle
 
-## 📖 **Documentation**
+## **Documentation**
 
 You can find Beagle's documentation on our [**website**][site].
 
@@ -63,10 +63,6 @@ Beagle's documentation discusses components, APIs, and topics that are specific 
 [site]: https://usebeagle.io/
 [b-docs]: https://docs.usebeagle.io/
 
-
-## 👏 **Contributing**
-
-The main purpose of this repository is to continue evolving Beagle core. We want to make contributing to this project as easy and transparent as possible, and we are grateful to the community for contributing bug fixes and improvements. 
 
 ## **Contributing Guide**
 
@@ -110,7 +106,7 @@ For this method, your name and e-mail must be the same registered to your GitHub
 
 Please read the [**code of conduct**](https://github.com/ZupIT/beagle-ios/blob/main/CODE_OF_CONDUCT.md) so that you can understand what actions will and will not be tolerated.
 
-## 📄 **License**
+## **License**
 
 [**Apache License 2.0**]( https://github.com/ZupIT/beagle-ios/blob/main/LICENSE.txt).
 
