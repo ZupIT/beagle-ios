@@ -84,7 +84,7 @@ open class BeagleNavigationController: UINavigationController {
                 return messageError.error.localizedDescription
             case .decoding(let messageError):
                 return messageError.localizedDescription
-            case .loadFromTextError, .urlBuilderError, .networkClientWasNotConfigured:
+            case .urlBuilderError, .networkClientWasNotConfigured:
                 return error.localizedDescription
             }
         case .action(let error):

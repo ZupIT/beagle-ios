@@ -1,9 +1,8 @@
-▿ 4 elements
+▿ 2 elements
   ▿ 
     - testNumber: 1
     ▿ parameters: Parameters
-      - data: Optional<RemoteScreenAdditionalData>.none
-      - requestType: RequestType.fetchComponent
+      - data: Optional<HttpAdditionalData>.none
       - url: scheme://baseUrl/
     ▿ result: Result
       - body: Optional<Data>.none
@@ -19,68 +18,19 @@
   ▿ 
     - testNumber: 2
     ▿ parameters: Parameters
-      ▿ data: Optional<RemoteScreenAdditionalData>
+      ▿ data: Optional<HttpAdditionalData>
         ▿ some: HttpAdditionalData
-          ▿ headers: 1 key/value pair
-            ▿ (2 elements)
-              - key: "header"
-              - value: "header"
-          ▿ httpData: Optional<HttpData>
-            ▿ some: HttpData
-              - body: 0 bytes
-              - method: Method.POST
-      - requestType: RequestType.fetchComponent
-      - url: scheme://baseUrl/
-    ▿ result: Result
-      ▿ body: Optional<Data>
-        - some: 0 bytes
-      ▿ headers: 3 key/value pairs
-        ▿ (2 elements)
-          - key: "Content-Type"
-          - value: "application/json"
-        ▿ (2 elements)
-          - key: "beagle-platform"
-          - value: "IOS"
-        ▿ (2 elements)
-          - key: "header"
-          - value: "header"
-      - method: "POST"
-      - url: scheme://baseUrl/
-  ▿ 
-    - testNumber: 3
-    ▿ parameters: Parameters
-      - data: Optional<RemoteScreenAdditionalData>.none
-      - requestType: RequestType.fetchImage
+          - body: Optional<DynamicObject>.none
+          ▿ headers: Optional<Dictionary<String, String>>
+            ▿ some: 1 key/value pair
+              ▿ (2 elements)
+                - key: "header"
+                - value: "header"
+          ▿ method: Optional<HTTPMethod>
+            - some: HTTPMethod.post
       - url: scheme://baseUrl/
     ▿ result: Result
       - body: Optional<Data>.none
-      ▿ headers: 2 key/value pairs
-        ▿ (2 elements)
-          - key: "Content-Type"
-          - value: "application/json"
-        ▿ (2 elements)
-          - key: "beagle-platform"
-          - value: "IOS"
-      - method: "GET"
-      - url: scheme://baseUrl/
-  ▿ 
-    - testNumber: 4
-    ▿ parameters: Parameters
-      ▿ data: Optional<RemoteScreenAdditionalData>
-        ▿ some: HttpAdditionalData
-          ▿ headers: 1 key/value pair
-            ▿ (2 elements)
-              - key: "header"
-              - value: "header"
-          ▿ httpData: Optional<HttpData>
-            ▿ some: HttpData
-              - body: 0 bytes
-              - method: Method.POST
-      - requestType: RequestType.fetchImage
-      - url: scheme://baseUrl/
-    ▿ result: Result
-      ▿ body: Optional<Data>
-        - some: 0 bytes
       ▿ headers: 3 key/value pairs
         ▿ (2 elements)
           - key: "Content-Type"

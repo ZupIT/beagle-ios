@@ -77,7 +77,7 @@ final class ImageDownloaderStub: ImageDownloader {
     
     func fetchImage(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<Data, Request.Error>) -> Void
     ) -> RequestToken? {
         didCallDispatch = true

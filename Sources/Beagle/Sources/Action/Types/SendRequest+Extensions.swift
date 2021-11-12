@@ -21,18 +21,17 @@ extension SendRequest: AsyncAction {
     public func execute(controller: BeagleController, origin: UIView) {
         let methodValue = method?.evaluate(with: origin)
         let headersValue = headers?.evaluate(with: origin)
-
-        let requestData = Request.RequestData(
-            method: methodValue?.rawValue,
+        
+        let requestData = HttpAdditionalData(
+            method: methodValue,
             headers: headersValue,
-            body: data?.evaluate(with: origin).asAny()
+            body: data?.evaluate(with: origin)
         )
 
         let dispatcher = RequestDispatcher(dependencies: controller.dependencies)
         dispatcher.dispatchRequest(
             path: url.evaluate(with: origin) ?? "",
-            type: .rawRequest(requestData),
-            additionalData: nil
+            additionalData: requestData
         ) { result in
             switch result {
             case .success(let response):

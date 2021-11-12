@@ -32,8 +32,7 @@ struct RequestDispatcher {
     @discardableResult
     func dispatchRequest(
         path: String,
-        type: Request.RequestType,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<NetworkResponse, Request.Error>) -> Void
     ) -> RequestToken? {
         guard let url = dependencies.urlBuilder.build(path: path) else {
@@ -48,7 +47,7 @@ struct RequestDispatcher {
             return nil
         }
         
-        let request = Request(url: url, type: type, additionalData: additionalData)
+        let request = Request(url: url, additionalData: additionalData)
         return networkClient.executeRequest(request) { result in
             completion(
                 result.mapError { .networkError($0) }

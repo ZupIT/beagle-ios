@@ -30,11 +30,11 @@ final class HttpRequestBuilderTest: XCTestCase {
 
     // swiftlint:disable force_unwrapping
     private func buildAllUrls() -> [TestData] {
-        let requests = createAllPossibleRequests()
 
         let httpData = HttpAdditionalData(
-            httpData: .init(method: .POST, body: Data()),
-            headers: ["header": "header"]
+            method: .post,
+            headers: ["header": "header"],
+            body: nil
         )
         let datas = [nil, httpData]
 
@@ -42,26 +42,19 @@ final class HttpRequestBuilderTest: XCTestCase {
 
         var builders = [TestData]()
         var count = 0
-        requests.forEach { request in
-            datas.forEach { data in
-                count += 1
-                let result = sut.build(url: url, requestType: request, additionalData: data)
+        
+        datas.forEach { data in
+            count += 1
+            let result = sut.build(url: url, additionalData: data)
 
-                builders.append(TestData(
-                    testNumber: count,
-                    parameters: .init(url: url, requestType: request, data: data),
-                    result: result
-                ))
-            }
+            builders.append(TestData(
+                testNumber: count,
+                parameters: .init(url: url, data: data),
+                result: result
+            ))
         }
-
+        
         return builders
-    }
-
-    private func createAllPossibleRequests() -> [Request.RequestType] {
-        [
-            .fetchComponent, .fetchImage
-        ]
     }
 
     private struct TestData: AnySnapshotStringConvertible {
@@ -75,18 +68,7 @@ final class HttpRequestBuilderTest: XCTestCase {
 
         struct Parameters {
             let url: URL
-            let requestType: Request.RequestType
-            let data: RemoteScreenAdditionalData?
+            let data: HttpAdditionalData?
         }
-    }
-}
-
-extension String: RemoteScreenAdditionalData {
-    public var headers: [String: String] {
-        get {
-            [:]
-        }
-        // swiftlint:disable unused_setter_value
-        set(newValue) {}
     }
 }

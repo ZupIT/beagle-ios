@@ -194,7 +194,7 @@ class ImageTests: XCTestCase {
 private struct ImageDownloaderMock: ImageDownloader {
     var expectation: XCTestExpectation?
     
-    func fetchImage(url: String, additionalData: RemoteScreenAdditionalData?, completion: @escaping (Result<Data, Request.Error>) -> Void) -> RequestToken? {
+    func fetchImage(url: String, additionalData: HttpAdditionalData?, completion: @escaping (Result<Data, Request.Error>) -> Void) -> RequestToken? {
         let image = UIImage(named: "shuttle", in: Bundle(for: ImageTests.self), compatibleWith: nil)
 
         Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { _ in

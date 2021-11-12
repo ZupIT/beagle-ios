@@ -115,13 +115,13 @@ final class ViewClientTests: XCTestCase {
     func test_shouldAddAdditionalDataToRequest() {
         // Given
         let body = "{}".data(using: .utf8)!
-
         let clientStub = NetworkClientStub(result: .success(.init(data: body, response: URLResponse())))
         dependencies.networkClient = clientStub
 
         let additionalData = HttpAdditionalData(
-            httpData: .init(method: .POST, body: body),
-            headers: ["headerKey": "headerValue"]
+            method: .post,
+            headers: ["headerKey": "headerValue"],
+            body: .empty
         )
 
         let expec = expectation(description: "fetch")
@@ -133,9 +133,8 @@ final class ViewClientTests: XCTestCase {
         wait(for: [expec], timeout: 1.0)
 
         // Then
-        let expectedData = clientStub.executedRequest?.additionalData as? HttpAdditionalData
 
-        XCTAssertEqual(expectedData, additionalData)
+        XCTAssertEqual(clientStub.executedRequest?.additionalData, additionalData)
         XCTAssertEqual(clientStub.executedRequest?.url.absoluteString, url)
     }
 }
@@ -195,7 +194,7 @@ final class ViewClientStub: ViewClient {
 
     func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken? {
         didCallDispatch = true
@@ -205,7 +204,7 @@ final class ViewClientStub: ViewClient {
         return token
     }
     
-    func prefetch(url: String, additionalData: RemoteScreenAdditionalData?) {
+    func prefetch(url: String, additionalData: HttpAdditionalData?) {
         didCallPrefetch = true
     }
     

@@ -132,14 +132,14 @@ class LazyViewClientStub: ViewClient {
 
     func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken? {
         componentCompletion = completion
         return nil
     }
     
-    func prefetch(url: String, additionalData: RemoteScreenAdditionalData?) {}
+    func prefetch(url: String, additionalData: HttpAdditionalData?) {}
     
 }
 

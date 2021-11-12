@@ -16,6 +16,42 @@
 
 import Foundation
 
+/// RouteAdditionalData can be used on navigate actions to pass additional http data on requests triggered by Beagle.
+public class HttpAdditionalData: Codable {
+    public var method: HTTPMethod? = .get
+    public var headers: [String: String]? = [:]
+    public var body: DynamicObject?
+    
+    public init(
+        method: HTTPMethod? = .get,
+        headers: [String: String]? = [:],
+        body: DynamicObject?
+    ) {
+        self.method = method
+        self.headers = headers
+        self.body = body
+    }
+    
+    public init<T: Encodable>(
+        method: HTTPMethod? = .get,
+        headers: [String: String]? = [:],
+        body: T
+    ) {
+        self.method = method
+        self.headers = headers
+        self.body = DynamicObject(body)
+    }
+}
+
+extension HttpAdditionalData: Equatable {
+    public static func == (lhs: HttpAdditionalData, rhs: HttpAdditionalData) -> Bool {
+       guard lhs.method == rhs.method else { return false }
+       guard lhs.headers == rhs.headers else { return false }
+       guard lhs.body == rhs.body else { return false }
+       return true
+   }
+}
+
 /// HTTP Method to indicate the desired action to be performed for a given resource
 public enum HTTPMethod: String, Codable {
     /// The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
@@ -30,52 +66,4 @@ public enum HTTPMethod: String, Codable {
     case head = "HEAD"
     /// The PATCH method is used to apply partial modifications to a resource.
     case patch = "PATCH"
-    
-    func toMethod() -> HttpAdditionalData.Method? {
-        switch self {
-        case .post: return .POST
-        case .put: return .PUT
-        case .get: return .GET
-        case .delete: return .DELETE
-        case .head: return .HEAD
-        case .patch: return .PATCH
-        }
-    }
-}
-
-/// HttpAdditionalData can be used on Remote Beagle Screen to pass additional http data on requests
-/// triggered by Beagle.
-public struct HttpAdditionalData: RemoteScreenAdditionalData {
-
-    public let httpData: HttpData?
-    public var headers: [String: String]
-
-    public struct HttpData {
-        public let method: Method
-        public let body: Data
-
-        public init(method: Method, body: Data) {
-            self.method = method
-            self.body = body
-        }
-    }
-    
-    /// This enum will be removed in a future version, please use `HTTPMethod` instead.
-    public enum Method: String {
-        case POST, PUT, GET, DELETE, HEAD, PATCH
-    }
-
-    public init(
-        httpData: HttpData?,
-        headers: [String: String] = [:]
-    ) {
-        self.httpData = httpData
-        self.headers = headers
-    }
-}
-
-extension HttpAdditionalData: Equatable {
-}
-
-extension HttpAdditionalData.HttpData: Equatable {
 }

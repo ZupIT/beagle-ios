@@ -50,8 +50,7 @@ public class NetworkClientDefault: NetworkClient {
         
         let build = httpRequestBuilder.build(
             url: request.url,
-            requestType: request.type,
-            additionalData: request.additionalData as? HttpAdditionalData
+            additionalData: request.additionalData
         )
         let urlRequest = build.toUrlRequest()
 

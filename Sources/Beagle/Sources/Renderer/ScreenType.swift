@@ -21,13 +21,13 @@ public enum ScreenType {
 
     public struct Remote {
         public let url: String
-        public var additionalData: RemoteScreenAdditionalData?
+        public var additionalData: HttpAdditionalData?
         
         var fallback: Screen?
 
         public init(
             url: String,
-            additionalData: RemoteScreenAdditionalData? = nil
+            additionalData: HttpAdditionalData? = nil
         ) {
             self.url = url
             self.fallback = nil
@@ -37,17 +37,11 @@ public enum ScreenType {
         init(
             url: String,
             fallback: Screen?,
-            additionalData: RemoteScreenAdditionalData? = nil
+            additionalData: HttpAdditionalData? = nil
         ) {
             self.url = url
             self.fallback = fallback
             self.additionalData = additionalData
         }
     }
-}
-
-public protocol RemoteScreenAdditionalData {
-    typealias Http = HttpAdditionalData
-    
-    var headers: [String: String] { get set }
 }

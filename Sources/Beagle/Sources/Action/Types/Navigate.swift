@@ -125,16 +125,6 @@ extension Route {
     }
 }
 
-extension Route.NewPath {
-
-    /// RouteAdditionalData can be used on navigate actions to pass additional http data on requests triggered by Beagle.
-    public struct HttpAdditionalData: Codable {
-        public var method: HTTPMethod? = .get
-        public var headers: [String: String]? = [:]
-        public var body: DynamicObject?
-    }
-}
-
 // MARK: Codable
 
 extension Navigate: Codable {

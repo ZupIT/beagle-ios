@@ -20,7 +20,7 @@ public protocol ImageDownloader {
     @discardableResult
     func fetchImage(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<Data, Request.Error>) -> Void
     ) -> RequestToken?
 }
@@ -47,10 +47,10 @@ public struct ImageDownloaderDefault: ImageDownloader {
     @discardableResult
     public func fetchImage(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<Data, Request.Error>) -> Void
     ) -> RequestToken? {
-        return dispatcher.dispatchRequest(path: url, type: .fetchImage, additionalData: additionalData) { result in
+        return dispatcher.dispatchRequest(path: url, additionalData: additionalData) { result in
             let mapped = result
                 .map { $0.data }
             

@@ -20,11 +20,11 @@ public protocol ViewClient {
     @discardableResult
     func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken?
     
-    func prefetch(url: String, additionalData: RemoteScreenAdditionalData?)
+    func prefetch(url: String, additionalData: HttpAdditionalData?)
 }
 
 public protocol DependencyViewClient {
@@ -63,13 +63,13 @@ public struct ViewClientDefault: ViewClient {
     @discardableResult
     public func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<ServerDrivenComponent>) -> Void
     ) -> RequestToken? {
         fetch(url: url, additionalData: additionalData, cacheInsert: false, completion: completion)
     }
     
-    public func prefetch(url: String, additionalData: RemoteScreenAdditionalData?) {
+    public func prefetch(url: String, additionalData: HttpAdditionalData?) {
         fetch(url: url, additionalData: additionalData, cacheInsert: true) { _ in }
     }
     
@@ -78,7 +78,7 @@ public struct ViewClientDefault: ViewClient {
     @discardableResult
     private func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         cacheInsert: Bool,
         completion: @escaping (Result<ServerDrivenComponent>) -> Void
     ) -> RequestToken? {
@@ -88,7 +88,7 @@ public struct ViewClientDefault: ViewClient {
             return nil
         }
         
-        return dispatcher.dispatchRequest(path: url, type: .fetchComponent, additionalData: additionalData) {  result in
+        return dispatcher.dispatchRequest(path: url, additionalData: additionalData) {  result in
             let mapped = result
                 .flatMap { self.decodeComponent(from: $0.data) }
             
