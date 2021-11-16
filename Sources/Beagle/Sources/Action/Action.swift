@@ -16,6 +16,8 @@
 
 import UIKit
 
+// Some comment
+
 /// Markup to define an action to be triggered in response to some event
 public protocol Action: Decodable {
 
