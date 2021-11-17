@@ -101,9 +101,10 @@ final class AddChildrenTests: XCTestCase {
         }
         """)
         
+        dependencies = BeagleDependencies()
         assertSnapshotImage(sut, size: imageSize)
-        Beagle.dependencies.globalContext.set("value")
         
+        dependencies.globalContext.set("value")
         assertSnapshotImage(sut, size: imageSize)
     }
 
