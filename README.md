@@ -16,15 +16,15 @@
 
 ## **Table of Contents**
 
-### 1. [**About**](#-about)
-### 2. [**Usage**](#-usage)
->#### i. [**Requirements**](#-requirements) 
->#### ii. [**Installation**](#-building-your-first-app-using-beagle)
-### 3. [**Documentation**](#-documentation)
-### 4. [**Contributing**](#-contributing)
+### 1. [**About**](#about)
+### 2. [**Usage**](#usage)
+>#### 2.1. [**Requirements**](#requirements) 
+>#### 2.2. [**Installation**](#building-your-first-app-using-beagle)
+### 3. [**Documentation**](#documentation)
+### 4. [**Contributing**](#contributing)
 ### 5. [**Code of Conduct**](#code-of-conduct)
-### 6. [**License**](#-license)
-### 7. [**Community**](#-community)
+### 6. [**License**](#license)
+### 7. [**Community**](#community)
 
 ## **About**
 
