@@ -17,7 +17,7 @@
 import Beagle
 import os.log
 
-public class BeagleLoggerDefault: BeagleLoggerType {
+public class BeagleLoggerDefault: LoggerProtocol {
 
     public func log(_ log: LogType) {
         os_log("\nBeagleSDK: %@", log: osLog(for: log), type: toOsLog(log.level), log.message)

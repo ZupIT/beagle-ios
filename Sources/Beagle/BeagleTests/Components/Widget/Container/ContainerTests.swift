@@ -20,7 +20,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ContainerTests: XCTestCase {
+final class ContainerTests: EnviromentTestCase {
     
     private lazy var theme = AppTheme(
         styles: [
@@ -28,8 +28,12 @@ final class ContainerTests: XCTestCase {
         ]
     )
     
-    private lazy var dependencies = BeagleScreenDependencies(theme: theme)
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
+    
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
     
     private func containerStyle() -> (UIView?) -> Void {
@@ -51,7 +55,7 @@ final class ContainerTests: XCTestCase {
     }
     
     func test_toView_shouldReturnTheExpectedView() throws {
-        //Given
+        // Given
         let numberOfChildren = 3
         let containerChildren = Array(repeating: ComponentDummy(), count: numberOfChildren)
         let container = Container(children: containerChildren)
@@ -59,7 +63,7 @@ final class ContainerTests: XCTestCase {
         // When
         let resultingView = renderer.render(container)
         
-        //Then
+        // Then
         XCTAssert(resultingView.subviews.count == numberOfChildren)
     }
     
@@ -104,7 +108,7 @@ final class ContainerTests: XCTestCase {
     }
     
     func test_actionExecuting() {
-        //Given
+        // Given
         
         let expectation = self.expectation(description: "ActionExetuting")
         let controllerSpy = BeagleControllerSpy()
@@ -113,11 +117,11 @@ final class ContainerTests: XCTestCase {
         let renderer = BeagleRenderer(controller: controllerSpy)
         let sut = Container(children: [], onInit: [])
         
-        //When
+        // When
 
         _ = renderer.render(sut)
         
-        //Then
+        // Then
         
         waitForExpectations(timeout: 5, handler: nil)
         XCTAssert(controllerSpy.didCalledExecute)
@@ -126,7 +130,7 @@ final class ContainerTests: XCTestCase {
     func test_containerStyleId() {
         // Given
         let theme = ThemeSpy()
-        controller.dependencies = BeagleScreenDependencies(theme: theme)
+        enviroment.theme = theme
         
         let style = "test.container.style"
         let container = Container(
@@ -146,7 +150,6 @@ final class ContainerTests: XCTestCase {
 
 class BeagleControllerSpy: BeagleController {
     
-    var dependencies: BeagleDependenciesProtocol = Beagle.dependencies
     var serverDrivenState: ServerDrivenState = .finished
     var screenType: ScreenType = .declarativeText("")
     var screen: Screen?

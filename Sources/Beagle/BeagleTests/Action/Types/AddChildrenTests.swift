@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class AddChildrenTests: XCTestCase {
+final class AddChildrenTests: EnviromentTestCase {
     
     func testDecodingAddChildrenWithDefaultMode() throws {
         let action: AddChildren = try componentFromString("""
@@ -101,10 +101,9 @@ final class AddChildrenTests: XCTestCase {
         }
         """)
         
-        dependencies = BeagleDependencies()
         assertSnapshotImage(sut, size: imageSize)
         
-        dependencies.globalContext.set("value")
+        enviroment.globalContext.set("value")
         assertSnapshotImage(sut, size: imageSize)
     }
 

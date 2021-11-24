@@ -25,7 +25,7 @@ extension LazyComponent {
     }
     
     private func lazyLoad(initialState view: UIView, renderer: BeagleRenderer) {
-        renderer.dependencies.viewClient.fetch(url: path, additionalData: nil) {
+        renderer.viewClient.fetch(url: path, additionalData: nil) {
             [weak view] result in
             guard let view = view else { return }
             switch result {
@@ -74,8 +74,8 @@ extension UIView {
         superview.insertSubview(newView, belowSubview: self)
         removeFromSuperview()
         
-        if renderer.dependencies.style(self).isFlexEnabled {
-            renderer.dependencies.style(newView).isFlexEnabled = true
+        if CurrentEnviroment.style(self).isFlexEnabled {
+            CurrentEnviroment.style(newView).isFlexEnabled = true
         }
         renderer.controller?.setNeedsLayout(component: newView)
     }

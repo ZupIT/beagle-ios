@@ -34,6 +34,8 @@ struct ActionRecordFactory {
 
     let info: AnalyticsService.ActionInfo
     let globalConfig: AnalyticsConfig.AttributesByActionName
+    
+    @Injected var coder: CoderProtocol
 
     func makeRecord() -> AnalyticsRecord? {
         guard let name = getActionName() else { return nil }
@@ -78,7 +80,7 @@ private extension ActionRecordFactory {
 
     func getActionName() -> String? {
         Mirror(reflecting: info.action).descendant("_beagleAction_") as? String
-        ?? info.controller.dependencies.coder.name(for: type(of: info.action))
+        ?? coder.name(for: type(of: info.action))
     }
 
     struct EnabledValues {
@@ -114,9 +116,7 @@ private extension ActionRecordFactory {
 
     func componentInfo() -> AnalyticsRecord.Action.Component {
         let name = info.origin.componentType
-            .ifSome(
-                info.controller.dependencies.coder.name(for:)
-            )
+            .ifSome(coder.name(for:))
 
         let id = info.origin.accessibilityIdentifier
 

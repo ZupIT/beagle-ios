@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class CustomPageIndicatorTests: XCTestCase {
+class CustomPageIndicatorTests: EnviromentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(
@@ -26,23 +26,12 @@ class CustomPageIndicatorTests: XCTestCase {
         defaultColor: "defaultColor"
     )
     
-    private lazy var decoder: BeagleCoding = {
-        Beagle.dependencies.coder
-    }()
-    private lazy var dependencies = BeagleScreenDependencies()
-    
     override func setUp() {
         super.setUp()
-        Beagle.dependencies = BeagleDependencies()
-        Beagle.dependencies.coder.register(
+        enviroment.coder.register(
             type: CustomPageIndicator.self,
             named: CustomPageIndicatorTests.typeName
         )
-    }
-    
-    override func tearDown() {
-        Beagle.dependencies = BeagleDependencies()
-        super.tearDown()
     }
 
     func test_indicator_render() {

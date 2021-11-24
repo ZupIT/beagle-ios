@@ -20,14 +20,14 @@ extension Screen {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
 
-        prefetch(helper: renderer.dependencies.preFetchHelper)
+        prefetch(helper: renderer.preFetchHelper)
         
         return buildChildView(renderer: renderer)
     }
 
     // MARK: - Private Functions
     
-    private func prefetch(helper: BeaglePrefetchHelping) {
+    private func prefetch(helper: PrefetchHelperProtocol) {
         navigationBar?.navigationBarItems?
             .compactMap { $0.action as? Navigate }
             .compactMap { $0.newPath }

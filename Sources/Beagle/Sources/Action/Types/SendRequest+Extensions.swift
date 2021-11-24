@@ -28,7 +28,7 @@ extension SendRequest: AsyncAction {
             body: data?.evaluate(with: origin)
         )
 
-        let dispatcher = RequestDispatcher(dependencies: controller.dependencies)
+        let dispatcher = RequestDispatcher()
         dispatcher.dispatchRequest(
             path: url.evaluate(with: origin) ?? "",
             additionalData: requestData

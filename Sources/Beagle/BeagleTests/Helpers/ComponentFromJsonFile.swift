@@ -47,7 +47,7 @@ func componentFromString<A: BeagleCodable>(
 
 func componentFromData<T>(
     _ data: Data,
-    decoder: BeagleCoding = BeagleCoder()
+    decoder: CoderProtocol = Coder()
 ) throws -> T {
     return try decoder.decode(from: data)
 }

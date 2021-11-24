@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ScreenComponentTests: XCTestCase {
+final class ScreenComponentTests: EnviromentTestCase {
     
     func testCodableScreen() throws {
         let screen: Screen = try componentFromJsonFile(fileName: "screen")
@@ -60,13 +60,7 @@ final class ScreenComponentTests: XCTestCase {
     }
     
     func test_navigationBarButtonItemWithImage() {
-        let dependencies = BeagleDependencies()
-        dependencies.appBundle = Bundle(for: ScreenComponentTests.self)
-        Beagle.dependencies = dependencies
-        addTeardownBlock {
-            Beagle.dependencies = BeagleDependencies()
-        }
-        
+        enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
         let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", action: ActionDummy())
         
         let component = Screen(
@@ -94,8 +88,7 @@ final class ScreenComponentTests: XCTestCase {
     
     func testNavigationBarItemWithContextOnImage() {
         // Given
-        let dependencies = BeagleDependencies()
-        dependencies.appBundle = Bundle(for: ScreenComponentTests.self)
+        let bundle = Bundle(for: ScreenComponentTests.self)
         
         let barItem = NavigationBarItem(image: "@{image}", text: "", action: ActionDummy())
         
@@ -108,9 +101,10 @@ final class ScreenComponentTests: XCTestCase {
         
         // When
         let controller = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(screen),
-            dependencies: dependencies
+            screenType: .declarative(screen)
         ))
+        
+        controller.renderer.mainBundle.bundle = bundle
         
         // Then
         assertSnapshotImage(controller.view, size: .custom(CGSize(width: 150, height: 80)))
@@ -135,9 +129,9 @@ final class ScreenComponentTests: XCTestCase {
     
     func test_shouldPrefetchNavigateAction() {
         let prefetch = BeaglePrefetchHelpingSpy()
-        let dependencies = BeagleScreenDependencies(preFetchHelper: prefetch)
-        let controller = BeagleControllerStub(dependencies: dependencies)
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
+        renderer.preFetchHelper = prefetch
         
         let navigatePath = "button-item-prefetch"
         let navigate = Navigate.pushView(.remote(.init(url: "\(navigatePath)", shouldPrefetch: true)))

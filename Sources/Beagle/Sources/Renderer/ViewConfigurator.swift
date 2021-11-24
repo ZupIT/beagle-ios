@@ -26,24 +26,30 @@ public protocol ViewConfiguratorProtocol: AnyObject {
     func setupView(of component: ServerDrivenComponent)
 }
 
-public protocol DependencyViewConfigurator {
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol { get }
-}
-
 public extension UIView {
 
     var beagle: ViewConfiguratorProtocol {
-        return Beagle.dependencies.viewConfigurator(self)
+        return CurrentEnviroment.viewConfigurator(self)
     }
 }
 
 class ViewConfigurator: ViewConfiguratorProtocol {
+    
+    // MARK: Dependencies
+    
+    @Injected var theme: ThemeProtocol
+    
+    // MARK: Properties
 
     weak var view: UIView?
+    
+    // MARK: Init
 
     init(view: UIView) {
         self.view = view
     }
+    
+    // MARK: ViewConfiguratorProtocol
     
     func setupView(of component: ServerDrivenComponent) {
         view?.style.isFlexEnabled = true
@@ -79,7 +85,7 @@ class ViewConfigurator: ViewConfiguratorProtocol {
     }
 
     func applyStyle<T: UIView>(for view: T, styleId: String, with controller: BeagleController?) {
-        controller?.dependencies.theme.applyStyle(for: view, withId: styleId)
+        theme.applyStyle(for: view, withId: styleId)
     }
     
     func setup(accessibility: Accessibility?) {

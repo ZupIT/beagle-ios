@@ -19,7 +19,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class PageIndicatorTests: XCTestCase {
+class PageIndicatorTests: EnviromentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(
@@ -29,15 +29,10 @@ class PageIndicatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dependencies.coder.register(
+        enviroment.coder.register(
             type: CustomPageIndicator.self,
             named: PageIndicatorTests.typeName
         )
-    }
-    
-    override func tearDown() {
-        super.tearDown()
-        dependencies = BeagleDependencies()
     }
     
     func test_indicator_decoder() throws {

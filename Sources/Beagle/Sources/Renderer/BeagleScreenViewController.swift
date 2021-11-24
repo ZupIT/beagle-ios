@@ -19,7 +19,6 @@ import UIKit
 public typealias BeagleController = UIViewController & BeagleControllerProtocol
 
 public protocol BeagleControllerProtocol: NSObjectProtocol {
-    var dependencies: BeagleDependenciesProtocol { get }
     var serverDrivenState: ServerDrivenState { get set }
     var screenType: ScreenType { get }
     var screen: Screen? { get }
@@ -47,7 +46,7 @@ public class BeagleScreenViewController: BeagleController {
     
     lazy var layoutManager = LayoutManager(self)
     
-    lazy var renderer = dependencies.renderer(self)
+    lazy var renderer = CurrentEnviroment.renderer(self)
     
     let bindings = Bindings()
     
@@ -58,15 +57,19 @@ public class BeagleScreenViewController: BeagleController {
     // TODO: This workaround should be removed in BeagleView future implementation
     var skipNavigationCreation = false
     
-    // MARK: - Initialization
+    // MARK: - Dependencies
+    
+    @Injected var navigator: NavigationProtocolInternal
+    
+    // MARK: - Init
     
     @discardableResult
     static func remote(
         _ remote: ScreenType.Remote,
-        dependencies: BeagleDependenciesProtocol,
+        viewClient: ViewClientProtocol,
         completion: @escaping (Result<BeagleScreenViewController, Request.Error>) -> Void
     ) -> RequestToken? {
-        return BeagleScreenViewModel.remote(remote, dependencies: dependencies) {
+        return BeagleScreenViewModel.remote(remote, viewClient: viewClient) {
             completion($0.map { viewModel in
                 return self.init(viewModel: viewModel)
             })
@@ -102,10 +105,6 @@ public class BeagleScreenViewController: BeagleController {
     }
     
     // MARK: - BeagleControllerProtocol
-    
-    public var dependencies: BeagleDependenciesProtocol {
-        return viewModel.dependencies
-    }
 
     public var serverDrivenState: ServerDrivenState = .finished {
         didSet {
@@ -195,7 +194,7 @@ public class BeagleScreenViewController: BeagleController {
     }
     
     private func createNavigationContent() {
-        let navigation = dependencies.navigation.navigationController(forId: navigationControllerId)
+        let navigation = navigator.navigationController(forId: navigationControllerId)
         navigation.viewControllers = [BeagleScreenViewController(viewModel: viewModel)]
         content = .navigation(navigation)
     }
@@ -281,7 +280,7 @@ public class BeagleScreenViewController: BeagleController {
 
 extension BeagleControllerProtocol {
     public func setIdentifier(_ id: String?, in view: UIView) {
-        dependencies.viewConfigurator(view).setup(id: id)
+        CurrentEnviroment.viewConfigurator(view).setup(id: id)
     }
     
     public func setContext(_ context: Context, in view: UIView) {
@@ -291,7 +290,7 @@ extension BeagleControllerProtocol {
 
 extension BeagleControllerProtocol where Self: UIViewController {
     public func setNeedsLayout(component: UIView) {
-        dependencies.style(component).markDirty()
+        CurrentEnviroment.style(component).markDirty()
         if let beagleView = view.superview as? BeagleView {
             beagleView.invalidateIntrinsicContentSize()
         }

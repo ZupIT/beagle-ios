@@ -18,18 +18,14 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TabBarTests: XCTestCase {
-
-    var dependencies: BeagleDependencies {
-        // swiftlint:disable implicit_getter
-        get {
-            let dependency = BeagleDependencies()
-            dependency.appBundle = Bundle(for: TabBarTests.self)
-            return dependency
-        }
+class TabBarTests: EnviromentTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        enviroment.appBundle.bundle = Bundle(for: TabBarTests.self)
     }
 
-    lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    lazy var controller = BeagleControllerStub()
     lazy var renderer = BeagleRenderer(controller: controller)
 
     private let imageSize = ImageSize.custom(CGSize(width: 150, height: 80))
@@ -47,10 +43,7 @@ class TabBarTests: XCTestCase {
           )
 
           // When
-          let controller = BeagleScreenViewController(viewModel: .init(
-              screenType: .declarative(screen),
-              dependencies: dependencies
-          ))
+          let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen)))
 
           // Then
           assertSnapshotImage(controller.view, size: imageSize)
@@ -68,10 +61,7 @@ class TabBarTests: XCTestCase {
         )
 
         // When
-        let controller = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(screen),
-            dependencies: dependencies
-        ))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen)))
 
         // Then
         assertSnapshotImage(controller.view, size: imageSize)

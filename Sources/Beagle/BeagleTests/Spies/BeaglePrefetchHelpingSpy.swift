@@ -16,7 +16,7 @@
 
 import Beagle
 
-final class BeaglePrefetchHelpingSpy: BeaglePrefetchHelping {
+final class BeaglePrefetchHelpingSpy: PrefetchHelperProtocol {
     
     private(set) var prefetched: [String] = []
     private(set) var dequeued: [String] = []

@@ -18,59 +18,21 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class BeagleSetupTests: XCTestCase {
+// MARK: - Dependencies Dummies
+
+final class BundleDummy: BundleProtocol {
     // swiftlint:disable discouraged_direct_init
-
-    func testDefaultDependencies() {
-        let dependencies = BeagleDependencies()
-        dependencies.appBundle = Bundle()
-        assertSnapshot(matching: dependencies, as: .dump)
-    }
-
-    func testChangedDependencies() {
-        let dep = BeagleDependencies()
-        dep.appBundle = Bundle()
-        dep.deepLinkHandler = DeepLinkHandlerDummy()
-        dep.theme = AppThemeDummy()
-        if let url = URL(string: "www.test.com") {
-            dep.urlBuilder.baseUrl = url
-        }
-        dep.networkClient = NetworkClientDummy()
-        dep.style = { _ in return StyleViewConfiguratorDummy() }
-        dep.coder = BeagleCodingDummy()
-        dep.windowManager = WindowManagerDumb()
-        dep.opener = URLOpenerDumb()
-        dep.globalContext = GlobalContextDummy()
-        dep.operationsProvider = OperationsProviderDummy()
-        
-        assertSnapshot(matching: dep, as: .dump)
-    }
-
-    func test_ifChangingDependency_othersShouldUseNewInstance() {
-        let dependencies = BeagleDependencies()
-
-        let themeSpy = ThemeSpy()
-        dependencies.theme = themeSpy
-
-        let view = UIView()
-        let styleId = "custom-style"
-
-        dependencies.theme.applyStyle(for: view, withId: styleId)
-
-        XCTAssertEqual(themeSpy.styledView, view)
-        XCTAssertEqual(themeSpy.styleApplied, styleId)
-    }
+    var bundle: Bundle = Bundle()
+    // swiftlint:enable discouraged_direct_init
 }
 
-// MARK: - Testing Helpers
-
-final class DeepLinkHandlerDummy: DeepLinkScreenManaging {
+final class DeepLinkHandlerDummy: DeepLinkScreenManagerProtocol {
     func getNativeScreen(with path: String, data: [String: String]?) throws -> UIViewController {
         return UIViewController()
     }
 }
 
-final class BeagleCodingDummy: BeagleCoding {
+final class CoderDummy: CoderProtocol {
     func register<T: BeagleCodable>(type: T.Type, named: String?) {}
     
     func decode<T>(from data: Data) throws -> T {
@@ -90,12 +52,12 @@ final class BeagleCodingDummy: BeagleCoding {
         nil
     }
     
-    func type(for name: String, baseType: BeagleCoder.BaseType) -> BeagleCodable.Type? {
+    func type(for name: String, baseType: Coder.BaseType) -> BeagleCodable.Type? {
         nil
     }
 }
 
-final class PreFetchHelperDummy: BeaglePrefetchHelping {
+final class PreFetchHelperDummy: PrefetchHelperProtocol {
     func prefetchComponent(newPath: Route.NewPath) { }
 }
 
@@ -128,51 +90,21 @@ struct ActionDummy: Action, Equatable {
     func execute(controller: BeagleController, origin: UIView) {}
 }
 
-struct BeagleScreenDependencies: BeagleDependenciesProtocol {
-    var isLoggingEnabled: Bool = true
-    var analyticsProvider: AnalyticsProvider?
-    var viewClient: ViewClient = ViewClientStub()
-    var imageDownloader: ImageDownloader = ImageDownloaderStub()
-    var theme: Theme = AppThemeDummy()
-    var preFetchHelper: BeaglePrefetchHelping = PreFetchHelperDummy()
-    var appBundle: Bundle = Bundle(for: ImageTests.self)
-    var coder: BeagleCoding = BeagleCodingDummy()
-    var logger: BeagleLoggerType = BeagleLoggerDumb()
-    var navigationControllerType = BeagleNavigationController.self
-    var urlBuilder: UrlBuilderProtocol = UrlBuilder()
-    var networkClient: NetworkClient? = NetworkClientDummy()
-    var deepLinkHandler: DeepLinkScreenManaging?
-    var navigation: BeagleNavigation = BeagleNavigationDummy()
-    var windowManager: WindowManager = WindowManagerDumb()
-    var opener: URLOpener = URLOpenerDumb()
-    var globalContext: GlobalContext = GlobalContextDummy()
-    var operationsProvider: OperationsProvider = OperationsProviderDummy()
-
-    var renderer: (BeagleController) -> BeagleRenderer = {
-        return BeagleRenderer(controller: $0)
-    }
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
-        return ViewConfigurator(view: $0)
-    }
-    var style: (UIView) -> StyleViewConfiguratorProtocol = { _ in
-        return StyleViewConfiguratorDummy()
-    }
-}
-
-class NetworkClientDummy: NetworkClient {
+class NetworkClientDummy: NetworkClientProtocol {
     func executeRequest(_ request: Request, completion: @escaping RequestCompletion) -> RequestToken? {
         return nil
     }
 }
 
-final class AppThemeDummy: Theme {
+final class AppThemeDummy: ThemeProtocol {
     func applyStyle<T>(for view: T, withId id: String) where T: UIView {
     }
 }
 
-class BeagleNavigationDummy: BeagleNavigation {
-    
-    var defaultAnimation: BeagleNavigatorAnimation?
+class NavigatorDummy: NavigationProtocolInternal {
+    func setDefaultAnimation(_ animation: BeagleNavigatorAnimation) {
+        // Intentionally unimplemented...
+    }
     
     func navigate(action: Navigate, controller: BeagleController, animated: Bool, origin: UIView?) {
         // Intentionally unimplemented...
@@ -191,7 +123,7 @@ class BeagleNavigationDummy: BeagleNavigation {
     }
 }
 
-class GlobalContextDummy: GlobalContext {
+class GlobalContextDummy: GlobalContextProtocol {
     let globalId: String = ""
     let context: Observable<Context> = Observable(value: .init(id: "", value: .empty))
     
@@ -210,7 +142,7 @@ class GlobalContextDummy: GlobalContext {
     }
 }
 
-class OperationsProviderDummy: OperationsProvider {
+class OperationsProviderDummy: OperationsProviderProtocolInternal {
     func register(operationId: String, handler: @escaping OperationHandler) {
         // Intentionally unimplemented...
     }
@@ -218,5 +150,63 @@ class OperationsProviderDummy: OperationsProvider {
     func evaluate(with operation: Operation, in view: UIView) -> DynamicObject {
         // Intentionally unimplemented...
         return nil
+    }
+}
+
+final class LoggerDummy: LoggerProtocol {
+    func logDecodingError(type: String) {
+        
+    }
+    
+    func log(_ log: LogType) {
+        return
+    }
+}
+
+final class UrlBuilderDummy: UrlBuilderProtocol {
+    var baseUrl: URL?
+    
+    func build(path: String) -> URL? {
+        return nil
+    }
+}
+
+final class AnalyticsProviderDummy: AnalyticsProviderProtocol {
+    func getConfig() -> AnalyticsConfig {
+        .init()
+    }
+    
+    func createRecord(_ record: AnalyticsRecord) {
+        // Intentionally unimplemented...
+    }
+}
+
+final class ImageDownloaderDummy: ImageDownloaderProtocol {
+    func fetchImage(
+        url: String,
+        additionalData: HttpAdditionalData?,
+        completion: @escaping (Result<Data, Request.Error>) -> Void
+    ) -> RequestToken? {
+        return nil
+    }
+}
+
+class URLOpenerDummy: URLOpenerProtocol {
+    func tryToOpen(path: String) {
+        // Intentionally unimplemented...
+    }
+}
+
+class WindowManagerDummy: WindowManagerProtocol {
+    var window: WindowProtocol?
+}
+
+class ViewClientDummy: ViewClientProtocol {
+    func fetch(url: String, additionalData: HttpAdditionalData?, completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void) -> RequestToken? {
+        return nil
+    }
+    
+    func prefetch(url: String, additionalData: HttpAdditionalData?) {
+        // Intentionally unimplemented...
     }
 }

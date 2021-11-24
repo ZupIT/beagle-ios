@@ -16,7 +16,7 @@
 
 import Foundation
 
-public protocol ImageDownloader {
+public protocol ImageDownloaderProtocol {
     @discardableResult
     func fetchImage(
         url: String,
@@ -25,24 +25,11 @@ public protocol ImageDownloader {
     ) -> RequestToken?
 }
 
-public protocol DependencyImageDownloader {
-    var imageDownloader: ImageDownloader { get }
-}
-
-public struct ImageDownloaderDefault: ImageDownloader {
+public struct ImageDownloader: ImageDownloaderProtocol {
     
-    public typealias Dependencies =
-        DependencyNetworkClient
-        & DependencyUrlBuilder
-        & DependencyLogger
-
-    let dependencies: Dependencies
-    private let dispatcher: RequestDispatcher
+    var dispatcher = RequestDispatcher()
     
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-        self.dispatcher = RequestDispatcher(dependencies: dependencies)
-    }
+    public init() { }
     
     @discardableResult
     public func fetchImage(

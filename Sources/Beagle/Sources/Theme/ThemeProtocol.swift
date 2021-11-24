@@ -16,23 +16,23 @@
 
 import UIKit
 
-public protocol Theme {
+public protocol ThemeProtocol {
     func applyStyle<T: UIView>(for view: T, withId id: String)
 }
 
 public protocol DependencyTheme {
-    var theme: Theme { get }
+    var theme: ThemeProtocol { get }
 }
 
 public protocol DependencyAppBundle {
     var appBundle: Bundle { get }
 }
 
-public struct AppTheme: Theme {
+public struct AppTheme: ThemeProtocol {
     let styles: [String: Any]
     
     public init(
-        styles: [String: Any]
+        styles: [String: Any] = [:]
     ) {
         self.styles = styles
     }

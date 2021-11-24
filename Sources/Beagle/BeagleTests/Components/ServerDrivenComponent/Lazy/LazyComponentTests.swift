@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class LazyComponentTests: XCTestCase {
+final class LazyComponentTests: EnviromentTestCase {
     
     func testCodableLazyComponent() throws {
         let component: LazyComponent = try componentFromJsonFile(fileName: "lazyComponent")
@@ -41,13 +41,9 @@ final class LazyComponentTests: XCTestCase {
         let initialState = Text(text: "Loading...", style: Style().backgroundColor("#00FF00"))
         let sut = LazyComponent(path: "", initialState: initialState)
         let viewClient = LazyViewClientStub()
-        let dependecies = BeagleDependencies()
-        dependecies.viewClient = viewClient
-        
-        let screenController = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(Screen(child: sut)),
-            dependencies: dependecies)
-        )
+        let viewModel = BeagleScreenViewModel(screenType: .declarative(Screen(child: sut)))
+        enviroment.viewClient = viewClient
+        let screenController = BeagleScreenViewController(viewModel: viewModel)
         
         let size = CGSize(width: 75, height: 80)
         assertSnapshotImage(screenController, size: .custom(size))
@@ -70,9 +66,10 @@ final class LazyComponentTests: XCTestCase {
             initialState: ComponentDummy(resultView: initialView)
         )
         let viewClient = LazyViewClientStub()
-        let controller = BeagleControllerStub(dependencies: BeagleScreenDependencies(viewClient: viewClient))
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         
+        enviroment.viewClient = viewClient
         let view = sut.toView(renderer: renderer)
         viewClient.componentCompletion?(.success(ComponentDummy()))
         
@@ -89,8 +86,9 @@ final class LazyComponentTests: XCTestCase {
             initialState: ComponentDummy(resultView: initialView)
         )
         let viewClient = LazyViewClientStub()
-        let controller = BeagleControllerStub(dependencies: BeagleScreenDependencies(viewClient: viewClient))
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
+        enviroment.viewClient = viewClient
         
         // When
         let view = sut.toView(renderer: renderer)
@@ -126,7 +124,7 @@ final class LazyComponentTests: XCTestCase {
     
 }
 
-class LazyViewClientStub: ViewClient {
+class LazyViewClientStub: ViewClientProtocol {
 
     var componentCompletion: ((Result<ServerDrivenComponent, Request.Error>) -> Void)?
 

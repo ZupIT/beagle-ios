@@ -1,3 +1,4 @@
+//
 /*
  * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
@@ -14,10 +15,17 @@
  * limitations under the License.
  */
 
-public var dependencies: BeagleDependenciesProtocol = BeagleDependencies() {
-    didSet {
-        AnalyticsService.shared = dependencies.analyticsProvider.ifSome {
-            AnalyticsService(provider: $0, logger: dependencies.logger)
-        }
-    }
-}
+// MARK: - CurrentResolver
+
+/// Used by injected property wrapper to resolve dependencies
+var CurrentResolver: DependenciesContainerResolving = DependenciesContainer.global
+
+// MARK: - CurrentEnviroment
+
+/// Used inside beagle to access the enviroment dependencies
+var CurrentEnviroment: EnviromentProtocol = BeagleEnviroment.global
+
+// MARK: - Enviroment
+
+/// Used outside beagle to access the enviroment dependencies
+public var Dependencies: BeagleEnviromentProtocol { CurrentEnviroment }

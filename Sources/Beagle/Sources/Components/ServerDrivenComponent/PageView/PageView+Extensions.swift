@@ -37,10 +37,10 @@ extension PageView {
         }
 
         view.backgroundColor = .clear
-        renderer.dependencies.style(view).setup(Style(flex: Flex().flexDirection(.column)))
+        CurrentEnviroment.style(view).setup(Style(flex: Flex().flexDirection(.column)))
 
         view.addSubview(pagesView)
-        renderer.dependencies.style(pagesView).setup(Style(flex: Flex(grow: 1)))
+        CurrentEnviroment.style(pagesView).setup(Style(flex: Flex(grow: 1)))
 
         return view
     }

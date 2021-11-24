@@ -16,39 +16,28 @@
 
 import UIKit
 
-public protocol DependencyURLOpener {
-    var opener: URLOpener { get }
-}
-
-public protocol URLOpener {
+protocol URLOpenerProtocol {
     func tryToOpen(path: String)
 }
 
 /// This class is responsible for opening URLs on native browser
-public final class URLOpenerDefault: URLOpener {
+final class URLOpener: URLOpenerProtocol {
+    
+    // MARK: Dependencies
 
-    public typealias Dependencies =
-        DependencyLogger
+    @Injected var logger: LoggerProtocol
 
-    let dependencies: Dependencies
+    // MARK: URLOpenerProtocol
 
-    // MARK: Init
-
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
-
-    // MARK: PUBLIC
-
-    public func tryToOpen(path: String) {
+    func tryToOpen(path: String) {
 
         guard let pathURL = URL(string: path) else {
-            dependencies.logger.log(Log.navigation(.invalidExternalUrl(path: path)))
+            logger.log(Log.navigation(.invalidExternalUrl(path: path)))
             return
         }
 
         guard UIApplication.shared.canOpenURL(pathURL) else {
-            dependencies.logger.log(Log.navigation(.unableToOpenExternalUrl(path: path)))
+            logger.log(Log.navigation(.unableToOpenExternalUrl(path: path)))
             return
         }
 
@@ -56,7 +45,7 @@ public final class URLOpenerDefault: URLOpener {
             guard let self = self else { return }
             let navigationEvent: Log.Navigator = success ?
                 .didNavigateToExternalUrl(path: path) : .unableToOpenExternalUrl(path: path)
-            self.dependencies.logger.log(Log.navigation(navigationEvent))
+            self.logger.log(Log.navigation(navigationEvent))
         }
     }
 }

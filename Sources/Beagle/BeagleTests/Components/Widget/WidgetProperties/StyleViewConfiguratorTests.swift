@@ -58,10 +58,10 @@ final class StyleViewConfiguratorTests: XCTestCase {
         let flex = Flex(basis: UnitValue(value: 50, type: .real), flex: 1, grow: 0, shrink: 1)
         let style = Style(flex: flex)
         
-        //When
+        // When
         sut.setup(style)
         
-        //Then
+        // Then
         XCTAssertEqual(view.yoga.flexBasis.value, 50)
         XCTAssertEqual(view.yoga.flex, 1)
         XCTAssertEqual(view.yoga.flexGrow, 0)
@@ -140,10 +140,10 @@ final class StyleViewConfiguratorTests: XCTestCase {
         let sut = StyleViewConfigurator(view: view)
         let style = Style(position: .init(.init(all: .init(value: 50, type: .real))))
         
-        //When
+        // When
         sut.setup(style)
         
-        //Then
+        // Then
         XCTAssertEqual(view.yoga.left, 50)
         XCTAssertEqual(view.yoga.top, 50)
         XCTAssertEqual(view.yoga.right, 50)
@@ -156,10 +156,10 @@ final class StyleViewConfiguratorTests: XCTestCase {
         let sut = StyleViewConfigurator(view: view)
         let style = Style(position: .init(.init(vertical: .init(value: 50, type: .real))))
         
-        //When
+        // When
         sut.setup(style)
         
-        //Then
+        // Then
         XCTAssertEqual(view.yoga.top, 50)
         XCTAssertEqual(view.yoga.bottom, 50)
     }
@@ -170,10 +170,10 @@ final class StyleViewConfiguratorTests: XCTestCase {
         let sut = StyleViewConfigurator(view: view)
         let style = Style(position: .init(.init(horizontal: .init(value: 50, type: .real))))
         
-        //When
+        // When
         sut.setup(style)
         
-        //Then
+        // Then
         XCTAssertEqual(view.yoga.left, 50)
         XCTAssertEqual(view.yoga.right, 50)
     }

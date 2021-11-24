@@ -23,9 +23,6 @@ class ComponentHostController: BeagleController {
 
     let bindings = Bindings()
 
-    var dependencies: BeagleDependenciesProtocol {
-        return renderer.dependencies
-    }
     var serverDrivenState: ServerDrivenState {
         get { renderer.controller?.serverDrivenState ?? .finished }
         set { renderer.controller?.serverDrivenState = newValue }
@@ -70,7 +67,7 @@ class ComponentHostController: BeagleController {
 
     override func viewDidLayoutSubviews() {
         bindings.config()
-        dependencies.style(view).applyLayout()
+        CurrentEnviroment.style(view).applyLayout()
         super.viewDidLayoutSubviews()
     }
 

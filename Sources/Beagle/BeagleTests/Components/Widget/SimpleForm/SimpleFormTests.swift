@@ -21,7 +21,7 @@ import SnapshotTesting
 class SimpleFormTests: XCTestCase {
     
     func testFormView() {
-        //Given
+        // Given
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         let numberOfChilds = 3
@@ -31,7 +31,7 @@ class SimpleFormTests: XCTestCase {
         // When
         let resultingView = renderer.render(simpleForm)
         
-        //Then
+        // Then
         XCTAssertEqual(resultingView.subviews.count, numberOfChilds)
     }
     

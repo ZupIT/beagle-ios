@@ -24,7 +24,7 @@ class BeagleLoggerProxyTests: XCTestCase {
 
         // Given
         let spy = BeagleLoggerSpy()
-        let sut = BeagleLoggerProxy(logger: spy)
+        let sut = LoggerProxy(logger: spy)
 
         // When
         sut.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "route")))
@@ -36,7 +36,7 @@ class BeagleLoggerProxyTests: XCTestCase {
 
 }
 
-private class BeagleLoggerSpy: BeagleLoggerType {
+private class BeagleLoggerSpy: LoggerProtocol {
     private(set) var didCalledLog = false
 
     func log(_ log: LogType) {

@@ -18,23 +18,24 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-public final class BeagleCoderTests: XCTestCase {
+final class BeagleCoderTests: EnviromentTestCase {
     // swiftlint:disable force_unwrapping
     
-    private lazy var sut = dependencies.coder
+    private lazy var sut = Coder()
 
     func testIfAllComponentsAreBeingRegistered() {
-        let sut = BeagleCoder()
-        assertSnapshot(matching: sut.types[BeagleCoder.BaseType.component.rawValue], as: .dump)
+        let sut = Coder()
+        assertSnapshot(matching: sut.types[Coder.BaseType.component.rawValue], as: .dump)
     }
     
     func testIfAllActionsAreBeingRegistered() {
-        let sut = BeagleCoder()
-        assertSnapshot(matching: sut.types[BeagleCoder.BaseType.action.rawValue], as: .dump)
+        let sut = Coder()
+        assertSnapshot(matching: sut.types[Coder.BaseType.action.rawValue], as: .dump)
     }
     
     func testRegisterAndDecodeCustomComponent() throws {
         // Given
+        let sut = Coder()
         let expectedText = "something"
         let jsonData = """
         {
@@ -45,6 +46,7 @@ public final class BeagleCoderTests: XCTestCase {
 
         // When
         sut.register(type: NewComponent.self)
+        enviroment.coder = sut
         let component: NewComponent = try sut.decode(from: jsonData)
         
         // Then
@@ -53,11 +55,11 @@ public final class BeagleCoderTests: XCTestCase {
     
     func testRegisterComponentWithCustomTypeName() throws {
         // Given
-        let sut = BeagleCoder()
+        let sut = Coder()
 
         // When
         sut.register(type: NewComponent.self, named: "NewCustomComponent")
-        let componentDecoder = sut.types[BeagleCoder.BaseType.component.rawValue]?["custom:newcustomcomponent"]
+        let componentDecoder = sut.types[Coder.BaseType.component.rawValue]?["custom:newcustomcomponent"]
 
         // Then
         XCTAssertNotNil(componentDecoder)
@@ -66,11 +68,11 @@ public final class BeagleCoderTests: XCTestCase {
     
     func testRegisterActionWithCustomTypeName() throws {
         // Given
-        let sut = BeagleCoder()
+        let sut = Coder()
 
         // When
         sut.register(type: TestAction.self, named: "NewCustomAction")
-        let actionDecoder = sut.types[BeagleCoder.BaseType.action.rawValue]?["custom:newcustomaction"]
+        let actionDecoder = sut.types[Coder.BaseType.action.rawValue]?["custom:newcustomaction"]
         
         // Then
         XCTAssertNotNil(actionDecoder)
@@ -129,6 +131,7 @@ public final class BeagleCoderTests: XCTestCase {
     }
     
     func testRegisterAndDecodeCustomAction() throws {
+        let sut = Coder()
         let data = """
         {
             "_beagleAction_":"custom:testaction",
@@ -137,6 +140,7 @@ public final class BeagleCoderTests: XCTestCase {
         """.data(using: .utf8)!
 
         sut.register(type: TestAction.self)
+        enviroment.coder = sut
         let action: TestAction = try sut.decode(from: data)
 
         XCTAssertNotNil(action)

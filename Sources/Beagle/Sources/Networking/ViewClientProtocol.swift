@@ -16,7 +16,7 @@
 
 import Foundation
 
-public protocol ViewClient {
+public protocol ViewClientProtocol {
     @discardableResult
     func fetch(
         url: String,
@@ -27,34 +27,21 @@ public protocol ViewClient {
     func prefetch(url: String, additionalData: HttpAdditionalData?)
 }
 
-public protocol DependencyViewClient {
-    var viewClient: ViewClient { get }
-}
-
 // MARK: - Default
 
-public struct ViewClientDefault: ViewClient {
+public struct ViewClient: ViewClientProtocol {
     
     // MARK: Dependencies
-
-    public typealias Dependencies =
-        DependencyCoder
-        & DependencyNetworkClient
-        & DependencyUrlBuilder
-        & DependencyLogger
-
-    let dependencies: Dependencies
-
-    private let dispatcher: RequestDispatcher
+    
+    @Injected var coder: CoderProtocol
+    
+    var dispatcher = RequestDispatcher()
     
     let cache = Cache<String, Result<ServerDrivenComponent>>()
     
     // MARK: Initialization
     
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-        self.dispatcher = RequestDispatcher(dependencies: dependencies)
-    }
+    public init() { }
     
     // MARK: Public Methods
 
@@ -102,7 +89,7 @@ public struct ViewClientDefault: ViewClient {
 
     private func decodeComponent(from data: Data) -> Result<ServerDrivenComponent> {
         do {
-            return .success(try dependencies.coder.decode(from: data))
+            return .success(try coder.decode(from: data))
         } catch {
             return .failure(.decoding(error))
         }

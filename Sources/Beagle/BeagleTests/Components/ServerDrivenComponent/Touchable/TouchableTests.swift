@@ -26,18 +26,18 @@ final class TouchableTests: XCTestCase {
     }
 
     func testTouchableView() {
-        //Given //When
+        // Given // When
         let touchable = Touchable(onPress: [Navigate.popView()], child: Text(text: "Touchable"))
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         let view = renderer.render(touchable)
         
-        //Then
+        // Then
         assertSnapshotImage(view, size: .custom(CGSize(width: 100, height: 80)))
     }
     
     func testIsUserInteractionEnabled() {
-        //Given
+        // Given
         let view = UIImageView()
         view.isUserInteractionEnabled = false
         let child = ComponentDummy(resultView: view)
@@ -45,10 +45,10 @@ final class TouchableTests: XCTestCase {
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         
-        //When
+        // When
         let resultView = touchable.toView(renderer: renderer)
         
-        //Then
+        // Then
         XCTAssertEqual(resultView, view)
         XCTAssertTrue(resultView.isUserInteractionEnabled)
     }

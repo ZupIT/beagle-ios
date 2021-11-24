@@ -23,20 +23,19 @@ class URLOpenerTests: XCTestCase {
     func test_invalidURLPath_shouldLogError() {
 
         // Given
-        let mockedLogger = LoggerMocked()
-        let dependencies = BeagleDependencies()
-        dependencies.logger = mockedLogger
-        let opener = URLOpenerDefault(dependencies: dependencies)
+        let loggerStub = LoggerMocked()
+        let opener = URLOpener()
+        opener.logger = loggerStub
 
         // When
         opener.tryToOpen(path: "")
 
         // Then
-        assertSnapshot(matching: mockedLogger.log, as: .description)
+        assertSnapshot(matching: loggerStub.log, as: .description)
     }
 }
 
-class URLOpenerDumb: URLOpener {
+class URLOpenerStub: URLOpenerProtocol {
 
     var hasInvokedTryToOpen = false
 
@@ -45,7 +44,7 @@ class URLOpenerDumb: URLOpener {
     }
 }
 
-class LoggerMocked: BeagleLoggerType {
+class LoggerMocked: LoggerProtocol {
     var logDecodingErrorCalled = false
     
     func logDecodingError(type: String) {

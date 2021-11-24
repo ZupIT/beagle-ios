@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-public protocol DependencyLogger {
-    var logger: BeagleLoggerType { get }
-}
-
-public protocol BeagleLoggerType {
+public protocol LoggerProtocol {
     func log(_ log: LogType)
 }

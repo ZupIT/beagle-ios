@@ -24,25 +24,19 @@ class BeagleConfig {
     static func start() {
         let deepLinkHandler = registerDeepLink()
 
-        let dependencies = BeagleDependencies()
+        var dependencies = BeagleDependencies()
+        dependencies.networkClient = NetworkClientDefault()
         dependencies.theme = AppTheme.theme
         dependencies.urlBuilder = UrlBuilder(baseUrl: URL(string: .baseURL))
-        dependencies.navigation.defaultAnimation = .init(
-            pushTransition: .init(type: .fade, subtype: .fromRight, duration: 0.1),
-            modalPresentationStyle: .formSheet
-        )
         dependencies.deepLinkHandler = deepLinkHandler
 
-        let innerDependencies = InnerDependencies()
-        dependencies.networkClient = NetworkClientDefault(dependencies: innerDependencies)
-        dependencies.logger = innerDependencies.logger
         dependencies.analyticsProvider = AnalyticsProviderDemo()
 
         registerCustomOperations(in: dependencies)
         registerCustomComponents(in: dependencies)
-        registerCustomControllers(in: dependencies)
+        setupNavigation(in: dependencies)
 
-        Beagle.dependencies = dependencies
+        BeagleConfigurator.setup(dependencies: dependencies)
     }
 
     private static func registerDeepLink() -> DeeplinkScreenManager {
@@ -54,9 +48,13 @@ class BeagleConfig {
         dependencies.coder.register(type: DSCollection.self)
     }
 
-    private static func registerCustomControllers(in dependencies: BeagleDependencies) {
-        dependencies.navigation.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
-        dependencies.navigation.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
+    private static func setupNavigation(in dependencies: BeagleDependencies) {
+        dependencies.navigator.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
+        dependencies.navigator.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
+        dependencies.navigator.setDefaultAnimation(.init(
+            pushTransition: .init(type: .fade, subtype: .fromRight, duration: 0.1),
+            modalPresentationStyle: .formSheet
+        ))
     }
     
     private static func registerCustomOperations(in dependencies: BeagleDependencies) {
@@ -80,8 +78,4 @@ class BeagleConfig {
             return nil
         }
     }
-}
-
-class InnerDependencies: DependencyLogger {
-    var logger: BeagleLoggerType = BeagleLoggerDefault()
 }

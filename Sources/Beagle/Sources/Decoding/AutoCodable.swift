@@ -81,6 +81,7 @@ enum BeagleMetaContainerKeys: CodingKey {
 
 // MARK: - Encoder
 extension Encoder {
+    
     func encodeOptional<ValueType>(_ value: ValueType?) throws {
         var container = singleValueContainer()
         if let value = value {
@@ -108,7 +109,7 @@ extension Encoder {
         if value is Action {
             key = ._beagleAction_
         }
-        if let identifier = dependencies.coder.name(for: type(of: value)) {
+        if let identifier = CurrentEnviroment.coder.name(for: type(of: value)) {
             try container.encode(identifier, forKey: key)
         }
         try value.encode(to: self)
@@ -117,6 +118,7 @@ extension Encoder {
 
 // MARK: - Decoder
 extension Decoder {
+    
     func decodeOptional<ExpectedType>(_ expectedType: ExpectedType?.Type) throws -> ExpectedType? {
         let container = try singleValueContainer()
         guard !container.decodeNil() else {
@@ -138,13 +140,13 @@ extension Decoder {
     func decode<ExpectedType>(_ expectedType: ExpectedType.Type) throws -> ExpectedType {
         let container = try self.container(keyedBy: BeagleMetaContainerKeys.self)
         
-        var key: (type: BeagleMetaContainerKeys, base: BeagleCoder.BaseType) = (._beagleComponent_, .component)
+        var key: (type: BeagleMetaContainerKeys, base: Coder.BaseType) = (._beagleComponent_, .component)
         if expectedType == Action.self {
             key = (._beagleAction_, .action)
         }
         let typeID = try container.decode(String.self, forKey: key.type)
         
-        guard let matchingType = dependencies.coder.type(for: typeID, baseType: key.base) else {
+        guard let matchingType = CurrentEnviroment.coder.type(for: typeID, baseType: key.base) else {
             return try handleUnknown(expectedType, typeID)
         }
         let decoded = try matchingType.init(from: self)

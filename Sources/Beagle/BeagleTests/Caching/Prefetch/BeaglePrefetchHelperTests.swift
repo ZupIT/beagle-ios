@@ -20,12 +20,7 @@ import SnapshotTesting
 
 final class BeaglePrefetchHelperTests: XCTestCase {
 
-    struct Dependencies: BeaglePreFetchHelper.Dependencies {
-        var logger: BeagleLoggerType
-        let viewClient: ViewClient
-    }
-
-    private let decoder = BeagleCoder()
+    private let decoder = Coder()
     private let jsonData = """
     {
       "_beagleComponent_": "beagle:text",
@@ -42,16 +37,17 @@ final class BeaglePrefetchHelperTests: XCTestCase {
             XCTFail("Could not decode component.")
             return
         }
-        let viewClient = ViewClientStub(componentResult: .success(remoteComponent))
-        let dependencies = Dependencies(logger: BeagleLoggerDumb(), viewClient: viewClient)
-        let sut = BeaglePreFetchHelper(dependencies: dependencies)
+        let viewClientStub = ViewClientStub(componentResult: .success(remoteComponent))
+        let sut = PreFetchHelper()
         let url = "url-test"
 
+        sut.viewClient = viewClientStub
+        
         // When
         sut.prefetchComponent(newPath: .init(url: "\(url)", shouldPrefetch: true))
-
+        
         // Then
-        XCTAssertTrue(viewClient.didCallPrefetch)
+        XCTAssertTrue(viewClientStub.didCallPrefetch)
     }
 
     func testNavigationIsPrefetchable() {
@@ -100,15 +96,16 @@ final class BeaglePrefetchHelperTests: XCTestCase {
     
     func testNavigateWithContextShouldNotPrefetch() {
         // Given
-        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
-        let dependencies = Dependencies(logger: BeagleLoggerDumb(), viewClient: viewClient)
-        let sut = BeaglePreFetchHelper(dependencies: dependencies)
+        let viewClientStub = ViewClientStub(componentResult: .success(ComponentDummy()))
+        let sut = PreFetchHelper()
+        
+        sut.viewClient = viewClientStub
 
         // When
         sut.prefetchComponent(newPath: .init(url: "@{url}", shouldPrefetch: true))
 
         // Then
-        XCTAssertFalse(viewClient.didCallPrefetch)
+        XCTAssertFalse(viewClientStub.didCallPrefetch)
     }
 
     private func decodeComponent(from data: Data) -> ServerDrivenComponent? {

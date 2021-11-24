@@ -16,11 +16,10 @@
 
 import UIKit
 
-public protocol BeagleNavigation {
-    var defaultAnimation: BeagleNavigatorAnimation? { get set }
+public protocol NavigationProtocol {
     
-    func navigate(action: Navigate, controller: BeagleController, animated: Bool, origin: UIView?)
-
+    func setDefaultAnimation(_ animation: BeagleNavigatorAnimation)
+    
     typealias NavigationBuilder = () -> BeagleNavigationController
 
     /// Register the default `BeagleNavigationController` to be used when creating a new navigation flow.
@@ -38,23 +37,32 @@ public protocol BeagleNavigation {
     func navigationController(forId controllerId: String?) -> BeagleNavigationController
 }
 
-public protocol DependencyNavigation {
-    var navigation: BeagleNavigation { get }
+protocol NavigationProtocolInternal: NavigationProtocol {
+    func navigate(action: Navigate, controller: BeagleController, animated: Bool, origin: UIView?)
 }
 
-class BeagleNavigator: BeagleNavigation {
+final class Navigator: NavigationProtocolInternal {
 
     var defaultAnimation: BeagleNavigatorAnimation?
     
     private var builders: [String: NavigationBuilder] = [:]
     private var defaultBuilder: NavigationBuilder?
     
+    // MARK: - Dependencies
+    
+    @Injected var logger: LoggerProtocol
+    @Injected var opener: URLOpenerProtocol
+    @Injected var windowManager: WindowManagerProtocol
+    @Injected var urlBuilder: UrlBuilderProtocol
+    @Injected var viewClient: ViewClientProtocol
+    @OptionalInjected var deepLinkHandler: DeepLinkScreenManagerProtocol?
+    
     // MARK: - Public Methods
 
     // MARK: Navigate
     
     func navigate(action: Navigate, controller: BeagleController, animated: Bool = false, origin: UIView?) {
-        controller.dependencies.logger.log(Log.navigation(.didReceiveAction(action)))
+        logger.log(Log.navigation(.didReceiveAction(action)))
         switch action {
         case let .openExternalURL(url, _):
             let path = url.evaluate(with: origin) ?? ""
@@ -94,6 +102,10 @@ class BeagleNavigator: BeagleNavigation {
     }
     
     // MARK: - Register
+    
+    func setDefaultAnimation(_ animation: BeagleNavigatorAnimation) {
+        self.defaultAnimation = animation
+    }
 
     func registerDefaultNavigationController(builder: @escaping NavigationBuilder) {
         defaultBuilder = builder
@@ -138,13 +150,13 @@ class BeagleNavigator: BeagleNavigation {
     }
     
     private func openExternalURL(path: String, controller: BeagleController) {
-        controller.dependencies.opener.tryToOpen(path: path)
+        opener.tryToOpen(path: path)
     }
     
     private func openNativeRoute(controller: BeagleController, origin: UIView?, animated: Bool, nativeRoute: Navigate.OpenNativeRoute) {
         let path = nativeRoute.route.evaluate(with: origin) ?? ""
         do {
-            guard let deepLinkHandler = controller.dependencies.deepLinkHandler else { return }
+            guard let deepLinkHandler = deepLinkHandler else { return }
             let viewController = try deepLinkHandler.getNativeScreen(with: path, data: nativeRoute.data)
             
             if let transition = defaultAnimation?.getTransition(.push) {
@@ -152,12 +164,12 @@ class BeagleNavigator: BeagleNavigation {
             }
             
             if nativeRoute.shouldResetApplication {
-                controller.dependencies.windowManager.window?.replace(rootViewController: viewController, animated: animated, completion: nil)
+                windowManager.window?.replace(rootViewController: viewController, animated: animated, completion: nil)
             } else {
                 controller.navigationController?.pushViewController(viewController, animated: animated)
             }
         } catch {
-            controller.dependencies.logger.log(Log.navigation(.didNotFindDeepLinkScreen(path: path)))
+            logger.log(Log.navigation(.didNotFindDeepLinkScreen(path: path)))
             return
         }
     }
@@ -165,7 +177,7 @@ class BeagleNavigator: BeagleNavigation {
     private func resetApplication(origin: BeagleController, destination: UIViewController, controllerId: String?, animated: Bool) {
         let navigation = navigationController(forId: controllerId)
         navigation.viewControllers = [destination]
-        origin.dependencies.windowManager.window?.replace(rootViewController: navigation, animated: animated, completion: nil)
+        windowManager.window?.replace(rootViewController: navigation, animated: animated, completion: nil)
     }
     
     private func resetStack(origin: BeagleController, destination: UIViewController, animated: Bool) {
@@ -203,7 +215,7 @@ class BeagleNavigator: BeagleNavigation {
         }
 
         guard let target = last else {
-            controller.dependencies.logger.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: identifier)))
+            logger.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: identifier)))
             return
         }
         if let transition = defaultAnimation?.getTransition(.pop) {
@@ -253,7 +265,6 @@ class BeagleNavigator: BeagleNavigation {
         }
         switch controller.screenType {
         case .remote(let remote):
-            let urlBuilder = controller.dependencies.urlBuilder
             let expectedUrl = absoluteURL(for: identifier, builder: urlBuilder)
             let screenUrl = absoluteURL(for: remote.url, builder: urlBuilder)
             return screenUrl == expectedUrl
@@ -298,7 +309,7 @@ class BeagleNavigator: BeagleNavigation {
         
         let remote = ScreenType.Remote(url: newPath ?? "", fallback: path.fallback, additionalData: path.httpAdditionalData)
                 
-        return BeagleScreenViewController.remote(remote, dependencies: controller.dependencies) {
+        return BeagleScreenViewController.remote(remote, viewClient: viewClient) {
             [weak controller] result in guard let controller = controller else { return }
             controller.serverDrivenState = .finished
             switch result {

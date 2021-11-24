@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TextInputTests: XCTestCase {
+class TextInputTests: EnviromentTestCase {
 
     private lazy var theme = AppTheme(styles: [
         "test.textInput.style": textStyle
@@ -30,13 +30,14 @@ class TextInputTests: XCTestCase {
             $0?.borderStyle = .roundedRect
         }
     }
-
-    private lazy var dependencies = BeagleScreenDependencies(
-        theme: theme
-    )
-
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
+    
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
     
     func testCodableTextInput() throws {
         let component: TextInput = try componentFromJsonFile(fileName: "TextInputComponent")
@@ -107,7 +108,7 @@ class TextInputTests: XCTestCase {
         )
                 
         // When
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         
         // Then
         assertSnapshotImage(controller.view, size: ImageSize.custom(CGSize(width: 300, height: 70)))
@@ -122,7 +123,7 @@ class TextInputTests: XCTestCase {
         )
                 
         // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
     }
     
@@ -141,10 +142,10 @@ class TextInputTests: XCTestCase {
             }
         }
         let theme = AppTheme(styles: ["customStyle": customStyle])
-        let customDependencies = BeagleScreenDependencies(theme: theme)
         
         // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: customDependencies))
+        enviroment.theme = theme
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         controller.view.setContext(Context(id: "textinput", value: ["value": "enabled", "enabled": true]))
         assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
         

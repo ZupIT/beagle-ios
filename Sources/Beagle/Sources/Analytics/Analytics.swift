@@ -14,18 +14,9 @@
  * limitations under the License.
  */
 
-// MARK: - Dependency
-
-public protocol DependencyAnalyticsExecutor {
-
-    /// Set this property to receive analytics info when Beagle actions occur
-    var analyticsProvider: AnalyticsProvider? { get }
-    
-}
-
 // MARK: - Provider
 
-public protocol AnalyticsProvider {
+public protocol AnalyticsProviderProtocol {
 
     /// Beagle uses this configuration to know how to handle analytics events, and so this method will be called on every triggered event,
     /// in order to access the most updated global analytics config.

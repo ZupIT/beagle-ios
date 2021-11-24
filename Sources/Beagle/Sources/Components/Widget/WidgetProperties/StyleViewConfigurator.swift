@@ -27,13 +27,9 @@ public protocol StyleViewConfiguratorProtocol: AnyObject {
     var isFlexEnabled: Bool { get set }
 }
 
-public protocol DependencyStyleViewConfigurator {
-    var style: (UIView) -> StyleViewConfiguratorProtocol { get }
-}
-
 extension UIView {
     public var style: StyleViewConfiguratorProtocol {
-        return Beagle.dependencies.style(self)
+        return CurrentEnviroment.style(self)
     }
 }
 

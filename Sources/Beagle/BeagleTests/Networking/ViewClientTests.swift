@@ -17,11 +17,9 @@
 import XCTest
 @testable import Beagle
 
-final class ViewClientTests: XCTestCase {
+final class ViewClientTests: EnviromentTestCase {
 
-    private var dependencies = BeagleDependencies()
-
-    private lazy var sut = ViewClientDefault(dependencies: dependencies)
+    private lazy var sut = ViewClient()
 
     private let url = "www.something.com"
 
@@ -29,9 +27,8 @@ final class ViewClientTests: XCTestCase {
     func test_requestWithInvalidURL_itShouldFail() {
         // Given
         let invalidURL = "🥶"
-        let beagleDependencies = BeagleDependencies()
-        beagleDependencies.urlBuilder = UrlBuilderStub(baseUrl: nil, resultURL: nil)
-        let viewClient = ViewClientDefault(dependencies: beagleDependencies)
+        let viewClient = ViewClient()
+        enviroment.urlBuilder = UrlBuilderStub(baseUrl: nil, resultURL: nil)
         
         let fetchComponentExpectation = expectation(description: "fetchComponent")
         var fetchError: Request.Error?
@@ -60,7 +57,7 @@ final class ViewClientTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        dependencies.networkClient = NetworkClientStub(result:
+        enviroment.networkClient = NetworkClientStub(result:
             .success(.init(data: jsonData, response: URLResponse()))
         )
 
@@ -83,13 +80,13 @@ final class ViewClientTests: XCTestCase {
     
     func test_whenRequestSucceeds_butTheDecodingFailsWithAnError_itShouldThrowDecodingError() {
         // Given
-        dependencies.networkClient = NetworkClientStub(result:
+        let decoderStub = BeagleCodingStub()
+        
+        decoderStub.errorToThrowOnDecode = NSError(domain: "Mock", code: 1, description: "Mock")
+        enviroment.networkClient = NetworkClientStub(result:
             .success(.init(data: Data(), response: URLResponse()))
         )
-
-        let decoderStub = BeagleCodingStub()
-        decoderStub.errorToThrowOnDecode = NSError(domain: "Mock", code: 1, description: "Mock")
-        dependencies.coder = decoderStub
+        enviroment.coder = decoderStub
 
         let expec = expectation(description: "fetch")
 
@@ -116,7 +113,7 @@ final class ViewClientTests: XCTestCase {
         // Given
         let body = "{}".data(using: .utf8)!
         let clientStub = NetworkClientStub(result: .success(.init(data: body, response: URLResponse())))
-        dependencies.networkClient = clientStub
+        enviroment.networkClient = clientStub
 
         let additionalData = HttpAdditionalData(
             method: .post,
@@ -141,7 +138,7 @@ final class ViewClientTests: XCTestCase {
 
 // MARK: - Testing Helpers
 
-final class BeagleCodingStub: BeagleCoding {
+final class BeagleCodingStub: CoderProtocol {
     func register<T: BeagleCodable>(type: T.Type, named: String?) {}
     
     func decode<T>(from data: Data) throws -> T {
@@ -162,12 +159,12 @@ final class BeagleCodingStub: BeagleCoding {
     
     func name(for type: BeagleCodable.Type) -> String? { nil }
     
-    func type(for name: String, baseType: BeagleCoder.BaseType) -> BeagleCodable.Type? { nil }
+    func type(for name: String, baseType: Coder.BaseType) -> BeagleCodable.Type? { nil }
     
     var errorToThrowOnDecode: Error?
 }
 
-final class ViewClientStub: ViewClient {
+final class ViewClientStub: ViewClientProtocol {
 
     var componentResult: Result<ServerDrivenComponent, Request.Error>?
     var formResult: Result<Action, Request.Error>?
@@ -210,13 +207,13 @@ final class ViewClientStub: ViewClient {
     
 }
 
-class NetworkClientStub: NetworkClient {
+class NetworkClientStub: NetworkClientProtocol {
 
-    let result: NetworkClient.NetworkResult
+    let result: NetworkClientProtocol.NetworkResult
 
     private(set) var executedRequest: Request?
 
-    init(result: NetworkClient.NetworkResult) {
+    init(result: NetworkClientProtocol.NetworkResult) {
         self.result = result
     }
 

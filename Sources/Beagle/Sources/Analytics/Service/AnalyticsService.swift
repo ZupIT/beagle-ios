@@ -20,12 +20,11 @@ class AnalyticsService {
 
     static var shared: AnalyticsService?
 
-    private let provider: AnalyticsProvider
-    private var logger: BeagleLoggerType
+    private var provider: AnalyticsProviderProtocol
+    @Injected var logger: LoggerProtocol
 
-    init(provider: AnalyticsProvider, logger: BeagleLoggerType) {
+    init(provider: AnalyticsProviderProtocol) {
         self.provider = provider
-        self.logger = logger
     }
 
     // MARK: - Create Events

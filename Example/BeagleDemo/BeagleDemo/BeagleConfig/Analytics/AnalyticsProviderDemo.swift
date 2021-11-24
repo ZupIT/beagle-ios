@@ -17,7 +17,7 @@
 import Foundation
 import Beagle
 
-class AnalyticsProviderDemo: AnalyticsProvider {
+class AnalyticsProviderDemo: AnalyticsProviderProtocol {
 
     func getConfig() -> AnalyticsConfig {
         return AnalyticsConfig(

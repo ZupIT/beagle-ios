@@ -154,9 +154,8 @@ extension UIView {
     // MARK: Get/Set Context
     
     func getContext(with id: String) -> Observable<Context>? {
-        let global = dependencies.globalContext
-        if global.isGlobal(id: id) {
-            return global.context
+        if CurrentEnviroment.globalContext.isGlobal(id: id) {
+            return CurrentEnviroment.globalContext.context
         }
         guard let context = contextMap[id] else {
             let observable = (parentContext ?? superview)?.getContext(with: id)
@@ -166,9 +165,8 @@ extension UIView {
     }
     
     func setContext(_ context: Context) {
-        let global = dependencies.globalContext
-        guard !global.isGlobal(id: context.id) else {
-            global.set(context.value)
+        guard !CurrentEnviroment.globalContext.isGlobal(id: context.id) else {
+            CurrentEnviroment.globalContext.set(context.value)
             return
         }
         if let contextObservable = contextMap[context.id] {
@@ -179,9 +177,8 @@ extension UIView {
     }
     
     func getContextValue(_ contextId: String) -> DynamicObject? {
-        let global = dependencies.globalContext
-        guard !global.isGlobal(id: contextId) else {
-            return global.context.value.value
+        guard !CurrentEnviroment.globalContext.isGlobal(id: contextId) else {
+            return CurrentEnviroment.globalContext.context.value.value
         }
         return contextMap[contextId]?.value.value
     }

@@ -76,11 +76,7 @@ final class ListViewController: UIViewController {
 }
 
 extension ListViewController: BeagleControllerProtocol {
-    
-    var dependencies: BeagleDependenciesProtocol {
-        return renderer.dependencies
-    }
-    
+
     var serverDrivenState: ServerDrivenState {
         get { return renderer.controller?.serverDrivenState ?? .finished }
         set { renderer.controller?.serverDrivenState = newValue }

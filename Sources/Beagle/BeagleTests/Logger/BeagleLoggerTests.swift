@@ -55,13 +55,3 @@ class BeagleLoggerTests: XCTestCase {
         assertSnapshot(matching: result, as: .description)
     }
 }
-
-class BeagleLoggerDumb: BeagleLoggerType {
-    func logDecodingError(type: String) {
-        
-    }
-    
-    func log(_ log: LogType) {
-        return
-    }
-}

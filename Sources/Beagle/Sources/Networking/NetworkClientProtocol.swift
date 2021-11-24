@@ -16,7 +16,7 @@
 
 import Foundation
 
-public protocol NetworkClient {
+public protocol NetworkClientProtocol {
     typealias Error = NetworkError
     typealias NetworkResult = Result<NetworkResponse, NetworkError>
     typealias RequestCompletion = (NetworkResult) -> Void
@@ -64,7 +64,3 @@ public protocol RequestToken {
 
 /// this is just for facility
 extension URLSessionDataTask: RequestToken { }
-
-public protocol DependencyNetworkClient {
-    var networkClient: NetworkClient? { get }
-}

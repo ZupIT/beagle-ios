@@ -35,7 +35,7 @@ extension Button {
             }
         }
         
-        let preFetchHelper = renderer.dependencies.preFetchHelper
+        let preFetchHelper = renderer.preFetchHelper
         onPress?
             .compactMap { ($0 as? Navigate)?.newPath }
             .forEach { preFetchHelper.prefetchComponent(newPath: $0) }

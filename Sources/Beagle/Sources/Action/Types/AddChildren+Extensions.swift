@@ -21,7 +21,7 @@ extension AddChildren {
         guard let view = controller.view.getView(by: componentId),
               let components = evaluateValue(origin: origin) else { return }
         
-        let renderer = controller.dependencies.renderer(controller)
+        let renderer = CurrentEnviroment.renderer(controller)
         let views = renderer.render(components)
         
         switch mode {

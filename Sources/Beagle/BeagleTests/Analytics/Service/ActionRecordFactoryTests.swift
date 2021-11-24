@@ -188,7 +188,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
 
 // MARK: - Aux
 
-class RecordFactoryHelpers: XCTestCase {
+class RecordFactoryHelpers: EnviromentTestCase {
 
     lazy var sut = ActionRecordFactory(info: info, globalConfig: _globalConfig.actions)
 
@@ -241,7 +241,7 @@ class RecordFactoryHelpers: XCTestCase {
     }
 
     func prepareComponentHierarchy() throws {
-        let (view, controller) = try analyticsViewHierarchyWith(context: nil)
+        let (view, controller) = try analyticsViewHierarchyWith(context: nil, coder: enviroment.coder)
         info = .init(action: action, event: "event", origin: view, controller: controller)
     }
 }

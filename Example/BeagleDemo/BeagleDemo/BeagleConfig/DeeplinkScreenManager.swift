@@ -22,7 +22,7 @@ protocol DeeplinkScreen {
     func screenController() -> UIViewController
 }
 
-final class DeeplinkScreenManager: DeepLinkScreenManaging {
+final class DeeplinkScreenManager: DeepLinkScreenManagerProtocol {
     
     public static let shared = DeeplinkScreenManager()
     

@@ -23,7 +23,7 @@ class WindowManagerTests: XCTestCase {
     func test_validUIWindow_shouldReturnAWindowInstance() {
 
         // Given
-        let windowManager = WindowManagerDefault()
+        let windowManager = WindowManager()
 
         // When
         let window = windowManager.window
@@ -34,7 +34,7 @@ class WindowManagerTests: XCTestCase {
 
 }
 
-class WindowManagerDumb: WindowManager {
+class WindowManagerStub: WindowManagerProtocol {
 
     var window: WindowProtocol?
 
@@ -54,6 +54,6 @@ class WindowMock: WindowProtocol {
     }
 }
 
-fileprivate extension WindowManagerDefault {
+fileprivate extension WindowManager {
     var window: UIWindow? { return UIWindow(frame: .zero) }
 }

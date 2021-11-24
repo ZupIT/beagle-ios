@@ -16,10 +16,6 @@
 
 import UIKit
 
-public protocol DeepLinkScreenManaging {
+public protocol DeepLinkScreenManagerProtocol {
     func getNativeScreen(with path: String, data: [String: String]?) throws -> UIViewController
-}
-
-public protocol DependencyDeepLinkScreenManaging {
-    var deepLinkHandler: DeepLinkScreenManaging? { get }
 }

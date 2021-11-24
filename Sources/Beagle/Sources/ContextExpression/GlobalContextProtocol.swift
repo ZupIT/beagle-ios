@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-public protocol GlobalContext {
+public protocol GlobalContextProtocol {
     var globalId: String { get }
     var context: Observable<Context> { get }
     
@@ -24,7 +24,7 @@ public protocol GlobalContext {
     func clear(path: String?)
 }
 
-public extension GlobalContext {
+public extension GlobalContextProtocol {
     func set(_ value: DynamicObject) {
         set(value: value, path: nil)
     }
@@ -38,11 +38,7 @@ public extension GlobalContext {
     }
 }
 
-public protocol DependencyGlobalContext {
-    var globalContext: GlobalContext { get }
-}
-
-public class DefaultGlobalContext: GlobalContext {
+public final class GlobalContext: GlobalContextProtocol {
     
     public let globalId = "global"
     

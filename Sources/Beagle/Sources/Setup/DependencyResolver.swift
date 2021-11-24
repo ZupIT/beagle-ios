@@ -1,3 +1,4 @@
+//
 /*
  * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
@@ -16,16 +17,19 @@
 
 import Foundation
 
-public class BeagleLoggerProxy: BeagleLoggerType {
+enum DependencyResolver {
+    case instance(obj: Any)
+    case lazy(block: () -> Any)
+    case factory(block: () -> Any)
     
-    public let logger: BeagleLoggerType?
-    
-    init(logger: BeagleLoggerType?) {
-        self.logger = logger
+    func resolve<Type>() -> Type? {
+        switch self {
+        case .instance(let obj):
+            return obj as? Type
+        case .factory(let block):
+            return block() as? Type
+        case .lazy(let block):
+            return block() as? Type
+        }
     }
-    
-    public func log(_ log: LogType) {
-        logger?.log(log)
-    }
-
 }

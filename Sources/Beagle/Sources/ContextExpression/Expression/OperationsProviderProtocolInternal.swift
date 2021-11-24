@@ -16,12 +16,7 @@
 
 import UIKit
 
-public protocol DependencyOperationsProvider {
-    var operationsProvider: OperationsProvider { get }
-}
-
-public protocol OperationsProvider {
-    
+public protocol OperationsProviderProtocol {
     /// Use this function to register your custom operation.
     /// - Warning:
     ///     - Be careful when replacing a default operation in Beagle, consider creating it using `custom()`
@@ -30,43 +25,47 @@ public protocol OperationsProvider {
     ///   - operation: The custom operation you wish to register.
     ///   - handler: A closure where you tell us what your custom operation should do.
     func register(operationId: String, handler: @escaping OperationHandler)
-    
+}
+
+protocol OperationsProviderProtocolInternal: OperationsProviderProtocol {
     func evaluate(with operation: Operation, in view: UIView) -> DynamicObject
 }
 
-public class OperationsDefault: OperationsProvider {
+final class OperationsProvider: OperationsProviderProtocolInternal {
     
-    public typealias Dependencies =
-        DependencyLogger
-
-    let dependencies: Dependencies
+    // MARK: Properties
     
     private(set) var operations: [String: OperationHandler] = [:]
     
+    // MARK: Dependencies
+    
+    @Injected var logger: LoggerProtocol
+    
     // MARK: Init
 
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
+    init() {
         registerDefault()
     }
     
-    public func register(operationId: String, handler: @escaping OperationHandler) {
+    // MARK: OperationsProviderProtocol
+    
+    func register(operationId: String, handler: @escaping OperationHandler) {
         guard
             operationId.range(of: #"^\w*[a-zA-Z_]+\w*$"#, options: .regularExpression) != nil else {
-            dependencies.logger.log(Log.customOperations(.invalid(name: operationId)))
+            logger.log(Log.customOperations(.invalid(name: operationId)))
             return
         }
         
         if operations[operationId] != nil {
-            dependencies.logger.log(Log.customOperations(.alreadyExists))
+            logger.log(Log.customOperations(.alreadyExists))
         }
         
         operations[operationId] = handler
     }
     
-    public func evaluate(with operation: Operation, in view: UIView) -> DynamicObject {
+    func evaluate(with operation: Operation, in view: UIView) -> DynamicObject {
         guard let operationHandler = operations[operation.name] else {
-            dependencies.logger.log(Log.customOperations(.notFound))
+            logger.log(Log.customOperations(.notFound))
             return nil
         }
         
@@ -90,7 +89,7 @@ public class OperationsDefault: OperationsProvider {
 
 // MARK: - Registering Default Operations
 
-extension OperationsProvider {
+extension OperationsProviderProtocolInternal {
     
     func registerDefault() {
         register(operationId: "sum", handler: sum())

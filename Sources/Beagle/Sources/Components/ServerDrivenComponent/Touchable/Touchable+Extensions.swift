@@ -21,7 +21,7 @@ extension Touchable {
     public func toView(renderer: BeagleRenderer) -> UIView {
         let childView = renderer.render(child)
         register(actions: onPress, inView: childView, controller: renderer.controller)
-        prefetchComponent(helper: renderer.dependencies.preFetchHelper)
+        prefetchComponent(helper: renderer.preFetchHelper)
         return childView
     }
     
@@ -34,7 +34,7 @@ extension Touchable {
         view.isUserInteractionEnabled = true
     }
     
-    private func prefetchComponent(helper: BeaglePrefetchHelping?) {
+    private func prefetchComponent(helper: PrefetchHelperProtocol?) {
         onPress.forEach { action in
             guard let newPath = (action as? Navigate)?.newPath else { return }
             helper?.prefetchComponent(newPath: newPath)

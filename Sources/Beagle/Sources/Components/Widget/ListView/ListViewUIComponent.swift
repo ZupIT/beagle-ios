@@ -72,7 +72,11 @@ final class ListViewUIComponent: UIView {
     
     private(set) var onScrollEndExecuted = false
     
-    lazy var renderer = listController.dependencies.renderer(listController)
+    lazy var renderer = CurrentEnviroment.renderer(listController)
+    
+    // MARK: - Dependencies
+    
+    @Injected var logger: LoggerProtocol
     
     // MARK: - Initialization
     
@@ -255,7 +259,7 @@ extension ListViewUIComponent: UICollectionViewDataSource {
         
         guard let templateIndex = templateIndexFor(item: item, in: collectionView) else {
             let info = "\(model.iteratorName):\(itemKey ?? String(indexPath.item))"
-            dependencies.logger.log(Log.collection(.templateNotFound(item: info)))
+            logger.log(Log.collection(.templateNotFound(item: info)))
             return UICollectionViewCell()
         }
         if let cell = cellsReadyToDisplay[hash], cell.templateIndex == templateIndex {

@@ -17,7 +17,7 @@
 import UIKit
 @testable import Beagle
 
-final class ThemeSpy: Theme {
+final class ThemeSpy: ThemeProtocol {
     
     private(set) var styledView: UIView?
     private(set) var styleApplied: String?

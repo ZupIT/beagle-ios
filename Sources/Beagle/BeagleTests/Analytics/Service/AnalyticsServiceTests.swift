@@ -22,7 +22,7 @@ import SnapshotTesting
 
 class AnalyticsServiceTests: XCTestCase {
 
-    lazy var sut = AnalyticsService(provider: provider, logger: LoggerMocked())
+    lazy var sut = AnalyticsService(provider: provider)
 
     func testNormalOperation() {
         // Given
@@ -165,7 +165,7 @@ class AnalyticsServiceTests: XCTestCase {
 
 // MARK: - AnalyticsProviderStub
 
-class AnalyticsProviderStub: AnalyticsProvider {
+class AnalyticsProviderStub: AnalyticsProviderProtocol {
     
     var records = [AnalyticsRecord]()
 

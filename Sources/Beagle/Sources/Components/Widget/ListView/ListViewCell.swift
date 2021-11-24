@@ -109,7 +109,7 @@ final class ListViewCell: UICollectionViewCell {
         let template = listView.renderer.render(listView.model.templates[templateIndex].view)
         let container = TemplateContainer(template: template)
         container.parentContext = listView
-        listView.listController.dependencies.style(container).setup(
+        CurrentEnviroment.style(container).setup(
             Style()
                 .size(Size().minWidth(1).minHeight(1))
                 .flex(Flex().flexDirection(flexDirection).shrink(0))
@@ -118,7 +118,7 @@ final class ListViewCell: UICollectionViewCell {
         contentView.addSubview(container)
         
         contentView.yoga.overflow = .scroll
-        listView.listController.dependencies.style(contentView).setup(
+        CurrentEnviroment.style(contentView).setup(
             Style().flex(Flex().flexDirection(flexDirection))
         )
         
@@ -184,7 +184,7 @@ final class ListViewCell: UICollectionViewCell {
         rect.size[keyPath: keyPath] = (spansSpace / CGFloat(listView.model.spanCount)).rounded(.down)
         
         contentView.frame = rect
-        listView.listController.dependencies.style(contentView).applyLayout()
+        CurrentEnviroment.style(contentView).applyLayout()
         
         let size = container.bounds.size
         contentView.frame.size = size

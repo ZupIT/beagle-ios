@@ -18,40 +18,36 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class ImageTests: XCTestCase {
+class ImageTests: EnviromentTestCase {
     
-    var dependencies: BeagleDependencies {
-        // swiftlint:disable implicit_getter
-        get {
-            let dependency = BeagleDependencies()
-            dependency.appBundle = Bundle(for: ImageTests.self)
-            return dependency
-        }
+    override func setUp() {
+        super.setUp()
+        enviroment.appBundle.bundle = Bundle(for: ImageTests.self)
     }
-
-    lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    
+    lazy var controller = BeagleControllerStub()
     lazy var renderer = BeagleRenderer(controller: controller)
     
     func testContentMode() {
-        //Given
+        // Given
         let value = ImageContentMode.center
         let expected = UIImageView.ContentMode.center
                 
-        //When
+        // When
         let result = value.toUIKit()
         
-        //Then
+        // Then
         XCTAssertEqual(result, expected)
     }
     
     func testRenderImage() throws {
-        //Given
+        // Given
         let image: Image = try componentFromJsonFile(fileName: "ImageComponent")
         
-        //When
+        // When
         let view = renderer.render(image)
         
-        //Then
+        // Then
         assertSnapshotImage(view, size: ImageSize.custom(CGSize(width: 400, height: 400)))
     }
     
@@ -82,10 +78,9 @@ class ImageTests: XCTestCase {
             )
         )
 
-        let dependencies = BeagleDependencies()
-        dependencies.imageDownloader = ImageDownloaderMock(expectation: expectation(description: "image downloader"))
+        enviroment.imageDownloader = ImageDownloaderMock(expectation: expectation(description: "image downloader"))
 
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen), dependencies: dependencies))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(screen)))
 
         let size = ImageSize.custom(.init(width: 400, height: 400))
         assertSnapshotImage(controller, size: size)
@@ -96,17 +91,16 @@ class ImageTests: XCTestCase {
     }
     
     func testCancelRequest() {
-        //Given
+        // Given
         let image = Image(.remote(.init(url: "@{url}")))
-        let dependency = BeagleDependencies()
         let imageDownloader = ImageDownloaderStub(imageResult: .success(Data()))
-        dependency.imageDownloader = imageDownloader
+        enviroment.imageDownloader = imageDownloader
         let container = Container(children: [image])
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen()), dependencies: dependency))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen())))
         let action = SetContext(contextId: "url", value: "www.com.br")
         let view = image.toView(renderer: controller.renderer)
         
-        //When
+        // When
         view.setContext(Context(id: "url", value: "www.beagle.com.br"))
         controller.bindings.config()
         action.execute(controller: controller, origin: view)
@@ -141,7 +135,7 @@ class ImageTests: XCTestCase {
     func testImageLeak() {
         // Given
         let component = Image(.remote(.init(url: "@{img.path}")), mode: .fitXY)
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(component.toScreen()), dependencies: BeagleDependencies()))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(component.toScreen())))
         
         var view = component.toView(renderer: controller.renderer)
         weak var weakView = view
@@ -155,17 +149,16 @@ class ImageTests: XCTestCase {
     }
     
     func testImageWithPathCancelRequest() {
-        //Given
+        // Given
         let image = Image(path: "@{img.path}")
-        let dependency = BeagleDependencies()
         let imageDownloader = ImageDownloaderStub(imageResult: .success(Data()))
-        dependency.imageDownloader = imageDownloader
+        enviroment.imageDownloader = imageDownloader
         let container = Container(children: [image])
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen()), dependencies: dependency))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen())))
         let action = SetContext(contextId: "img", path: Path(rawValue: "path"), value: ["_beagleImagePath_": "local", "mobileId": "shuttle"])
         let view = image.toView(renderer: controller.renderer)
         
-        //When
+        // When
         view.setContext(Context(id: "img", value: ["path": ["_beagleImagePath_": "remote", "url": "www.com.br"]]))
         controller.bindings.config()
         action.execute(controller: controller, origin: view)
@@ -175,7 +168,7 @@ class ImageTests: XCTestCase {
     }
     
     func testLocalImageWithContext() {
-        //Given
+        // Given
         let container = Container(
             children: [
                 Image(.local("@{mobileId}"))
@@ -183,15 +176,15 @@ class ImageTests: XCTestCase {
             context: Context(id: "mobileId", value: "test_image_square-x")
         )
         
-        //When
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen()), dependencies: dependencies))
+        // When
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen())))
         
         // Then
         assertSnapshotImage(controller.view, size: ImageSize.custom(CGSize(width: 100, height: 100)))
     }
 }
 
-private struct ImageDownloaderMock: ImageDownloader {
+private struct ImageDownloaderMock: ImageDownloaderProtocol {
     var expectation: XCTestExpectation?
     
     func fetchImage(url: String, additionalData: HttpAdditionalData?, completion: @escaping (Result<Data, Request.Error>) -> Void) -> RequestToken? {

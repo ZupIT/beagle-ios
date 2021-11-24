@@ -24,7 +24,7 @@ class CustomComponentsTests: XCTestCase {
     override func setUp() {
         super.setUp()
         registerDummyComponents()
-        let encoder = (dependencies.coder as? BeagleCoder)?.encoder
+        let encoder = (Dependencies.coder as? Beagle.Coder)?.encoder
         encoder?.outputFormatting = [.prettyPrinted, .sortedKeys]
     }
     
@@ -62,13 +62,14 @@ class CustomComponentsTests: XCTestCase {
     }
     
     private func registerDummyComponents() {
-        dependencies.coder.register(type: TextContainer.self)
-        dependencies.coder.register(type: SingleTextContainer.self)
-        dependencies.coder.register(type: CustomActionableContainer.self)
-        dependencies.coder.register(type: TextContainerWithAction.self)
-        dependencies.coder.register(type: SingleCustomActionableContainer.self)
-        dependencies.coder.register(type: TextComponentHeaderDefault.self)
-        dependencies.coder.register(type: TextComponentsDefault.self)
-        dependencies.coder.register(type: ActionDummyDefault.self)
+        let coder = Dependencies.coder
+        coder.register(type: TextContainer.self)
+        coder.register(type: SingleTextContainer.self)
+        coder.register(type: CustomActionableContainer.self)
+        coder.register(type: TextContainerWithAction.self)
+        coder.register(type: SingleCustomActionableContainer.self)
+        coder.register(type: TextComponentHeaderDefault.self)
+        coder.register(type: TextComponentsDefault.self)
+        coder.register(type: ActionDummyDefault.self)
     }
 }

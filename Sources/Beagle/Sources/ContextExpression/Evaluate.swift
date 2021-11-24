@@ -93,7 +93,7 @@ extension UIView {
 
 extension Operation {
     func evaluate(in view: UIView) -> DynamicObject {
-        dependencies.operationsProvider.evaluate(with: self, in: view)
+        return CurrentEnviroment.operationsProvider.evaluate(with: self, in: view)
     }
 }
 

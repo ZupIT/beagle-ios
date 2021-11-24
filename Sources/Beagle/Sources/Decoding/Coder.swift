@@ -16,11 +16,7 @@
 
 import Foundation
 
-public protocol DependencyCoder {
-    var coder: BeagleCoding { get }
-}
-
-public protocol BeagleCoding {
+public protocol CoderProtocol {
     
     func register<T: BeagleCodable>(type: T.Type, named: String?)
     
@@ -30,19 +26,21 @@ public protocol BeagleCoding {
     
     func name(for type: BeagleCodable.Type) -> String?
     
-    func type(for name: String, baseType: BeagleCoder.BaseType) -> BeagleCodable.Type?
+    func type(for name: String, baseType: Coder.BaseType) -> BeagleCodable.Type?
     
 }
 
-extension BeagleCoding {
+extension CoderProtocol {
     public func register<T: BeagleCodable>(type: T.Type) {
         register(type: type, named: nil)
     }
 }
 
-final public class BeagleCoder: BeagleCoding {
+final public class Coder: CoderProtocol {
 
     // MARK: - Dependencies
+    
+    @Injected var logger: LoggerProtocol
     
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
@@ -88,10 +86,10 @@ final public class BeagleCoder: BeagleCoding {
             }
             return try decoder.decode(AutoCodable<T>.self, from: data).wrappedValue
         } catch let error as BeagleCodableError {
-            dependencies.logger.log(Log.decode(.decodingError(type: String(describing: error))))
+            logger.log(Log.decode(.decodingError(type: String(describing: error))))
             throw error
         } catch {
-            dependencies.logger.log(Log.decode(.decodingError(type: error.localizedDescription)))
+            logger.log(Log.decode(.decodingError(type: error.localizedDescription)))
             throw error
         }
     }

@@ -20,19 +20,16 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-public final class AutoCodableTests: XCTestCase {
+final class AutoCodableTests: EnviromentTestCase {
     
     // swiftlint:disable force_unwrapping
     
-    public override class func setUp() {
-        Beagle.dependencies.coder.register(type: PolymorphicComponent.self)
-        Beagle.dependencies.coder.register(type: PolymorphicComponentWithoutWrapper.self)
-        Beagle.dependencies.coder.register(type: UnsuportedTypeComponent.self)
-        Beagle.dependencies.coder.register(type: PolymorphicCodableErrorComponent.self)
-    }
-    
-    public override class func tearDown() {
-        dependencies = BeagleDependencies()
+    public override func setUp() {
+        super.setUp()
+        enviroment.coder.register(type: PolymorphicComponent.self)
+        enviroment.coder.register(type: PolymorphicComponentWithoutWrapper.self)
+        enviroment.coder.register(type: UnsuportedTypeComponent.self)
+        enviroment.coder.register(type: PolymorphicCodableErrorComponent.self)
     }
     
     func testPolymorphicPropertyWrapper() throws {

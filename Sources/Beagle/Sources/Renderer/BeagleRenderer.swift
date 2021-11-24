@@ -16,19 +16,27 @@
 
 import UIKit
 
-public protocol DependencyRenderer {
-    var renderer: (BeagleController) -> BeagleRenderer { get set }
-}
-
 /// Use this class whenever you want to transform a Component into a UIView
 public struct BeagleRenderer {
+    
+    // MARK: Dependencies
+    
+    @Injected public var viewClient: ViewClientProtocol
+    @Injected public var mainBundle: BundleProtocol
+    @Injected public var preFetchHelper: PrefetchHelperProtocol
+    @Injected public var imageDownloader: ImageDownloaderProtocol
 
-    public let dependencies: BeagleDependenciesProtocol
+    // MARK: Properties
+    
     public private(set) weak var controller: BeagleController?
+    public var appBundle: Bundle {
+        mainBundle.bundle
+    }
+    
+    // MARK: Init
 
     internal init(controller: BeagleController) {
         self.controller = controller
-        self.dependencies = controller.dependencies
     }
 
     /// main function of this class. Call it to transform a Component into a UIView

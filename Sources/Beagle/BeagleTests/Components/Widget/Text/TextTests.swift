@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TextTests: XCTestCase {
+class TextTests: EnviromentTestCase {
 
     private lazy var theme = AppTheme(styles: [
         "test.text.style": textStyle
@@ -28,10 +28,13 @@ class TextTests: XCTestCase {
         return BeagleStyle.text(font: .boldSystemFont(ofSize: 20), color: .blue)
             <> BeagleStyle.backgroundColor(withColor: .black)
     }
+    
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
 
-    private lazy var dependencies = BeagleScreenDependencies(theme: theme)
-
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
     
     func test_whenDecodingJson_shouldReturnAText() throws {
@@ -70,7 +73,7 @@ class TextTests: XCTestCase {
             }
         }
         
-        //Then
+        // Then
         for alignmentType in Text.Alignment.allCases {
             XCTAssertEqual(alignmentType.toUIKit(), alignments[alignmentType])
         }
@@ -101,7 +104,7 @@ class TextTests: XCTestCase {
     }
     
     func testTextWithContext() {
-        //Given
+        // Given
         let container = Container(
              children: [
                 Text(text: "@{textExpressions.value}", alignment: "@{textExpressions.alignment}", textColor: "@{textExpressions.color}")
@@ -109,7 +112,7 @@ class TextTests: XCTestCase {
              context: Context(id: "textExpressions", value: .dictionary(["value": "text via expression", "color": "#000000", "alignment": .string(Text.Alignment.center.rawValue)]))
          )
          
-         //When
+         // When
          let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen())))
          
          // Then

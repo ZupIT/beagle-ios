@@ -37,7 +37,7 @@ func componentFromJsonFile<T>(
 
 func componentFromData<T>(
     _ data: Data,
-    _ decoder: BeagleCoding = Beagle.dependencies.coder
+    _ decoder: CoderProtocol = Dependencies.coder
 ) throws -> T {
     return try decoder.decode(from: data)
 }

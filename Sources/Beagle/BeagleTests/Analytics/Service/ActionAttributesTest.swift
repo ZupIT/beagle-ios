@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class ActionAttributesTest: XCTestCase {
+class ActionAttributesTest: EnviromentTestCase {
 
     func testAttributesInMultipleActions() throws {
         let records = [
@@ -56,7 +56,7 @@ class ActionAttributesTest: XCTestCase {
                 ]
             ]
         )
-        let view = try analyticsViewHierarchyWith(context: context).view
+        let view = try analyticsViewHierarchyWith(context: context, coder: enviroment.coder).view
 
         var attributes = [String]()
         if case .enabled(let config?) = action.analytics {
@@ -68,15 +68,14 @@ class ActionAttributesTest: XCTestCase {
     }
 }
 
-func analyticsViewHierarchyWith(context: Context?) throws -> (view: UIView, controller: BeagleController) {
+func analyticsViewHierarchyWith(context: Context?, coder: CoderProtocol) throws -> (view: UIView, controller: BeagleController) {
     let child = AnalyticsTestComponent()
     let screen = Screen(id: "analytics-actions", child: child, context: context)
     
-    let dependencies = BeagleDependencies()
-    dependencies.coder.register(type: AnalyticsTestComponent.self)
+    coder.register(type: AnalyticsTestComponent.self)
 
     let controller = BeagleScreenViewController(
-        viewModel: .init(screenType: .declarative(screen), dependencies: dependencies)
+        viewModel: .init(screenType: .declarative(screen))
     )
     _ = BeagleNavigationController(rootViewController: controller)
     let view = try XCTUnwrap(controller.view.viewWithTag(type(of: child).tag))
