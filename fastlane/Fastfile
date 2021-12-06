@@ -3,6 +3,12 @@
 ###
 
 platform :ios do
+
+  private_lane :sonarqube_token_available? do
+    sonarqube = ENV["SONAR_TOKEN"]
+    !(sonarqube.nil? || sonarqube.empty?)
+  end
+
   desc "Pull Request verification"
   lane :pull_request_verification do
     xcversion(version: "~> 11.5.0")
@@ -11,7 +17,9 @@ platform :ios do
       scheme: "All",
       device: "iPhone 11"
     )
-    sonar_coverage_report
+    if sonarqube_token_available?
+      sonar_coverage_report
+    end
     check_if_beagle_works_via_cocoapods_integration
     check_if_beagle_works_via_spm_integration
   end
