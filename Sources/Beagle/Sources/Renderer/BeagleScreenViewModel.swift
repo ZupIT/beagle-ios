@@ -93,12 +93,12 @@ class BeagleScreenViewModel {
         }
     }
     
-    public func trackEventOnScreenAppeared() {
+    public func trackEventOnScreenAppeared(identifier: String?) {
         if let event = screen?.screenAnalyticsEvent {
             screenAppearEventIsPending = false
             dependencies.analytics?.trackEventOnScreenAppeared(event)
         }
-        AnalyticsService.shared?.createRecord(screen: screenType)
+        AnalyticsService.shared?.createRecord(screen: screenType, identifier: identifier)
     }
     
     public func trackEventOnScreenDisappeared() {
@@ -135,7 +135,7 @@ class BeagleScreenViewModel {
             case .success(let screen):
                 self.handleRemoteScreenSuccess(screen)
                 if self.screenAppearEventIsPending {
-                    self.trackEventOnScreenAppeared()
+                    self.trackEventOnScreenAppeared(identifier: screen.identifier)
                 }
             case .failure(let error):
                 self.handleRemoteScreenFailure(error)
