@@ -69,7 +69,7 @@ class ScreenRecordFactoryTests: XCTestCase {
 
     var _globalConfig: Bool = true
     
-    private let identifier = "MinhaView"
+    private let identifier = "MyView"
 
     func disabledGlobalConfig() {
         _globalConfig = false
