@@ -21,11 +21,12 @@ import UIKit
 
 func makeScreenRecord(
     screen: ScreenType,
-    isScreenEnabled: Bool
+    isScreenEnabled: Bool,
+    identifier: String?
 ) -> AnalyticsRecord? {
     guard isScreenEnabled else { return nil }
 
-    return AnalyticsRecord(type: .screen, screen: screenInfo(screen), timestamp: timestamp())
+    return AnalyticsRecord(type: .screen, screen: screenInfo(screen, identifier: identifier), timestamp: timestamp())
 }
 
 // MARK: Action
@@ -51,7 +52,7 @@ struct ActionRecordFactory {
 
         return AnalyticsRecord(
             type: .action(action),
-            screen: screenInfo(info.controller.screenType),
+            screen: screenInfo(info.controller.screenType, identifier: nil),
             timestamp: timestamp()
         )
     }
@@ -63,10 +64,10 @@ private func timestamp() -> Double {
     return (Date().timeIntervalSince1970 * 1000).rounded()
 }
 
-private func screenInfo(_ screenType: ScreenType) -> String? {
+private func screenInfo(_ screenType: ScreenType, identifier: String?) -> String? {
     switch screenType {
-    case .remote(let remote):
-        return remote.url
+    case .remote:
+        return identifier
     case .declarative(let declarative):
         return declarative.identifier
     case .declarativeText:
