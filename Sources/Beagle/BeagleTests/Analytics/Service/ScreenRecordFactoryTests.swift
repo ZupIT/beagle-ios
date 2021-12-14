@@ -80,7 +80,7 @@ class ScreenRecordFactoryTests: XCTestCase {
         line: UInt = #line
     ) {
         // When
-        let result = makeScreenRecord(screen: screen, isScreenEnabled: _globalConfig)
+        let result = makeScreenRecord(screen: screen, isScreenEnabled: _globalConfig, identifier: nil)
             .ifSome(removeTimestamp)
 
         // Then
