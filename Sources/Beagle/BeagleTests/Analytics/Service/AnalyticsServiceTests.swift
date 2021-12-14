@@ -23,7 +23,8 @@ import SnapshotTesting
 class AnalyticsServiceTests: XCTestCase {
 
     lazy var sut = AnalyticsService(provider: provider, logger: LoggerMocked())
-
+    private let identifier = "MyView"
+    
     func testNormalOperation() {
         // Given
         enabledGlobalConfig()
@@ -120,6 +121,17 @@ class AnalyticsServiceTests: XCTestCase {
         """)
     }
 
+    func testScreenIdentifierRecord() {
+        // Given
+        enabledGlobalConfig()
+        
+        // When
+        triggerNewRecord(manyTimes: 1)
+
+        // Then
+        XCTAssertEqual(receivedRecords()[0].screen, identifier)
+    }
+    
     // MARK: - Aux
 
     private lazy var provider = AnalyticsProviderStub()
@@ -130,7 +142,7 @@ class AnalyticsServiceTests: XCTestCase {
 
     private func triggerNewRecord(manyTimes: Int = 1) {
         for _ in 1...manyTimes {
-            sut.createRecord(screen: .remote(.init(url: "REMOTE")))
+            sut.createRecord(screen: .remote(.init(url: "REMOTE")), identifier: identifier)
         }
     }
 
