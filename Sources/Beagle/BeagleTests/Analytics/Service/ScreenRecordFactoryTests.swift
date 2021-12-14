@@ -28,7 +28,7 @@ class ScreenRecordFactoryTests: XCTestCase {
         recordShouldBeEqualTo("""
         {
           "platform" : "ios",
-          "screen" : "REMOTE",
+          "screen" : "\(identifier)",
           "type" : "screen"
         }
         """)
@@ -68,6 +68,8 @@ class ScreenRecordFactoryTests: XCTestCase {
     var remoteScreen: ScreenType { .remote(.init(url: "REMOTE")) }
 
     var _globalConfig: Bool = true
+    
+    private let identifier = "MinhaView"
 
     func disabledGlobalConfig() {
         _globalConfig = false
@@ -80,7 +82,7 @@ class ScreenRecordFactoryTests: XCTestCase {
         line: UInt = #line
     ) {
         // When
-        let result = makeScreenRecord(screen: screen, isScreenEnabled: _globalConfig, identifier: nil)
+        let result = makeScreenRecord(screen: screen, isScreenEnabled: _globalConfig, identifier: identifier)
             .ifSome(removeTimestamp)
 
         // Then
