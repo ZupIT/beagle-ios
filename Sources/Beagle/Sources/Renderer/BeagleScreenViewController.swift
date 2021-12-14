@@ -167,7 +167,7 @@ public class BeagleScreenViewController: BeagleController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if case .view = content {
-            viewModel.trackEventOnScreenAppeared(identifier: screen?.identifier)
+            viewModel.trackEventOnScreenAppeared()
         }
     }
     
