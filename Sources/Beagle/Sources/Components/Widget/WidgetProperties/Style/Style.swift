@@ -19,16 +19,16 @@ public class Style: Codable {
     // MARK: - Public Properties
     
     /// Set the view background color. Supported formats:  `#RRGGBB[AA]` and `#RGB[A]`.
-    public var backgroundColor: String?
+    public var backgroundColor: Expression<String>?
     
     /// Sets the corner of your view to make it round.
     public var cornerRadius: CornerRadius?
     
     /// Sets the color of your view border. Supported formats:  `#RRGGBB[AA]` and `#RGB[A]`.
-    public var borderColor: String?
+    public var borderColor: Expression<String>?
     
     /// Sets the width of your view border
-    public var borderWidth: Double?
+    public var borderWidth: Expression<Double>?
     
     /// Allows  you to specify the size of the element.
     public var size: Size?
@@ -50,12 +50,12 @@ public class Style: Codable {
     
     /// Apply positioning using the flex box concept.
     public var flex: Flex?
-
+    
     init(
-        backgroundColor: String? = nil,
+        backgroundColor: Expression<String>? = nil,
         cornerRadius: CornerRadius? = nil,
-        borderColor: String? = nil,
-        borderWidth: Double? = nil,
+        borderColor: Expression<String>? = nil,
+        borderWidth: Expression<Double>? = nil,
         size: Size? = nil,
         margin: EdgeValue? = nil,
         padding: EdgeValue? = nil,
@@ -82,20 +82,46 @@ public class Style: Codable {
 public struct CornerRadius: Codable {
     
     /// Defines the default size of the all corner radius
-    public var radius: Double?
+    public var radius: Expression<Double>?
     
     /// Defines the size of the top left radius
-    public var topLeft: Double?
+    public var topLeft: Expression<Double>?
     
     /// Defines the size of the top right radius
-    public var topRight: Double?
+    public var topRight: Expression<Double>?
     
     /// Defines the size of the bottom left radius
-    public var bottomLeft: Double?
+    public var bottomLeft: Expression<Double>?
     
     /// Defines the size of the bottom right radius
-    public var bottomRight: Double?
+    public var bottomRight: Expression<Double>?
+    
+}
 
+extension CornerRadius {
+    init(
+        radius: Double? = nil,
+        topLeft: Double? = nil,
+        topRight: Double? = nil,
+        bottomLeft: Double? = nil,
+        bottomRight: Double? = nil
+    ) {
+        if let radius = radius {
+            self.radius = .value(radius)
+        }
+        if let topLeft = topLeft {
+            self.topLeft = .value(topLeft)
+        }
+        if let topRight = topRight {
+            self.topRight = .value(topRight)
+        }
+        if let bottomLeft = bottomLeft {
+            self.bottomLeft = .value(bottomLeft)
+        }
+        if let bottomRight = bottomRight {
+            self.bottomRight = .value(bottomRight)
+        }
+    }
 }
 
 extension CornerRadius: Equatable {

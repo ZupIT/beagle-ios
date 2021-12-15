@@ -129,7 +129,7 @@ final class YogaTranslating: YogaTranslator {
     }
     
     func translate(_ unitValue: UnitValue) -> YGValue {
-        let value = Float(unitValue.value)
+        let value = Float(unitValue.doubleValue)
         switch unitValue.type {
         case .auto:
             return YGValue(value: value, unit: .auto)

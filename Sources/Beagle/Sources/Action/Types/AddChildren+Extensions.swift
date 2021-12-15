@@ -52,7 +52,7 @@ extension AddChildren {
     }
 }
 
-private extension UIView {
+extension UIView {
     func getView(by id: String) -> UIView? {
         if accessibilityIdentifier == id {
             return self

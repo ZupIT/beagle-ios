@@ -94,7 +94,7 @@ final class ContainerTests: EnviromentTestCase {
                 backgroundColor: "#0000FF50",
                 cornerRadius: .init(topLeft: 15, topRight: 35, bottomLeft: 25, bottomRight: 50),
                 borderColor: "#FF0000",
-                borderWidth: 4,
+                borderWidth: .value(4),
                 size: .init(width: 100%, height: 100%),
                 padding: EdgeValue().all(4)
             )
@@ -145,6 +145,151 @@ final class ContainerTests: EnviromentTestCase {
         // Then
         XCTAssertEqual(view, theme.styledView)
         XCTAssertEqual(style, theme.styleApplied)
+    }
+    
+    func testContainerWithBorderAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            children: [Text(text: "Content")],
+            context: Context(id: "context", value: [
+                "backgroundColor": "#0000FF50",
+                "borderColor": "#0000FF",
+                "borderWidth": 2,
+                "topLeft": 15,
+                "topRight": 35.0,
+                "bottomLeft": 25.0,
+                "bottomRight": 50.0
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "@{context.backgroundColor}",
+                cornerRadius: .init(
+                    radius: "@{context.radius}",
+                    topLeft: "@{context.topLeft}",
+                    topRight: "@{context.topRight}",
+                    bottomLeft: "@{context.bottomLeft}",
+                    bottomRight: "@{context.bottomRight}"
+                ),
+                borderColor: "@{context.borderColor}",
+                borderWidth: "@{context.borderWidth}",
+                size: .init(width: 100%, height: 100%),
+                padding: EdgeValue().all(4)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "backgroundColor": "#00000050",
+            "borderColor": "#00FF00",
+            "borderWidth": 4,
+            "radius": 8
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+    }
+    
+    func testContainerWithMarginPaddingAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            children: [
+                Container(
+                    style: .init(
+                        backgroundColor: "#00FF0050",
+                        flex: Flex().grow(1)
+                    )
+                )
+            ],
+            context: Context(id: "context", value: [
+                "marginTop": 4,
+                "marginBottom": 4,
+                "marginLeft": 2,
+                "marginRight": 2,
+                "paddingTop": 2,
+                "paddingBottom": 2,
+                "paddingLeft": 6,
+                "paddingRight": 6
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 6),
+                margin: EdgeValue(
+                    left: .init(value: "@{context.marginLeft}", type: .real),
+                    top: .init(value: "@{context.marginTop}", type: .real),
+                    right: .init(value: "@{context.marginRight}", type: .real),
+                    bottom: .init(value: "@{context.marginBottom}", type: .real)
+                ),
+                padding: EdgeValue(
+                    left: .init(value: "@{context.paddingLeft}", type: .real),
+                    top: .init(value: "@{context.paddingTop}", type: .real),
+                    right: .init(value: "@{context.paddingRight}", type: .real),
+                    bottom: .init(value: "@{context.paddingBottom}", type: .real)
+                ),
+                flex: Flex().grow(1)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "marginTop": 20,
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "paddingTop": 20,
+            "paddingBottom": 20,
+            "paddingLeft": 20,
+            "paddingRight": 20
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+    }
+    
+    func testContainerWithSizePositionAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            context: Context(id: "context", value: [
+                "width": 40,
+                "height": 40,
+                "top": 10,
+                "left": 10
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 6),
+                size: Size(
+                    width: .init(value: "@{context.width}", type: .real),
+                    maxHeight: .init(value: "@{context.height}", type: .real)
+                ),
+                position: EdgeValue(
+                    left: .init(value: "@{context.left}", type: .real),
+                    top: .init(value: "@{context.top}", type: .real)
+                ),
+                flex: Flex().grow(1)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "width": 60,
+            "height": 60,
+            "top": 20,
+            "left": 20
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
     }
 }
 

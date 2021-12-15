@@ -22,8 +22,23 @@ public struct UnitValue: Codable, Equatable {
     public static let auto = UnitValue(value: 0.0, type: .auto)
     
     // MARK: - Public Properties
-    public let value: Double
+    public let value: Expression<Double>
     public let type: UnitType
+    
+    var doubleValue: Double {
+        guard case let .value(doubleValue) = value else { return .zero }
+        return doubleValue
+    }
+    
+    init(value: Double, type: UnitType) {
+        self.value = .value(value)
+        self.type = type
+    }
+    
+    init(value: Expression<Double>, type: UnitType) {
+        self.value = value
+        self.type = type
+    }
 
 }
 

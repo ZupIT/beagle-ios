@@ -19,41 +19,25 @@ import UIKit
 class BorderView: UIView {
     let content: UIView
     
-    private let topLeftRadius: CGFloat
-    private let topRightRadius: CGFloat
-    private let bottomLeftRadius: CGFloat
-    private let bottomRightRadius: CGFloat
+    var topLeftRadius: CGFloat = 0
+    var topRightRadius: CGFloat = 0
+    var bottomLeftRadius: CGFloat = 0
+    var bottomRightRadius: CGFloat = 0
     
-    private var borderWidth: CGFloat = 0
-    private var borderColor: CGColor? = UIColor.clear.cgColor
-    private var margin: EdgeValue?
+    var borderWidth: CGFloat = 0
+    var borderColor: CGColor? = UIColor.clear.cgColor
     
     private var border: CAShapeLayer
     
-    init(content: UIView, cornerRadius: CornerRadius, borderWidth: Double?, borderColor: String?, margin: EdgeValue?) {
+    init(content: UIView) {
         self.content = content
         
-        let radius = cornerRadius.radius ?? 0
-        self.topLeftRadius = CGFloat(cornerRadius.topLeft ?? radius)
-        self.topRightRadius = CGFloat(cornerRadius.topRight ?? radius)
-        self.bottomLeftRadius = CGFloat(cornerRadius.bottomLeft ?? radius)
-        self.bottomRightRadius = CGFloat(cornerRadius.bottomRight ?? radius)
-        
-        if let borderWidth = borderWidth {
-            self.borderWidth = 2 * CGFloat(borderWidth)
-        }
-        if let borderColor = borderColor {
-            self.borderColor = UIColor(hex: borderColor)?.cgColor
-        }
-        self.margin = margin
         self.border = CAShapeLayer()
         super.init(frame: .zero)
 
         yoga.isEnabled = true
-        yoga.width = content.yoga.width
-        yoga.height = content.yoga.height
         yoga.flexGrow = content.yoga.flexGrow
-                
+        
         backgroundColor = .clear
         
         addSubview(content)
@@ -70,7 +54,13 @@ class BorderView: UIView {
     }
     
     private func applyCorners() {
-        let path = UIBezierPath(bounds(with: margin), topRightRadius, topLeftRadius, bottomRightRadius, bottomLeftRadius)
+        let rect = CGRect(
+            x: 0,
+            y: 0,
+            width: bounds.width,
+            height: bounds.height
+        )
+        let path = UIBezierPath(rect, topRightRadius, topLeftRadius, bottomRightRadius, bottomLeftRadius)
         
         let mask = CAShapeLayer()
         mask.path = path.cgPath
@@ -80,18 +70,9 @@ class BorderView: UIView {
         border.path = path.cgPath
         border.fillColor = UIColor.clear.cgColor
         border.strokeColor = borderColor
-        border.lineWidth = borderWidth
+        border.lineWidth = 2 * borderWidth
     }
     
-    private func bounds(with margin: EdgeValue?) -> CGRect {
-        guard let margin = margin else { return bounds }
-        return CGRect(
-            x: margin.getLeft(),
-            y: margin.getTop(),
-            width: bounds.width - margin.getLeft() - margin.getRight(),
-            height: bounds.height - margin.getTop() - margin.getBottom()
-        )
-    }
 }
 
 private extension UIBezierPath {
@@ -110,20 +91,46 @@ private extension UIBezierPath {
     }
 }
 
-private extension EdgeValue {
-    func getLeft() -> CGFloat {
-        return CGFloat(all?.value ?? horizontal?.value ?? left?.value ?? 0)
+// Observe
+extension BorderView {
+    func observe(style: Style, renderer: BeagleRenderer) {
+        // Radius
+        observe(style.cornerRadius?.radius, renderer: renderer) { [weak self] radius in
+            self?.topLeftRadius = CGFloat(radius)
+            self?.topRightRadius = CGFloat(radius)
+            self?.bottomLeftRadius = CGFloat(radius)
+            self?.bottomRightRadius = CGFloat(radius)
+        }
+        observe(style.cornerRadius?.topLeft, renderer: renderer) { [weak self] radius in
+            self?.topLeftRadius = CGFloat(radius)
+        }
+        observe(style.cornerRadius?.topRight, renderer: renderer) { [weak self] radius in
+            self?.topRightRadius = CGFloat(radius)
+        }
+        observe(style.cornerRadius?.bottomLeft, renderer: renderer) { [weak self] radius in
+            self?.bottomLeftRadius = CGFloat(radius)
+        }
+        observe(style.cornerRadius?.bottomRight, renderer: renderer) { [weak self] radius in
+            self?.bottomRightRadius = CGFloat(radius)
+        }
+        // Border
+        observe(style.borderWidth, renderer: renderer) { [weak self] borderWidth in
+            self?.borderWidth = CGFloat(borderWidth)
+        }
+        observe(style.borderColor, renderer: renderer) { [weak self] borderColor in
+            self?.borderColor = UIColor(hex: borderColor)?.cgColor
+        }
     }
     
-    func getTop() -> CGFloat {
-        return CGFloat(all?.value ?? vertical?.value ?? top?.value ?? 0)
-    }
-    
-    func getRight() -> CGFloat {
-        return CGFloat(all?.value ?? horizontal?.value ?? right?.value ?? 0)
-    }
-    
-    func getBottom() -> CGFloat {
-        return CGFloat(all?.value ?? vertical?.value ?? bottom?.value ?? 0)
+    private func observe<Value>(
+        _ expression: Expression<Value>?,
+        renderer: BeagleRenderer,
+        updateFunction: @escaping (Value) -> Void
+    ) {
+        renderer.observe(expression, andUpdateManyIn: self.content) { [weak self] value in
+            guard let value = value else { return }
+            updateFunction(value)
+            self?.layoutSubviews()
+        }
     }
 }

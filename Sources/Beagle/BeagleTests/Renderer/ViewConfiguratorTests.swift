@@ -22,19 +22,24 @@ class ViewConfiguratorTests: XCTestCase {
     func testSetupView() {
         // Given
         let view = UIView()
-        let style = Style().borderColor("#000000").borderWidth(2).backgroundColor("#FFFFFF")
+        let colorHex = "#FFFFFF"
+        let borderColorHex = "#000000"
+        let borderWidthValue: Double = 2
+        let style = Style().borderColor(borderColorHex).borderWidth(borderWidthValue).backgroundColor(colorHex)
         let accessibility = Accessibility(accessibilityLabel: "accessibilityLabel", accessible: true)
         let component = Text(text: "text", style: style, accessibility: accessibility)
         let viewConfigurator = ViewConfigurator(view: view)
+        let controller = BeagleControllerSpy()
+        let renderer = BeagleRenderer(controller: controller)
         
         // When
-        viewConfigurator.setupView(of: component)
+        viewConfigurator.setupView(of: component, renderer: renderer)
         
         // Then
         // swiftlint:disable force_unwrapping
-        XCTAssertEqual(view.backgroundColor, UIColor(hex: style.backgroundColor!))
-        XCTAssertEqual(view.layer.borderWidth, CGFloat(style.borderWidth!))
-        XCTAssertEqual(view.layer.borderColor, UIColor(hex: style.borderColor!)!.cgColor)
+        XCTAssertEqual(view.backgroundColor, UIColor(hex: colorHex))
+        XCTAssertEqual(view.layer.borderWidth, CGFloat(borderWidthValue))
+        XCTAssertEqual(view.layer.borderColor, UIColor(hex: borderColorHex)!.cgColor)
         XCTAssertEqual(view.accessibilityLabel, accessibility
                         .accessibilityLabel)
         XCTAssertTrue(view.isAccessibilityElement)
@@ -44,18 +49,21 @@ class ViewConfiguratorTests: XCTestCase {
     func testSetupViewWithCornerRadius() {
         // Given
         let view = UIView()
-        let style = Style().borderColor("#000000").borderWidth(2).cornerRadius(.init(radius: 2))
+        let radius: Double = 2
+        let borderColorHex = "#000000"
+        let borderWidthValue: Double = 2
+        let style = Style().borderColor(borderColorHex).borderWidth(borderWidthValue).cornerRadius(.init(radius: radius))
         let component = Text(text: "text", style: style)
         let viewConfigurator = ViewConfigurator(view: view)
+        let controller = BeagleControllerSpy()
+        let renderer = BeagleRenderer(controller: controller)
         
         // When
-        viewConfigurator.setupView(of: component)
+        viewConfigurator.setupView(of: component, renderer: renderer)
         
         // Then
-        // swiftlint:disable force_unwrapping
-        XCTAssertNotEqual(view.layer.cornerRadius, CGFloat((style.cornerRadius!.radius!)))
-        XCTAssertNotEqual(view.layer.borderWidth, CGFloat(style.borderWidth!))
-        XCTAssertNotEqual(view.layer.borderColor, UIColor(hex: style.borderColor!)?.cgColor)
-        // swiftlint:enable force_unwrapping
+        XCTAssertNotEqual(view.layer.cornerRadius, CGFloat(radius))
+        XCTAssertNotEqual(view.layer.borderWidth, CGFloat(borderWidthValue))
+        XCTAssertNotEqual(view.layer.borderColor, UIColor(hex: borderColorHex)?.cgColor)
     }
 }

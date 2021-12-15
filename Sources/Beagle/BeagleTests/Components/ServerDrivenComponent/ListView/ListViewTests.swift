@@ -365,7 +365,7 @@ final class ListViewTests: XCTestCase {
         return Text(
             text: .value(string),
             textColor: .value(textColor),
-            style: Style(backgroundColor: backgroundColor)
+            style: Style(backgroundColor: .value(backgroundColor))
         )
     }
     

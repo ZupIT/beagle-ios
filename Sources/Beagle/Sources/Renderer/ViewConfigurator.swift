@@ -19,11 +19,11 @@ import UIKit
 public protocol ViewConfiguratorProtocol: AnyObject {
     var view: UIView? { get set }
 
-    func setup(style: Style?)
+    func setup(style: Style?, renderer: BeagleRenderer)
     func setup(id: String?)
     func setup(accessibility: Accessibility?)
     func applyStyle<T: UIView>(for view: T, styleId: String, with controller: BeagleController?)
-    func setupView(of component: ServerDrivenComponent)
+    func setupView(of component: ServerDrivenComponent, renderer: BeagleRenderer)
 }
 
 public extension UIView {
@@ -51,7 +51,7 @@ class ViewConfigurator: ViewConfiguratorProtocol {
     
     // MARK: ViewConfiguratorProtocol
     
-    func setupView(of component: ServerDrivenComponent) {
+    func setupView(of component: ServerDrivenComponent, renderer: BeagleRenderer) {
         view?.style.isFlexEnabled = true
         
         if let c = component as? AccessibilityComponent {
@@ -59,21 +59,22 @@ class ViewConfigurator: ViewConfiguratorProtocol {
         }
         
         if let c = component as? StyleComponent {
-            setup(style: c.style)
+            setup(style: c.style, renderer: renderer)
             view?.style.setup(c.style)
         }
     }
 
-    func setup(style: Style?) {
-        if let hex = style?.backgroundColor {
-            view?.backgroundColor = UIColor(hex: hex)
+    func setup(style: Style?, renderer: BeagleRenderer) {
+        guard let view = view else { return }
+        renderer.observeIfSome(style?.backgroundColor, andUpdateManyIn: view) { background in
+            view.backgroundColor = UIColor(hex: background)
         }
-        if style?.cornerRadius == nil {
-            if let borderWidth = style?.borderWidth {
-                view?.layer.borderWidth = CGFloat(borderWidth)
+        if style?.cornerRadius == nil || style?.cornerRadius == CornerRadius() {
+            renderer.observeIfSome(style?.borderWidth, andUpdateManyIn: view) { borderWidth in
+                view.layer.borderWidth = CGFloat(borderWidth)
             }
-            if let borderColor = style?.borderColor {
-                view?.layer.borderColor = UIColor(hex: borderColor)?.cgColor
+            renderer.observeIfSome(style?.borderColor, andUpdateManyIn: view) { borderColor in
+                view.layer.borderColor = UIColor(hex: borderColor)?.cgColor
             }
         }
     }

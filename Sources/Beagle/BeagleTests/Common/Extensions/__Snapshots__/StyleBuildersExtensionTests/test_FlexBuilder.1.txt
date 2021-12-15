@@ -8,7 +8,8 @@
   ▿ basis: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 10.0
+      ▿ value: Expression<Double>
+        - value: 10.0
   ▿ flex: Optional<Double>
     - some: 2.0
   ▿ flexDirection: Optional<FlexDirection>
