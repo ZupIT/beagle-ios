@@ -30,10 +30,11 @@ class AnalyticsService {
 
     // MARK: - Create Events
 
-    func createRecord(screen: ScreenType) {
+    func createRecord(screen: ScreenType, identifier: String?) {
         makeScreenRecord(
             screen: screen,
-            isScreenEnabled: provider.getConfig().enableScreenAnalytics
+            isScreenEnabled: provider.getConfig().enableScreenAnalytics,
+            identifier: identifier
         )
         .ifSome(provider.createRecord(_:))
     }
