@@ -37,7 +37,7 @@ public class BeagleView: UIView {
         self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver))
     }
     
-    convenience init(_ component: ServerDrivenComponent) {
+    public convenience init(_ component: ServerDrivenComponent) {
         self.init(viewModel: .init(screenType: .declarative(component.toScreen())))
     }
 

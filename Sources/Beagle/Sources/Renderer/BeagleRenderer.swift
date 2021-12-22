@@ -41,15 +41,36 @@ public struct BeagleRenderer {
     internal init(controller: BeagleController) {
         self.controller = controller
     }
-
-    /// main function of this class. Call it to transform a Component into a UIView
-    public func render(_ component: ServerDrivenComponent) -> UIView {
-        let view = component.toView(renderer: self)
-        return setupView(view, of: component)
-    }
+    
+    // MARK: Public Functions
 
     public func render(_ children: [ServerDrivenComponent]) -> [UIView] {
         return children.map { render($0) }
+    }
+    
+    /// main function of this class. Call it to transform a Component into a UIView
+    public func render(_ component: ServerDrivenComponent) -> UIView {
+        let view = component.toView(renderer: self)
+        
+        return setupView(resolve(view: view), of: component)
+    }
+    
+    // MARK: Private Functions
+    
+    private func resolve(view: UIView) -> UIView {
+        return mustBeWrapped(view: view) ? AutoLayoutWrapper(view: view) : view
+    }
+    
+    private func mustBeWrapped(view: UIView) -> Bool {
+        let isAutoLayoutView = view.constraints.count > 0
+        let isAutoLayoutWrapper = view is AutoLayoutWrapper
+        
+        guard isAutoLayoutView && !isAutoLayoutWrapper else { return false }
+        
+        let size: CGSize = .init(width: 100, height: 100)
+        let sizeThatFitsImplemented = view.sizeThatFits(size) == view.systemLayoutSizeFitting(size)
+        
+        return !sizeThatFitsImplemented
     }
 
     private func setupView(_ view: UIView, of component: ServerDrivenComponent) -> UIView {
