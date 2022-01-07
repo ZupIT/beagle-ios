@@ -48,7 +48,7 @@ extension ServerDrivenComponent {
             )
         } else {
             return Screen(
-                identifier: screen?.identifier,
+                identifier: screen?.identifier ?? getFirstChildContainerId(),
                 style: screen?.style,
                 safeArea: safeArea,
                 navigationBar: screen?.navigationBar,
@@ -56,6 +56,11 @@ extension ServerDrivenComponent {
                 context: screen?.context
             )
         }
+    }
+    
+    private func getFirstChildContainerId() -> String? {
+        let child = self as? Beagle.Container
+        return child?.id
     }
 }
 

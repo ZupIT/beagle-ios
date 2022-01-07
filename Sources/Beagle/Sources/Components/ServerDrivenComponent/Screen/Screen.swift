@@ -22,6 +22,7 @@ import Foundation
 @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0")
 public struct Screen: HasContext {
     
+    @available(*, deprecated, message: "Since version 1.10, identifier property has been deprecated, avoid using Screen as it will be removed in version 2.0")
     /// identifies your screen globally inside your application so that it could have actions set on itself.
     public let identifier: String?
     

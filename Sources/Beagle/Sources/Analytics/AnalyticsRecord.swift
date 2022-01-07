@@ -21,6 +21,7 @@ public struct AnalyticsRecord {
     public let platform = "ios"
     public let screen: String?
     public var timestamp: Double
+    public var rootId: String?
 
     public var type: RecordType
 
@@ -29,12 +30,13 @@ public struct AnalyticsRecord {
         case action(Action)
     }
     
-    public init(type: RecordType, screen: String?, timestamp: Double) {
+    public init(type: RecordType, screen: String?, timestamp: Double, rootId: String? = nil) {
         self.type = type
         self.screen = screen
         self.timestamp = timestamp
+        self.rootId = rootId
     }
-
+    
     public struct Action {
         public var beagleAction: String
         public var event: String?
@@ -68,11 +70,15 @@ extension AnalyticsRecord {
 
         case .screen:
             dict["type"] = "screen"
+            if let rootId = rootId {
+                dict["rootId"] = .string(rootId)
+            }
         }
 
         screen.map { dict["screen"] = .string($0) }
         dict["platform"] = .string(platform)
         dict["timestamp"] = .double(timestamp)
+        
         return dict
     }
 }

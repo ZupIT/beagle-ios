@@ -38,6 +38,14 @@ struct MainScreen: DeeplinkScreen {
     private func buildChild() -> ScrollView {
         return ScrollView {
                 Button(
+                    text: "Analytics RootId Screen",
+                    onPress: [Navigate.pushView(.remote(.init(url: .analyticsRootIdScreen)))]
+                )
+                Button(
+                    text: "Analytics RootId Component",
+                    onPress: [Navigate.pushView(.remote(.init(url: .analyticsRootIdComponent)))]
+                )
+                Button(
                     text: "Navigator",
                     onPress: [Navigate.openNativeRoute(.init(route: .navigateStep1Endpoint))]
                 )

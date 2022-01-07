@@ -21,11 +21,12 @@ import UIKit
 
 func makeScreenRecord(
     screen: ScreenType,
+    rootId: String? = nil,
     isScreenEnabled: Bool
 ) -> AnalyticsRecord? {
     guard isScreenEnabled else { return nil }
 
-    return AnalyticsRecord(type: .screen, screen: screenInfo(screen), timestamp: timestamp())
+    return AnalyticsRecord(type: .screen, screen: screenInfo(screen), timestamp: timestamp(), rootId: rootId)
 }
 
 // MARK: Action
