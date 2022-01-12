@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ extension ServerDrivenComponent {
             )
         } else {
             return Screen(
-                identifier: screen?.identifier,
+                identifier: screen?.identifier ?? getFirstChildContainerId(),
                 style: screen?.style,
                 safeArea: safeArea,
                 navigationBar: screen?.navigationBar,
@@ -56,6 +56,11 @@ extension ServerDrivenComponent {
                 context: screen?.context
             )
         }
+    }
+    
+    private func getFirstChildContainerId() -> String? {
+        let child = self as? Beagle.Container
+        return child?.id
     }
 }
 
