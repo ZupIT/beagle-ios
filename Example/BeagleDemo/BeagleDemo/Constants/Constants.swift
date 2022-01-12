@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,8 @@ extension String {
     static let componentsEndpoint = "/components"
     static let screenDeeplinkEndpoint = "screen-deep-link"
     static let navigateStep1Endpoint = "navigateScreenStep1"
+    static let analyticsRootIdScreen = "https://run.mocky.io/v3/6efac532-e408-422b-87a0-633eaea56d5f"
+    static let analyticsRootIdComponent = "https://run.mocky.io/v3/d77c12a3-f69f-4acf-87b1-3e6f2e0bc0fd"
     static let navigateStep2Endpoint = "navigateScreenStep2"
     static let globalContextEndpoint = "globalContext"
     static let beagleView = "beagleView"

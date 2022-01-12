@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,9 @@ class BeagleScreenViewModel {
             screenAppearEventIsPending = false
             dependencies.analytics?.trackEventOnScreenAppeared(event)
         }
-        AnalyticsService.shared?.createRecord(screen: screenType)
+        
+        AnalyticsService.shared?.createRecord(screen: screenType, rootId: screen?.identifier)
+                
     }
     
     public func trackEventOnScreenDisappeared() {
