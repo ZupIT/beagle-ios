@@ -29,7 +29,8 @@ extension Screen {
     
     private func prefetch(helper: PrefetchHelperProtocol) {
         navigationBar?.navigationBarItems?
-            .compactMap { $0.action as? Navigate }
+            .compactMap { $0.onPress as? [Navigate] }
+            .flatMap { $0 }
             .compactMap { $0.newPath }
             .forEach { helper.prefetchComponent(newPath: $0) }
     }

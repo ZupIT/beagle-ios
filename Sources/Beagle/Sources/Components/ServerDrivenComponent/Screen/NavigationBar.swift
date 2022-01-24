@@ -48,7 +48,7 @@ public struct NavigationBarItem: Codable, AccessibilityComponent {
     
     /// Defines an action to be called when the item is clicked on.
     @AutoCodable
-    public var action: Action
+    public var onPress: [Action]
     
     /// Defines Accessibility details for the item.
     public var accessibility: Accessibility?

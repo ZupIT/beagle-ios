@@ -8,14 +8,16 @@
   "navigationBar" : {
     "navigationBarItems" : [
       {
-        "action" : {
-          "_beagleAction_" : "beagle:pushview",
-          "route" : {
-            "shouldPrefetch" : false,
-            "url" : "http:\/\/localhost:8080\/test\/example"
-          }
-        },
         "image" : "imagepath",
+        "onPress" : [
+          {
+            "_beagleAction_" : "beagle:pushview",
+            "route" : {
+              "shouldPrefetch" : false,
+              "url" : "http:\/\/localhost:8080\/test\/example"
+            }
+          }
+        ],
         "text" : "imageText"
       }
     ],

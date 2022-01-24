@@ -61,7 +61,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     
     func test_navigationBarButtonItemWithImage() {
         enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
-        let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", action: ActionDummy())
+        let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", onPress: [ActionDummy()])
         
         let component = Screen(
             safeArea: SafeArea.none,
@@ -74,7 +74,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     }
     
     func test_navigationBarButtonItemWithText() {
-        let barItem = NavigationBarItem(text: "shuttle", action: ActionDummy())
+        let barItem = NavigationBarItem(text: "shuttle", onPress: [ActionDummy()])
         
         let component = Screen(
             safeArea: SafeArea.all,
@@ -90,7 +90,7 @@ final class ScreenComponentTests: EnviromentTestCase {
         // Given
         let bundle = Bundle(for: ScreenComponentTests.self)
         
-        let barItem = NavigationBarItem(image: "@{image}", text: "", action: ActionDummy())
+        let barItem = NavigationBarItem(image: "@{image}", text: "", onPress: [ActionDummy()])
         
         let screen = Screen(
             safeArea: SafeArea.all,
@@ -113,7 +113,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     func test_action_shouldBeTriggered() {
         // Given
         let action = ActionSpy()
-        let barItem = NavigationBarItem(text: "shuttle", action: action)
+        let barItem = NavigationBarItem(text: "shuttle", onPress: [action])
         let controller = BeagleScreenViewController(ComponentDummy())
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [controller]
@@ -135,7 +135,7 @@ final class ScreenComponentTests: EnviromentTestCase {
         
         let navigatePath = "button-item-prefetch"
         let navigate = Navigate.pushView(.remote(.init(url: "\(navigatePath)", shouldPrefetch: true)))
-        let barItem = NavigationBarItem(text: "Item", action: navigate)
+        let barItem = NavigationBarItem(text: "Item", onPress: [navigate])
         let screen = Screen(
             navigationBar: NavigationBar(title: "Prefetch", navigationBarItems: [barItem]),
             child: ComponentDummy()
