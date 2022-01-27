@@ -21,7 +21,7 @@ public protocol ServerDrivenComponent: BeagleCodable, Renderable {}
 extension ServerDrivenComponent {
     func toScreen() -> Screen {
         guard let screen = self as? Screen else {
-            return Screen(id: screen?.id ?? getFirstChildContainerId(), child: self)
+            return Screen(id: screen.id ?? getFirstChildContainerId(), child: self)
         }
         return screen
     }
