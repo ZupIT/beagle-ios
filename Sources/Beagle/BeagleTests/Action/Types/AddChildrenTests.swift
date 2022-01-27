@@ -104,11 +104,7 @@ final class AddChildrenTests: EnviromentTestCase {
         dependencies = BeagleDependencies()
         assertSnapshotImage(sut, size: imageSize)
         
-<<<<<<< HEAD
         enviroment.globalContext.set("value")
-=======
-        dependencies.globalContext.set("value")
->>>>>>> 154ea6374c801c4658b3f060456421fba5ff0612
         assertSnapshotImage(sut, size: imageSize)
     }
 
