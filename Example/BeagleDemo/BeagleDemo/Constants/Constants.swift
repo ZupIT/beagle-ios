@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,8 @@ extension String {
     
     // MARK: - Endpoint
     static let componentsEndpoint = "/components"
-
+    static let analyticsRootIdScreen = "https://run.mocky.io/v3/6efac532-e408-422b-87a0-633eaea56d5f"
+    static let analyticsRootIdComponent = "https://run.mocky.io/v3/d77c12a3-f69f-4acf-87b1-3e6f2e0bc0fd"
     // MARK: - URL
     static let webViewURL = "https://maps.google.com/"
     

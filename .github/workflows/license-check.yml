@@ -1,5 +1,5 @@
 #
-# Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+# Copyright 2020, 2021 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,24 +14,24 @@
 # limitations under the License.
 #
 
-name: Horusec Validation
+name: Header license check
 
 on:
   pull_request:
-    branches:
-      - main
-      - horusec
-      - release/*
+    types: [ opened, synchronize ]
+    branches: [ main, release/* ]
+
+  workflow_dispatch:
 
 jobs:
-  horusec:
-    name: horusec
+  build:
     runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
 
-      - name: Running Horusec
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
-          horusec start -p . -e true -u "https://api-horusec.zup.com.br" -G true -n "${GITHUB_REPOSITORY}_${GITHUB_REF##*/}"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check License and license year on Pull Requests
+        uses: ZupIT/header-license-checker@4d3fba2b34ca1df1b61c87fe348a107b6f870eb2 # Version 0.0.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          FORCE_COLOR: 3

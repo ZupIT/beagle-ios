@@ -14,24 +14,10 @@
 # limitations under the License.
 #
 
-name: Horusec Validation
-
-on:
-  pull_request:
-    branches:
-      - main
-      - horusec
-      - release/*
-
-jobs:
-  horusec:
-    name: horusec
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Running Horusec
-        run: |
-          curl -fsSL https://raw.githubusercontent.com/ZupIT/horusec/main/deployments/scripts/install.sh | bash -s latest
-          horusec start -p . -e true -u "https://api-horusec.zup.com.br" -G true -n "${GITHUB_REPOSITORY}_${GITHUB_REF##*/}"
+version: 2
+updates:
+  - package-ecosystem: bundler
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 5

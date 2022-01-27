@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,9 +21,14 @@ public protocol ServerDrivenComponent: BeagleCodable, Renderable {}
 extension ServerDrivenComponent {
     func toScreen() -> Screen {
         guard let screen = self as? Screen else {
-            return Screen(child: self)
+            return Screen(id: screen?.id ?? getFirstChildContainerId(), child: self)
         }
         return screen
+    }
+    
+    private func getFirstChildContainerId() -> String? {
+        let child = self as? Beagle.Container
+        return child?.id
     }
 }
 

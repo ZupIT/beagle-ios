@@ -17,6 +17,17 @@ jobs:
                 uses: actions/checkout@v2
                 with:
                     fetch-depth: 10 # increase this number when in a PR with many commits
+            -   name: Read secrets from AWS Secrets Manager into environment variables
+                if: always()
+                continue-on-error: true
+                uses: abhilash1in/aws-secrets-manager-action@v1.0.1
+                with:
+                    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                    aws-region: us-east-1
+                    secrets: |
+                        beagle/core/*
+                    parse-json: true
 
             # Gems for Fastlane
             -   name: Cache ruby gems dependencies
@@ -40,4 +51,9 @@ jobs:
 
             # Run
             -   name: Run PR Verification
-                run: bundle exec fastlane ios pull_request_verification
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    SONAR_TOKEN: ${{ env.BEAGLE_CORE_GITHUB_SONAR_TOKEN }}
+                run: |
+                    brew install sonar-scanner
+                    bundle exec fastlane ios pull_request_verification
