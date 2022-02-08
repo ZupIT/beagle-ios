@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,10 +24,13 @@ final class SetContextTests: XCTestCase {
     
     func testSetContext() {
         // Given
-        let component = Container(context: Context(id: "context", value: "value")) {
-            Text("SetContext:")
-            Text("@{context}")
-        }
+        let component = Container(
+            children: [
+                Text(text: "SetContext:"),
+                Text(text: "@{context}")
+            ],
+            context: Context(id: "context", value: "value")
+        )
         let controller = BeagleScreenViewController(component)
         let navigation = UINavigationController(rootViewController: controller)
         let action = SetContext(contextId: "context", value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
@@ -40,10 +43,13 @@ final class SetContextTests: XCTestCase {
     
     func testSetContextWithMultipleExpression() {
         // Given
-        let component = Container(context: Context(id: "context", value: "John")) {
-            Text("SetContext:")
-            Text("@{context}")
-        }
+        let component = Container(
+            children: [
+                Text(text: "SetContext:"),
+                Text(text: "@{context}")
+            ],
+            context: Context(id: "context", value: "John")
+        )
         let controller = BeagleScreenViewController(component)
         let navigation = UINavigationController(rootViewController: controller)
         let action = SetContext(contextId: "context", value: "@{context} Doe")

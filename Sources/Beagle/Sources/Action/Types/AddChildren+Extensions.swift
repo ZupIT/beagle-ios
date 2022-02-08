@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ extension AddChildren {
         guard let view = controller.view.getView(by: componentId),
               let components = evaluateValue(origin: origin) else { return }
         
-        let renderer = controller.dependencies.renderer(controller)
+        let renderer = CurrentEnviroment.renderer(controller)
         let views = renderer.render(components)
         
         switch mode {
@@ -47,12 +47,12 @@ extension AddChildren {
         }
         guard case .array(let dynamicObjects) = rootEvaluated else { return nil }
         return dynamicObjects
-            .compactMap { obj -> AnyDecodableContainer? in obj.transform() }
-            .compactMap { $0.content as? ServerDrivenComponent }
+            .compactMap { obj -> AutoCodable<ServerDrivenComponent>? in obj.transform() }
+            .compactMap { $0.wrappedValue }
     }
 }
 
-private extension UIView {
+extension UIView {
     func getView(by id: String) -> UIView? {
         if accessibilityIdentifier == id {
             return self

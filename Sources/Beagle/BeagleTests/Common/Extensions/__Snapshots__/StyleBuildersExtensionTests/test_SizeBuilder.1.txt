@@ -4,24 +4,30 @@
   ▿ height: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 10.0
+      ▿ value: Expression<Double>
+        - value: 10.0
   ▿ maxHeight: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 13.0
+      ▿ value: Expression<Double>
+        - value: 13.0
   ▿ maxWidth: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 12.0
+      ▿ value: Expression<Double>
+        - value: 12.0
   ▿ minHeight: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 2.0
+      ▿ value: Expression<Double>
+        - value: 2.0
   ▿ minWidth: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 1.0
+      ▿ value: Expression<Double>
+        - value: 1.0
   ▿ width: Optional<UnitValue>
     ▿ some: UnitValue
       - type: UnitType.real
-      - value: 11.0
+      ▿ value: Expression<Double>
+        - value: 11.0

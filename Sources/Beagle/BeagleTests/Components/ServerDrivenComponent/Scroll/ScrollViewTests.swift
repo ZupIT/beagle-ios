@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ final class ScrollViewTests: XCTestCase {
     func test_initWithChildBuilder_shouldReturnExpectedInstance() {
         // Given / When
         let component = ScrollView(children: [
-            Text("text")
+            Text(text: "text")
         ])
         
         // Then
@@ -34,7 +34,7 @@ final class ScrollViewTests: XCTestCase {
     func test_initWithChildrenBuilder_shouldReturnExpectedInstance() {
         // Given / When
         let component = ScrollView(children: [
-            Text("text"),
+            Text(text: "text"),
             Button(text: "text")
         ])
         
@@ -75,13 +75,13 @@ final class ScrollViewTests: XCTestCase {
     
     func test_renderScrollView() throws {
         let component: ScrollView = try componentFromJsonFile(fileName: "ScrollViewComponent")
-        let screen = Beagle.screen(.declarative(component.toScreen()))
+        let screen = BeagleScreenViewController(component)
         assertSnapshotImage(screen, size: .custom(CGSize(width: 150, height: 300)))
     }
 
     func test_renderHorizontalScrollView() throws {
         let component: ScrollView = try componentFromJsonFile(fileName: "HorizontalScrollView")
-        let screen = Beagle.screen(.declarative(component.toScreen()))
+        let screen = BeagleScreenViewController(component)
         assertSnapshotImage(screen, size: .custom(CGSize(width: 300, height: 30)))
     }
 

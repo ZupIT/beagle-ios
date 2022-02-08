@@ -16,10 +16,6 @@
 
 import Foundation
 
-public protocol DependencyUrlBuilder {
-    var urlBuilder: UrlBuilderProtocol { get }
-}
-
 public protocol UrlBuilderProtocol {
     var baseUrl: URL? { get set }
 

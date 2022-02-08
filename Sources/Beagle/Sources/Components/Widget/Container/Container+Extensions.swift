@@ -16,26 +16,7 @@
 
 import UIKit
 
-// MARK: - Configuration
 extension Container {
-    
-    public func applyFlex(_ flex: Flex) -> Container {
-        let style = (widgetProperties.style ?? Style()).flex(flex)
-        return Container(
-            children: children,
-            widgetProperties: .init(
-                id: widgetProperties.id,
-                style: style,
-                accessibility: widgetProperties.accessibility
-            ),
-            context: context,
-            onInit: onInit,
-            styleId: styleId
-        )
-    }
-}
-
-extension Container: ServerDrivenComponent {
 
     public func toView(renderer: BeagleRenderer) -> UIView {
         let containerView = UIView()

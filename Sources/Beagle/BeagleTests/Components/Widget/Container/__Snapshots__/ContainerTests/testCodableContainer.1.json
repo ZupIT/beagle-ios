@@ -1,0 +1,30 @@
+{
+  "_beagleComponent_" : "beagle:container",
+  "children" : [
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    },
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    },
+    {
+      "_beagleComponent_" : "custom:beagleschematestscomponent"
+    }
+  ],
+  "style" : {
+    "backgroundColor" : "#0000FF50",
+    "cornerRadius" : {
+      "radius" : 30
+    },
+    "flex" : {
+      "grow" : 1,
+      "justifyContent" : "SPACE_EVENLY"
+    },
+    "margin" : {
+      "horizontal" : {
+        "type" : "REAL",
+        "value" : 20
+      }
+    }
+  }
+}

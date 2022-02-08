@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ final class BeagleViewBuilderTests: XCTestCase {
 
     func test_buildFromRootComponent_shouldReturnTheExpectedRootView() {
         // Given
-        let component = Text("Text")
+        let component = Text(text: "Text")
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         

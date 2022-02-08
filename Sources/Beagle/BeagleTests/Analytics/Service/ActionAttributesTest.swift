@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class ActionAttributesTest: XCTestCase {
+class ActionAttributesTest: EnviromentTestCase {
 
     func testAttributesInMultipleActions() throws {
         let records = [
@@ -26,8 +26,6 @@ class ActionAttributesTest: XCTestCase {
             try doRecord(Alert.self, fromJson: "Alert-1"),
             try doRecord(Condition.self, fromJson: "Condition-1"),
             try doRecord(Confirm.self, fromJson: "Confirm-1"),
-            try doRecord(FormLocalAction.self, fromJson: "FormLocalAction-1"),
-            try doRecord(FormValidation.self, fromJson: "FormValidation-1"),
             try doRecord(Navigate.self, fromJson: "OpenNativeRoute-1"),
             try doRecord(Navigate.self, fromJson: "PopView-1"),
             try doRecord(Navigate.self, fromJson: "PushStack-1"),
@@ -44,7 +42,7 @@ class ActionAttributesTest: XCTestCase {
     // MARK: - Aux
 
     private func doRecord<A: Action>(_: A.Type, fromJson: String) throws -> (DynamicDictionary, file: String) {
-        let action: A = try actionFromJsonFile(fileName: fromJson)
+        let action: A = try componentFromJsonFile(fileName: fromJson)
 
         let context = Context(
             id: "context",
@@ -58,10 +56,10 @@ class ActionAttributesTest: XCTestCase {
                 ]
             ]
         )
-        let view = try analyticsViewHierarchyWith(context: context).view
+        let view = try analyticsViewHierarchyWith(context: context, coder: enviroment.coder).view
 
         var attributes = [String]()
-        if case .enabled(let config?) = (action as? AnalyticsAction)?.analytics {
+        if case .enabled(let config?) = action.analytics {
             attributes = config.attributes ?? []
         }
 
@@ -70,15 +68,14 @@ class ActionAttributesTest: XCTestCase {
     }
 }
 
-func analyticsViewHierarchyWith(context: Context?) throws -> (view: UIView, controller: BeagleController) {
+func analyticsViewHierarchyWith(context: Context?, coder: CoderProtocol) throws -> (view: UIView, controller: BeagleController) {
     let child = AnalyticsTestComponent()
-    let screen = Screen(identifier: "analytics-actions", child: child, context: context)
+    let screen = Screen(id: "analytics-actions", child: child, context: context)
     
-    let dependencies = BeagleDependencies()
-    dependencies.decoder.register(component: AnalyticsTestComponent.self)
+    coder.register(type: AnalyticsTestComponent.self)
 
     let controller = BeagleScreenViewController(
-        viewModel: .init(screenType: .declarative(screen), dependencies: dependencies)
+        viewModel: .init(screenType: .declarative(screen))
     )
     _ = BeagleNavigationController(rootViewController: controller)
     let view = try XCTUnwrap(controller.view.viewWithTag(type(of: child).tag))

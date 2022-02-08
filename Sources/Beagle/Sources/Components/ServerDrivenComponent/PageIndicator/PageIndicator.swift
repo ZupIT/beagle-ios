@@ -15,7 +15,7 @@
  */
 
 /// The PageIndicator is a component to be used with PageView to sinalize the page selected.
-public class PageIndicator: PageIndicatorComponent, AutoInitiable {
+public struct PageIndicator: ServerDrivenComponent {
     
     /// Configures the color of the selected dot. Must be filled as HEX (Hexadecimal).
     public var selectedColor: String?
@@ -29,17 +29,4 @@ public class PageIndicator: PageIndicatorComponent, AutoInitiable {
     /// Integer number that identifies the page selected.
     public var currentPage: Expression<Int>?
 
-// sourcery:inline:auto:PageIndicator.Init
-    public init(
-        selectedColor: String? = nil,
-        unselectedColor: String? = nil,
-        numberOfPages: Int? = nil,
-        currentPage: Expression<Int>? = nil
-    ) {
-        self.selectedColor = selectedColor
-        self.unselectedColor = unselectedColor
-        self.numberOfPages = numberOfPages
-        self.currentPage = currentPage
-    }
-// sourcery:end
 }

@@ -43,7 +43,6 @@ extension NavigationBarItem {
             } else {
                 title = barItem.text
             }
-            accessibilityIdentifier = barItem.id
             target = self
             action = #selector(triggerAction)
             ViewConfigurator.applyAccessibility(barItem.accessibility, to: self)
@@ -51,18 +50,19 @@ extension NavigationBarItem {
         
         private func handleContextOnNavigationBarImage(icon: String) {
             let expression: Expression<String> = "\(icon)"
-            let renderer = controller?.renderer
             
             // Since `BeagleScreenViewController` creates a different view hierarchy, to get the correct hierarchy we need to use the `view` from our `controller`.
             guard case .view(let view) = controller?.content else { return }
             
-            renderer?.observe(expression, andUpdateManyIn: view) { icon in
-                guard let icon = icon else { return }
-                self.image = UIImage(
-                    named: icon,
-                    in: self.controller?.dependencies.appBundle,
-                    compatibleWith: nil
-                )?.withRenderingMode(.alwaysOriginal)
+            if let renderer = controller?.renderer {
+                renderer.observe(expression, andUpdateManyIn: view) { icon in
+                    guard let icon = icon else { return }
+                    self.image = UIImage(
+                        named: icon,
+                        in: renderer.appBundle,
+                        compatibleWith: nil
+                    )?.withRenderingMode(.alwaysOriginal)
+                }
             }
         }
         
@@ -72,7 +72,7 @@ extension NavigationBarItem {
         
         @objc private func triggerAction() {
             if case .view(let view) = controller?.content {
-                controller?.execute(actions: [barItem.action], event: nil, origin: view)
+                controller?.execute(actions: barItem.onPress, event: nil, origin: view)
             }
         }
     }

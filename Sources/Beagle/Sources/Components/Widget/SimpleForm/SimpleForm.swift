@@ -15,60 +15,25 @@
  */
 
 /// Component will define a submit handler for a `SimpleForm`.
-public struct SimpleForm: ServerDrivenComponent, HasContext, AutoInitiableAndDecodable {
+public struct SimpleForm: Widget, HasContext {
     
     /// Defines the contextData that be set to form.
     public var context: Context?
     
     /// Defines the actions you want to execute when action submit form.
-    public let onSubmit: [Action]?
+    @AutoCodable
+    public var onSubmit: [Action]?
     
     /// This event is executed every time a form is submitted, but because of a validation error, the onSubmit event is not run.
-    public let onValidationError: [Action]?
+    @AutoCodable
+    public var onValidationError: [Action]?
     
     /// Defines the items on the simple form.
-    public let children: [ServerDrivenComponent]?
+    @AutoCodable
+    public var children: [ServerDrivenComponent]?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
-// sourcery:inline:auto:SimpleForm.Init
-    public init(
-        context: Context? = nil,
-        onSubmit: [Action]? = nil,
-        onValidationError: [Action]? = nil,
-        children: [ServerDrivenComponent]? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.context = context
-        self.onSubmit = onSubmit
-        self.onValidationError = onValidationError
-        self.children = children
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
-    
-    public init(
-        context: Context? = nil,
-        onSubmit: [Action]? = nil,
-        onValidationError: [Action]? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties(),
-        @ChildrenBuilder
-        _ children: () -> [ServerDrivenComponent]
-    ) {
-        self.init(context: context, onSubmit: onSubmit, onValidationError: onValidationError, children: children(), widgetProperties: widgetProperties)
-    }
-    
-    #if swift(<5.3)
-    public init(
-        context: Context? = nil,
-        onSubmit: [Action]? = nil,
-        onValidationError: [Action]? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties(),
-        @ChildBuilder
-        _ children: () -> ServerDrivenComponent
-    ) {
-        self.init(context: context, onSubmit: onSubmit, onValidationError: onValidationError, children: [children()], widgetProperties: widgetProperties)
-    }
-    #endif
 }

@@ -14,32 +14,26 @@
  * limitations under the License.
  */
 
-public protocol DependencyPreFetching {
-    var preFetchHelper: BeaglePrefetchHelping { get }
-}
-
-public protocol BeaglePrefetchHelping {
+public protocol PrefetchHelperProtocol {
     func prefetchComponent(newPath: Route.NewPath)
 }
 
-public class BeaglePreFetchHelper: BeaglePrefetchHelping {
+public final class PreFetchHelper: PrefetchHelperProtocol {
     
-    public typealias Dependencies = DependencyRepository & DependencyLogger
-    let dependencies: Dependencies
+    // MARK: - Dependencies
     
-    public init(dependencies: Dependencies) {
-        self.dependencies = dependencies
-    }
+    @Injected var viewClient: ViewClientProtocol
+    @Injected var logger: LoggerProtocol
+    
+    // MARK: - PrefetchHelperProtocol
     
     public func prefetchComponent(newPath: Route.NewPath) {
         guard newPath.shouldPrefetch ?? false else { return }
         guard case .value(let path) = newPath.url else {
-            dependencies.logger.log(Log.navigation(.unableToPrefetchWhenUrlIsExpression))
+            logger.log(Log.navigation(.unableToPrefetchWhenUrlIsExpression))
             return
         }
         
-        dependencies.repository.fetchComponent(url: path, additionalData: nil, useCache: true) { _ in
-            // Intentionally unimplemented...
-        }
+        viewClient.prefetch(url: path, additionalData: nil)
     }
 }

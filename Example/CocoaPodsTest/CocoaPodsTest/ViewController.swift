@@ -1,5 +1,5 @@
 /*
-* Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+* Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@ import Beagle
 struct MainScreen {
 
     func screenController() -> UIViewController {
-        let screen = Screen(
-            child: Text("Beagle Integration Tests")
-        )
-        return BeagleScreenViewController(.declarative(screen))
+        BeagleScreenViewController("""
+        {
+            "_beagleComponent_": "beagle:Text",
+            "text": "Beagle Integration Tests"
+        }
+        """)
     }
 }

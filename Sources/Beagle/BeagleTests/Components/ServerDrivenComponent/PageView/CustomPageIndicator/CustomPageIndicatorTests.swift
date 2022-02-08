@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class CustomPageIndicatorTests: XCTestCase {
+class CustomPageIndicatorTests: EnviromentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(
@@ -26,23 +26,12 @@ class CustomPageIndicatorTests: XCTestCase {
         defaultColor: "defaultColor"
     )
     
-    private lazy var decoder: ComponentDecoding = {
-        Beagle.dependencies.decoder
-    }()
-    private lazy var dependencies = BeagleScreenDependencies()
-    
     override func setUp() {
         super.setUp()
-        Beagle.dependencies = BeagleDependencies()
-        Beagle.dependencies.decoder.register(
-            component: CustomPageIndicator.self,
+        enviroment.coder.register(
+            type: CustomPageIndicator.self,
             named: CustomPageIndicatorTests.typeName
         )
-    }
-    
-    override func tearDown() {
-        Beagle.dependencies = BeagleDependencies()
-        super.tearDown()
     }
 
     func test_indicator_render() {
@@ -52,16 +41,4 @@ class CustomPageIndicatorTests: XCTestCase {
         assertSnapshotImage(view, size: .custom(.init(width: 200, height: 30)))
     }
 
-    func test_pageViewWithCustomIndicator_render() {
-        let page = Text("Page")
-
-        let component = PageView(
-            children: Array(repeating: page, count: 3),
-            pageIndicator: indicator
-        )
-        let view = BeagleView(component)
-        view.backgroundColor = .white
-
-        assertSnapshotImage(view)
-    }
 }

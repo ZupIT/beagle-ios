@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,17 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ScreenComponentTests: XCTestCase {
+final class ScreenComponentTests: EnviromentTestCase {
+    
+    func testCodableScreen() throws {
+        let screen: Screen = try componentFromJsonFile(fileName: "screen")
+        assertSnapshotJson(matching: screen)
+    }
 
     func test_initWithBuilders_shouldReturnExpectedInstance() {
         // Given / When
-        let component = ScreenComponent(
-            child: Text("text")
+        let component = Screen(
+            child: Text(text: "text")
         )
 
         // Then
@@ -31,85 +36,75 @@ final class ScreenComponentTests: XCTestCase {
     }
     
     func test_contentShouldUseOnlyTheSpaceRequiredByFlexRules() {
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "Test Flex"),
             child: Container(
                 children: [
                     Container(
-                        children: [Text("Line 0,\nLine 1,\nLine 2,\nLine 3,\nLine 4.")],
-                        widgetProperties: .init(
-                            style: Style()
-                                .backgroundColor("#FF0000")
-                                .size(Size().width(50%).height(75%))
-                                .flex(Flex().alignSelf(.center))
-                        )
+                        children: [Text(text: "Line 0,\nLine 1,\nLine 2,\nLine 3,\nLine 4.")],
+                        style: Style()
+                            .backgroundColor("#FF0000")
+                            .size(Size().width(50%).height(75%))
+                            .flex(Flex().alignSelf(.center))
                     )
                 ],
-                widgetProperties: .init(
-                    style: Style()
-                        .backgroundColor("#00FF00")
-                        .flex(Flex().justifyContent(.center))
-                )
+                style: Style()
+                    .backgroundColor("#00FF00")
+                    .flex(Flex().justifyContent(.center))
             )
         )
 
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 200, height: 150)))
     }
     
     func test_navigationBarButtonItemWithImage() {
-        let dependencies = BeagleDependencies()
-        dependencies.appBundle = Bundle(for: ScreenComponentTests.self)
-        Beagle.dependencies = dependencies
-        addTeardownBlock {
-            Beagle.dependencies = BeagleDependencies()
-        }
+        enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
+        let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", onPress: [ActionDummy()])
         
-        let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", action: ActionDummy())
-        
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.none,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("")
+            child: Text(text: "")
         )
         
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 300, height: 200)))
     }
     
     func test_navigationBarButtonItemWithText() {
-        let barItem = NavigationBarItem(text: "shuttle", action: ActionDummy())
+        let barItem = NavigationBarItem(text: "shuttle", onPress: [ActionDummy()])
         
-        let component = ScreenComponent(
+        let component = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("test")
+            child: Text(text: "test")
         )
         
-        let viewController = Beagle.screen(.declarative(component.toScreen()))
+        let viewController = BeagleScreenViewController(component)
         assertSnapshotImage(viewController, size: .custom(CGSize(width: 300, height: 200)))
     }
     
     func testNavigationBarItemWithContextOnImage() {
         // Given
-        let dependencies = BeagleDependencies()
-        dependencies.appBundle = Bundle(for: ScreenComponentTests.self)
+        let bundle = Bundle(for: ScreenComponentTests.self)
         
-        let barItem = NavigationBarItem(image: "@{image}", text: "", action: ActionDummy())
+        let barItem = NavigationBarItem(image: "@{image}", text: "", onPress: [ActionDummy()])
         
         let screen = Screen(
             safeArea: SafeArea.all,
             navigationBar: .init(title: "title", showBackButton: true, navigationBarItems: [barItem]),
-            child: Text("test"),
+            child: Text(text: "test"),
             context: Context(id: "image", value: "shuttle")
         )
         
         // When
         let controller = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(screen),
-            dependencies: dependencies
+            screenType: .declarative(screen)
         ))
+        
+        controller.renderer.mainBundle.bundle = bundle
         
         // Then
         assertSnapshotImage(controller.view, size: .custom(CGSize(width: 150, height: 80)))
@@ -118,7 +113,7 @@ final class ScreenComponentTests: XCTestCase {
     func test_action_shouldBeTriggered() {
         // Given
         let action = ActionSpy()
-        let barItem = NavigationBarItem(text: "shuttle", action: action)
+        let barItem = NavigationBarItem(text: "shuttle", onPress: [action])
         let controller = BeagleScreenViewController(ComponentDummy())
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [controller]
@@ -134,14 +129,14 @@ final class ScreenComponentTests: XCTestCase {
     
     func test_shouldPrefetchNavigateAction() {
         let prefetch = BeaglePrefetchHelpingSpy()
-        let dependencies = BeagleScreenDependencies(preFetchHelper: prefetch)
-        let controller = BeagleControllerStub(dependencies: dependencies)
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
+        renderer.preFetchHelper = prefetch
         
         let navigatePath = "button-item-prefetch"
-        let navigate = Navigate.pushView(.remote(.init(url: navigatePath, shouldPrefetch: true)))
-        let barItem = NavigationBarItem(text: "Item", action: navigate)
-        let screen = ScreenComponent(
+        let navigate = Navigate.pushView(.remote(.init(url: "\(navigatePath)", shouldPrefetch: true)))
+        let barItem = NavigationBarItem(text: "Item", onPress: [navigate])
+        let screen = Screen(
             navigationBar: NavigationBar(title: "Prefetch", navigationBarItems: [barItem]),
             child: ComponentDummy()
         )
@@ -150,40 +145,4 @@ final class ScreenComponentTests: XCTestCase {
         XCTAssertEqual([navigatePath], prefetch.prefetched)
     }
     
-    func testIfAnalyticsScreenShouldBeTriggered() {
-        // Given
-        let analyticsEvent = AnalyticsScreen(screenName: "screen name")
-        let screen = Screen(
-            screenAnalyticsEvent: analyticsEvent,
-            child: ComponentDummy()
-        )
-        
-        let analyticsExecutorSpy = AnalyticsExecutorSpy()
-        let dependencies = BeagleScreenDependencies(
-            analytics: analyticsExecutorSpy
-        )
-        
-        let beagleController = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(screen),
-            dependencies: dependencies
-        ))
-        
-        // When
-        _ = BeagleNavigationController(rootViewController: beagleController)
-        _ = beagleController.view
-        beagleController.beginAppearanceTransition(true, animated: false)
-        beagleController.endAppearanceTransition()
-        
-        // Then
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenAppeared)
-        XCTAssertFalse(analyticsExecutorSpy.didTrackEventOnScreenDisappeared)
-        
-        // When
-        beagleController.beginAppearanceTransition(false, animated: false)
-        beagleController.endAppearanceTransition()
-        
-        // Then
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenAppeared)
-        XCTAssertTrue(analyticsExecutorSpy.didTrackEventOnScreenDisappeared)
-    }
 }

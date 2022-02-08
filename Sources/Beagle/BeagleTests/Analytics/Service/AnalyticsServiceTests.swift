@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import SnapshotTesting
 
 class AnalyticsServiceTests: XCTestCase {
 
-    lazy var sut = AnalyticsService(provider: provider, logger: LoggerMocked())
+    lazy var sut = AnalyticsService(provider: provider)
 
     func testNormalOperation() {
         // Given
@@ -61,7 +61,7 @@ class AnalyticsServiceTests: XCTestCase {
         assertActionAttributes(equalTo: """
         {
           "attributes" : {
-            "path" : "PATH"
+            "url" : "PATH"
           }
         }
         """)
@@ -69,21 +69,17 @@ class AnalyticsServiceTests: XCTestCase {
 
     func testConfigWithDifferentActions() {
         // Given
-        let caseSensitive = "beagle:FoRmReMoTeAcTion"
-        // And
         globalConfig(.init(actions: [
-            caseSensitive: [],
             "beagle:SENDREQUEST": [],
             .beagleActionName(SetContext.self): []
         ]))
 
         // When
-        triggerAction(FormRemoteAction(path: "path", method: .get))
         triggerAction(SendRequest(url: .value("url"), method: .value(.delete)))
         triggerAction(SetContext(contextId: "context", value: true))
 
         // Then
-        XCTAssertEqual(receivedRecords().count, 3)
+        XCTAssertEqual(receivedRecords().count, 2)
     }
 
     func testGlobalConfigJson() throws {
@@ -134,9 +130,9 @@ class AnalyticsServiceTests: XCTestCase {
         }
     }
 
-    private func triggerAction(_ action: AnalyticsAction? = nil) {
+    private func triggerAction(_ action: Action? = nil) {
         sut.createRecord(action: .init(
-            action: action ?? FormRemoteAction(path: "PATH", method: .delete),
+            action: action ?? SendRequest(url: "PATH", method: .value(.delete)),
             event: nil,
             origin: ViewDummy(),
             controller: BeagleScreenViewController(ComponentDummy())
@@ -154,7 +150,7 @@ class AnalyticsServiceTests: XCTestCase {
 
     private func enabledGlobalConfig() {
         provider.config = .init(actions: [
-            "beagle:formremoteaction": ["path"]
+            "beagle:sendrequest": ["url"]
         ])
     }
 
@@ -169,7 +165,7 @@ class AnalyticsServiceTests: XCTestCase {
 
 // MARK: - AnalyticsProviderStub
 
-class AnalyticsProviderStub: AnalyticsProvider {
+class AnalyticsProviderStub: AnalyticsProviderProtocol {
     
     var records = [AnalyticsRecord]()
 

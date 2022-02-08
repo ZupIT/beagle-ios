@@ -1,0 +1,9 @@
+{
+  "_beagleComponent_" : "custom:textcontainerwithaction",
+  "action" : {
+    "_beagleAction_" : "beagle:popview"
+  },
+  "childrenOfTextContainer" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  }
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,23 +25,22 @@ public enum ActionAnalyticsConfig {
     /// action that will always be recorded (overrides global)
     case enabled(Attributes? = nil)
 
-    public struct Attributes: AutoInitiable {
+    public struct Attributes {
 
         /// all action properties that you want to be recorded
         public var attributes: [String]?
 
         /// any additional value you want to be recorded
         public var additionalEntries: DynamicDictionary?
+        
+        public init(
+            attributes: [String]? = nil,
+            additionalEntries: DynamicDictionary? = nil
+        ) {
+            self.attributes = attributes
+            self.additionalEntries = additionalEntries
+        }
 
-        // sourcery:inline:auto:ActionAnalyticsConfig.Attributes.Init
-            public init(
-                attributes: [String]? = nil,
-                additionalEntries: DynamicDictionary? = nil
-            ) {
-                self.attributes = attributes
-                self.additionalEntries = additionalEntries
-            }
-        // sourcery:end
     }
 }
 

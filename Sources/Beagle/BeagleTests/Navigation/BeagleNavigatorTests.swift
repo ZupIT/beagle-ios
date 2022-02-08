@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,30 @@
  */
 
 import XCTest
+import SnapshotTesting
 @testable import Beagle
 
-final class BeagleNavigatorTests: XCTestCase {
+final class BeagleNavigatorTests: EnviromentTestCase {
 
-    func test_open_valid_ExternalURL() {
+    func testOpenValidExternalURL() {
 
         // Given
-        let opener = URLOpenerDumb()
+        let opener = URLOpenerStub()
         let action = Navigate.openExternalURL("https://localhost:8080")
-        let dependencies = BeagleScreenDependencies(opener: opener)
-        let controller = BeagleControllerStub(dependencies: dependencies)
-        let sut = BeagleNavigator()
+        let controller = BeagleControllerStub()
+        let sut = Navigator()
 
         // When
+        enviroment.opener = opener
         sut.navigate(action: action, controller: controller, origin: nil)
 
         // Then
         XCTAssert(opener.hasInvokedTryToOpen == true)
     }
     
-    func test_openDeepLink_shouldNotPushANativeScreenToNavigationWhenDeepLinkHandlerItsNotSet() {
+    func testOpenNativeRouteShouldNotPushANativeScreenToNavigationWhenDeepLinkHandlerItsNotSet() {
         // Given
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         let action = Navigate.openNativeRoute(.init(route: "https://example.com/screen.json"))
         let controller = BeagleControllerStub()
         let navigation = BeagleNavigationController(rootViewController: controller)
@@ -45,96 +46,91 @@ final class BeagleNavigatorTests: XCTestCase {
         // When
         sut.navigate(action: action, controller: controller, origin: nil)
         
-        //Then
+        // Then
         XCTAssert(navigation.viewControllers.count == 1)
     }
 
-    func test_swapView_shouldReplaceApplicationStackWithRemoteScreen() {
-
+    func testResetApplicationShouldReplaceApplicationStackWithRemoteScreen() {
         // Given
         let windowMock = WindowMock()
-        let windowManager = WindowManagerDumb(window: windowMock)
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository, windowManager: windowManager)
-        
-        let sut = BeagleNavigator()
-        let controller = BeagleControllerStub(dependencies: dependencies)
-
+        let windowManager = WindowManagerStub(window: windowMock)
+        let sut = Navigator()
+        let controller = BeagleControllerStub()
         let resetRemote = Navigate.resetApplication(.remote(.init(url: "https://example.com/screen.json")))
 
         // When
+        enviroment.viewClient = viewClientStub
+        enviroment.windowManager = windowManager
         sut.navigate(action: resetRemote, controller: controller, origin: nil)
 
         // Then
         XCTAssert(windowMock.hasInvokedReplaceRootViewController == true)
     }
 
-    func test_swapView_shouldReplaceApplicationStackWithDeclarativeScreen() {
+    func testResetApplicationShouldReplaceApplicationStackWithDeclarativeScreen() {
 
         // Given
         let windowMock = WindowMock()
-        let windowManager = WindowManagerDumb(window: windowMock)
-        let dependencies = BeagleScreenDependencies(windowManager: windowManager)
-        let sut = BeagleNavigator()
-        let controller = BeagleControllerStub(dependencies: dependencies)
+        let windowManager = WindowManagerStub(window: windowMock)
+        let sut = Navigator()
+        let controller = BeagleControllerStub()
 
-        let resetDeclarative = Navigate.resetApplication(.declarative(Screen(child: Text("Declarative"))))
+        let resetDeclarative = Navigate.resetApplication(.declarative(Screen(child: Text(text: "Declarative"))))
 
         // When
+        enviroment.windowManager = windowManager
         sut.navigate(action: resetDeclarative, controller: controller, origin: nil)
 
         // Then
         XCTAssert(windowMock.hasInvokedReplaceRootViewController == true)
     }
 
-    func test_swapView_shouldReplaceNavigationStack() {
-        let swapRemote = Navigate.resetStack(.remote(.init(url: "https://example.com/screen.json")))
-        let swapDeclarative = Navigate.resetStack(.declarative(Screen(child: Text("Declarative"))))
+    func testResetStackShouldReplaceNavigationStack() {
+        let resetRemote = Navigate.resetStack(.remote(.init(url: "https://example.com/screen.json")))
+        let resetDeclarative = Navigate.resetStack(.declarative(Screen(child: Text(text: "Declarative"))))
         
-        swapViewTest(swapRemote)
-        swapViewTest(swapDeclarative)
+        resetStackTest(resetRemote)
+        resetStackTest(resetDeclarative)
     }
     
-    private func swapViewTest(_ navigate: Navigate) {
-        let sut = BeagleNavigator()
+    private func resetStackTest(_ navigate: Navigate) {
+        let sut = Navigator()
         let firstViewController = UIViewController()
         
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
-        let secondViewController = BeagleControllerStub(dependencies: dependencies)
+        let secondViewController = BeagleControllerStub()
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [firstViewController, secondViewController]
         
+        enviroment.viewClient = viewClientStub
         sut.navigate(action: navigate, controller: secondViewController, origin: nil)
         
         XCTAssertEqual(1, navigation.viewControllers.count)
         XCTAssert(navigation.viewControllers.last is BeagleController)
     }
 
-    func test_addView_shouldPushScreenInNavigation() {
+    func testPushViewShouldPushScreenInNavigation() {
         let addViewRemote = Navigate.pushView(.remote(.init(url: "https://example.com/screen.json")))
-        let addViewDeclarative = Navigate.pushView(.declarative(Screen(child: Text("Declarative"))))
+        let addViewDeclarative = Navigate.pushView(.declarative(Screen(child: Text(text: "Declarative"))))
         
         addViewTest(addViewRemote)
         addViewTest(addViewDeclarative)
     }
     
     private func addViewTest(_ navigate: Navigate) {
-        let sut = BeagleNavigator()
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
-        let firstViewController = BeagleControllerStub(dependencies: dependencies)
+        let sut = Navigator()
+        let firstViewController = BeagleControllerStub()
         let navigation = BeagleNavigationController(rootViewController: firstViewController)
         
+        enviroment.viewClient = viewClientStub
         sut.navigate(action: navigate, controller: firstViewController, origin: nil)
         
         XCTAssertEqual(2, navigation.viewControllers.count)
         XCTAssert(navigation.viewControllers.last is BeagleController)
     }
 
-    func test_popStack_shouldDismissNavigation() {
+    func testPopStackShouldDismissNavigation() {
         // Given
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         let action = Navigate.popStack()
         let navigationSpy = BeagleControllerNavigationSpy()
 
@@ -145,9 +141,9 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssert(navigationSpy.dismissViewControllerCalled)
     }
 
-    func test_popView_shouldPopNavigationScreen() {
+    func testPopViewShouldPopNavigationScreen() {
         // Given
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         let action = Navigate.popView()
         let firstViewController = BeagleControllerStub()
         let secondViewController = UIViewController()
@@ -162,9 +158,9 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssert(navigation.viewControllers.count == 2)
     }
     
-    func test_popViewWithOneViewInStack_shouldPopTheStack() {
+    func testPopViewWithOneViewInStackShouldPopTheStack() {
         // Given
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         let action = Navigate.popView()
         let navigationSpy = BeagleControllerNavigationSpy()
         let navigation = BeagleNavigationController()
@@ -177,15 +173,14 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssert(navigationSpy.dismissViewControllerCalled)
     }
 
-    func test_popToView_shouldNotNavigateWhenScreenIsNotFound() {
+    func testPopToViewShouldNotNavigateWhenScreenIsNotFound() {
         
         // Given
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         let action = Navigate.popToView("screenURL1")
-        let dependencies = BeagleScreenDependencies(urlBuilder: UrlBuilder())
-        let vc1 = BeagleControllerStub(dependencies: dependencies)
-        let vc2 = BeagleControllerStub(dependencies: dependencies)
-        let vc3 = BeagleControllerStub(dependencies: dependencies)
+        let vc1 = BeagleControllerStub()
+        let vc2 = BeagleControllerStub()
+        let vc3 = BeagleControllerStub()
         let vc4 = UIViewController()
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [vc1, vc2, vc3, vc4]
@@ -198,17 +193,17 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssertEqual(navigation.viewControllers.last, vc4)
     }
 
-    func test_popToView_shouldRemoveFromStackScreensAfterTargetScreen() {
+    func testPopToViewShouldRemoveFromStackScreensAfterTargetScreen() {
         // Given
         let screenURL1 = "https://example.com/screen1.json"
         let screenURL2 = "https://example.com/screen2.json"
         let screenURL3 = "https://example.com/screen3.json"
-        let sut = BeagleNavigator()
-        let action = Navigate.popToView("https://example.com/@{'screen2.json'}")
-        let dependencies = BeagleScreenDependencies(urlBuilder: UrlBuilder())
-        let vc1 = BeagleControllerStub(.remote(.init(url: screenURL1)), dependencies: dependencies)
-        let vc2 = BeagleControllerStub(.remote(.init(url: screenURL2)), dependencies: dependencies)
-        let vc3 = BeagleControllerStub(.remote(.init(url: screenURL3)), dependencies: dependencies)
+        let sut = Navigator()
+        let action = Navigate.popToView("https://example.com/screen2.json")
+        
+        let vc1 = BeagleControllerStub(.remote(.init(url: screenURL1)))
+        let vc2 = BeagleControllerStub(.remote(.init(url: screenURL2)))
+        let vc3 = BeagleControllerStub(.remote(.init(url: screenURL3)))
         let vc4 = UIViewController()
         let navigation = BeagleNavigationController()
         navigation.viewControllers = [vc1, vc2, vc3, vc4]
@@ -221,15 +216,14 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssertEqual(navigation.viewControllers.last, vc2)
     }
     
-    func test_popToView_absoluteURL() {
-        let dependencies = BeagleDependencies()
-        dependencies.urlBuilder.baseUrl = URL(string: "https://server.com/path/")
-        let sut = BeagleNavigator()
+    func testPopToViewAbsoluteURL() {
+        let sut = Navigator()
+        enviroment.urlBuilder.baseUrl = URL(string: "https://server.com/path/")
         
-        let target = BeagleControllerStub(.remote(.init(url: "/screen")), dependencies: dependencies)
-        let declarative = BeagleControllerStub(.declarative(Screen(child: ComponentDummy())), dependencies: dependencies)
-        let remote = BeagleControllerStub(.remote(.init(url: "remote")), dependencies: dependencies)
-        let current = BeagleControllerStub(.declarativeText("{}"), dependencies: dependencies)
+        let target = BeagleControllerStub(.remote(.init(url: "/screen")))
+        let declarative = BeagleControllerStub(.declarative(Screen(child: ComponentDummy())))
+        let remote = BeagleControllerStub(.remote(.init(url: "remote")))
+        let current = BeagleControllerStub(.declarativeText("{}"))
 
         let navigation = UINavigationController()
         let stack = [target, declarative, remote, current]
@@ -251,13 +245,13 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssertEqual(navigation.viewControllers.last, target)
     }
     
-    func test_popToView_byIdentifier() {
+    func testPopToViewByIdentifier() {
         // Given
-        let sut = BeagleNavigator()
-        let vc1 = BeagleControllerStub(.declarative(Screen(identifier: "1", child: Text("Screen 1"))))
-        let vc2 = BeagleControllerStub(.declarative(Screen(identifier: "2", child: Text("Screen 2"))))
+        let sut = Navigator()
+        let vc1 = BeagleControllerStub(.declarative(Screen(id: "1", child: Text(text: "Screen 1"))))
+        let vc2 = BeagleControllerStub(.declarative(Screen(id: "2", child: Text(text: "Screen 2"))))
         let vc3 = UIViewController()
-        let vc4 = BeagleControllerStub(.declarative(Screen(identifier: "4", child: Text("Screen 4"))))
+        let vc4 = BeagleControllerStub(.declarative(Screen(id: "4", child: Text(text: "Screen 4"))))
         let action = Navigate.popToView("2")
         
         let navigation = UINavigationController()
@@ -271,41 +265,40 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssert(navigation.viewControllers.last == vc2)
     }
 
-    func test_pushStack_shouldPresentTheScreen() {
+    func testPushStackShouldPresentTheScreen() {
         let presentViewRemote = Navigate.pushStack(.remote(.init(url: "https://example.com/screen.json")))
-        let presentViewDeclarative = Navigate.pushStack(.declarative(Screen(child: Text("Declarative"))))
+        let presentViewDeclarative = Navigate.pushStack(.declarative(Screen(child: Text(text: "Declarative"))))
         
         pushStackTest(presentViewRemote)
         pushStackTest(presentViewDeclarative)
     }
     
     private func pushStackTest(_ navigate: Navigate) {
-        let sut = BeagleNavigator()
-        let repository = RepositoryStub(componentResult: .success(ComponentDummy()))
-        let dependencies = BeagleScreenDependencies(repository: repository)
-        let navigationSpy = BeagleControllerNavigationSpy(dependencies: dependencies)
+        let sut = Navigator()
+        let navigationSpy = BeagleControllerNavigationSpy()
         
+        enviroment.viewClient = viewClientStub
         sut.navigate(action: navigate, controller: navigationSpy, origin: nil)
         
         XCTAssertNotNil(navigationSpy.viewControllerToPresent)
     }
     
-    func test_openDeepLink_shouldPushANativeScreenWithData() {
+    func testOpenNativeRouteShouldPushANativeScreenWithData() {
         // Given
         let deepLinkSpy = DeepLinkHandlerSpy()
-        let sut = BeagleNavigator()
+        let sut = Navigator()
         
         let data = ["uma": "uma", "dois": "duas"]
         let path = "https://example.com/screen.json"
         let action = Navigate.openNativeRoute(.init(route: path, data: data))
         let firstViewController = BeagleControllerStub()
-        firstViewController.dependencies = BeagleScreenDependencies(deepLinkHandler: deepLinkSpy)
         let navigation = BeagleNavigationController(rootViewController: firstViewController)
         
         // When
+        enviroment.deepLinkHandler = deepLinkSpy
         sut.navigate(action: action, controller: firstViewController, origin: nil)
         
-        //Then
+        // Then
         XCTAssertEqual(2, navigation.viewControllers.count)
         XCTAssertEqual(data, deepLinkSpy.calledData)
         XCTAssertEqual(path, deepLinkSpy.calledPath)
@@ -314,54 +307,43 @@ final class BeagleNavigatorTests: XCTestCase {
     func testRegisterNavigationController() {
         // Given
         let controllerId = "customId"
+        let sut = Navigator()
         
         // When
-        dependencies.navigation.registerNavigationController(builder: BeagleNavigationStub.init, forId: controllerId)
+        sut.registerNavigationController(builder: BeagleNavigationStub.init, forId: controllerId)
         
         // Then
-        XCTAssertTrue(dependencies.navigation.navigationController(forId: controllerId) is BeagleNavigationStub)
+        XCTAssertTrue(sut.navigationController(forId: controllerId) is BeagleNavigationStub)
     }
 
     func testDefaultNavigationWithCustom() {
         // Given
         let defaultNavigation = BeagleNavigationStub()
-        dependencies.navigation.registerDefaultNavigationController(builder: { defaultNavigation })
+        let sut = Navigator()
+        sut.registerDefaultNavigationController(builder: { defaultNavigation })
 
         // When
-        let result = dependencies.navigation.navigationController(forId: nil)
+        let result = sut.navigationController(forId: nil)
 
         // Then
         XCTAssertTrue(result === defaultNavigation)
     }
-
-    func testDefaultNavigationWithDeprecated() {
-        // Given
-        let dependencies = BeagleDependencies()
-        dependencies.navigationControllerType = BeagleNavigationStub.self
-        Beagle.dependencies = dependencies
-
-        // When
-        let result = dependencies.navigation.navigationController(forId: nil)
-
-        // Then
-        XCTAssertTrue(result is BeagleNavigationStub)
-    }
     
     func testIfNavigationIsPushedWithSetContext() {
         // Given
-        let sut = BeagleNavigator()
-        let dependencies = BeagleScreenDependencies(repository: RepositoryStub(componentResult: .success(ComponentDummy())))
+        let sut = Navigator()
 
         let url: DynamicObject = .string("https://example.com/screen.json")
         let pushViewRemote = Navigate.pushView(.remote(.init(url: "@{url}", shouldPrefetch: false)))
         let button = Button(text: "@{url}", onPress: [pushViewRemote])
         let setContext = SetContext(contextId: "url", path: nil, value: url)
         
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(button.toScreen()), dependencies: dependencies))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(button.toScreen())))
         let view = button.toView(renderer: controller.renderer)
         let navigation = BeagleNavigationController(rootViewController: controller)
 
         // When
+        enviroment.viewClient = viewClientStub
         view.setContext(Context(id: "url", value: "initial"))
         controller.bindings.config()
         setContext.execute(controller: controller, origin: view)
@@ -371,9 +353,183 @@ final class BeagleNavigatorTests: XCTestCase {
         XCTAssertEqual(2, navigation.viewControllers.count)
         XCTAssertEqual(pushViewRemote.newPath?.url.evaluate(with: view), url.description)
     }
+    
+    func testResetApplicationShouldSetContextOnDestination() {
+        let windowMock = WindowMock()
+        let windowManager = WindowManagerStub(window: windowMock)
+        let viewClient = ViewClientStub(componentResult: .success(ComponentDummy()))
+        
+        let sut = Navigator()
+        let controller = BeagleControllerStub()
+        let origin = UIView()
+        origin.setContext(Context(id: "contextId", value: "value"))
+        let navContext = NavigationContext(path: Path(rawValue: "path"), value: ["param": "@{contextId}"])
+        
+        let action = Navigate.resetApplication(.remote(.init(url: "remote")), navigationContext: navContext)
+        
+        // When
+        enviroment.viewClient = viewClient
+        enviroment.windowManager = windowManager
+        sut.navigate(action: action, controller: controller, animated: false, origin: origin)
+        
+        // Then
+        _assertInlineSnapshot(
+            matching: windowMock.controller?.view.getContext(with: NavigationContext.id)?.value,
+            as: .dump,
+            with: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [path: [param: value]]
+        """)
+    
+    }
+        
+    func testResetStackShouldSetContextOnDestination() {
+        let navigation = BeagleNavigationController()
+        let navContext = NavigationContext(value: ["resetStack": "value"])
+        let action = Navigate.resetStack(.remote(.init(url: "remote")), navigationContext: navContext)
+        
+        testSetContextOnDestination(navigation, action, snapshot: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [resetStack: value]
+        """
+        )
+    }
+        
+    func testPushViewShouldSetContextOnDestination() {
+        let navigation = BeagleNavigationController()
+        let navContext = NavigationContext(value: ["pushView": "value"])
+        let action = Navigate.pushView(.remote(.init(url: "remote")), navigationContext: navContext)
+        
+        testSetContextOnDestination(navigation, action, snapshot: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [pushView: value]
+        """
+        )
+    }
+        
+    func testPopViewShouldSetContextOnDestination() {
+        let rootController = BeagleControllerStub(.declarative(Screen(child: Text(text: "root"))))
+        let navigation = BeagleNavigationController(rootViewController: rootController)
+        let navContext = NavigationContext(value: ["popView": "value"])
+        let action = Navigate.popView(navigationContext: navContext)
+        
+        testSetContextOnDestination(navigation, action, snapshot: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [popView: value]
+        """
+        )
+    }
+        
+    func testPopToViewShouldSetContextOnDestination() {
+        let rootController = BeagleControllerStub(.declarative(Screen(id: "root", child: Text(text: "root"))))
+        let navigation = BeagleNavigationController(rootViewController: rootController)
+        let navContext = NavigationContext(value: ["popToView": "value"])
+        let action = Navigate.popToView("root", navigationContext: navContext)
+        
+        testSetContextOnDestination(navigation, action, snapshot: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [popToView: value]
+        """
+        )
+    }
+    
+    var viewClientStub: ViewClientProtocol {
+        ViewClientStub(componentResult: .success(ComponentDummy()))
+    }
+    
+    private func testSetContextOnDestination(_ navigation: BeagleNavigationController, _ action: Navigate, snapshot: String) {
+        // Given
+        let sut = Navigator()
+        let controller = BeagleControllerStub()
+        navigation.viewControllers = navigation.viewControllers + [controller]
+        let origin = UIView()
+        origin.setContext(Context(id: "contextId", value: "value"))
+        
+        // When
+        enviroment.viewClient = viewClientStub
+        sut.navigate(action: action, controller: controller, animated: false, origin: origin)
+        
+        // Then
+        _assertInlineSnapshot(
+            matching: navigation.topViewController?.view.getContext(with: NavigationContext.id)?.value,
+            as: .dump,
+            with: snapshot
+        )
+    }
+        
+    func testPushStackShouldSetContextOnDestination() {
+        // Given
+        let sut = Navigator()
+        let controllerSpy = BeagleControllerNavigationSpy()
+        let navContext = NavigationContext(value: ["pushStack": "value"])
+        let action = Navigate.pushStack(.remote(.init(url: "remote")), navigationContext: navContext)
+        
+        // When
+        enviroment.viewClient = viewClientStub
+        sut.navigate(action: action, controller: controllerSpy, animated: false, origin: nil)
+        
+        // Then
+        let destination = (controllerSpy.viewControllerToPresent as? BeagleNavigationController)?.topViewController
+        _assertInlineSnapshot(
+            matching: destination?.view.getContext(with: NavigationContext.id)?.value,
+            as: .dump,
+            with: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [pushStack: value]
+        """
+        )
+    }
+        
+    func testPopStackShouldSetContextOnDestination() {
+        // Given
+        let sut = Navigator()
+        let manager = ApplicationManagerMock()
+        sut.applicationManager = manager
+        let controllerSpy = BeagleControllerStub()
+        let navContext = NavigationContext(value: ["popStack": "value"])
+        let action = Navigate.popStack(navigationContext: navContext)
+        
+        // When
+        enviroment.viewClient = viewClientStub
+        sut.navigate(action: action, controller: controllerSpy, animated: false, origin: nil)
+        
+        // Then
+        _assertInlineSnapshot(
+            matching: manager.root.view.getContext(with: NavigationContext.id)?.value,
+            as: .dump,
+            with: """
+        ▿ Optional<Context>
+          ▿ some: Context
+            - id: "navigationContext"
+            - value: [popStack: value]
+        """
+        )
+    }
+    
 }
 
-class DeepLinkHandlerSpy: DeepLinkScreenManaging {
+struct ApplicationManagerMock: ApplicationManager {
+    let root = UIViewController()
+    
+    func topViewController(base: UIViewController?) -> UIViewController? {
+        root.view.setContext(Context(id: NavigationContext.id, value: nil))
+        return root
+    }
+}
+
+class DeepLinkHandlerSpy: DeepLinkScreenManagerProtocol {
     var calledPath: String?
     var calledData: [String: String]?
     

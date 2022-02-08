@@ -7,7 +7,6 @@ on:
     pull_request:
         branches:
             - main
-            - release/*
 jobs:
     pr_verification:
         name: PR Check

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TextInputTests: XCTestCase {
+class TextInputTests: EnviromentTestCase {
 
     private lazy var theme = AppTheme(styles: [
         "test.textInput.style": textStyle
@@ -30,17 +30,18 @@ class TextInputTests: XCTestCase {
             $0?.borderStyle = .roundedRect
         }
     }
-
-    private lazy var dependencies = BeagleScreenDependencies(
-        theme: theme
-    )
-
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
     
-    func test_whenDecodingJson_shouldReturnAText() throws {
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
+    
+    func testCodableTextInput() throws {
         let component: TextInput = try componentFromJsonFile(fileName: "TextInputComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
     func testTextInputTypes() {
@@ -65,7 +66,7 @@ class TextInputTests: XCTestCase {
             placeholder: "password",
             type: .value(.password),
             styleId: "test.textInput.style",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(80))))
+            style: .init(size: Size().width(300).height(80)))
         
         // When
         let view = renderer.render(textInput)
@@ -81,7 +82,7 @@ class TextInputTests: XCTestCase {
             placeholder: "type here",
             type: .value(.text),
             styleId: "test.textInput.style",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(80))))
+            style: .init(size: Size().width(300).height(80)))
         
         guard let textField = renderer.render(textInput) as? UITextField else {
             XCTFail("Unable to type cast to UITextField.")
@@ -103,43 +104,26 @@ class TextInputTests: XCTestCase {
             type: .value(.password),
             error: .value("Password must have 6 characters."),
             showError: .value(true),
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(300).height(35)))
+            style: .init(size: Size().width(300).height(35))
         )
                 
         // When
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         
         // Then
         assertSnapshotImage(controller.view, size: ImageSize.custom(CGSize(width: 300, height: 70)))
     }
     
-    func test_renderTextInputWithDisabledTrue() {
+    func test_renderTextInputWithEnabledFalse() {
         // Given
         let textInput = TextInput(
             value: "disabled",
-            disabled: true,
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
+            enabled: false,
+            style: .init(size: Size().width(100).height(50))
         )
                 
         // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
-        assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
-    }
-    
-    func test_renderTextInputWithDisabled() {
-        // Given
-        let textInput = TextInput(
-            value: "@{textinput.value}",
-            disabled: "@{textinput.disabled}",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
-        )
-                
-        // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: dependencies))
-        controller.view.setContext(Context(id: "textinput", value: ["value": "enabled", "disabled": false]))
-        assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
-        
-        controller.view.setContext(Context(id: "textinput", value: ["value": "disabled", "disabled": true]))
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
     }
     
@@ -149,7 +133,7 @@ class TextInputTests: XCTestCase {
             value: "@{textinput.value}",
             enabled: "@{textinput.enabled}",
             styleId: "customStyle",
-            widgetProperties: WidgetProperties(style: .init(size: Size().width(100).height(50)))
+            style: .init(size: Size().width(100).height(50))
         )
         
         func customStyle() -> (UITextField?) -> Void {
@@ -158,10 +142,10 @@ class TextInputTests: XCTestCase {
             }
         }
         let theme = AppTheme(styles: ["customStyle": customStyle])
-        let customDependencies = BeagleScreenDependencies(theme: theme)
         
         // When // Then
-        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen()), dependencies: customDependencies))
+        enviroment.theme = theme
+        let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(textInput.toScreen())))
         controller.view.setContext(Context(id: "textinput", value: ["value": "enabled", "enabled": true]))
         assertSnapshotImage(controller, size: ImageSize.custom(CGSize(width: 100, height: 50)))
         

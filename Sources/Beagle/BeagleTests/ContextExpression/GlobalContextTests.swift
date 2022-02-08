@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import XCTest
 @testable import Beagle
 
-final class GlobalContextTests: XCTestCase {
+final class GlobalContextTests: EnviromentTestCase {
     
     private let globalId = "global"
     
@@ -32,37 +32,37 @@ final class GlobalContextTests: XCTestCase {
     func testGetContext() {
         // Given
         // view1
-        let globalContext = dependencies.globalContext
-        let globalContextValue1 = Context(id: globalId, value: globalContext.get(path: globalId))
+        let sut = enviroment.globalContext
+        let globalContextValue1 = Context(id: globalId, value: sut.get(path: globalId))
         
         // When/Then
         view1.setContext(globalContextValue1)
         XCTAssertEqual(view1.getContext(with: globalId)?.value, globalContextValue1)
         
         view2.setContext(globalContext2)
-        let globalContextValue = globalContext.get(path: nil)
+        let globalContextValue = sut.get(path: nil)
         XCTAssertEqual(view1.getContext(with: globalId)?.value.value, globalContextValue)
     }
     
     func testSetContextInViewWithGlobalId() {
         // Given
-        // view1, view2
+        let sut = enviroment.globalContext
         
         // When/Then
         XCTAssertTrue(view1.contextMap.isEmpty)
         view1.setContext(globalContext1)
         XCTAssertTrue(view1.contextMap.isEmpty)
-        XCTAssertEqual(dependencies.globalContext.get(path: nil), globalContext1.value)
+        XCTAssertEqual(sut.get(path: nil), globalContext1.value)
         
         XCTAssertTrue(view2.contextMap.isEmpty)
         view2.setContext(globalContext2)
         XCTAssertTrue(view2.contextMap.isEmpty)
-        XCTAssertEqual(dependencies.globalContext.get(path: nil), globalContext2.value)
+        XCTAssertEqual(sut.get(path: nil), globalContext2.value)
     }
     
     func testSetContext() {
         // Given
-        let global: GlobalContext = DefaultGlobalContext()
+        let global: GlobalContextProtocol = GlobalContext()
         
         // When/Then
         global.set(["a": "value a"])
@@ -77,7 +77,7 @@ final class GlobalContextTests: XCTestCase {
     
     func testClearContext() {
         // Given
-        let global: GlobalContext = DefaultGlobalContext()
+        let global: GlobalContextProtocol = GlobalContext()
         global.set(["a": "value a", "b": "value b"])
         
         // When/Then

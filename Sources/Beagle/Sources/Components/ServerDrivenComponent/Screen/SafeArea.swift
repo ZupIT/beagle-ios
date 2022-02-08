@@ -15,31 +15,18 @@
  */
 
 /// The SafeArea will enable Safe areas to help you place your views within the visible portion of the overall interface.
-public struct SafeArea: Equatable, Decodable, AutoInitiable {
+public struct SafeArea: Equatable, Codable {
 
     /// Enables the safeArea constraint only on the TOP of the screen view.
-    public let top: Bool?
+    public var top: Bool?
     
     /// Enables the safeArea constraint only on the LEFT side of the screen view.
-    public let leading: Bool?
+    public var leading: Bool?
     
     /// Enables the safeArea constraint only on the BOTTOM of the screen view.
-    public let bottom: Bool?
+    public var bottom: Bool?
     
     /// Enables the safeArea constraint only on the RIGHT of the screen view.
-    public let trailing: Bool?
+    public var trailing: Bool?
     
-// sourcery:inline:auto:SafeArea.Init
-    public init(
-        top: Bool? = nil,
-        leading: Bool? = nil,
-        bottom: Bool? = nil,
-        trailing: Bool? = nil
-    ) {
-        self.top = top
-        self.leading = leading
-        self.bottom = bottom
-        self.trailing = trailing
-    }
-// sourcery:end
 }

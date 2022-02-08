@@ -16,22 +16,18 @@
 
 import UIKit
 
-public protocol DependencyWindowManager {
-    var windowManager: WindowManager { get }
-}
-
-public protocol WindowProtocol {
+protocol WindowProtocol {
     func replace(rootViewController viewController: UIViewController, animated: Bool, completion: ((Bool) -> Void)?)
 }
 
-public protocol WindowManager {
+protocol WindowManagerProtocol {
     var window: WindowProtocol? { get }
 }
 
 /// This class is responsible to  manage a Window.
-public final class WindowManagerDefault: WindowManager {
+final class WindowManager: WindowManagerProtocol {
 
-    public var window: WindowProtocol? {
+    var window: WindowProtocol? {
         return UIApplication.shared.keyWindow
     }
 

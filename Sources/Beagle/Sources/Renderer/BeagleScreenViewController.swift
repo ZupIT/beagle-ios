@@ -19,7 +19,6 @@ import UIKit
 public typealias BeagleController = UIViewController & BeagleControllerProtocol
 
 public protocol BeagleControllerProtocol: NSObjectProtocol {
-    var dependencies: BeagleDependenciesProtocol { get }
     var serverDrivenState: ServerDrivenState { get set }
     var screenType: ScreenType { get }
     var screen: Screen? { get }
@@ -47,7 +46,7 @@ public class BeagleScreenViewController: BeagleController {
     
     lazy var layoutManager = LayoutManager(self)
     
-    lazy var renderer = dependencies.renderer(self)
+    lazy var renderer = CurrentEnviroment.renderer(self)
     
     let bindings = Bindings()
     
@@ -58,31 +57,23 @@ public class BeagleScreenViewController: BeagleController {
     // TODO: This workaround should be removed in BeagleView future implementation
     var skipNavigationCreation = false
     
-    // MARK: - Initialization
+    // MARK: - Dependencies
+    
+    @Injected var navigator: NavigationProtocolInternal
+    
+    // MARK: - Init
     
     @discardableResult
     static func remote(
         _ remote: ScreenType.Remote,
-        dependencies: BeagleDependenciesProtocol,
+        viewClient: ViewClientProtocol,
         completion: @escaping (Result<BeagleScreenViewController, Request.Error>) -> Void
     ) -> RequestToken? {
-        return BeagleScreenViewModel.remote(remote, dependencies: dependencies) {
+        return BeagleScreenViewModel.remote(remote, viewClient: viewClient) {
             completion($0.map { viewModel in
                 return self.init(viewModel: viewModel)
             })
         }
-    }
-    
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil) {
-        self.init(.declarative(component.toScreen()), controllerId: controllerId)
-        self.navigationControllerId = controllerId
-    }
-    
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ screenType: ScreenType, controllerId: String? = nil) {
-        self.init(viewModel: .init(screenType: screenType), controllerId: controllerId)
-        self.navigationControllerId = controllerId
     }
     
     public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil) {
@@ -92,6 +83,11 @@ public class BeagleScreenViewController: BeagleController {
     
     public convenience init(_ json: String, controllerId: String? = nil) {
         self.init(viewModel: .init(screenType: .declarativeText(json)), controllerId: controllerId)
+        self.navigationControllerId = controllerId
+    }
+    
+    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil) {
+        self.init(viewModel: .init(screenType: .declarative(component.toScreen())), controllerId: controllerId)
         self.navigationControllerId = controllerId
     }
     
@@ -109,10 +105,6 @@ public class BeagleScreenViewController: BeagleController {
     }
     
     // MARK: - BeagleControllerProtocol
-    
-    public var dependencies: BeagleDependenciesProtocol {
-        return viewModel.dependencies
-    }
 
     public var serverDrivenState: ServerDrivenState = .finished {
         didSet {
@@ -202,7 +194,7 @@ public class BeagleScreenViewController: BeagleController {
     }
     
     private func createNavigationContent() {
-        let navigation = dependencies.navigation.navigationController(forId: navigationControllerId)
+        let navigation = navigator.navigationController(forId: navigationControllerId)
         navigation.viewControllers = [BeagleScreenViewController(viewModel: viewModel)]
         content = .navigation(navigation)
     }
@@ -250,7 +242,7 @@ public class BeagleScreenViewController: BeagleController {
     private func renderScreenIfNeeded() {
         if content == nil, let screen = screen {
             updateNavigationBar(animated: true)
-            content = .view(screen.toView(renderer: renderer))
+            content = .view(renderer.render(screen))
         }
     }
     
@@ -272,11 +264,12 @@ public class BeagleScreenViewController: BeagleController {
     // MARK: - View Setup
     
     private func initView() {
-         if #available(iOS 13.0, *) {
+        if #available(iOS 13.0, *) {
             view.backgroundColor = UIColor.systemBackground
-         } else {
+        } else {
             view.backgroundColor = .white
-         }
+        }
+        view.setContext(Context(id: NavigationContext.id, value: nil))
         updateView(state: viewModel.state)
     }
     
@@ -287,7 +280,7 @@ public class BeagleScreenViewController: BeagleController {
 
 extension BeagleControllerProtocol {
     public func setIdentifier(_ id: String?, in view: UIView) {
-        dependencies.viewConfigurator(view).setup(id: id)
+        CurrentEnviroment.viewConfigurator(view).setup(id: id)
     }
     
     public func setContext(_ context: Context, in view: UIView) {
@@ -297,7 +290,7 @@ extension BeagleControllerProtocol {
 
 extension BeagleControllerProtocol where Self: UIViewController {
     public func setNeedsLayout(component: UIView) {
-        dependencies.style(component).markDirty()
+        CurrentEnviroment.style(component).markDirty()
         if let beagleView = view.superview as? BeagleView {
             beagleView.invalidateIntrinsicContentSize()
         }

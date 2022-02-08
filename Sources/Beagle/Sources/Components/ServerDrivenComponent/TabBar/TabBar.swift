@@ -16,53 +16,36 @@
 
 /// TabBar is a component responsible to display a tab layout.
 /// It works by displaying tabs that can change a context when clicked.
-public struct TabBar: ServerDrivenComponent, AutoInitiableAndDecodable {
+public struct TabBar: ServerDrivenComponent {
     
     /// Defines yours tabs title and icon.
     public let items: [TabBarItem]
     
     /// Reference a native style configured to be applied on this view.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Defines the expression that is observed to change the current tab selected.
-    public let currentTab: Expression<Int>?
+    public var currentTab: Expression<Int>?
     
     /// Defines a list of action that will be executed when a tab is selected.
-    public let onTabSelection: [Action]?
+    @AutoCodable
+    public var onTabSelection: [Action]?
 
-// sourcery:inline:auto:TabBar.Init
-    public init(
-        items: [TabBarItem],
-        styleId: String? = nil,
-        currentTab: Expression<Int>? = nil,
-        onTabSelection: [Action]? = nil
-    ) {
-        self.items = items
-        self.styleId = styleId
-        self.currentTab = currentTab
-        self.onTabSelection = onTabSelection
-    }
-// sourcery:end
 }
 
 /// Defines the view item in the tab view
-public struct TabBarItem: Decodable {
+public struct TabBarItem {
     
     /// Displays the text on the `TabView` component. If it is null or not declared it won't display any text.
-    public let icon: StringOrExpression?
+    public var icon: StringOrExpression?
     
     /// Display an icon image on the `TabView` component.
     /// If it is left as null or not declared it won't display any icon.
-    public let title: String?
-
-    public init(
-        icon: StringOrExpression? = nil,
-        title: String? = nil
-    ) {
-        self.icon = icon
-        self.title = title
-    }
+    public var title: String?
     
+}
+
+extension TabBarItem: Codable {
     enum CodingKeys: String, CodingKey {
         case icon
         case title
@@ -70,6 +53,13 @@ public struct TabBarItem: Decodable {
     
     enum LocalImageCodingKey: String, CodingKey {
         case mobileId
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        var nestedContainer = container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .icon)
+        try nestedContainer.encodeIfPresent(icon, forKey: .mobileId)
+        try container.encodeIfPresent(title, forKey: .title)
     }
     
     public init(from decoder: Decoder) throws {

@@ -1,0 +1,7 @@
+{
+  "_beagleComponent_" : "beagle:lazycomponent",
+  "initialState" : {
+    "_beagleComponent_" : "custom:beagleschematestscomponent"
+  },
+  "path" : "\/path"
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,11 @@
 import UIKit
 import Beagle
 
-struct OtherComponent: Widget, AutoInitiableAndDecodable {
+struct OtherComponent: Widget {
 
-    var widgetProperties: WidgetProperties
+    var id: String?
+    var style: Style?
+    var accessibility: Accessibility?
 
     func toView(renderer: BeagleRenderer) -> UIView {
         let label = UILabel()
@@ -27,11 +29,4 @@ struct OtherComponent: Widget, AutoInitiableAndDecodable {
         return label
     }
 
-// sourcery:inline:auto:OtherComponent.Init
-    internal init(
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
 }

@@ -15,7 +15,7 @@
  */
 
 /// Handles the size of the item
-public class Size: Decodable, AutoEquatable, AutoInitiable {
+public class Size: Codable {
     // MARK: - Public Properties
 
     public var width: UnitValue?
@@ -28,8 +28,7 @@ public class Size: Decodable, AutoEquatable, AutoInitiable {
     /// Set a height and width ratio.
     public var aspectRatio: Double?
 
-// sourcery:inline:auto:Size.Init
-    public init(
+    init(
         width: UnitValue? = nil,
         height: UnitValue? = nil,
         maxWidth: UnitValue? = nil,
@@ -46,5 +45,18 @@ public class Size: Decodable, AutoEquatable, AutoInitiable {
         self.minHeight = minHeight
         self.aspectRatio = aspectRatio
     }
-// sourcery:end
+
+}
+
+extension Size: Equatable {
+     public static func == (lhs: Size, rhs: Size) -> Bool {
+        guard lhs.width == rhs.width else { return false }
+        guard lhs.height == rhs.height else { return false }
+        guard lhs.maxWidth == rhs.maxWidth else { return false }
+        guard lhs.maxHeight == rhs.maxHeight else { return false }
+        guard lhs.minWidth == rhs.minWidth else { return false }
+        guard lhs.minHeight == rhs.minHeight else { return false }
+        guard lhs.aspectRatio == rhs.aspectRatio else { return false }
+        return true
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,20 +23,19 @@ class URLOpenerTests: XCTestCase {
     func test_invalidURLPath_shouldLogError() {
 
         // Given
-        let mockedLogger = LoggerMocked()
-        let dependencies = BeagleDependencies()
-        dependencies.logger = mockedLogger
-        let opener = URLOpenerDefault(dependencies: dependencies)
+        let loggerStub = LoggerMocked()
+        let opener = URLOpener()
+        opener.logger = loggerStub
 
         // When
         opener.tryToOpen(path: "")
 
         // Then
-        assertSnapshot(matching: mockedLogger.log, as: .description)
+        assertSnapshot(matching: loggerStub.log, as: .description)
     }
 }
 
-class URLOpenerDumb: URLOpener {
+class URLOpenerStub: URLOpenerProtocol {
 
     var hasInvokedTryToOpen = false
 
@@ -45,7 +44,7 @@ class URLOpenerDumb: URLOpener {
     }
 }
 
-class LoggerMocked: BeagleLoggerType {
+class LoggerMocked: LoggerProtocol {
     var logDecodingErrorCalled = false
     
     func logDecodingError(type: String) {

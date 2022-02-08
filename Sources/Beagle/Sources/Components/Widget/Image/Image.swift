@@ -15,44 +15,37 @@
  */
 
 /// Defines an `ImageView` using the server driven information received through Beagle.
-public struct Image: Widget, AutoDecodable {
+public struct Image: Widget {
 
     /// Defines where the source of the image is.
     public let path: Expression<ImagePath>
     
     /// Defines how the declared image will fit the view.
-    public let mode: ImageContentMode?
+    public var mode: ImageContentMode?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
     
-    public init(
-        _ path: Expression<ImagePath>,
-        mode: ImageContentMode? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.path = path
-        self.mode = mode
-        self.widgetProperties = widgetProperties
-    }
-    
-    public init(
-        _ path: ImagePath,
-        mode: ImageContentMode? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.path = .value(path)
-        self.mode = mode
-        self.widgetProperties = widgetProperties
-    }
-    
-    public enum ImagePath: Decodable {
+    public enum ImagePath: Codable {
         case remote(Remote)
         case local(StringOrExpression)
 
         enum CodingKeys: String, CodingKey {
             case type = "_beagleImagePath_"
             case mobileId
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            switch self {
+            case .remote(let remote):
+                try container.encode("remote", forKey: .type)
+                try remote.encode(to: encoder)
+            case .local(let stringOrExpression):
+                try container.encode("local", forKey: .type)
+                try container.encode(stringOrExpression, forKey: .mobileId)
+            }
         }
         
         public init(from decoder: Decoder) throws {
@@ -72,8 +65,24 @@ public struct Image: Widget, AutoDecodable {
     }
 }
 
+extension Image {
+    init(
+        _ path: ImagePath,
+        mode: ImageContentMode? = nil,
+        id: String? = nil,
+        style: Style? = nil,
+        accessibility: Accessibility? = nil
+    ) {
+        self.path = .value(path)
+        self.mode = mode
+        self.id = id
+        self.style = style
+        self.accessibility = accessibility
+    }
+}
+
 public extension Image {
-    struct Remote: Decodable {
+    struct Remote: Codable {
         public let url: StringOrExpression
         public let placeholder: String?
 
@@ -89,6 +98,13 @@ public extension Image {
         
         enum LocalImageCodingKey: String, CodingKey {
             case mobileId
+        }
+        
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            var nestedContainer = container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .placeholder)
+            try container.encode(url, forKey: .url)
+            try nestedContainer.encodeIfPresent(placeholder, forKey: .mobileId)
         }
 
         public init(from decoder: Decoder) throws {

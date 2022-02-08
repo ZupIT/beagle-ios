@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,26 @@
 import UIKit
 import Beagle
 
-// Conforming to AutoEquatable is optional.
-struct DSCollection: Widget, AutoInitiableAndDecodable, AutoEquatable {
+struct DSCollection: Widget {
 
     let dataSource: DSCollectionDataSource
-    var widgetProperties: WidgetProperties
+    var id: String?
+    var style: Style?
+    var accessibility: Accessibility?
 
-// sourcery:inline:auto:DSCollection.Init
-    internal init(
-        dataSource: DSCollectionDataSource,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.dataSource = dataSource
-        self.widgetProperties = widgetProperties
-    }
-// sourcery:end
 }
 
-struct DSCollectionDataSource: Decodable, AutoEquatable {
+struct DSCollectionDataSource: Codable {
     
-    struct Card: Decodable, Equatable {
+    struct Card: Codable, Equatable {
         let name: String
         let age: Int
     }
     
     let cards: [Card]
 }
+
+extension DSCollectionDataSource: Equatable {}
 
 extension DSCollection: Renderable {
     func toView(renderer: BeagleRenderer) -> UIView {

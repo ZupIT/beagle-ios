@@ -15,58 +15,24 @@
  */
 
 /// The container component is a general container that can hold other components inside.
-public struct Container: Widget, HasContext, InitiableComponent, AutoDecodable {
+public struct Container: Widget, HasContext, InitiableComponent {
     
     /// Defines a list of components that are part of the container.
-    public let children: [ServerDrivenComponent]?
-    
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    @AutoCodable
+    public var children: [ServerDrivenComponent]?
     
     /// it is a parameter that allows you to define a list of actions to be performed when the Widget is displayed.
-    public let onInit: [Action]?
+    @AutoCodable
+    public var onInit: [Action]?
     
     /// Defines the contextData that be set to container.
-    public let context: Context?
+    public var context: Context?
     
     /// References a native style configured to be applied on this container.
-    public let styleId: String?
+    public var styleId: String?
+    
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
 
-    public init(
-        children: [ServerDrivenComponent]? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties(),
-        context: Context? = nil,
-        onInit: [Action]? = nil,
-        styleId: String? = nil
-    ) {
-        self.children = children
-        self.widgetProperties = widgetProperties
-        self.onInit = onInit
-        self.context = context
-        self.styleId = styleId
-    }
-    
-    public init(
-        context: Context? = nil,
-        onInit: [Action]? = nil,
-        styleId: String? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties(),
-        @ChildrenBuilder
-        _ children: () -> [ServerDrivenComponent]
-    ) {
-        self.init(children: children(), widgetProperties: widgetProperties, context: context, onInit: onInit, styleId: styleId)
-    }
-    
-    #if swift(<5.3)
-    public init(
-        context: Context? = nil,
-        onInit: [Action]? = nil,
-        styleId: String? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties(),
-        @ChildBuilder
-        _ children: () -> ServerDrivenComponent
-    ) {
-        self.init(children: [children()], widgetProperties: widgetProperties, context: context, onInit: onInit, styleId: styleId)
-    }
-    #endif
 }

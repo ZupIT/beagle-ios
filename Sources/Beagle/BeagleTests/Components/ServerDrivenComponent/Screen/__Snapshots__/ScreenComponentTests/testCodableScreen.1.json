@@ -1,0 +1,33 @@
+{
+  "_beagleComponent_" : "beagle:screencomponent",
+  "child" : {
+    "_beagleComponent_" : "beagle:text",
+    "text" : "Screen Content"
+  },
+  "id" : "screen-id",
+  "navigationBar" : {
+    "navigationBarItems" : [
+      {
+        "image" : "imagepath",
+        "onPress" : [
+          {
+            "_beagleAction_" : "beagle:pushview",
+            "route" : {
+              "shouldPrefetch" : false,
+              "url" : "http:\/\/localhost:8080\/test\/example"
+            }
+          }
+        ],
+        "text" : "imageText"
+      }
+    ],
+    "showBackButton" : true,
+    "title" : "Screen Title"
+  },
+  "safeArea" : {
+    "bottom" : true,
+    "leading" : true,
+    "top" : true,
+    "trailing" : true
+  }
+}

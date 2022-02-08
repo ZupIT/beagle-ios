@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,45 +20,23 @@ import XCTest
 
 class BeagleLoggerProxyTests: XCTestCase {
 
-    let dependencies = BeagleDependencies()
-
-    func testLog_WhenLogEnableIsFalse() {
+    func testLog() {
 
         // Given
         let spy = BeagleLoggerSpy()
-        let sut = BeagleLoggerProxy(logger: spy, dependencies: dependencies)
+        let sut = LoggerProxy(logger: spy)
 
         // When
-        dependencies.isLoggingEnabled = false
-        Beagle.dependencies = dependencies
         sut.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "route")))
 
         // Then
-        XCTAssert(spy.didCalledLog == false)
-    }
-
-    func testLog_WhenLogEnableIsTrue() {
-
-        // Given
-        let spy = BeagleLoggerSpy()
-        let sut = BeagleLoggerProxy(logger: spy, dependencies: dependencies)
-
-        // When
-        dependencies.isLoggingEnabled = true
-        sut.log(Log.navigation(.routeDoesNotExistInTheCurrentStack(path: "route")))
-
-        // Then
-        XCTAssert(spy.didCalledLog)
-    }
-
-    override func tearDown() {
-        Beagle.dependencies = dependencies
-        super.tearDown()
+        XCTAssert(spy.didCalledLog == true)
+        
     }
 
 }
 
-private class BeagleLoggerSpy: BeagleLoggerType {
+private class BeagleLoggerSpy: LoggerProtocol {
     private(set) var didCalledLog = false
 
     func log(_ log: LogType) {

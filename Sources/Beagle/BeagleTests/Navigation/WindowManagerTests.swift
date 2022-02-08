@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ class WindowManagerTests: XCTestCase {
     func test_validUIWindow_shouldReturnAWindowInstance() {
 
         // Given
-        let windowManager = WindowManagerDefault()
+        let windowManager = WindowManager()
 
         // When
         let window = windowManager.window
@@ -34,7 +34,7 @@ class WindowManagerTests: XCTestCase {
 
 }
 
-class WindowManagerDumb: WindowManager {
+class WindowManagerStub: WindowManagerProtocol {
 
     var window: WindowProtocol?
 
@@ -46,12 +46,14 @@ class WindowManagerDumb: WindowManager {
 class WindowMock: WindowProtocol {
 
     var hasInvokedReplaceRootViewController = false
+    var controller: UIViewController?
 
     func replace(rootViewController viewController: UIViewController, animated: Bool, completion: ((Bool) -> Void)?) {
         hasInvokedReplaceRootViewController = true
+        controller = (viewController as? UINavigationController)?.topViewController
     }
 }
 
-fileprivate extension WindowManagerDefault {
+fileprivate extension WindowManager {
     var window: UIWindow? { return UIWindow(frame: .zero) }
 }

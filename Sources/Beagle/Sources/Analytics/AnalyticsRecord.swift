@@ -45,12 +45,39 @@ public struct AnalyticsRecord {
         public var attributes: DynamicDictionary
         public var additionalEntries: DynamicDictionary
 
-        public struct Component {
+        public struct Component: Encodable {
             public var id: String?
             public var type: String?
             public var position: Position
 
-            public struct Position { let x, y: Double }
+            public struct Position: Encodable { let x, y: Double }
+        }
+    }
+}
+
+// MARK: Encodable
+
+extension AnalyticsRecord.Action: Encodable {
+    enum CodingKeys: CodingKey {
+        case beagleAction
+        case event
+        case screen
+        case component
+        case attributes
+        case additionalEntries
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(beagleAction, forKey: .beagleAction)
+        try container.encode(event, forKey: .event)
+        try container.encode(screen, forKey: .screen)
+        try container.encode(component, forKey: .component)
+        if !attributes.isEmpty {
+            try container.encode(attributes, forKey: .attributes)
+        }
+        if !additionalEntries.isEmpty {
+            try container.encode(additionalEntries, forKey: .additionalEntries)
         }
     }
 }

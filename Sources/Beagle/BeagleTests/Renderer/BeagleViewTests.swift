@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ class BeagleViewTests: XCTestCase {
 
     func testControllerChildren() {
         // Given
-        let text = Text("I'm a text")
+        let text = Text(text: "I'm a text")
         let beagleView = BeagleView(text)
         let viewController = UIViewController()
         
@@ -39,7 +39,7 @@ class BeagleViewTests: XCTestCase {
     
     func testViewLayout() {
         // Given
-        let text = Text("I'm a text")
+        let text = Text(text: "I'm a text")
         let beagleView = BeagleView(text)
         let viewController = UIViewController()
         viewController.view.backgroundColor = .white

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,23 +18,18 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class LazyComponentTests: XCTestCase {
+final class LazyComponentTests: EnviromentTestCase {
     
-    func test_whenDecodingJson_thenItShouldReturnALazyComponent() throws {
+    func testCodableLazyComponent() throws {
         let component: LazyComponent = try componentFromJsonFile(fileName: "lazyComponent")
-        _assertInlineSnapshot(matching: component, as: .dump, with: """
-        ▿ LazyComponent
-          ▿ initialState: UnknownComponent
-            - type: "custom:beagleschematestscomponent"
-          - path: "/path"
-        """)
+        assertSnapshotJson(matching: component)
     }
     
     func test_initWithInitialStateBuilder_shouldReturnExpectedInstance() {
         // Given / When
         let sut = LazyComponent(
             path: "component",
-            initialState: Text("text")
+            initialState: Text(text: "text")
         )
 
         // Then
@@ -43,25 +38,19 @@ final class LazyComponentTests: XCTestCase {
     }
     
     func test_lazyLoad_shouldReplaceTheInitialContent() {
-        var initialState = Text("Loading...")
-        initialState.widgetProperties.style = .init(backgroundColor: "#00FF00")
+        let initialState = Text(text: "Loading...", style: Style().backgroundColor("#00FF00"))
         let sut = LazyComponent(path: "", initialState: initialState)
-        let repository = LazyRepositoryStub()
-        let dependecies = BeagleDependencies()
-        dependecies.repository = repository
-        
-        let screenController = BeagleScreenViewController(viewModel: .init(
-            screenType: .declarative(Screen(child: sut)),
-            dependencies: dependecies)
-        )
+        let viewClient = LazyViewClientStub()
+        let viewModel = BeagleScreenViewModel(screenType: .declarative(Screen(child: sut)))
+        enviroment.viewClient = viewClient
+        let screenController = BeagleScreenViewController(viewModel: viewModel)
         
         let size = CGSize(width: 75, height: 80)
         assertSnapshotImage(screenController, size: .custom(size))
         
         screenController.view.setContext(Context(id: "ctx", value: "value of ctx"))
-        var lazyLoaded = Text("Lazy Loaded! @{ctx}")
-        lazyLoaded.widgetProperties.style = .init(backgroundColor: "#FFFF00")
-        repository.componentCompletion?(.success(lazyLoaded))
+        let lazyLoaded = Text(text: "Lazy Loaded! @{ctx}", style: Style().backgroundColor("#FFFF00"))
+        viewClient.componentCompletion?(.success(lazyLoaded))
         
         let consumeMainQueue = expectation(description: "consumeMainQueue")
         DispatchQueue.main.async { consumeMainQueue.fulfill() }
@@ -76,12 +65,13 @@ final class LazyComponentTests: XCTestCase {
             path: "",
             initialState: ComponentDummy(resultView: initialView)
         )
-        let repository = LazyRepositoryStub()
-        let controller = BeagleControllerStub(dependencies: BeagleScreenDependencies(repository: repository))
+        let viewClient = LazyViewClientStub()
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         
+        enviroment.viewClient = viewClient
         let view = sut.toView(renderer: renderer)
-        repository.componentCompletion?(.success(ComponentDummy()))
+        viewClient.componentCompletion?(.success(ComponentDummy()))
         
         XCTAssertEqual(view, initialView)
         XCTAssertTrue(initialView.didCallOnUpdateState)
@@ -95,14 +85,15 @@ final class LazyComponentTests: XCTestCase {
             path: "",
             initialState: ComponentDummy(resultView: initialView)
         )
-        let repository = LazyRepositoryStub()
-        let controller = BeagleControllerStub(dependencies: BeagleScreenDependencies(repository: repository))
+        let viewClient = LazyViewClientStub()
+        let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
+        enviroment.viewClient = viewClient
         
         // When
         let view = sut.toView(renderer: renderer)
         hostView.addSubview(view)
-        repository.componentCompletion?(.failure(.urlBuilderError))
+        viewClient.componentCompletion?(.failure(.urlBuilderError))
         
         // Then
         guard case .error(.lazyLoad(.urlBuilderError), let retry) = controller.serverDrivenState else {
@@ -116,12 +107,12 @@ final class LazyComponentTests: XCTestCase {
         XCTAssertEqual(view.superview, hostView)
         
         // When
-        repository.componentCompletion = nil
+        viewClient.componentCompletion = nil
         let lazyLoadedContent = UIView()
         let retryLazyLoad = try XCTUnwrap(retry)
         retryLazyLoad()
         
-        repository.componentCompletion?(.success(ComponentDummy(resultView: lazyLoadedContent)))
+        viewClient.componentCompletion?(.success(ComponentDummy(resultView: lazyLoadedContent)))
         
         let expect = expectation(description: "consume queue")
         DispatchQueue.main.async { expect.fulfill() }
@@ -133,42 +124,21 @@ final class LazyComponentTests: XCTestCase {
     
 }
 
-class LazyRepositoryStub: Repository {
+class LazyViewClientStub: ViewClientProtocol {
 
     var componentCompletion: ((Result<ServerDrivenComponent, Request.Error>) -> Void)?
-    var formCompletion: ((Result<Action, Request.Error>) -> Void)?
-    var imageCompletion: ((Result<Data, Request.Error>) -> Void)?
-    
-    private(set) var formData: Request.FormData?
 
-    func fetchComponent(
+    func fetch(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        useCache: Bool,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<ServerDrivenComponent, Request.Error>) -> Void
     ) -> RequestToken? {
         componentCompletion = completion
         return nil
     }
-
-    func submitForm(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        data: Request.FormData,
-        completion: @escaping (Result<Action, Request.Error>) -> Void
-    ) -> RequestToken? {
-        formData = data
-        formCompletion = completion
-        return nil
-    }
     
-    func fetchImage(
-        url: String,
-        additionalData: RemoteScreenAdditionalData?,
-        completion: @escaping (Result<Data, Request.Error>) -> Void
-    ) -> RequestToken? {
-        return nil
-    }
+    func prefetch(url: String, additionalData: HttpAdditionalData?) {}
+    
 }
 
 class OnStateUpdatableViewSpy: UIView, OnStateUpdatable {

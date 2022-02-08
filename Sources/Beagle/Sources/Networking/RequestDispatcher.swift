@@ -19,36 +19,34 @@ import Foundation
 struct RequestDispatcher {
     
     // MARK: Dependencies
-
-    typealias Dependencies =
-        DependencyNetworkClient
-        & DependencyUrlBuilder
-        & DependencyLogger
-
-    let dependencies: Dependencies
+    
+    @Injected var urlBuilder: UrlBuilderProtocol
+    @Injected var logger: LoggerProtocol
+    @OptionalInjected var networkClient: NetworkClientProtocol?
     
     // MARK: Internal Methods
+    
+    public init() { }
 
     @discardableResult
     func dispatchRequest(
         path: String,
-        type: Request.RequestType,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<NetworkResponse, Request.Error>) -> Void
     ) -> RequestToken? {
-        guard let url = dependencies.urlBuilder.build(path: path) else {
-            dependencies.logger.log(Log.network(.couldNotBuildUrl(url: path)))
+        guard let url = urlBuilder.build(path: path) else {
+            logger.log(Log.network(.couldNotBuildUrl(url: path)))
             completion(.failure(.urlBuilderError))
             return nil
         }
 
-        guard let networkClient = dependencies.networkClient else {
-            dependencies.logger.log(Log.network(.networkClientWasNotConfigured))
+        guard let networkClient = networkClient else {
+            logger.log(Log.network(.networkClientWasNotConfigured))
             completion(.failure(.networkClientWasNotConfigured))
             return nil
         }
         
-        let request = Request(url: url, type: type, additionalData: additionalData)
+        let request = Request(url: url, additionalData: additionalData)
         return networkClient.executeRequest(request) { result in
             completion(
                 result.mapError { .networkError($0) }

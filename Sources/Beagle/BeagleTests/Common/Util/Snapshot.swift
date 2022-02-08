@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 
 import UIKit
+import Beagle
 import SnapshotTesting
 
 private let imageDiffPrecision: Float = 0.99
@@ -24,6 +25,44 @@ enum ImageSize {
     case standard
     case custom(CGSize)
     case inferFromFrame
+}
+
+func assertSnapshotJson<T: BeagleCodable>(
+    matching value: T,
+    record: Bool = false,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    SnapshotTesting.diffTool = diffTool
+    assertSnapshot(
+        matching: AutoCodable(wrappedValue: value),
+        as: .json,
+        record: record,
+        file: file,
+        testName: testName,
+        line: line
+    )
+}
+
+func _assertInlineSnapshotJson<T: BeagleCodable>(
+    matching value: T,
+    with string: String,
+    record: Bool = false,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    SnapshotTesting.diffTool = diffTool
+    _assertInlineSnapshot(
+        matching: AutoCodable(wrappedValue: value),
+        as: .json,
+        record: record,
+        with: string,
+        file: file,
+        testName: testName,
+        line: line
+    )
 }
 
 func assertSnapshotImage(

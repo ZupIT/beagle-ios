@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TextTests: XCTestCase {
+class TextTests: EnviromentTestCase {
 
     private lazy var theme = AppTheme(styles: [
         "test.text.style": textStyle
@@ -28,10 +28,13 @@ class TextTests: XCTestCase {
         return BeagleStyle.text(font: .boldSystemFont(ofSize: 20), color: .blue)
             <> BeagleStyle.backgroundColor(withColor: .black)
     }
+    
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
 
-    private lazy var dependencies = BeagleScreenDependencies(theme: theme)
-
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
     
     func test_whenDecodingJson_shouldReturnAText() throws {
@@ -41,7 +44,7 @@ class TextTests: XCTestCase {
     
     func testTextContent() {
         // Given
-        let component = Text("Test")
+        let component = Text(text: "Test")
         
         // When
         let label = renderer.render(component) as? UITextView
@@ -70,7 +73,7 @@ class TextTests: XCTestCase {
             }
         }
         
-        //Then
+        // Then
         for alignmentType in Text.Alignment.allCases {
             XCTAssertEqual(alignmentType.toUIKit(), alignments[alignmentType])
         }
@@ -78,7 +81,7 @@ class TextTests: XCTestCase {
     
     func testTextAlignment() {
         // Given
-        let component = Text("Test", alignment: Expression.value(.left))
+        let component = Text(text: "Test", alignment: Expression.value(.left))
         
         // When
        let label = renderer.render(component) as? UITextView
@@ -89,13 +92,11 @@ class TextTests: XCTestCase {
 
     func testRenderTextComponent() {
         let text = Text(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+            text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             styleId: "test.text.style",
             alignment: Expression.value(.right),
             textColor: "#579F2B",
-            widgetProperties: .init(style: Style(
-                backgroundColor: "#FFFF00"
-            ))
+            style: Style(backgroundColor: "#FFFF00")
         )
 
         let view = renderer.render(text)
@@ -103,15 +104,15 @@ class TextTests: XCTestCase {
     }
     
     func testTextWithContext() {
-        //Given
+        // Given
         let container = Container(
              children: [
-                 Text("@{textExpressions.value}", alignment: "@{textExpressions.alignment}", textColor: "@{textExpressions.color}")
+                Text(text: "@{textExpressions.value}", alignment: "@{textExpressions.alignment}", textColor: "@{textExpressions.color}")
              ],
              context: Context(id: "textExpressions", value: .dictionary(["value": "text via expression", "color": "#000000", "alignment": .string(Text.Alignment.center.rawValue)]))
          )
          
-         //When
+         // When
          let controller = BeagleScreenViewController(viewModel: .init(screenType: .declarative(container.toScreen())))
          
          // Then

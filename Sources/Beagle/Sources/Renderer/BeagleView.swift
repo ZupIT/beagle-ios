@@ -29,22 +29,16 @@ public class BeagleView: UIView {
     
     // MARK: - Initialization
     
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ component: ServerDrivenComponent) {
-        self.init(.declarative(component.toScreen()))
-    }
-    
-    @available(*, deprecated, message: "Since version 1.10. Declarative screen construction will be removed in 2.0. Use the init with remote or json parameter instead.")
-    public convenience init(_ screenType: ScreenType) {
-        self.init(viewModel: .init(screenType: screenType))
-    }
-    
     public convenience init(_ remote: ScreenType.Remote, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
         self.init(viewModel: .init(screenType: .remote(remote), beagleViewStateObserver: beagleViewStateObserver))
     }
     
     public convenience init(_ json: String, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
         self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver))
+    }
+    
+    public convenience init(_ component: ServerDrivenComponent) {
+        self.init(viewModel: .init(screenType: .declarative(component.toScreen())))
     }
 
     required init(viewModel: BeagleScreenViewModel) {

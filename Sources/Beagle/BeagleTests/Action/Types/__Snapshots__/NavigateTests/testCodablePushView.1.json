@@ -1,0 +1,23 @@
+{
+  "_beagleAction_" : "beagle:pushview",
+  "navigationContext" : {
+    "path" : "path",
+    "value" : "string"
+  },
+  "route" : {
+    "fallback" : {
+      "_beagleComponent_" : "beagle:screencomponent",
+      "child" : {
+        "_beagleComponent_" : "custom:beagleschematestscomponent"
+      },
+      "safeArea" : {
+        "bottom" : true,
+        "leading" : true,
+        "top" : true,
+        "trailing" : true
+      }
+    },
+    "shouldPrefetch" : true,
+    "url" : "schema:\/\/path"
+  }
+}

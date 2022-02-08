@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-public enum ImageContentMode: String, Decodable {
+public enum ImageContentMode: String, Codable {
     case fitXY = "FIT_XY" // scaleToFill
     case fitCenter = "FIT_CENTER" // scaleAspectFit
     case centerCrop = "CENTER_CROP" // scaleAspectFill

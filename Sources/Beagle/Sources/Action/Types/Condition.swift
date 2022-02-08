@@ -15,32 +15,20 @@
  */
 
 /// Action to resolve condition and call onTrue if return true and onFalse if return is false.
-public struct Condition: AnalyticsAction, AutoInitiableAndDecodable {
+public struct Condition: Action {
     
     /// Condition should represents a boolean.
-    public let condition: Expression<Bool>
+    public var condition: Expression<Bool>
     
     /// Defines the actions triggered if the condition returns true.
-    public let onTrue: [Action]?
+    @AutoCodable
+    public var onTrue: [Action]?
     
     /// Defines the actions triggered if the condition returns false.
-    public let onFalse: [Action]?
+    @AutoCodable
+    public var onFalse: [Action]?
     
     /// Defines an analytics configuration for this action.
-    public let analytics: ActionAnalyticsConfig?
-
-// sourcery:inline:auto:Condition.Init
-    public init(
-        condition: Expression<Bool>,
-        onTrue: [Action]? = nil,
-        onFalse: [Action]? = nil,
-        analytics: ActionAnalyticsConfig? = nil
-    ) {
-        self.condition = condition
-        self.onTrue = onTrue
-        self.onFalse = onFalse
-        self.analytics = analytics
-    }
-// sourcery:end
+    public var analytics: ActionAnalyticsConfig?
 
 }

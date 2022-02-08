@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ButtonTests: XCTestCase {
+final class ButtonTests: EnviromentTestCase {
     
     private let snapshotSize = CGSize(width: 150, height: 50)
     private lazy var theme = AppTheme(
@@ -27,9 +27,13 @@ final class ButtonTests: XCTestCase {
         ]
     )
     
-    private lazy var dependencies = BeagleScreenDependencies(theme: theme)
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
+    
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
 
     private func buttonStyle() -> (UIButton?) -> Void {
         return {
@@ -40,17 +44,17 @@ final class ButtonTests: XCTestCase {
         }
     }
     
-    func test_whenDecodingJson_thenItShouldReturnAButton() throws {
+    func testCodableButton() throws {
         let component: Button = try componentFromJsonFile(fileName: "buttonComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
     func testSetRightButtonTitle() {
-        //Given
+        // Given
         let buttonTitle = "title"
         let component = Button(text: Expression.value(buttonTitle))
         
-        //When
+        // When
         let button = renderer.render(component) as? UIButton
         
         // Then
@@ -77,7 +81,7 @@ final class ButtonTests: XCTestCase {
     func testApplyButtonStyle() {
         // Given
         let theme = ThemeSpy()
-        controller.dependencies = BeagleScreenDependencies(theme: theme)
+        enviroment.theme = theme
         
         let style = "test.button.style"
         let button = Button(text: "apply style", styleId: style)
@@ -93,10 +97,10 @@ final class ButtonTests: XCTestCase {
     func testPrefetchNavigateAction() {
         // Given
         let prefetch = BeaglePrefetchHelpingSpy()
-        controller.dependencies = BeagleScreenDependencies(preFetchHelper: prefetch)
+        enviroment.preFetchHelper = prefetch
         
         let navigatePath = "path-to-prefetch"
-        let navigate = Navigate.pushStack(.remote(.init(url: navigatePath)))
+        let navigate = Navigate.pushStack(.remote(.init(url: "\(navigatePath)")))
         let button = Button(text: "prefetch", onPress: [navigate])
 
         // When
@@ -116,38 +120,6 @@ final class ButtonTests: XCTestCase {
         view?.triggerTouchUpInsideActions()
 
         // Then
-        XCTAssertEqual(action.executionCount, 1)
-        XCTAssert(action.lastOrigin as AnyObject === view)
-    }
-    
-    func testAnalyticsClickTrigger() {
-        // Given
-        let analytics = AnalyticsExecutorSpy()
-        let button = Button(text: "Trigger analytics click", clickAnalyticsEvent: .init(category: "some category"))
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
-    }
-    
-    func testAnalyticsActionTrigger() {
-        // Given
-        let action = ActionSpy()
-        let analytics = AnalyticsExecutorSpy()
-        controller.dependencies = BeagleScreenDependencies(analytics: analytics)
-        
-        let button = Button(text: "Trigger analytics click", onPress: [action], clickAnalyticsEvent: .init(category: "some category"))
-
-        // When
-        let view = renderer.render(button) as? Button.BeagleUIButton
-        view?.triggerTouchUpInsideActions()
-        
-        // Then
-        XCTAssertTrue(analytics.didTrackEventOnClick)
         XCTAssertEqual(action.executionCount, 1)
         XCTAssert(action.lastOrigin as AnyObject === view)
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,17 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BeagleConfig.start()
         
-        let mainScreenViewController = MainScreen().screenController()
-        mainScreenViewController.title = "Beagle"
-        
-        let nativeViewController = NativeViewController()
-        nativeViewController.title = "Native"
-        
-        let tabBarController = UITabBarController()
-        tabBarController.viewControllers = [mainScreenViewController, UINavigationController(rootViewController: nativeViewController)]
-        
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = tabBarController
+        window?.rootViewController = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint))
         window?.makeKeyAndVisible()
         
         return true

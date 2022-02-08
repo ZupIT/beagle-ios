@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,54 +24,54 @@ class AccessibilityTest: XCTestCase {
     private let label = "test label"
     
     func testIfAttributesWereAppliedToNavigationItem() {
-        //given
+        // Given
         let accessibility = Accessibility(accessibilityLabel: label, accessible: true, isHeader: true)
         let navigationItem = UINavigationItem()
 
-        //when
+        // When
         ViewConfigurator.applyAccessibility(accessibility, to: navigationItem)
 
-        //then
+        // Then
         XCTAssert(navigationItem.accessibilityLabel == label)
         XCTAssert(navigationItem.isAccessibilityElement)
         XCTAssert(navigationItem.accessibilityTraits == .header)
     }
 
     func testIfAttributesWereAppliedToBarButtonItem() {
-        //given
+        // Given
         let accessibility = Accessibility(accessibilityLabel: label, accessible: true, isHeader: true)
         let barButtonItem = UIBarButtonItem()
 
-        //when
+        // When
         ViewConfigurator.applyAccessibility(accessibility, to: barButtonItem)
 
-        //then
+        // Then
         XCTAssert(barButtonItem.accessibilityLabel == label)
         XCTAssert(barButtonItem.isAccessibilityElement)
         XCTAssert(barButtonItem.accessibilityTraits == .header)
     }
     
     func testIfAttributesWereAppliedToView() {
-        //given
+        // Given
         let accessibility = Accessibility(accessibilityLabel: label, accessible: true)
         
-        //when
+        // When
         configurator.setup(accessibility: accessibility)
         
-        //then
+        // Then
         XCTAssert(testView.accessibilityLabel == label)
         XCTAssert(testView.isAccessibilityElement)
         XCTAssert(testView.accessibilityTraits == .none)
     }
     
     func testIfViewIsNotAccessible() {
-        //given
+        // Given
         let accessibility = Accessibility(accessible: false)
         
-        //when
+        // When
         configurator.setup(accessibility: accessibility)
         
-        //then
+        // Then
         XCTAssert(testView.isAccessibilityElement == false)
     }
 }

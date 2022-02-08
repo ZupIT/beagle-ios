@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ final class CustomOperationsTests: OperationEvaluationTests {
         
     func testCustomOperation() {
         // Given
-        dependencies.operationsProvider.register(operationId: "isValidCPF") { parameters in
+        enviroment.operationsProvider.register(operationId: "isValidCPF") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let intParameters = anyParameters.first as? Int {
                 let stringParameters = String(intParameters)
@@ -48,22 +48,22 @@ final class CustomOperationsTests: OperationEvaluationTests {
         let customEmptyOperation = Operation(name: "", parameters: [.value(.literal(.int(2)))])
         let customNumbersOperation = Operation(name: "123", parameters: [.value(.literal(.int(2)))])
 
-        dependencies.operationsProvider.register(operationId: "sum???") { _ in
+        enviroment.operationsProvider.register(operationId: "sum???") { _ in
             return nil
         }
         
-        dependencies.operationsProvider.register(operationId: "") { _ in
+        enviroment.operationsProvider.register(operationId: "") { _ in
             return nil
         }
         
-        dependencies.operationsProvider.register(operationId: "123") { _ in
+        enviroment.operationsProvider.register(operationId: "123") { _ in
             return nil
         }
         
         // When // Then
-        XCTAssertEqual(dependencies.operationsProvider.evaluate(with: customSumOperation, in: view), .empty)
-        XCTAssertEqual(dependencies.operationsProvider.evaluate(with: customEmptyOperation, in: view), .empty)
-        XCTAssertEqual(dependencies.operationsProvider.evaluate(with: customNumbersOperation, in: view), .empty)
+        XCTAssertEqual(enviroment.operationsProvider.evaluate(with: customSumOperation, in: view), .empty)
+        XCTAssertEqual(enviroment.operationsProvider.evaluate(with: customEmptyOperation, in: view), .empty)
+        XCTAssertEqual(enviroment.operationsProvider.evaluate(with: customNumbersOperation, in: view), .empty)
     }
 
     private func evaluateCustomOperation(_ name: String, completion: ([DynamicObject]) -> Void) {

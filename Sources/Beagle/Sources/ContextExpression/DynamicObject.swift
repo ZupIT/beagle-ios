@@ -127,7 +127,7 @@ extension DynamicObject: CustomStringConvertible {
 
 // MARK: Codable
 
-extension DynamicObject: Decodable {
+extension DynamicObject: Codable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -151,9 +151,6 @@ extension DynamicObject: Decodable {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "DynamicObject value cannot be decoded")
         }
     }
-}
-
-extension DynamicObject: Encodable {
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()

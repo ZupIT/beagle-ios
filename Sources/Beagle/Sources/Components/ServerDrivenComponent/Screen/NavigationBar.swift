@@ -18,94 +18,39 @@ import Foundation
 import UIKit
 
 /// Typically displayed at the top of the window, containing buttons for navigating within a hierarchy of screens.
-public struct NavigationBar: Decodable, AutoInitiable {
+public struct NavigationBar: Codable {
     
     /// Defines the title on the navigation bar.
     public let title: String
     
     /// Could define a custom layout for your action bar/navigation bar.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Enables a back button into your action bar/navigation bar.
-    public let showBackButton: Bool?
+    public var showBackButton: Bool?
     
     /// Defines accessibility details for the back button.
-    public let backButtonAccessibility: Accessibility?
+    public var backButtonAccessibility: Accessibility?
     
     /// Defines a List of navigation bar items.
-    public let navigationBarItems: [NavigationBarItem]?
+    public var navigationBarItems: [NavigationBarItem]?
 
-// sourcery:inline:auto:NavigationBar.Init
-    public init(
-        title: String,
-        styleId: String? = nil,
-        showBackButton: Bool? = nil,
-        backButtonAccessibility: Accessibility? = nil,
-        navigationBarItems: [NavigationBarItem]? = nil
-    ) {
-        self.title = title
-        self.styleId = styleId
-        self.showBackButton = showBackButton
-        self.backButtonAccessibility = backButtonAccessibility
-        self.navigationBarItems = navigationBarItems
-    }
-// sourcery:end
 }
 
 /// Defines a item that could be showed in navigation bar.
-public struct NavigationBarItem: Decodable, AccessibilityComponent, IdentifiableComponent {
-    
-    /// Id use to identifier the current component.
-    public let id: String?
+public struct NavigationBarItem: Codable, AccessibilityComponent {
     
     /// Defines an image for your navigation bar.
-    public let image: StringOrExpression?
+    public var image: StringOrExpression?
     
     /// Defines the text of the item.
     public let text: String
     
     /// Defines an action to be called when the item is clicked on.
-    public let action: Action
+    @AutoCodable
+    public var onPress: [Action]
     
     /// Defines Accessibility details for the item.
-    public let accessibility: Accessibility?
-
-    public init(
-        id: String? = nil,
-        image: String? = nil,
-        text: String,
-        action: Action,
-        accessibility: Accessibility? = nil
-    ) {
-        self.id = id
-        self.image = image
-        self.text = text
-        self.action = action
-        self.accessibility = accessibility
-    }
+    public var accessibility: Accessibility?
     
-    enum CodingKeys: String, CodingKey {
-        case id
-        case image
-        case text
-        case action
-        case accessibility
-    }
-
-    enum LocalImageCodingKey: String, CodingKey {
-        case mobileId
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-        text = try container.decode(String.self, forKey: .text)
-        action = try container.decode(forKey: .action)
-        accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
-        
-        let nestedContainer = try? container.nestedContainer(keyedBy: LocalImageCodingKey.self, forKey: .image)
-        image = try nestedContainer?.decodeIfPresent(String.self, forKey: .mobileId)
-    }
-
 }

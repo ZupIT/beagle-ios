@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ class PullToRefreshTests: XCTestCase {
     
     private let imageSize = ImageSize.custom(CGSize(width: 80, height: 40))
     
-    func testDecodingPullToRefresh() throws {
+    func testCodablePullToRefresh() throws {
         let component: PullToRefresh = try componentFromJsonFile(fileName: "PullToRefresh")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
 
     func testPullToRefreshSnapshot() throws {
@@ -32,7 +32,7 @@ class PullToRefreshTests: XCTestCase {
         let component = PullToRefresh(
             isRefreshing: false,
             color: "#FF0000",
-            child: Text("Text")
+            child: Text(text: "Text")
         )
         
         let controller = BeagleScreenViewController(component)
@@ -45,7 +45,12 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: ListView { Text("text") }
+            child: ListView(
+                dataSource: .value(
+                    [ ["value": "text"] ]
+                ),
+                templates: [ Template(view: Text(text: "@{item.value}")) ]
+            )
         ).toView(renderer: controller.renderer)
         
         // Then
@@ -56,7 +61,7 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: ScrollView { Text("text") }
+            child: ScrollView(children: [Text(text: "text")])
         ).toView(renderer: controller.renderer)
         
         // Then
@@ -68,7 +73,7 @@ class PullToRefreshTests: XCTestCase {
         // Given // When
         let controller = BeagleScreenViewController(ComponentDummy())
         let view = PullToRefresh(
-            child: Text("text")
+            child: Text(text: "text")
         ).toView(renderer: controller.renderer)
         
         // Then

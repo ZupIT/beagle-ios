@@ -18,59 +18,19 @@ import Foundation
 
 public struct Request {
     public let url: URL
-    public let type: RequestType
-    public let additionalData: RemoteScreenAdditionalData?
+    public let additionalData: HttpAdditionalData?
 
     public init(
         url: URL,
-        type: RequestType,
-        additionalData: RemoteScreenAdditionalData?
+        additionalData: HttpAdditionalData?
     ) {
         self.url = url
-        self.type = type
         self.additionalData = additionalData
-    }
-
-    public enum RequestType {
-        case fetchComponent
-        case submitForm(FormData)
-        case fetchImage
-        case rawRequest(RequestData)
-    }
-
-    public struct FormData {
-        public let method: FormRemoteAction.Method
-        public let values: [String: String]
-
-        public init(
-            method: FormRemoteAction.Method,
-            values: [String: String]
-        ) {
-            self.method = method
-            self.values = values
-        }
-    }
-    
-    public struct RequestData {
-        public let method: String?
-        public let headers: [String: String]?
-        public let body: Any?
-        
-        public init(
-            method: String? = "GET",
-            headers: [String: String]? = [:],
-            body: Any? = nil
-        ) {
-            self.method = method
-            self.headers = headers
-            self.body = body
-        }
     }
 
     public enum Error: Swift.Error {
         case networkError(NetworkError)
         case decoding(Swift.Error)
-        case loadFromTextError // unused error
         case urlBuilderError
 
         /// Beagle needs to be configured with your custom NetworkClient that is responsible to do network requests.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
         // Then should have all default properties
         _assertInlineSnapshot(matching: record, as: .json, with: """
         {
-          "beagleAction" : "beagle:formremoteaction",
+          "beagleAction" : "beagle:sendrequest",
           "component" : {
             "id" : "test-component-id",
             "position" : {
@@ -66,7 +66,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
         {
           "attributes" : {
             "method" : "DELETE",
-            "path" : "PATH"
+            "url" : "PATH"
           }
         }
         """)
@@ -125,7 +125,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
         {
           "attributes" : {
             "method" : "DELETE",
-            "path" : "PATH"
+            "url" : "PATH"
           }
         }
         """)
@@ -168,7 +168,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
     func testAdditionalEntriesAndAttributes() {
         // Given
         actionWithConfig(.enabled(.init(
-            attributes: ["path"],
+            attributes: ["url"],
             additionalEntries: ["additional": "NEW ENTRY"]
         )))
 
@@ -179,7 +179,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
             "additional" : "NEW ENTRY"
           },
           "attributes" : {
-            "path" : "PATH"
+            "url" : "PATH"
           }
         }
         """)
@@ -188,12 +188,12 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
 
 // MARK: - Aux
 
-class RecordFactoryHelpers: XCTestCase {
+class RecordFactoryHelpers: EnviromentTestCase {
 
     lazy var sut = ActionRecordFactory(info: info, globalConfig: _globalConfig.actions)
 
     // swiftlint:disable implicitly_unwrapped_optional
-    var action: FormRemoteAction!
+    var action: SendRequest!
 
     lazy var info = AnalyticsService.ActionInfo(
         action: action,
@@ -205,9 +205,9 @@ class RecordFactoryHelpers: XCTestCase {
     lazy var _globalConfig = AnalyticsConfig()
 
     func actionWithConfig(_ config: ActionAnalyticsConfig?) {
-        action = FormRemoteAction(
-            path: "PATH",
-            method: .delete,
+        action = SendRequest(
+            url: "PATH",
+            method: .value(.delete),
             analytics: config
         )
     }
@@ -222,7 +222,7 @@ class RecordFactoryHelpers: XCTestCase {
 
     func globalConfigWithActionEnabled() {
         _globalConfig = .init(actions: [
-            "beagle:formremoteaction": ["method", "path"]
+            "beagle:sendrequest": ["method", "url"]
         ])
     }
 
@@ -241,7 +241,7 @@ class RecordFactoryHelpers: XCTestCase {
     }
 
     func prepareComponentHierarchy() throws {
-        let (view, controller) = try analyticsViewHierarchyWith(context: nil)
+        let (view, controller) = try analyticsViewHierarchyWith(context: nil, coder: enviroment.coder)
         info = .init(action: action, event: "event", origin: view, controller: controller)
     }
 }

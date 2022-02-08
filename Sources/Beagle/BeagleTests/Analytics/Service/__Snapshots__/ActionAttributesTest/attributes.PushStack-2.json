@@ -1,13 +1,18 @@
 {
+  "navigationContext" : {
+    "path" : "path",
+    "value" : {
+      "integerValue" : 1
+    }
+  },
   "route" : {
     "fallback" : {
+      "_beagleComponent_" : "beagle:screencomponent",
       "child" : {
-        "text" : "Fallback Screen Content",
-        "widgetProperties" : {
-
-        }
+        "_beagleComponent_" : "beagle:text",
+        "text" : "Fallback Screen Content"
       },
-      "identifier" : "fallback-screen-id",
+      "id" : "fallback-screen-id",
       "navigationBar" : {
         "showBackButton" : true,
         "title" : "Fallback Screen Title"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,19 +21,14 @@ class PageViewUIComponentTests: XCTestCase {
 
     private lazy var pageView = PageViewUIComponent(
         model: .init(pages: pages),
-        indicatorView: PageIndicatorUIComponent(selectedColor: nil, unselectedColor: nil),
         controller: BeagleControllerStub()
     )
 
     private lazy var pages: [BeagleScreenViewController] = [
-        makeScreen(Text("Index: 1")),
-        makeScreen(Text("Index: 2")),
-        makeScreen(Text("Index: 3"))
+        BeagleScreenViewController(Text(text: "Index: 1")),
+        BeagleScreenViewController(Text(text: "Index: 2")),
+        BeagleScreenViewController(Text(text: "Index: 3"))
     ]
-
-    private func makeScreen(_ component: ServerDrivenComponent) -> BeagleScreenViewController {
-        return Beagle.screen(.declarative(component.toScreen()))
-    }
 
     private lazy var pager = pageView.pageViewController
 

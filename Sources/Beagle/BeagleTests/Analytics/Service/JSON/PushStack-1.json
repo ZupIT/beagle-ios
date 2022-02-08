@@ -2,7 +2,7 @@
     "_beagleAction_": "beagle:pushStack",
     "analytics": {
         "attributes": [
-            "route.fallback.identifier",
+            "route.fallback.id",
             "route.fallback.navigationBar.title",
             "route.shouldPrefetch",
             "route.url"
@@ -16,7 +16,7 @@
                 "_beagleComponent_": "beagle:text",
                 "text": "Fallback Screen Content"
             },
-            "identifier": "fallback-screen-id",
+            "id": "fallback-screen-id",
             "navigationBar": {
                 "showBackButton": true,
                 "title": "Fallback Screen Title"

@@ -35,8 +35,6 @@ extension PageIndicator {
 
 class PageIndicatorUIComponent: UIView, PageIndicatorUIView {
     
-    weak var outputReceiver: PageIndicatorOutput?
-    
     typealias Model = PageIndicatorUIViewModel
     
     private let selectedColor: UIColor

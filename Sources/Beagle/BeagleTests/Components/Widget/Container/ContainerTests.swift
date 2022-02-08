@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ContainerTests: XCTestCase {
+final class ContainerTests: EnviromentTestCase {
     
     private lazy var theme = AppTheme(
         styles: [
@@ -28,8 +28,12 @@ final class ContainerTests: XCTestCase {
         ]
     )
     
-    private lazy var dependencies = BeagleScreenDependencies(theme: theme)
-    private lazy var controller = BeagleControllerStub(dependencies: dependencies)
+    override func setUp() {
+        super.setUp()
+        enviroment.theme = theme
+    }
+    
+    private lazy var controller = BeagleControllerStub()
     private lazy var renderer = BeagleRenderer(controller: controller)
     
     private func containerStyle() -> (UIView?) -> Void {
@@ -40,48 +44,18 @@ final class ContainerTests: XCTestCase {
         }
     }
     
-    func test_whenDecodingJson_shouldReturnAContainer() throws {
+    func testCodableContainer() throws {
         let component: Container = try componentFromJsonFile(fileName: "Container")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
-    func test_whenDecodingJson2_shouldReturnAContainer() throws {
+    func testCodableContainerWithoutChildren() throws {
         let component: Container = try componentFromJsonFile(fileName: "ContainerWithoutChildren")
-        assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func test_initWithChildren_shouldReturnContainerAndSetDependenciesProperly() {
-        // Given
-        let sut = Container(children: [
-            Text("Some texts."),
-            Text("More texts.")
-        ], widgetProperties: .init(style: Style(flex: Flex())))
-        
-        let mirror = Mirror(reflecting: sut)
-        
-        // When
-        let style = mirror.firstChild(of: WidgetProperties.self)?.style
-        let component = mirror.firstChild(of: [ServerDrivenComponent].self)
-
-        // Then
-        XCTAssertTrue(sut.children?.count == 2)
-        XCTAssertNotNil(style)
-        XCTAssertNotNil(component)
-    }
-    
-    func test_applyFlex_shouldReturnContainer() {
-        // Given
-        let component = Container(children: [
-            Text("Some texts")
-        ])
-        // When
-        let container = component.applyFlex(Flex(justifyContent: .center))
-        // Then
-        XCTAssertNotNil(container.style?.flex)
+        assertSnapshotJson(matching: component)
     }
     
     func test_toView_shouldReturnTheExpectedView() throws {
-        //Given
+        // Given
         let numberOfChildren = 3
         let containerChildren = Array(repeating: ComponentDummy(), count: numberOfChildren)
         let container = Container(children: containerChildren)
@@ -89,44 +63,40 @@ final class ContainerTests: XCTestCase {
         // When
         let resultingView = renderer.render(container)
         
-        //Then
+        // Then
         XCTAssert(resultingView.subviews.count == numberOfChildren)
     }
     
     func test_renderContainer() throws {
         let container = Container(
             children: [
-                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et felis tortor. Maecenas laoreet metus in augue mattis, quis imperdiet urna ornare. Sed commodo fringilla massa, sit amet molestie nunc. Quisque euismod eros felis. Nam dapibus venenatis consequat."),
-                Text("Donec orci elit, scelerisque vel mattis at, ornare in libero. Cras vestibulum justo et lacus accumsan malesuada. Pellentesque gravida risus tincidunt sapien commodo iaculis. Praesent eget consectetur ligula, vitae fringilla urna. Donec erat arcu, fermentum sed orci in, euismod dictum augue. Aenean ac ullamcorper ante, sit amet commodo elit. Mauris et nibh ac ante luctus fermentum varius nec mauris."),
-                Text("Sed vel nisl tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fringilla velit vulputate ultricies auctor. Sed et enim lacinia risus hendrerit efficitur vitae vel tellus.")
+                Text(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum et felis tortor. Maecenas laoreet metus in augue mattis, quis imperdiet urna ornare. Sed commodo fringilla massa, sit amet molestie nunc. Quisque euismod eros felis. Nam dapibus venenatis consequat."),
+                Text(text: "Donec orci elit, scelerisque vel mattis at, ornare in libero. Cras vestibulum justo et lacus accumsan malesuada. Pellentesque gravida risus tincidunt sapien commodo iaculis. Praesent eget consectetur ligula, vitae fringilla urna. Donec erat arcu, fermentum sed orci in, euismod dictum augue. Aenean ac ullamcorper ante, sit amet commodo elit. Mauris et nibh ac ante luctus fermentum varius nec mauris."),
+                Text(text: "Sed vel nisl tortor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec fringilla velit vulputate ultricies auctor. Sed et enim lacinia risus hendrerit efficitur vitae vel tellus.")
             ],
-            widgetProperties: .init(
-                style: .init(
-                    backgroundColor: "#0000FF50",
-                    cornerRadius: .init(radius: 30.0),
-                    margin: EdgeValue().horizontal(20),
-                    flex: Flex().grow(1).justifyContent(.spaceEvenly)
-                )
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 30.0),
+                margin: EdgeValue().horizontal(20),
+                flex: Flex().grow(1).justifyContent(.spaceEvenly)
             )
         )
 
-        let screen = Beagle.screen(.declarative(container.toScreen()))
+        let screen = BeagleScreenViewController(container)
         assertSnapshotImage(screen, size: .custom(ViewImageConfig.iPhoneXr.size!))
     }
     
     func test_renderContainer_withBorder() throws {
         // Given
         let container = Container(
-            children: [Text("Content")],
-            widgetProperties: .init(
-                style: .init(
-                    backgroundColor: "#0000FF50",
-                    cornerRadius: .init(topLeft: 15, topRight: 35, bottomLeft: 25, bottomRight: 50),
-                    borderColor: "#FF0000",
-                    borderWidth: 4,
-                    size: .init(width: 100%, height: 100%),
-                    padding: EdgeValue().all(4)
-                )
+            children: [Text(text: "Content")],
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(topLeft: 15, topRight: 35, bottomLeft: 25, bottomRight: 50),
+                borderColor: "#FF0000",
+                borderWidth: .value(4),
+                size: .init(width: 100%, height: 100%),
+                padding: EdgeValue().all(4)
             )
         )
         
@@ -138,7 +108,7 @@ final class ContainerTests: XCTestCase {
     }
     
     func test_actionExecuting() {
-        //Given
+        // Given
         
         let expectation = self.expectation(description: "ActionExetuting")
         let controllerSpy = BeagleControllerSpy()
@@ -147,11 +117,11 @@ final class ContainerTests: XCTestCase {
         let renderer = BeagleRenderer(controller: controllerSpy)
         let sut = Container(children: [], onInit: [])
         
-        //When
+        // When
 
         _ = renderer.render(sut)
         
-        //Then
+        // Then
         
         waitForExpectations(timeout: 5, handler: nil)
         XCTAssert(controllerSpy.didCalledExecute)
@@ -160,12 +130,14 @@ final class ContainerTests: XCTestCase {
     func test_containerStyleId() {
         // Given
         let theme = ThemeSpy()
-        controller.dependencies = BeagleScreenDependencies(theme: theme)
+        enviroment.theme = theme
         
         let style = "test.container.style"
-        let container = Container(styleId: style, widgetProperties: WidgetProperties(style: Style().size(Size().width(100).height(100)))) {
-            Text("teste", textColor: "#FFFFFF")
-        }
+        let container = Container(
+            children: [Text(text: "teste", textColor: "#FFFFFF")],
+            styleId: style,
+            style: Style().size(Size().width(100).height(100))
+        )
 
         // When
         let view = renderer.render(container)
@@ -174,11 +146,155 @@ final class ContainerTests: XCTestCase {
         XCTAssertEqual(view, theme.styledView)
         XCTAssertEqual(style, theme.styleApplied)
     }
+    
+    func testContainerWithBorderAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            children: [Text(text: "Content")],
+            context: Context(id: "context", value: [
+                "backgroundColor": "#0000FF50",
+                "borderColor": "#0000FF",
+                "borderWidth": 2,
+                "topLeft": 15,
+                "topRight": 35.0,
+                "bottomLeft": 25.0,
+                "bottomRight": 50.0
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "@{context.backgroundColor}",
+                cornerRadius: .init(
+                    radius: "@{context.radius}",
+                    topLeft: "@{context.topLeft}",
+                    topRight: "@{context.topRight}",
+                    bottomLeft: "@{context.bottomLeft}",
+                    bottomRight: "@{context.bottomRight}"
+                ),
+                borderColor: "@{context.borderColor}",
+                borderWidth: "@{context.borderWidth}",
+                size: .init(width: 100%, height: 100%),
+                padding: EdgeValue().all(4)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "backgroundColor": "#00000050",
+            "borderColor": "#00FF00",
+            "borderWidth": 4,
+            "radius": 8
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+    }
+    
+    func testContainerWithMarginPaddingAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            children: [
+                Container(
+                    style: .init(
+                        backgroundColor: "#00FF0050",
+                        flex: Flex().grow(1)
+                    )
+                )
+            ],
+            context: Context(id: "context", value: [
+                "marginTop": 4,
+                "marginBottom": 4,
+                "marginLeft": 2,
+                "marginRight": 2,
+                "paddingTop": 2,
+                "paddingBottom": 2,
+                "paddingLeft": 6,
+                "paddingRight": 6
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 6),
+                margin: EdgeValue(
+                    left: .init(value: "@{context.marginLeft}", type: .real),
+                    top: .init(value: "@{context.marginTop}", type: .real),
+                    right: .init(value: "@{context.marginRight}", type: .real),
+                    bottom: .init(value: "@{context.marginBottom}", type: .real)
+                ),
+                padding: EdgeValue(
+                    left: .init(value: "@{context.paddingLeft}", type: .real),
+                    top: .init(value: "@{context.paddingTop}", type: .real),
+                    right: .init(value: "@{context.paddingRight}", type: .real),
+                    bottom: .init(value: "@{context.paddingBottom}", type: .real)
+                ),
+                flex: Flex().grow(1)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "marginTop": 20,
+            "marginBottom": 20,
+            "marginLeft": 20,
+            "marginRight": 20,
+            "paddingTop": 20,
+            "paddingBottom": 20,
+            "paddingLeft": 20,
+            "paddingRight": 20
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+    }
+    
+    func testContainerWithSizePositionAndExpression() throws {
+        // Given
+        let containerId = "containerSample"
+        let container = Container(
+            context: Context(id: "context", value: [
+                "width": 40,
+                "height": 40,
+                "top": 10,
+                "left": 10
+            ]),
+            id: containerId,
+            style: .init(
+                backgroundColor: "#0000FF50",
+                cornerRadius: .init(radius: 6),
+                size: Size(
+                    width: .init(value: "@{context.width}", type: .real),
+                    maxHeight: .init(value: "@{context.height}", type: .real)
+                ),
+                position: EdgeValue(
+                    left: .init(value: "@{context.left}", type: .real),
+                    top: .init(value: "@{context.top}", type: .real)
+                ),
+                flex: Flex().grow(1)
+            )
+        )
+        let action = SetContext(contextId: "context", value: [
+            "width": 60,
+            "height": 60,
+            "top": 20,
+            "left": 20
+        ])
+        
+        // When // Then
+        let screen = BeagleScreenViewController(container)
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+        
+        screen.execute(actions: [action], event: "event", origin: screen.view.getView(by: containerId) ?? UIView())
+        assertSnapshotImage(screen, size: .custom(CGSize(width: 100, height: 100)))
+    }
 }
 
 class BeagleControllerSpy: BeagleController {
     
-    var dependencies: BeagleDependenciesProtocol = Beagle.dependencies
     var serverDrivenState: ServerDrivenState = .finished
     var screenType: ScreenType = .declarativeText("")
     var screen: Screen?

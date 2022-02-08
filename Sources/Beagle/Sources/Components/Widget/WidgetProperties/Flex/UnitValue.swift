@@ -15,28 +15,34 @@
  */
 
 /// Receive the amount to be applied and the type.
-public struct UnitValue: Decodable, Equatable {
+public struct UnitValue: Codable, Equatable {
     
     // MARK: - Constants
     public static let zero = UnitValue(value: 0.0, type: .real)
     public static let auto = UnitValue(value: 0.0, type: .auto)
     
     // MARK: - Public Properties
-    public let value: Double
+    public let value: Expression<Double>
     public let type: UnitType
     
-    // MARK: - Initialization
+    var doubleValue: Double {
+        guard case let .value(doubleValue) = value else { return .zero }
+        return doubleValue
+    }
     
-    public init(
-        value: Double,
-        type: UnitType
-    ) {
-        self.value = value
+    init(value: Double, type: UnitType) {
+        self.value = .value(value)
         self.type = type
     }
     
+    init(value: Expression<Double>, type: UnitType) {
+        self.value = value
+        self.type = type
+    }
+
 }
-public enum UnitType: String, Decodable {
+
+public enum UnitType: String, Codable {
     case auto = "AUTO"
     case real = "REAL"
     case percent = "PERCENT"

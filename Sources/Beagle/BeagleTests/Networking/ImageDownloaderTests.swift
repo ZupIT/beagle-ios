@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,9 +19,7 @@ import XCTest
 
 class ImageDownloaderTests: XCTestCase {
 
-    private var dependencies = BeagleDependencies()
-
-    private lazy var sut = ImageDownloaderDefault(dependencies: dependencies)
+    private lazy var sut = ImageDownloader()
 
     private let url = "www.something.com"
     
@@ -31,7 +29,7 @@ class ImageDownloaderTests: XCTestCase {
         let image = UIImage(named: "beagle", in: Bundle(for: type(of: self)), compatibleWith: nil)
         let imageData = image!.pngData()!
 
-        dependencies.networkClient = NetworkClientStub(result:
+        sut.dispatcher.networkClient = NetworkClientStub(result:
             .success(.init(data: imageData, response: URLResponse()))
         )
 
@@ -54,7 +52,7 @@ class ImageDownloaderTests: XCTestCase {
     // swiftlint:enable force_unwrapping
 }
 
-final class ImageDownloaderStub: ImageDownloader {
+final class ImageDownloaderStub: ImageDownloaderProtocol {
     
     var imageResult: Result<Data, Request.Error>?
 
@@ -77,7 +75,7 @@ final class ImageDownloaderStub: ImageDownloader {
     
     func fetchImage(
         url: String,
-        additionalData: RemoteScreenAdditionalData?,
+        additionalData: HttpAdditionalData?,
         completion: @escaping (Result<Data, Request.Error>) -> Void
     ) -> RequestToken? {
         didCallDispatch = true

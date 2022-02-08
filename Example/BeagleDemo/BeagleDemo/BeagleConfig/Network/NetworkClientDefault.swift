@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,18 +17,11 @@
 import Foundation
 import Beagle
 
-public class NetworkClientDefault: NetworkClient {
-
-    public typealias Dependencies = DependencyLogger
+public class NetworkClientDefault: NetworkClientProtocol {
 
     public var session = URLSession.shared
-    let dependencies: Dependencies
 
     public var httpRequestBuilder = HttpRequestBuilder()
-    
-    public init(dependencies: DependencyLogger) {
-        self.dependencies = dependencies
-    }
 
     enum ClientError: Swift.Error {
         case invalidHttpResponse
@@ -50,18 +43,17 @@ public class NetworkClientDefault: NetworkClient {
         
         let build = httpRequestBuilder.build(
             url: request.url,
-            requestType: request.type,
-            additionalData: request.additionalData as? HttpAdditionalData
+            additionalData: request.additionalData
         )
         let urlRequest = build.toUrlRequest()
 
         let task = session.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard let self = self else { return }
-            self.dependencies.logger.log(Log.network(.httpResponse(response: .init(data: data, response: response))))
+            Beagle.Dependencies.logger.log(Log.network(.httpResponse(response: .init(data: data, response: response))))
             completion(self.handleResponse(data: data, request: urlRequest, response: response, error: error))
         }
         
-        dependencies.logger.log(Log.network(.httpRequest(request: .init(url: urlRequest))))
+        Beagle.Dependencies.logger.log(Log.network(.httpRequest(request: .init(url: urlRequest))))
         task.resume()
         return task
     }
@@ -71,7 +63,7 @@ public class NetworkClientDefault: NetworkClient {
         request: URLRequest,
         response: URLResponse?,
         error: Swift.Error?
-    ) -> NetworkClient.NetworkResult {
+    ) -> NetworkClientProtocol.NetworkResult {
         if let error = error {
             return .failure(NetworkError(error: error, request: request))
         }

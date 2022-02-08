@@ -15,6 +15,8 @@
  */
 
 class BeagleScreenViewModel {
+    
+    // MARK: Properties
         
     var screenType: ScreenType {
         didSet {
@@ -28,8 +30,12 @@ class BeagleScreenViewModel {
     }
     
     public var beagleViewStateObserver: BeagleViewStateObserver?
-    var dependencies: BeagleDependenciesProtocol
     private var screenAppearEventIsPending = true
+    
+    // MARK: Dependencies
+    
+    @Injected var coder: CoderProtocol
+    @Injected var viewClient: ViewClientProtocol
 
     // MARK: Observer
 
@@ -41,12 +47,12 @@ class BeagleScreenViewModel {
     
     static func remote(
         _ remote: ScreenType.Remote,
-        dependencies: BeagleDependenciesProtocol,
+        viewClient: ViewClientProtocol,
         completion: @escaping (Result<BeagleScreenViewModel, Request.Error>) -> Void
     ) -> RequestToken? {
         
-        return fetchScreen(remote: remote, dependencies: dependencies) { result in
-            let viewModel = self.init(screenType: .remote(remote), dependencies: dependencies)
+        return fetchScreen(remote: remote, viewClient: viewClient) { result in
+            let viewModel = self.init(screenType: .remote(remote))
             switch result {
             case .success(let screen):
                 viewModel.handleRemoteScreenSuccess(screen)
@@ -63,20 +69,17 @@ class BeagleScreenViewModel {
     }
 
     public required init(
-        screenType: ScreenType,
-        dependencies: BeagleDependenciesProtocol = Beagle.dependencies
+        screenType: ScreenType
     ) {
         self.screenType = screenType
-        self.dependencies = dependencies
         self.state = .started
     }
     
     public convenience init(
         screenType: ScreenType,
-        dependencies: BeagleDependenciesProtocol = Beagle.dependencies,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
     ) {
-        self.init(screenType: screenType, dependencies: dependencies)
+        self.init(screenType: screenType)
         self.beagleViewStateObserver = beagleViewStateObserver
     }
     
@@ -94,20 +97,11 @@ class BeagleScreenViewModel {
     }
     
     public func trackEventOnScreenAppeared() {
-        if let event = screen?.screenAnalyticsEvent {
-            screenAppearEventIsPending = false
-            dependencies.analytics?.trackEventOnScreenAppeared(event)
-        }
-        
-        AnalyticsService.shared?.createRecord(screen: screenType, rootId: screen?.identifier)
-                
+        screenAppearEventIsPending = false
+        AnalyticsService.shared?.createRecord(screen: screenType, rootId: screen?.id)
     }
     
-    public func trackEventOnScreenDisappeared() {
-        if let event = screen?.screenAnalyticsEvent {
-            dependencies.analytics?.trackEventOnScreenDisappeared(event)
-        }
-    }
+    public func trackEventOnScreenDisappeared() {}
 
     // MARK: Core
     
@@ -123,14 +117,14 @@ class BeagleScreenViewModel {
 
     func loadScreenFromText(_ text: String) -> Screen? {
         guard let data = text.data(using: .utf8) else { return nil }
-        let component = try? self.dependencies.decoder.decodeComponent(from: data)
+        let component: ServerDrivenComponent? = try? coder.decode(from: data)
         return component?.toScreen()
     }
 
     func loadRemoteScreen(_ remote: ScreenType.Remote) {
         state = .started
 
-        Self.fetchScreen(remote: remote, dependencies: dependencies) {
+        Self.fetchScreen(remote: remote, viewClient: viewClient) {
             [weak self] result in guard let self = self else { return }
             
             switch result {
@@ -148,13 +142,12 @@ class BeagleScreenViewModel {
     @discardableResult
     private static func fetchScreen(
         remote: ScreenType.Remote,
-        dependencies: BeagleDependenciesProtocol,
+        viewClient: ViewClientProtocol,
         completion: @escaping (Result<Screen, Request.Error>) -> Void
     ) -> RequestToken? {
-        return dependencies.repository.fetchComponent(
+        return viewClient.fetch(
             url: remote.url,
-            additionalData: remote.additionalData,
-            useCache: true
+            additionalData: remote.additionalData
         ) {
             completion($0.map { $0.toScreen() })
         }

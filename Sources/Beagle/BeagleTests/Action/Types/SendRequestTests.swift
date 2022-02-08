@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class SendRequestTests: XCTestCase {
+final class SendRequestTests: EnviromentTestCase {
     // swiftlint:disable force_unwrapping
 
     func test_whenSendRequestWithSuccess_shouldDoRequestAndTriggerActions() {
@@ -40,7 +40,7 @@ final class SendRequestTests: XCTestCase {
         """.data(using: .utf8)!
 
         let networkClient = NetworkClientStub(result: .success(.init(data: jsonData, response: URLResponse())))
-        controller.dependencies = BeagleScreenDependencies(networkClient: networkClient)
+        enviroment.networkClient = networkClient
         let expec = expectation(description: "executeActions")
         expec.expectedFulfillmentCount = 2
         controller.expectation = expec
@@ -77,7 +77,7 @@ final class SendRequestTests: XCTestCase {
         )
 
         let networkClient = NetworkClientStub(result: .failure(networkError))
-        controller.dependencies = BeagleScreenDependencies(networkClient: networkClient)
+        enviroment.networkClient = networkClient
         let expec = expectation(description: "executeActions")
         expec.expectedFulfillmentCount = 2
         controller.expectation = expec

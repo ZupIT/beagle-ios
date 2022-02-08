@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class AddChildrenTests: XCTestCase {
+final class AddChildrenTests: EnviromentTestCase {
     
     func testDecodingAddChildrenWithDefaultMode() throws {
-        let action: AddChildren = try actionFromString("""
+        let action: AddChildren = try componentFromString("""
         {
             "_beagleAction_": "beagle:addChildren",
             "componentId": "id",
@@ -37,7 +37,7 @@ final class AddChildrenTests: XCTestCase {
     }
     
     func testDecodingAddChildren() throws {
-        let action: AddChildren = try actionFromString("""
+        let action: AddChildren = try componentFromString("""
         {
             "_beagleAction_": "beagle:addChildren",
             "componentId": "id",
@@ -66,11 +66,11 @@ final class AddChildrenTests: XCTestCase {
     }
 
     func testModeAppendWithContext() {
-        runTest(mode: .append, text: Text("@{contextId}"))
+        runTest(mode: .append, text: Text(text: "@{contextId}"))
     }
 
     func testModeReplaceWithContext() {
-        runTest(mode: .replace, text: Text("@{contextId}"))
+        runTest(mode: .replace, text: Text(text: "@{contextId}"))
     }
 
     func testIfDefaultIsAppend() {
@@ -101,16 +101,15 @@ final class AddChildrenTests: XCTestCase {
         }
         """)
         
-        dependencies = BeagleDependencies()
         assertSnapshotImage(sut, size: imageSize)
         
-        dependencies.globalContext.set("value")
+        enviroment.globalContext.set("value")
         assertSnapshotImage(sut, size: imageSize)
     }
 
     private func runTest(
         mode: AddChildren.Mode,
-        text: Text = Text("NEW"),
+        text: Text = Text(text: "NEW"),
         testName: String = #function,
         line: UInt = #line
     ) {
@@ -118,11 +117,10 @@ final class AddChildrenTests: XCTestCase {
         let sut = AddChildren(componentId: "componentId", value: [text], mode: mode)
 
         let controller = BeagleScreenViewController(Container(
+            children: [Text(text: "initial")],
             context: Context(id: "contextId", value: "CONTEXT"),
-            widgetProperties: WidgetProperties(id: "componentId")
-        ) {
-            Text("initial")
-        })
+            id: "componentId"
+        ))
 
         assertSnapshotImage(controller, size: imageSize, testName: testName, line: line)
 

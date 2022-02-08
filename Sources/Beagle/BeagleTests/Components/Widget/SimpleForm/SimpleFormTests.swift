@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import SnapshotTesting
 class SimpleFormTests: XCTestCase {
     
     func testFormView() {
-        //Given
+        // Given
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         let numberOfChilds = 3
@@ -31,13 +31,13 @@ class SimpleFormTests: XCTestCase {
         // When
         let resultingView = renderer.render(simpleForm)
         
-        //Then
+        // Then
         XCTAssertEqual(resultingView.subviews.count, numberOfChilds)
     }
     
-    func test_whenDecodingJson_shouldReturnASimpleForm() throws {
+    func testCodableSimpleFormComponent() throws {
         let component: SimpleForm = try componentFromJsonFile(fileName: "simpleFormComponent")
-        assertSnapshot(matching: component, as: .dump)
+        assertSnapshotJson(matching: component)
     }
     
 }

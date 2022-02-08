@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ final class SubmitFormTest: XCTestCase {
                 TextInput(value: "@{context}",
                           error: .value("Error!"),
                           showError: .value(true),
-                          widgetProperties: .init(style: .init(size: Size().width(150).height(35)))),
+                          style: .init(size: Size().width(150).height(35))),
                 Button(text: "submit", onPress: [submitFormAction])
             ]
         )

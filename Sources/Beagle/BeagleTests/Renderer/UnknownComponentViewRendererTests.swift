@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ final class UnknownComponentTests: XCTestCase {
     
     func test_toView_shouldReturnTheExpectedView() {
         // Given
-        let component = UnknownComponent(type: String(describing: ComponentDummy()))
+        let component = UnknownComponent(_beagleComponent_: String(describing: ComponentDummy()))
         let controller = BeagleControllerStub()
         let renderer = BeagleRenderer(controller: controller)
         

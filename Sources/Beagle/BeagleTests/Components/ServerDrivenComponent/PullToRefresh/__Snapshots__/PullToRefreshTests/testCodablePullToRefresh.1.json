@@ -1,0 +1,26 @@
+{
+  "_beagleComponent_" : "beagle:pulltorefresh",
+  "child" : {
+    "_beagleComponent_" : "beagle:text",
+    "text" : "@{context.value}"
+  },
+  "color" : "@{context.color}",
+  "context" : {
+    "id" : "context",
+    "value" : {
+      "color" : "#FF0000",
+      "isRefreshing" : false,
+      "value" : "text"
+    }
+  },
+  "isRefreshing" : "@{context.isRefreshing}",
+  "onPull" : [
+    {
+      "_beagleAction_" : "beagle:setcontext",
+      "contextId" : "context",
+      "value" : {
+
+      }
+    }
+  ]
+}

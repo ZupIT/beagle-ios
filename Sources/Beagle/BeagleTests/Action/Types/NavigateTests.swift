@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,42 +20,29 @@ import SnapshotTesting
 
 class NavigateTests: XCTestCase {
     
-    func testDecodingOpenExternalUrl() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodableOpenExternalUrl() throws {
+        let action: Navigate = try componentFromString("""
         {
             "_beagleAction_": "beagle:openexternalurl",
             "url": "schema://domain/path"
         }
         """)
-        
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:openexternalurl"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ url: Expression<String>
-            - value: "schema://domain/path"
+
+        _assertInlineSnapshotJson(matching: action, with: """
+        {
+          "_beagleAction_" : "beagle:openexternalurl",
+          "url" : "schema:\\/\\/domain\\/path"
+        }
         """)
     }
     
-    func testDecodingOpenNativeRoute() throws {
-        let action: Navigate = try actionFromJsonFile(fileName: "opennativeroute")
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:opennativeroute"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ data: Optional<Dictionary<String, String>>
-            ▿ some: 1 key/value pair
-              ▿ (2 elements)
-                - key: "a"
-                - value: "value a"
-          ▿ route: Expression<String>
-            - value: "deeplink"
-          - shouldResetApplication: true
-        """)
+    func testCodableOpenNativeRoute() throws {
+        let action: Navigate = try componentFromJsonFile(fileName: "opennativeroute")
+        assertSnapshotJson(matching: action)
     }
     
-    func testDecodingResetApplication() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodableResetApplication() throws {
+        let action: Navigate = try componentFromString("""
         {
             "_beagleAction_": "beagle:resetapplication",
             "controllerId": "my-controller-id",
@@ -65,23 +52,11 @@ class NavigateTests: XCTestCase {
         }
         """)
 
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:resetapplication"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ controllerId: Optional<String>
-            - some: "my-controller-id"
-          ▿ route: Route
-            - fallback: Optional<Screen>.none
-            - httpAdditionalData: Optional<HttpAdditionalData>.none
-            - shouldPrefetch: Optional<Bool>.none
-            ▿ url: Expression<String>
-              - value: "schema://path"
-        """)
+        assertSnapshotJson(matching: action)
     }
     
-    func testDecodingResetStack() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodableResetStack() throws {
+        let action: Navigate = try componentFromString("""
         {
             "_beagleAction_": "beagle:resetstack",
             "route": {
@@ -90,23 +65,28 @@ class NavigateTests: XCTestCase {
         }
         """)
         
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:resetstack"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ route: Route
-            - fallback: Optional<Screen>.none
-            - httpAdditionalData: Optional<HttpAdditionalData>.none
-            - shouldPrefetch: Optional<Bool>.none
-            ▿ url: Expression<String>
-              - value: "schema://path"
+        _assertInlineSnapshotJson(matching: action, with: """
+        {
+          "_beagleAction_" : "beagle:resetstack",
+          "route" : {
+            "url" : "schema:\\/\\/path"
+          }
+        }
         """)
     }
     
-    func testDecodingPushStack() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePushStack() throws {
+        let action: Navigate = try componentFromString("""
         {
             "_beagleAction_": "beagle:pushStack",
+            "navigationContext": {
+                "path": "path",
+                "value": {
+                    "stringValue": "string",
+                    "booleanValue": true,
+                    "integerValue": 3
+                }
+            },
             "route": {
                 "screen": {
                     "child" : {
@@ -117,11 +97,11 @@ class NavigateTests: XCTestCase {
         }
         """)
 
-        assertSnapshot(matching: action, as: .dump)
+        assertSnapshotJson(matching: action)
     }
     
-    func testDecodingPushStackWithControllerId() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePushStackWithControllerId() throws {
+        let action: Navigate = try componentFromString("""
         {
             "_beagleAction_": "beagle:pushStack",
             "route": {
@@ -131,86 +111,65 @@ class NavigateTests: XCTestCase {
         }
         """)
 
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:pushstack"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ controllerId: Optional<String>
-            - some: "customid"
-          ▿ route: Route
-            - fallback: Optional<Screen>.none
-            - httpAdditionalData: Optional<HttpAdditionalData>.none
-            - shouldPrefetch: Optional<Bool>.none
-            ▿ url: Expression<String>
-              - value: "schema://path"
-        """)
+        assertSnapshotJson(matching: action)
     }
     
-    func testDecodingPopStack() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePopStack() throws {
+        let jsonString = """
         {
-            "_beagleAction_": "beagle:popstack"
+          "_beagleAction_" : "beagle:popstack"
         }
-        """)
-
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:popstack"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-        """)
+        """
+        let action: Navigate = try componentFromString(jsonString)
+        _assertInlineSnapshotJson(matching: action, with: jsonString)
     }
     
-    func testDecodingPushView() throws {
-        let action: Navigate = try actionFromJsonFile(fileName: "pushview")
-        assertSnapshot(matching: action, as: .dump)
+    func testCodablePushView() throws {
+        let action: Navigate = try componentFromJsonFile(fileName: "pushview")
+        assertSnapshotJson(matching: action)
     }
     
-    func testDecodingPushViewWithContext() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePushViewWithContext() throws {
+        let jsonString = """
         {
-          "_beagleAction_": "beagle:pushView",
-          "route": {
-            "url": "@{test}"
+          "_beagleAction_" : "beagle:pushview",
+          "route" : {
+            "url" : "@{test}"
           }
         }
-        """)
-        assertSnapshot(matching: action, as: .dump)
+        """
+        let action: Navigate = try componentFromString(jsonString)
+        _assertInlineSnapshotJson(matching: action, with: jsonString)
     }
     
-    func testDecodingPopView() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePopView() throws {
+        let jsonString = """
         {
-            "_beagleAction_": "beagle:popView"
+          "_beagleAction_" : "beagle:popview",
+          "navigationContext" : {
+            "path" : "path",
+            "value" : "string"
+          }
         }
-        """)
-
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:popview"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-        """)
+        """
+        let action: Navigate = try componentFromString(jsonString)
+        _assertInlineSnapshotJson(matching: action, with: jsonString)
     }
     
-    func testDecodingPopToView() throws {
-        let action: Navigate = try actionFromString("""
+    func testCodablePopToView() throws {
+        let jsonString = """
         {
-            "_beagleAction_": "beagle:popToView",
-            "route": "viewId"
+          "_beagleAction_" : "beagle:poptoview",
+          "route" : "viewId"
         }
-        """)
-
-        _assertInlineSnapshot(matching: action, as: .dump, with: """
-        ▿ Navigate
-          - _beagleAction_: "beagle:poptoview"
-          - analytics: Optional<ActionAnalyticsConfig>.none
-          ▿ route: Expression<String>
-            - value: "viewId"
-        """)
+        """
+        let action: Navigate = try componentFromString(jsonString)
+        _assertInlineSnapshotJson(matching: action, with: jsonString)
     }
     
     func testDecodingPushViewWithAdditionalData() throws {
-        let action: Navigate = try actionFromJsonFile(fileName: "pushViewWithAdditionalData")
-        assertSnapshot(matching: action, as: .dump)
+        let action: Navigate = try componentFromJsonFile(fileName: "pushViewWithAdditionalData")
+        assertSnapshotJson(matching: action)
     }
 
     func testNullNewPathInNavigation() {

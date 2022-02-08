@@ -1,0 +1,82 @@
+▿ DependenciesContainer
+  ▿ instancesMap: 16 key/value pairs
+    ▿ (2 elements)
+      - key: "AnalyticsProviderProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "BundleProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "CoderProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "DeepLinkScreenManagerProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "GlobalContextProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "ImageDownloaderProtocol"
+      ▿ value: DependencyResolver
+        ▿ factory: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "LoggerProtocol"
+      ▿ value: DependencyResolver
+        ▿ factory: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "NavigationProtocolInternal"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "NetworkClientProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "OperationsProviderProtocolInternal"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "PrefetchHelperProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "ThemeProtocol"
+      ▿ value: DependencyResolver
+        ▿ factory: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "URLOpenerProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "UrlBuilderProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "ViewClientProtocol"
+      ▿ value: DependencyResolver
+        ▿ factory: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "WindowManagerProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)

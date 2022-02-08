@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import XCTest
 
 typealias Operation = Beagle.Operation
 
-class OperationEvaluationTests: XCTestCase {
+class OperationEvaluationTests: EnviromentTestCase {
     func evaluateOperations(_ operations: [Operation], contexts: [Context], completion: ([DynamicObject]) -> Void) {
         // Given
         let view = UIView()

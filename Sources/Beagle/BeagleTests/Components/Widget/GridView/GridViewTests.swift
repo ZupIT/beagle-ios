@@ -1,6 +1,6 @@
 //
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,30 +119,23 @@ extension GridViewTests {
                     view: Container(
                         children: [
                             Text(
-                                "@{item}",
-                                widgetProperties: WidgetProperties(
-                                    style: Style(
-                                        backgroundColor: "#bfdcae"
-                                    )
-                                )
+                                text: "@{item}",
+                                style: Style(backgroundColor: "#bfdcae")
                             )
                         ],
-                        widgetProperties: WidgetProperties(
-                            style: Style(
-                                backgroundColor: "#81b214",
-                                margin: EdgeValue().all(10)
-                            )
+                        style: Style(
+                            backgroundColor: "#81b214",
+                            margin: EdgeValue().all(10)
                         )
+                        
                     )
                 )
             ],
             onScrollEnd: onScrollEnd,
             isScrollIndicatorVisible: isScrollIndicatorVisible,
-            widgetProperties: WidgetProperties(
-                style: Style(
-                    backgroundColor: "#206a5d",
-                    flex: Flex().grow(1)
-                )
+            style: Style(
+                backgroundColor: "#206a5d",
+                flex: Flex().grow(1)
             )
         )
     }

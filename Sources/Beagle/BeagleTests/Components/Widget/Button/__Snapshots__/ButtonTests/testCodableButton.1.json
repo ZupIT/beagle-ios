@@ -1,0 +1,16 @@
+{
+  "_beagleComponent_" : "beagle:button",
+  "enabled" : false,
+  "onPress" : [
+    {
+      "_beagleAction_" : "beagle:popstack"
+    }
+  ],
+  "style" : {
+    "backgroundColor" : "#800000FF",
+    "cornerRadius" : {
+      "radius" : 30
+    }
+  },
+  "text" : "button"
+}

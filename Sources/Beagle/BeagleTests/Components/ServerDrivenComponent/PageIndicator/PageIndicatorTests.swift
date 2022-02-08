@@ -1,6 +1,5 @@
-//
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class PageIndicatorTests: XCTestCase {
+class PageIndicatorTests: EnviromentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(
@@ -29,31 +28,17 @@ class PageIndicatorTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        dependencies.decoder.register(
-            component: CustomPageIndicator.self,
+        enviroment.coder.register(
+            type: CustomPageIndicator.self,
             named: PageIndicatorTests.typeName
         )
     }
     
-    override func tearDown() {
-        super.tearDown()
-        dependencies = BeagleDependencies()
-    }
-    
     func test_indicator_decoder() throws {
         let component: CustomPageIndicator = try componentFromJsonFile(
-            fileName: PageIndicatorTests.typeName,
-            decoder: dependencies.decoder
+            fileName: PageIndicatorTests.typeName
         )
         assertSnapshot(matching: component, as: .dump)
-    }
-    
-    func test_pageViewWithCustomIndicator_decoder() throws {
-        let component: PageView = try componentFromJsonFile(
-            fileName: "PageViewWithCustomIndicator",
-            decoder: dependencies.decoder
-        )
-        assertSnapshot(matching: component.pageIndicator, as: .dump)
     }
 
 }

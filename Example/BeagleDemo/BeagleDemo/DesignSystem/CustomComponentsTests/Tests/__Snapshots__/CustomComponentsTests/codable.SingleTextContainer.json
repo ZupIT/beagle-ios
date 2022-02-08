@@ -1,0 +1,17 @@
+{
+  "_beagleComponent_" : "custom:singletextcontainer",
+  "actions" : [
+    {
+      "_beagleAction_" : "custom:actiondummydefault"
+    }
+  ],
+  "child" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  },
+  "firstTextContainer" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  },
+  "secondTextContainer" : {
+    "_beagleComponent_" : "custom:textcomponentsdefault"
+  }
+}

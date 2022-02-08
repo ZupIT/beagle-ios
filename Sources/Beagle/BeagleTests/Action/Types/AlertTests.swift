@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ final class AlertTests: XCTestCase {
         let alert = Alert(
             title: "Title",
             message: "Message",
-            onPressOk: onPressOkAction,
+            onPressOk: [onPressOkAction],
             labelOk: "Ok"
         )
         let view = UIView()

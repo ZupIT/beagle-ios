@@ -15,40 +15,28 @@
  */
 
 /// A text widget will define a text view natively using the server driven information received through Beagle.
-public struct Text: Widget, AutoDecodable {
+public struct Text: Widget {
     
     /// Defines the text view content.
     public let text: Expression<String>
     
     /// References a style configured to be applied on this text view.
-    public let styleId: String?
+    public var styleId: String?
     
     /// Defines the text content alignment inside the text view.
-    public let alignment: Expression<Alignment>?
+    public var alignment: Expression<Alignment>?
     
     /// Defines the text color natively.
-    public let textColor: Expression<String>?
+    public var textColor: Expression<String>?
     
-    /// Properties that all widgets have in common.
-    public var widgetProperties: WidgetProperties
+    public var id: String?
+    public var style: Style?
+    public var accessibility: Accessibility?
 
-    public init(
-        _ text: Expression<String>,
-        styleId: String? = nil,
-        alignment: Expression<Alignment>? = nil,
-        textColor: Expression<String>? = nil,
-        widgetProperties: WidgetProperties = WidgetProperties()
-    ) {
-        self.text = text
-        self.styleId = styleId
-        self.alignment = alignment
-        self.textColor = textColor
-        self.widgetProperties = widgetProperties
-    }
 }
 
 extension Text {
-    public enum Alignment: String, Decodable, CaseIterable {
+    public enum Alignment: String, Codable, CaseIterable {
         case left = "LEFT"
         case right = "RIGHT"
         case center = "CENTER"
