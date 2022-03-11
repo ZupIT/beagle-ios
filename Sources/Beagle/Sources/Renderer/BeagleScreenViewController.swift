@@ -220,6 +220,14 @@ public class BeagleScreenViewController: BeagleController {
         }
     }
     
+    private func updateScreenStyle() {
+        renderer.observe(screen?.style?.backgroundColor, andUpdateManyIn: view) { [weak self] value in
+            if let hex = value {
+                self?.view.backgroundColor = UIColor(hex: hex)
+            }
+        }
+    }
+    
     // MARK: - Update View
     
     fileprivate func updateView(state: ServerDrivenState) {
@@ -242,6 +250,7 @@ public class BeagleScreenViewController: BeagleController {
     private func renderScreenIfNeeded() {
         if content == nil, let screen = screen {
             updateNavigationBar(animated: true)
+            updateScreenStyle()
             content = .view(renderer.render(screen))
         }
     }
