@@ -187,10 +187,10 @@ extension OperationsProviderProtocolInternal {
         return { parameters in
             guard parameters.count == 3 else { return nil }
 
-            guard case let .bool(firstParameter) = parameters[0],
-                parameters[1].isEqualIgnoringAssociatedValues(parameters[2]) else { return nil }
-            
-            return firstParameter ? parameters[1] : parameters[2]
+            if case let .bool(firstParameter) = parameters[0], firstParameter {
+                return parameters[1]
+            }
+            return parameters[2]
         }
     }
     

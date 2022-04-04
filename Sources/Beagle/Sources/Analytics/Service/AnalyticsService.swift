@@ -29,7 +29,7 @@ class AnalyticsService {
 
     // MARK: - Create Events
 
-    func createRecord(screen: ScreenType, rootId:String? = nil) {
+    func createRecord(screen: ScreenType, rootId: String? = nil) {
         makeScreenRecord(
             screen: screen,
             rootId: rootId,

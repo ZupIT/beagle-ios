@@ -27,13 +27,13 @@ final class OperationLogicEvaluationTests: OperationEvaluationTests {
         
         let simpleOperations = ["true, 1, 0", "false, 'yes', 'no'", "\(binding), true, false"].toOperations(name: name)
         
-        let complexOperations = ["\(simpleOperations[2].rawValue), 1.1, 0.0"].toOperations(name: name)
+        let complexOperations = ["\(simpleOperations[2].rawValue), 1.1, 0.0", "null, 1, 0", "true, 1, 0.0"].toOperations(name: name)
         
-        let failingOperations = ["1, 0", "1, 1, 0", "true, 1, 0.0", ""].toOperations(name: name)
+        let failingOperations = ["1, 0", ""].toOperations(name: name)
         
         let operations = simpleOperations + complexOperations + failingOperations
         
-        let comparableResults: [DynamicObject] = [1, "no", true, 1.1, nil, nil, nil, nil]
+        let comparableResults: [DynamicObject] = [1, "no", true, 1.1, 0, 1, nil, nil]
         
         // When
         evaluateOperations(operations, contexts: contexts) { evaluatedResults in

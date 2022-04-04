@@ -17,7 +17,7 @@
 import UIKit
 import YogaKit
 
-fileprivate let yogaTranslator = YogaTranslating()
+private let yogaTranslator = YogaTranslating()
 
 /// Use this class whenever you want to transform a Component into a UIView
 public struct BeagleRenderer {
