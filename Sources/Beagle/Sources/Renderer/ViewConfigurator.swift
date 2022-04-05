@@ -93,8 +93,8 @@ class ViewConfigurator: ViewConfiguratorProtocol {
         }
         object?.isAccessibilityElement = accessibility.accessible
         
-        if let isHeader = accessibility.isHeader {
-            object?.accessibilityTraits = isHeader ? .header : .none
+        if let isHeader = accessibility.isHeader, isHeader {
+            object?.accessibilityTraits = .header
         }
     }
 }
