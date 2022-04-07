@@ -66,4 +66,25 @@ class ViewConfiguratorTests: XCTestCase {
         XCTAssertNotEqual(view.layer.borderWidth, CGFloat(borderWidthValue))
         XCTAssertNotEqual(view.layer.borderColor, UIColor(hex: borderColorHex)?.cgColor)
     }
+    
+    func testApplyAccessibility() {
+        // Given
+        let button = UIButton()
+        button.accessibilityTraits = .button
+        let buttonHeader = UIButton()
+        var accessibility = Accessibility(accessibilityLabel: "accessibilityLabel", accessible: true)
+        
+        // When
+        ViewConfigurator.applyAccessibility(accessibility, to: button)
+        accessibility.isHeader = true
+        ViewConfigurator.applyAccessibility(accessibility, to: buttonHeader)
+        
+        // Then
+        XCTAssertEqual(button.accessibilityLabel, accessibility.accessibilityLabel)
+        XCTAssertTrue(button.isAccessibilityElement)
+        XCTAssertEqual(button.accessibilityTraits, .button)
+        XCTAssertEqual(buttonHeader.accessibilityLabel, accessibility.accessibilityLabel)
+        XCTAssertTrue(buttonHeader.isAccessibilityElement)
+        XCTAssertEqual(buttonHeader.accessibilityTraits, .header)
+    }
 }
