@@ -47,6 +47,11 @@ final class ExpressionTests: XCTestCase {
         assertSnapshot(matching: result, as: .dump)
         XCTAssertEqual(rawValues, data)
     }
+  
+    func testOperationWithSpaces() {
+        let expression = "@{sum( 1, counter )}"
+        XCTAssertEqual(SingleExpression(rawValue: expression)?.rawValue, "@{sum(1, counter)}")
+    }
     
     func testInvalidSingleExpression() {
         // Given
