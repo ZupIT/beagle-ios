@@ -23,6 +23,7 @@ class ImageTests: EnviromentTestCase {
     override func setUp() {
         super.setUp()
         enviroment.appBundle.bundle = Bundle(for: ImageTests.self)
+        enviroment.imageProvider = ImageProvider(appBundle: enviroment.appBundle)
     }
     
     lazy var controller = BeagleControllerStub()

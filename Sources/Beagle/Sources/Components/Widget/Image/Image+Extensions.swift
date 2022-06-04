@@ -37,7 +37,7 @@ extension Image {
             let expression: Expression<String> = "\(mobileId)"
             renderer.observe(expression, andUpdateManyIn: image) { mobileId in
                 guard let mobileId = mobileId, !mobileId.isEmpty else { return }
-                self.setImageFromAsset(named: mobileId, bundle: renderer.appBundle, imageView: image)
+                self.setImageFromAsset(named: mobileId, imageView: image, renderer: renderer)
             }
         case .remote(let remote):
             let expression: Expression<String> = "\(remote.url)"
@@ -54,7 +54,7 @@ extension Image {
             image.token?.cancel()
             switch path {
             case .local(let mobileId):
-                self.setImageFromAsset(named: mobileId, bundle: renderer.appBundle, imageView: image)
+                self.setImageFromAsset(named: mobileId, imageView: image, renderer: renderer)
             case .remote(let remote):
                 image.token = self.setRemoteImage(from: remote.url, placeholder: remote.placeholder, imageView: image, renderer: renderer)
             case .none: ()
@@ -62,14 +62,14 @@ extension Image {
         }
     }
 
-    private func setImageFromAsset(named: String, bundle: Bundle, imageView: UIImageView) {
-        imageView.image = UIImage(named: named, in: bundle, compatibleWith: nil)
+    private func setImageFromAsset(named: String, imageView: UIImageView, renderer : BeagleRenderer) {
+        imageView.image = renderer.imageProvider.loadImageProvider(id: named)
     }
 
     private func setRemoteImage(from url: String, placeholder: String?, imageView: UIImageView, renderer: BeagleRenderer) -> RequestToken? {
         var imagePlaceholder: UIImage?
         if let placeholder = placeholder {
-            imagePlaceholder = UIImage(named: placeholder, in: renderer.appBundle, compatibleWith: nil)
+            imagePlaceholder = renderer.imageProvider.loadImageProvider(id: placeholder)
             imageView.image = imagePlaceholder
         }
         return lazyLoadImage(path: url, placeholderImage: imagePlaceholder, imageView: imageView, renderer: renderer)

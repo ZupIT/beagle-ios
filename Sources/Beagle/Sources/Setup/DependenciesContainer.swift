@@ -97,6 +97,7 @@ final class DependenciesContainer: DependenciesContainerResolving {
         registerFactory(ThemeProtocol.self, block: dependencies.theme)
         registerFactory(ViewClientProtocol.self, block: dependencies.viewClient)
         registerFactory(ImageDownloaderProtocol.self, block: dependencies.imageDownloader)
+        registerFactory(ImageProviderProtocol.self, block: dependencies.imageProvider)
         
         if let analyticsProvider = dependencies.analyticsProvider {
             registerLazy(AnalyticsProviderProtocol.self, block: analyticsProvider)

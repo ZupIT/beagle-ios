@@ -129,8 +129,8 @@ final class TabBarItemUIComponent: UIView {
             guard let self = self else { return }
             if let icon = icon {
                 self.icon.image = self.theme?.selectedIconColor == nil ?
-                    UIImage(named: icon, in: self.renderer?.appBundle, compatibleWith: nil) :
-                    UIImage(named: icon, in: self.renderer?.appBundle, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+                self.renderer?.imageProvider.loadImageProvider(id: icon) :
+                self.renderer?.imageProvider.loadImageProvider(id: icon)?.withRenderingMode(.alwaysTemplate)
             }
         }
     }

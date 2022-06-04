@@ -57,11 +57,7 @@ extension NavigationBarItem {
             if let renderer = controller?.renderer {
                 renderer.observe(expression, andUpdateManyIn: view) { icon in
                     guard let icon = icon else { return }
-                    self.image = UIImage(
-                        named: icon,
-                        in: renderer.appBundle,
-                        compatibleWith: nil
-                    )?.withRenderingMode(.alwaysOriginal)
+                    self.image = renderer.imageProvider.loadImageProvider(id: icon)?.withRenderingMode(.alwaysOriginal)
                 }
             }
         }

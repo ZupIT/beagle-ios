@@ -1,5 +1,5 @@
 ▿ DependenciesContainer
-  ▿ instancesMap: 16 key/value pairs
+  ▿ instancesMap: 17 key/value pairs
     ▿ (2 elements)
       - key: "AnalyticsProviderProtocol"
       ▿ value: DependencyResolver
@@ -27,6 +27,11 @@
           - block: (Function)
     ▿ (2 elements)
       - key: "ImageDownloaderProtocol"
+      ▿ value: DependencyResolver
+        ▿ factory: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "ImageProviderProtocol"
       ▿ value: DependencyResolver
         ▿ factory: (1 element)
           - block: (Function)

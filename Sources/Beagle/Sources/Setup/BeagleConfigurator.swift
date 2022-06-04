@@ -39,6 +39,7 @@ public struct BeagleDependencies {
     public var analyticsProvider: AnalyticsProviderProtocol?
     public var deepLinkHandler: DeepLinkScreenManagerProtocol?
     public var networkClient: NetworkClientProtocol?
+    public var imageProvider: ImageProviderProtocol = ImageProvider(appBundle: MainBundle())
     
     // MARK: Public Dependencies
     public var appBundle: BundleProtocol = MainBundle()
