@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,10 +69,20 @@ func literal(string: String) -> Parser<Void> {
 }
 
 func prefix(with regex: String) -> Parser<String> {
-    return Parser<String> { str in
-        guard let range = str.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
-        let prefix = str[range]
-        str.removeSubrange(range)
+    return Parser<String> { substring in
+        guard let rangeOfSubstring = substring.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
+        let prefix = substring[rangeOfSubstring]
+        
+        // TODO: Remove this workaround when removeSubrange is fixed by Apple
+        if #available(iOS 16.0, *) {
+            var string = String(substring)
+            guard let rangeOfString = string.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
+            string.removeSubrange(rangeOfString)
+            substring = string[...]
+        } else {
+            substring.removeSubrange(rangeOfSubstring)
+        }
+        
         return String(prefix)
     }
 }
