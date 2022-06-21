@@ -1,6 +1,5 @@
-//
 /*
- * Copyright 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +20,10 @@ public protocol ImageProviderProtocol {
     func loadImageProvider(id: String) -> UIImage?
 }
 
-public struct ImageProvider : ImageProviderProtocol {
-    let bundle : Bundle
+struct ImageProvider : ImageProviderProtocol {
+    @Injected var mainBundle : BundleProtocol
     
-    public init(appBundle : BundleProtocol) {
-        self.bundle = appBundle.bundle
-    }
-    
-    public func loadImageProvider(id: String) -> UIImage? {
-        return UIImage(named: id, in: self.bundle, compatibleWith: nil)
+     func loadImageProvider(id: String) -> UIImage? {
+        return UIImage(named: id, in: self.mainBundle.bundle, compatibleWith: nil)
     }
 }

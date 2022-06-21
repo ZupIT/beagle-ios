@@ -61,7 +61,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     
     func test_navigationBarButtonItemWithImage() {
         enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
-        enviroment.imageProvider = ImageProvider(appBundle: enviroment.appBundle)
+        enviroment.imageProvider = ImageProvider()
         let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", onPress: [ActionDummy()])
         
         let component = Screen(
@@ -90,7 +90,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     func testNavigationBarItemWithContextOnImage() {
         // Given
         enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
-        enviroment.imageProvider = ImageProvider(appBundle: enviroment.appBundle)
+        enviroment.imageProvider = ImageProvider()
         
         let barItem = NavigationBarItem(image: "@{image}", text: "", onPress: [ActionDummy()])
         

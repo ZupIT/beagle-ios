@@ -39,7 +39,7 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
     var analyticsProvider: AnalyticsProviderProtocol?
     var deepLinkHandler: DeepLinkScreenManagerProtocol?
     var networkClient: NetworkClientProtocol?
-    var imageProvider: ImageProviderProtocol = ImageProvider(appBundle: MainBundle())
+    var imageProvider: ImageProviderProtocol = ImageProvider()
     
     // MARK: - Builders
     

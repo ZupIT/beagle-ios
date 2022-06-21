@@ -26,7 +26,7 @@ final class DependenciesContainerTests: XCTestCase {
         var dependencies = BeagleDependencies()
         // swiftlint:disable discouraged_direct_init
         dependencies.appBundle.bundle = Bundle()
-        dependencies.imageProvider = ImageProvider(appBundle: dependencies.appBundle)
+        dependencies.imageProvider = ImageProvider()
         
         return DependenciesContainer(dependencies: dependencies)
     }()
