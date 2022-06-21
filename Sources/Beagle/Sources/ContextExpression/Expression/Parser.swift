@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,18 +153,15 @@ let parameter: Parser<Operation.Parameter> = oneOf(
     lazy(operation.map { .operation($0) })
 )
 
-let parameters: Parser<[Operation.Parameter]> = zip(
-    literal(string: "("),
-    zeroOrMore(parameter, separatedBy: prefix(with: #"\s*,\s*"#)),
-    literal(string: ")")
-).map { _, parameters, _ in
-    parameters
-}
+let parameters: Parser<[Operation.Parameter]> = zeroOrMore(parameter, separatedBy: prefix(with: #"\s*,\s*"#))
+    .map { $0 }
 
 let operation: Parser<Operation> = zip(
     prefix(with: #"\w*[a-zA-Z_]+\w*"#),
-    parameters
-).map { name, parameters in
+    prefix(with: #"\(\s*"#),
+    parameters,
+    prefix(with: #"\s*\)"#)
+).map { name, _, parameters, _ in
     Operation(name: name, parameters: parameters)
 }
 
@@ -260,6 +257,15 @@ func zip<Type1, Type2, Type3>(
     _ parser3: Parser<Type3>
 ) -> Parser<(Type1, Type2, Type3)> {
     zip(parser1, zip(parser2, parser3)).map { ($0, $1.0, $1.1) }
+}
+
+func zip<Type1, Type2, Type3, Type4>(
+    _ parser1: Parser<Type1>,
+    _ parser2: Parser<Type2>,
+    _ parser3: Parser<Type3>,
+    _ parser4: Parser<Type4>
+) -> Parser<(Type1, Type2, Type3, Type4)> {
+    zip(parser1, zip(parser2, parser3, parser4)).map { ($0, $1.0, $1.1, $1.2) }
 }
 // swiftlint:enable large_tuple
 
