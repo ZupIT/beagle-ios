@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,11 +57,7 @@ extension NavigationBarItem {
             if let renderer = controller?.renderer {
                 renderer.observe(expression, andUpdateManyIn: view) { icon in
                     guard let icon = icon else { return }
-                    self.image = UIImage(
-                        named: icon,
-                        in: renderer.appBundle,
-                        compatibleWith: nil
-                    )?.withRenderingMode(.alwaysOriginal)
+                    self.image = renderer.imageProvider.loadImageProvider(id: icon)?.withRenderingMode(.alwaysOriginal)
                 }
             }
         }

@@ -26,6 +26,7 @@ final class DependenciesContainerTests: XCTestCase {
         var dependencies = BeagleDependencies()
         // swiftlint:disable discouraged_direct_init
         dependencies.appBundle.bundle = Bundle()
+        dependencies.imageProvider = ImageProvider()
         
         return DependenciesContainer(dependencies: dependencies)
     }()
@@ -47,6 +48,7 @@ final class DependenciesContainerTests: XCTestCase {
         customDependencies.imageDownloader = ImageDownloaderDummy()
         customDependencies.theme = AppThemeDummy()
         customDependencies.viewClient = ViewClientDummy()
+        customDependencies.imageProvider = ImageProviderDummy()
         
         let sut = DependenciesContainer(dependencies: customDependencies)
         

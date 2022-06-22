@@ -23,6 +23,7 @@ class TabBarTests: EnviromentTestCase {
     override func setUp() {
         super.setUp()
         enviroment.appBundle.bundle = Bundle(for: TabBarTests.self)
+        enviroment.imageProvider = ImageProvider()
     }
 
     lazy var controller = BeagleControllerStub()

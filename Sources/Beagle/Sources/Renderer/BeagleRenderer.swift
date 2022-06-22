@@ -28,6 +28,7 @@ public struct BeagleRenderer {
     @Injected public var mainBundle: BundleProtocol
     @Injected public var preFetchHelper: PrefetchHelperProtocol
     @Injected public var imageDownloader: ImageDownloaderProtocol
+    @Injected public var imageProvider: ImageProviderProtocol
 
     // MARK: Properties
     

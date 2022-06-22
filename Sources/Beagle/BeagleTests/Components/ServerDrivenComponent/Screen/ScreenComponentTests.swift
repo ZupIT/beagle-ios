@@ -61,6 +61,7 @@ final class ScreenComponentTests: EnviromentTestCase {
     
     func test_navigationBarButtonItemWithImage() {
         enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
+        enviroment.imageProvider = ImageProvider()
         let barItem = NavigationBarItem(image: "shuttle", text: "shuttle", onPress: [ActionDummy()])
         
         let component = Screen(
@@ -88,7 +89,8 @@ final class ScreenComponentTests: EnviromentTestCase {
     
     func testNavigationBarItemWithContextOnImage() {
         // Given
-        let bundle = Bundle(for: ScreenComponentTests.self)
+        enviroment.appBundle.bundle = Bundle(for: ScreenComponentTests.self)
+        enviroment.imageProvider = ImageProvider()
         
         let barItem = NavigationBarItem(image: "@{image}", text: "", onPress: [ActionDummy()])
         
@@ -103,9 +105,7 @@ final class ScreenComponentTests: EnviromentTestCase {
         let controller = BeagleScreenViewController(viewModel: .init(
             screenType: .declarative(screen)
         ))
-        
-        controller.renderer.mainBundle.bundle = bundle
-        
+                
         // Then
         assertSnapshotImage(controller.view, size: .custom(CGSize(width: 150, height: 80)))
     }

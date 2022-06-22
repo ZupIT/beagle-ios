@@ -39,6 +39,7 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
     var analyticsProvider: AnalyticsProviderProtocol?
     var deepLinkHandler: DeepLinkScreenManagerProtocol?
     var networkClient: NetworkClientProtocol?
+    var imageProvider: ImageProviderProtocol = ImageProvider()
     
     // MARK: - Builders
     
@@ -72,7 +73,8 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
         mapKey(for: LoggerProtocol.self): { self.logger },
         mapKey(for: NetworkClientProtocol.self): { self.networkClient },
         mapKey(for: DeepLinkScreenManagerProtocol.self): { self.deepLinkHandler },
-        mapKey(for: AnalyticsProviderProtocol.self): { self.analyticsProvider }
+        mapKey(for: AnalyticsProviderProtocol.self): { self.analyticsProvider },
+        mapKey(for: ImageProviderProtocol.self): { self.imageProvider }
     ]
     
     // MARK: - DependenciesContainerResolving

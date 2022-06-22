@@ -210,3 +210,9 @@ class ViewClientDummy: ViewClientProtocol {
         // Intentionally unimplemented...
     }
 }
+
+final class ImageProviderDummy: ImageProviderProtocol {
+    func loadImageProvider(id: String) -> UIImage? {
+        return nil
+    }
+}
