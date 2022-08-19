@@ -247,7 +247,7 @@
 		A9C6F53F27288FE900576313 /* DependenciesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F53E27288FE900576313 /* DependenciesContainer.swift */; };
 		A9C6F5412728901200576313 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5402728901200576313 /* Injected.swift */; };
 		A9C6F5432728975900576313 /* DependencyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5422728975900576313 /* DependencyResolver.swift */; };
-		A9C6F5452730874700576313 /* BeagleEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5442730874700576313 /* BeagleEnviroment.swift */; };
+		A9C6F5452730874700576313 /* BeagleEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5442730874700576313 /* BeagleEnvironment.swift */; };
 		A9C6F548273312BA00576313 /* BundleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F547273312BA00576313 /* BundleProtocol.swift */; };
 		A9C6F54A2733149D00576313 /* TestEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5492733149D00576313 /* TestEnviroment.swift */; };
 		A9C6F54C2735C0C800576313 /* OperationEvaluationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F54B2735C0C800576313 /* OperationEvaluationTests.swift */; };
@@ -596,7 +596,7 @@
 		A9C6F53E27288FE900576313 /* DependenciesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesContainer.swift; sourceTree = "<group>"; };
 		A9C6F5402728901200576313 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		A9C6F5422728975900576313 /* DependencyResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyResolver.swift; sourceTree = "<group>"; };
-		A9C6F5442730874700576313 /* BeagleEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleEnviroment.swift; sourceTree = "<group>"; };
+		A9C6F5442730874700576313 /* BeagleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleEnvironment.swift; sourceTree = "<group>"; };
 		A9C6F547273312BA00576313 /* BundleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleProtocol.swift; sourceTree = "<group>"; };
 		A9C6F5492733149D00576313 /* TestEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnviroment.swift; sourceTree = "<group>"; };
 		A9C6F54B2735C0C800576313 /* OperationEvaluationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationEvaluationTests.swift; sourceTree = "<group>"; };
@@ -777,7 +777,10 @@
 				932925D02327E11000A61F01 /* Products */,
 				E53524A923310F5A00D1A0C9 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		932925D02327E11000A61F01 /* Products */ = {
 			isa = PBXGroup;
@@ -1965,7 +1968,7 @@
 				A9C6F53E27288FE900576313 /* DependenciesContainer.swift */,
 				A9C6F5402728901200576313 /* Injected.swift */,
 				A9C6F5422728975900576313 /* DependencyResolver.swift */,
-				A9C6F5442730874700576313 /* BeagleEnviroment.swift */,
+				A9C6F5442730874700576313 /* BeagleEnvironment.swift */,
 				A9C6F553273DB73C00576313 /* Singletons.swift */,
 			);
 			path = Setup;
@@ -2224,7 +2227,7 @@
 				C08D4E882485944B00AAAC0A /* Text+Extensions.swift in Sources */,
 				A057D59324C7169E001F6835 /* ComponentHostController.swift in Sources */,
 				E5A6F4CB2358F621008906F8 /* ViewClientProtocol.swift in Sources */,
-				A9C6F5452730874700576313 /* BeagleEnviroment.swift in Sources */,
+				A9C6F5452730874700576313 /* BeagleEnvironment.swift in Sources */,
 				E52236C423745CBB00E555BB /* NSObjectExtension.swift in Sources */,
 				A020A4D124FFDDC200B3DF55 /* ListViewController.swift in Sources */,
 				C048EBDB242BD78500A24075 /* Analytics.swift in Sources */,

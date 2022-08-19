@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class BeagleCoderTests: EnviromentTestCase {
+final class BeagleCoderTests: EnvironmentTestCase {
     // swiftlint:disable force_unwrapping
     
     private lazy var sut = Coder()

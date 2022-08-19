@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class BeagleScreenViewControllerTests: EnviromentTestCase {
+final class BeagleScreenViewControllerTests: EnvironmentTestCase {
     
     private typealias RegisterAction = (BeagleNavigationController.Type, String) -> Void
     

@@ -20,7 +20,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ContainerTests: EnviromentTestCase {
+final class ContainerTests: EnvironmentTestCase {
     
     private lazy var theme = AppTheme(
         styles: [

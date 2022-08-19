@@ -64,6 +64,10 @@ final public class Coder: CoderProtocol {
         types[BaseType.action.rawValue] = [:]
         types[BaseType.component.rawValue] = [:]
         registerDefaultTypes()
+        
+//        TODO: refactor Coder configuration
+//        encoder.userInfo[CodingUserInfoKey.coderKey] = self
+//        decoder.userInfo[CodingUserInfoKey.coderKey] = self
     }
     
     // MARK: - BeagleCoding

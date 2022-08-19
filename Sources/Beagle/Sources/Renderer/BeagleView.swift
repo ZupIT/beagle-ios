@@ -29,20 +29,31 @@ public class BeagleView: UIView {
     
     // MARK: - Initialization
     
-    public convenience init(_ remote: ScreenType.Remote, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
-        self.init(viewModel: .init(screenType: .remote(remote), beagleViewStateObserver: beagleViewStateObserver))
+    public convenience init(
+        _ remote: ScreenType.Remote,
+        config: BeagleConfig = GlobalConfig,
+        beagleViewStateObserver: @escaping BeagleViewStateObserver
+    ) {
+        self.init(viewModel: .init(screenType: .remote(remote), beagleViewStateObserver: beagleViewStateObserver), config: config)
     }
     
-    public convenience init(_ json: String, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
-        self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver))
+    public convenience init(
+        _ json: String,
+        config: BeagleConfig = GlobalConfig,
+        beagleViewStateObserver: @escaping BeagleViewStateObserver
+    ) {
+        self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver), config: config)
     }
     
-    public convenience init(_ component: ServerDrivenComponent) {
-        self.init(viewModel: .init(screenType: .declarative(component.toScreen())))
+    public convenience init(
+        _ component: ServerDrivenComponent,
+        config: BeagleConfig = GlobalConfig
+    ) {
+        self.init(viewModel: .init(screenType: .declarative(component.toScreen())), config: config)
     }
 
-    required init(viewModel: BeagleScreenViewModel) {
-        let controller = BeagleScreenViewController(viewModel: viewModel)
+    required init(viewModel: BeagleScreenViewModel, config: BeagleConfig = GlobalConfig) {
+        let controller = BeagleScreenViewController(viewModel: viewModel, config: config)
         controller.skipNavigationCreation = true
         self.beagleController = controller
         super.init(frame: .zero)

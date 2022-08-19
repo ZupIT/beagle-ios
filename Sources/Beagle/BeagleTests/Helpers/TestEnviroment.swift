@@ -19,7 +19,7 @@ import Foundation
 @testable import Beagle
 import XCTest
 
-class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
+class TestEnviroment: DependenciesContainerResolving, EnvironmentProtocol {
     
     // MARK: - Dependencies
     
@@ -43,15 +43,15 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
     
     // MARK: - Builders
     
-    var renderer: (BeagleController) -> BeagleRenderer = {
+    static var renderer: (BeagleController) -> BeagleRenderer = {
         return BeagleRenderer(controller: $0)
     }
     
-    var style: (UIView) -> StyleViewConfiguratorProtocol = {
+    static var style: (UIView) -> StyleViewConfiguratorProtocol = {
         return StyleViewConfigurator(view: $0)
     }
     
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
+    static var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
         return ViewConfigurator(view: $0)
     }
     
@@ -102,20 +102,23 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
 
 // MARK: - Enviroment Test Case
 
-class EnviromentTestCase: XCTestCase {
+class EnvironmentTestCase: XCTestCase {
     
     var enviroment = TestEnviroment()
     
     override func setUp() {
-        CurrentResolver = enviroment
-        CurrentEnviroment = enviroment
+        let config = BeagleConfig(dependencies: BeagleDependencies())
+        config.resolver = enviroment
+        config.environment = enviroment
+        GlobalConfig = config
+        
         super.setUp()
     }
     
     override func tearDown() {
         enviroment = TestEnviroment()
-        CurrentResolver = DependenciesContainer.global
-        CurrentEnviroment = BeagleEnviroment.global
+        GlobalConfig = BeagleConfig(dependencies: BeagleDependencies())
+
         super.tearDown()
     }
 }

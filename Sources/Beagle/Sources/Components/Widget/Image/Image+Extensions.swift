@@ -62,7 +62,7 @@ extension Image {
         }
     }
 
-    private func setImageFromAsset(named: String, imageView: UIImageView, renderer : BeagleRenderer) {
+    private func setImageFromAsset(named: String, imageView: UIImageView, renderer: BeagleRenderer) {
         imageView.image = renderer.imageProvider.loadImageProvider(id: named)
     }
 

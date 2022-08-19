@@ -35,6 +35,8 @@ protocol ListViewDelegate: NSObjectProtocol {
 
 final class ListViewController: UIViewController {
     
+    var config: BeagleConfig
+    
     weak var delegate: ListViewDelegate?
     
     private(set) lazy var collectionView: UICollectionView = {
@@ -62,6 +64,7 @@ final class ListViewController: UIViewController {
     init(renderer: BeagleRenderer) {
         self.renderer = renderer
         self.beagleController = renderer.controller
+        self.config = renderer.controller?.config ?? GlobalConfig
         super.init(nibName: nil, bundle: nil)
     }
     

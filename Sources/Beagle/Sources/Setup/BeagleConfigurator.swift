@@ -18,15 +18,16 @@ import UIKit
 
 public struct BeagleConfigurator {
     public static func setup(dependencies: BeagleDependencies) {
-        // swiftlint:disable resolver_change
-        CurrentResolver = DependenciesContainer(dependencies: dependencies)
-        // swiftlint:enable resolver_change
+        GlobalConfig = BeagleConfig(dependencies: dependencies)
+        
+//        TODO: Refactor AnalyticsService singleton
         AnalyticsService.shared = dependencies.analyticsProvider.ifSome {
             AnalyticsService(provider: $0)
         }
     }
 }
 
+// TODO: refactor all dependencies to store unique configuration
 public struct BeagleDependencies {
     
     // MARK: Custom Dependencies

@@ -67,7 +67,10 @@
 				7623CF7F24254C9600688C4B /* Products */,
 				7623CF902425529A00688C4B /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		7623CF7F24254C9600688C4B /* Products */ = {
 			isa = PBXGroup;

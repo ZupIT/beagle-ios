@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ScreenComponentTests: EnviromentTestCase {
+final class ScreenComponentTests: EnvironmentTestCase {
     
     func testCodableScreen() throws {
         let screen: Screen = try componentFromJsonFile(fileName: "screen")

@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TextInputTests: EnviromentTestCase {
+class TextInputTests: EnvironmentTestCase {
 
     private lazy var theme = AppTheme(styles: [
         "test.textInput.style": textStyle

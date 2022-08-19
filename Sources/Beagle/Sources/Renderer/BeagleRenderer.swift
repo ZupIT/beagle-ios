@@ -52,7 +52,7 @@ public struct BeagleRenderer {
     /// main function of this class. Call it to transform a Component into a UIView
     public func render(_ component: ServerDrivenComponent) -> UIView {
         let view = component.toView(renderer: self)
-        
+        view.beagleConfig = controller?.config ?? GlobalConfig
         return setupView(resolve(view: view), of: component)
     }
     

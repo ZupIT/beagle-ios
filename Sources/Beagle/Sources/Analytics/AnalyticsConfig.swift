@@ -69,11 +69,11 @@ extension AnalyticsConfig.AttributesByActionName {
 
 extension AnalyticsConfig.ActionName {
 
-    public static func beagleActionName(_ action: Action.Type) -> String {
+    public static func beagleActionName(_ action: Action.Type, config: BeagleConfig = GlobalConfig) -> String {
         let isNavigate = action is Navigate.Type
         assert(!isNavigate, "This function can't be used for Navigate actions, since they are enums")
 
-        let name = CurrentEnviroment.coder.name(for: action) ?? ""
+        let name = config.environment.coder.name(for: action) ?? ""
 
         assert(!name.isEmpty, "Error when using Action that was not registered")
         return name

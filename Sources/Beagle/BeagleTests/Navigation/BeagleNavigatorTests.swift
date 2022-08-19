@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class BeagleNavigatorTests: EnviromentTestCase {
+final class BeagleNavigatorTests: EnvironmentTestCase {
 
     func testOpenValidExternalURL() {
 

@@ -15,17 +15,22 @@
  * limitations under the License.
  */
 
-// MARK: - CurrentResolver
+public var GlobalConfig: BeagleConfig = BeagleConfig(dependencies: BeagleDependencies())
 
-/// Used by injected property wrapper to resolve dependencies
-var CurrentResolver: DependenciesContainerResolving = DependenciesContainer.global
+// MARK: - Environment
 
-// MARK: - CurrentEnviroment
+/// Used outside beagle to access the environment dependencies
+public var Dependencies: BeagleEnviromentProtocol { GlobalConfig.environment }
 
-/// Used inside beagle to access the enviroment dependencies
-var CurrentEnviroment: EnviromentProtocol = BeagleEnviroment.global
-
-// MARK: - Enviroment
-
-/// Used outside beagle to access the enviroment dependencies
-public var Dependencies: BeagleEnviromentProtocol { CurrentEnviroment }
+public class BeagleConfig {
+    public init(dependencies: BeagleDependencies) {
+        resolver = DependenciesContainer(dependencies: dependencies)
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    var resolver: DependenciesContainerResolving
+    var environment: EnvironmentProtocol
+    var dependencies: BeagleEnviromentProtocol {
+        environment
+    }
+}

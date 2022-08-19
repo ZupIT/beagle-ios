@@ -74,8 +74,8 @@ extension UIView {
         superview.insertSubview(newView, belowSubview: self)
         removeFromSuperview()
         
-        if CurrentEnviroment.style(self).isFlexEnabled {
-            CurrentEnviroment.style(newView).isFlexEnabled = true
+        if BeagleEnvironment.style(self).isFlexEnabled {
+            BeagleEnvironment.style(newView).isFlexEnabled = true
         }
         renderer.controller?.setNeedsLayout(component: newView)
     }

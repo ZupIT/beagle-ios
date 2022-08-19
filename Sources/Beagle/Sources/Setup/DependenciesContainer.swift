@@ -32,10 +32,6 @@ final class DependenciesContainer: DependenciesContainerResolving {
         registerBeagleDependencies(dependencies)
     }
     
-    // MARK: Singleton
-    
-    static let global: DependenciesContainerResolving = DependenciesContainer(dependencies: BeagleDependencies())
-    
     // MARK: Public Functions
     
     func resolve<Dependency>() throws -> Dependency {

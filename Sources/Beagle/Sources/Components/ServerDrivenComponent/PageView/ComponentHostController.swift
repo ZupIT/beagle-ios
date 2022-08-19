@@ -20,6 +20,8 @@ class ComponentHostController: BeagleController {
 
     let component: ServerDrivenComponent
     let renderer: BeagleRenderer
+    
+    var config: BeagleConfig
 
     let bindings = Bindings()
 
@@ -53,6 +55,7 @@ class ComponentHostController: BeagleController {
     init(_ component: ServerDrivenComponent, renderer: BeagleRenderer) {
         self.component = component
         self.renderer = renderer
+        self.config = renderer.controller?.config ?? GlobalConfig
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,7 +70,7 @@ class ComponentHostController: BeagleController {
 
     override func viewDidLayoutSubviews() {
         bindings.config()
-        CurrentEnviroment.style(view).applyLayout()
+        BeagleEnvironment.style(view).applyLayout()
         super.viewDidLayoutSubviews()
     }
 

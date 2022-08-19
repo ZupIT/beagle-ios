@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class LazyComponentTests: EnviromentTestCase {
+final class LazyComponentTests: EnvironmentTestCase {
     
     func testCodableLazyComponent() throws {
         let component: LazyComponent = try componentFromJsonFile(fileName: "lazyComponent")

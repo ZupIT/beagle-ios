@@ -21,6 +21,7 @@ var injectedFailureHandler: (Error) -> Void = { error in
     fatalError(error.localizedDescription)
 }
 
+// TODO: Refactor to remove all references in Beagle and add warning usage
 @propertyWrapper
 public class Injected<Dependency> {
     
@@ -34,7 +35,7 @@ public class Injected<Dependency> {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try CurrentResolver.resolve()
+                    let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
                     dependency = resolvedDependency
                 } catch {
                     injectedFailureHandler(error)
@@ -61,7 +62,7 @@ public class OptionalInjected<Dependency> {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try CurrentResolver.resolve()
+                    let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
                     dependency = resolvedDependency
                 } catch {
                     return nil

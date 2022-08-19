@@ -29,7 +29,7 @@ public protocol ViewConfiguratorProtocol: AnyObject {
 public extension UIView {
 
     var beagle: ViewConfiguratorProtocol {
-        return CurrentEnviroment.viewConfigurator(self)
+        return BeagleEnvironment.viewConfigurator(self)
     }
 }
 

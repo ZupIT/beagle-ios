@@ -196,7 +196,10 @@
 				932925AF2327E0E400A61F01 /* Products */,
 				93365E3F23624AD40017CB89 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		932925AF2327E0E400A61F01 /* Products */ = {
 			isa = PBXGroup;
@@ -374,7 +377,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1130;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "Zup IT";
 				TargetAttributes = {
 					932925AD2327E0E400A61F01 = {

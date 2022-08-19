@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class TabBarTests: EnviromentTestCase {
+class TabBarTests: EnvironmentTestCase {
     
     override func setUp() {
         super.setUp()

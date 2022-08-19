@@ -23,38 +23,43 @@ public protocol BeagleEnviromentProtocol {
     var globalContext: GlobalContextProtocol { get }
 }
 
-protocol EnviromentProtocol: BeagleEnviromentProtocol {
+protocol EnvironmentProtocol: BeagleEnviromentProtocol {
     var navigator: NavigationProtocolInternal { get }
     var operationsProvider: OperationsProviderProtocolInternal { get }
     
-    var renderer: (BeagleController) -> BeagleRenderer { get }
-    var style: (UIView) -> StyleViewConfiguratorProtocol { get }
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol { get }
+    // TODO: remove static??
+    static var renderer: (BeagleController) -> BeagleRenderer { get }
+    static var style: (UIView) -> StyleViewConfiguratorProtocol { get }
+    static var viewConfigurator: (UIView) -> ViewConfiguratorProtocol { get }
 }
 
 /// Store global dependencies to be used inside extensions and outside Beagle
-final class BeagleEnviroment: EnviromentProtocol {
+final class BeagleEnvironment: EnvironmentProtocol {
     @Injected var coder: CoderProtocol
     @Injected var logger: LoggerProtocol
     @Injected var navigator: NavigationProtocolInternal
     @Injected var operationsProvider: OperationsProviderProtocolInternal
     @Injected var globalContext: GlobalContextProtocol
     
-    // MARK: Singleton
+    var resolver: DependenciesContainerResolving
     
-    static let global: EnviromentProtocol = BeagleEnviroment()
+    init(resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+        
+        // TODO: refactor to use resolver in @Injected properties
+    }
     
     // MARK: Builders
     
-    var renderer: (BeagleController) -> BeagleRenderer = {
+    static var renderer: (BeagleController) -> BeagleRenderer = {
         return BeagleRenderer(controller: $0)
     }
 
-    var style: (UIView) -> StyleViewConfiguratorProtocol = {
+    static var style: (UIView) -> StyleViewConfiguratorProtocol = {
         return StyleViewConfigurator(view: $0)
     }
 
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
+    static var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
         return ViewConfigurator(view: $0)
     }
 }

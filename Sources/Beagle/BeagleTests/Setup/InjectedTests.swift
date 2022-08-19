@@ -19,7 +19,7 @@ import Foundation
 import XCTest
 @testable import Beagle
 
-final class InjectedTests: EnviromentTestCase {
+final class InjectedTests: EnvironmentTestCase {
     // swiftlint:disable force_cast
     
     class InjectedTestClass {

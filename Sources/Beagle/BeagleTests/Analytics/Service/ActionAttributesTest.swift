@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class ActionAttributesTest: EnviromentTestCase {
+class ActionAttributesTest: EnvironmentTestCase {
 
     func testAttributesInMultipleActions() throws {
         let records = [

@@ -290,9 +290,12 @@ final class Navigator: NavigationProtocolInternal {
         case .remote(let newPath):
             remote(path: newPath, controller: controller, origin: origin, retry: retry, success: success)
         case .declarative(let screen):
-            success(BeagleScreenViewController(viewModel: .init(
-                screenType: .declarative(screen)
-            )))
+            success(
+                BeagleScreenViewController(
+                    viewModel: .init(screenType: .declarative(screen)),
+                    config: controller.config
+                )
+            )
         }
     }
     
@@ -309,7 +312,7 @@ final class Navigator: NavigationProtocolInternal {
         
         let remote = ScreenType.Remote(url: newPath ?? "", fallback: path.fallback, additionalData: path.httpAdditionalData)
                 
-        return BeagleScreenViewController.remote(remote, viewClient: viewClient) {
+        return BeagleScreenViewController.remote(remote, viewClient: viewClient, controller: controller) {
             [weak controller] result in guard let controller = controller else { return }
             controller.serverDrivenState = .finished
             switch result {

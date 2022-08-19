@@ -188,7 +188,7 @@ class ActionRecordFactoryTests: RecordFactoryHelpers {
 
 // MARK: - Aux
 
-class RecordFactoryHelpers: EnviromentTestCase {
+class RecordFactoryHelpers: EnvironmentTestCase {
 
     lazy var sut = ActionRecordFactory(info: info, globalConfig: _globalConfig.actions)
 

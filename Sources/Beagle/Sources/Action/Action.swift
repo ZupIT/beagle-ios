@@ -36,7 +36,7 @@ public struct UnknownAction: Action {
     public var analytics: ActionAnalyticsConfig? { return nil }
     
     public func execute(controller: BeagleController, origin: UIView) {
-        CurrentEnviroment.logger.log(Log.decode(.decodingError(type: "error trying to execute unknown action")))
+        controller.config.environment.logger.log(Log.decode(.decodingError(type: "error trying to execute unknown action")))
     }
 }
 

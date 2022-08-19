@@ -20,7 +20,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class AutoCodableTests: EnviromentTestCase {
+final class AutoCodableTests: EnvironmentTestCase {
     
     // swiftlint:disable force_unwrapping
     

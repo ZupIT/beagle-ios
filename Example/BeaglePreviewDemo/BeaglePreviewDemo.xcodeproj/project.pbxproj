@@ -65,7 +65,10 @@
 				7615576924801E7700E1EEEE /* Products */,
 				7615578D24801FAE00E1EEEE /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		7615576924801E7700E1EEEE /* Products */ = {
 			isa = PBXGroup;

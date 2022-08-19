@@ -18,7 +18,7 @@ import UIKit
 
 extension Navigate {
     public func execute(controller: BeagleController, origin: UIView) {
-        CurrentEnviroment.navigator.navigate(action: self, controller: controller, animated: true, origin: origin)
+        controller.config.environment.navigator.navigate(action: self, controller: controller, animated: true, origin: origin)
     }
 }
 

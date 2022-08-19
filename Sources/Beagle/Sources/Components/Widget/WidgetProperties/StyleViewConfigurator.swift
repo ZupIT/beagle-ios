@@ -29,7 +29,7 @@ public protocol StyleViewConfiguratorProtocol: AnyObject {
 
 extension UIView {
     public var style: StyleViewConfiguratorProtocol {
-        return CurrentEnviroment.style(self)
+        return BeagleEnvironment.style(self)
     }
 }
 
