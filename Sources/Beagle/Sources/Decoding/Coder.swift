@@ -58,16 +58,20 @@ final public class Coder: CoderProtocol {
     }
     
     // MARK: - Initialization
+    convenience init(_ resolver: DependenciesContainerResolving) {
+        self.init()
+        _logger = Injected(resolver)
+    }
     
     public init() {
         types = [:]
         types[BaseType.action.rawValue] = [:]
         types[BaseType.component.rawValue] = [:]
-        registerDefaultTypes()
         
-//        TODO: refactor Coder configuration
-//        encoder.userInfo[CodingUserInfoKey.coderKey] = self
-//        decoder.userInfo[CodingUserInfoKey.coderKey] = self
+        encoder.userInfo[CodingUserInfoKey.coderKey] = self
+        decoder.userInfo[CodingUserInfoKey.coderKey] = self
+        
+        registerDefaultTypes()
     }
     
     // MARK: - BeagleCoding

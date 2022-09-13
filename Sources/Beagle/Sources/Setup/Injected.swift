@@ -21,7 +21,6 @@ var injectedFailureHandler: (Error) -> Void = { error in
     fatalError(error.localizedDescription)
 }
 
-// TODO: Refactor to remove all references in Beagle and add warning usage
 @propertyWrapper
 public class Injected<Dependency> {
     
@@ -29,14 +28,25 @@ public class Injected<Dependency> {
     private var dependency: Dependency!
     // swiftlint:enable implicitly_unwrapped_optional
     
+    private var resolver: DependenciesContainerResolving?
+    
+    public init(_ resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+    }
+    
     public init() {}
     
     public var wrappedValue: Dependency {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
-                    dependency = resolvedDependency
+                    if let resolver = resolver {
+                        let resolvedDependency: Dependency = try resolver.resolve()
+                        dependency = resolvedDependency
+                    } else {
+                        let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
+                        dependency = resolvedDependency
+                    }
                 } catch {
                     injectedFailureHandler(error)
                 }
@@ -56,14 +66,25 @@ public class OptionalInjected<Dependency> {
     
     private var dependency: Dependency?
     
+    private var resolver: DependenciesContainerResolving?
+    
+    public init(_ resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+    }
+    
     public init() {}
     
     public var wrappedValue: Dependency? {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
-                    dependency = resolvedDependency
+                    if let resolver = resolver {
+                        let resolvedDependency: Dependency = try resolver.resolve()
+                        dependency = resolvedDependency
+                    } else {
+                        let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
+                        dependency = resolvedDependency
+                    }
                 } catch {
                     return nil
                 }

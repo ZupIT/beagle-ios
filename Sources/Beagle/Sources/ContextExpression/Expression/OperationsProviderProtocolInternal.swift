@@ -42,6 +42,11 @@ final class OperationsProvider: OperationsProviderProtocolInternal {
     @Injected var logger: LoggerProtocol
     
     // MARK: Init
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        _logger = Injected(resolver)
+        registerDefault()
+    }
 
     init() {
         registerDefault()

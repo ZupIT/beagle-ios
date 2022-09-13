@@ -209,7 +209,6 @@ extension DynamicObject {
     }
 
     private func transformByDecoding<T: Decodable>() -> T? {
-        // TODO: Use encoder/decoder from coder dependency
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
         if #available(iOS 13.0, *) {

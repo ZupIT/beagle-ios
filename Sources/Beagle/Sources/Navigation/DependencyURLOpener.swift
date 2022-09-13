@@ -26,6 +26,12 @@ final class URLOpener: URLOpenerProtocol {
     // MARK: Dependencies
 
     @Injected var logger: LoggerProtocol
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        _logger = Injected(resolver)
+    }
+    
+    init() {}
 
     // MARK: URLOpenerProtocol
 

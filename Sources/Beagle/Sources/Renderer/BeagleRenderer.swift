@@ -41,6 +41,11 @@ public struct BeagleRenderer {
 
     internal init(controller: BeagleController) {
         self.controller = controller
+        _viewClient = Injected(controller.config.resolver)
+        _mainBundle = Injected(controller.config.resolver)
+        _preFetchHelper = Injected(controller.config.resolver)
+        _imageDownloader = Injected(controller.config.resolver)
+        _imageProvider = Injected(controller.config.resolver)
     }
     
     // MARK: Public Functions

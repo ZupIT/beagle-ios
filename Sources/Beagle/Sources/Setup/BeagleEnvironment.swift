@@ -26,11 +26,7 @@ public protocol BeagleEnviromentProtocol {
 protocol EnvironmentProtocol: BeagleEnviromentProtocol {
     var navigator: NavigationProtocolInternal { get }
     var operationsProvider: OperationsProviderProtocolInternal { get }
-    
-    // TODO: remove static??
-    static var renderer: (BeagleController) -> BeagleRenderer { get }
-    static var style: (UIView) -> StyleViewConfiguratorProtocol { get }
-    static var viewConfigurator: (UIView) -> ViewConfiguratorProtocol { get }
+    var theme: ThemeProtocol { get }
 }
 
 /// Store global dependencies to be used inside extensions and outside Beagle
@@ -40,13 +36,18 @@ final class BeagleEnvironment: EnvironmentProtocol {
     @Injected var navigator: NavigationProtocolInternal
     @Injected var operationsProvider: OperationsProviderProtocolInternal
     @Injected var globalContext: GlobalContextProtocol
+    @Injected var theme: ThemeProtocol
     
     var resolver: DependenciesContainerResolving
     
     init(resolver: DependenciesContainerResolving) {
         self.resolver = resolver
-        
-        // TODO: refactor to use resolver in @Injected properties
+        _coder = Injected(resolver)
+        _logger = Injected(resolver)
+        _navigator = Injected(resolver)
+        _operationsProvider = Injected(resolver)
+        _globalContext = Injected(resolver)
+        _theme = Injected(resolver)
     }
     
     // MARK: Builders

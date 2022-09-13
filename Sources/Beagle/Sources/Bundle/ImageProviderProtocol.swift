@@ -23,7 +23,13 @@ public protocol ImageProviderProtocol {
 struct ImageProvider: ImageProviderProtocol {
     @Injected var mainBundle: BundleProtocol
     
-     func loadImageProvider(id: String) -> UIImage? {
+    init(_ resolver: DependenciesContainerResolving) {
+        _mainBundle = Injected(resolver)
+    }
+    
+    init() {}
+    
+    func loadImageProvider(id: String) -> UIImage? {
         return UIImage(named: id, in: self.mainBundle.bundle, compatibleWith: nil)
     }
 }

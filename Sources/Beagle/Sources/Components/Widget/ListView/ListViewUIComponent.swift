@@ -83,6 +83,9 @@ final class ListViewUIComponent: UIView {
     init(model: Model, renderer: BeagleRenderer) {
         self.model = model
         self.listController = ListViewController(renderer: renderer)
+        if let resolver = renderer.controller?.config.resolver {
+            _logger = Injected(resolver)
+        }
         super.init(frame: .zero)
         setupViews()
     }

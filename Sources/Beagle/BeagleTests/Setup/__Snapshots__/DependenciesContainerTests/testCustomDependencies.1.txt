@@ -1,7 +1,12 @@
 ▿ DependenciesContainer
-  ▿ instancesMap: 17 key/value pairs
+  ▿ instancesMap: 18 key/value pairs
     ▿ (2 elements)
       - key: "AnalyticsProviderProtocol"
+      ▿ value: DependencyResolver
+        ▿ lazy: (1 element)
+          - block: (Function)
+    ▿ (2 elements)
+      - key: "AnalyticsService"
       ▿ value: DependencyResolver
         ▿ lazy: (1 element)
           - block: (Function)

@@ -35,13 +35,20 @@ public struct ViewClient: ViewClientProtocol {
     
     @Injected var coder: CoderProtocol
     
-    var dispatcher = RequestDispatcher()
+    var dispatcher: RequestDispatcher
     
     let cache = Cache<String, Result<ServerDrivenComponent>>()
     
     // MARK: Initialization
     
-    public init() { }
+    init(_ resolver: DependenciesContainerResolving) {
+        _coder = Injected(resolver)
+        dispatcher = RequestDispatcher(resolver)
+    }
+    
+    public init() {
+        dispatcher = RequestDispatcher()
+    }
     
     // MARK: Public Methods
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-public var GlobalConfig: BeagleConfig = BeagleConfig(dependencies: BeagleDependencies())
+public var GlobalConfig: BeagleConfig = BeagleConfig(dependencies: BeagleDependenciesFactory())
 
 // MARK: - Environment
 
@@ -23,7 +23,17 @@ public var GlobalConfig: BeagleConfig = BeagleConfig(dependencies: BeagleDepende
 public var Dependencies: BeagleEnviromentProtocol { GlobalConfig.environment }
 
 public class BeagleConfig {
-    public init(dependencies: BeagleDependencies) {
+    public init(dependencies: BeagleDependenciesFactory) {
+        resolver = DependenciesContainer(dependencies: dependencies)
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    init(resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    init(dependencies: BeagleDependencies) {
         resolver = DependenciesContainer(dependencies: dependencies)
         environment = BeagleEnvironment(resolver: resolver)
     }

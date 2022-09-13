@@ -438,3 +438,9 @@ class BeagleControllerStub: BeagleController {
         execute(actions: actions, event: contextId, origin: origin)
     }
 }
+
+extension BeagleControllerProtocol {
+    var config: BeagleConfig {
+        GlobalConfig
+    }
+}

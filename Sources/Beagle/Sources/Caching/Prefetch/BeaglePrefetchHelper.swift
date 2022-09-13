@@ -25,6 +25,13 @@ public final class PreFetchHelper: PrefetchHelperProtocol {
     @Injected var viewClient: ViewClientProtocol
     @Injected var logger: LoggerProtocol
     
+    init(_ resolver: DependenciesContainerResolving) {
+        _viewClient = Injected(resolver)
+        _logger = Injected(resolver)
+    }
+    
+    init() {}
+    
     // MARK: - PrefetchHelperProtocol
     
     public func prefetchComponent(newPath: Route.NewPath) {

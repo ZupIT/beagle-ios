@@ -27,9 +27,15 @@ public protocol ImageDownloaderProtocol {
 
 public struct ImageDownloader: ImageDownloaderProtocol {
     
-    var dispatcher = RequestDispatcher()
+    var dispatcher: RequestDispatcher
     
-    public init() { }
+    public init() {
+        dispatcher = RequestDispatcher()
+    }
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        dispatcher = RequestDispatcher(resolver)
+    }
     
     @discardableResult
     public func fetchImage(

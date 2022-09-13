@@ -73,15 +73,7 @@ final class LayoutManager {
     }
     
     private var contentInsets: UIEdgeInsets {
-        if #available(iOS 11.0, *) {
-            return viewController?.viewIfLoaded?.safeAreaInsets ?? .zero
-        }
-        return UIEdgeInsets(
-            top: viewController?.topLayoutGuide.length ?? 0,
-            left: 0,
-            bottom: viewController?.bottomLayoutGuide.length ?? 0,
-            right: 0
-        )
+        return viewController?.viewIfLoaded?.safeAreaInsets ?? .zero
     }
     
     private var contentPadding: EdgeValue {

@@ -16,7 +16,7 @@
 
 import Foundation
 
-protocol DependenciesContainerResolving {
+public protocol DependenciesContainerResolving {
     func resolve<Dependency>() throws -> Dependency
 }
 
@@ -27,6 +27,10 @@ final class DependenciesContainer: DependenciesContainerResolving {
     private var instancesMap: [String: DependencyResolver] = [:]
     
     // MARK: Init
+    
+    init(dependencies: BeagleDependenciesFactory) {
+        registerBeagleDependenciesFactory(dependencies)
+    }
     
     init(dependencies: BeagleDependencies) {
         registerBeagleDependencies(dependencies)
@@ -96,6 +100,7 @@ final class DependenciesContainer: DependenciesContainerResolving {
         
         if let analyticsProvider = dependencies.analyticsProvider {
             registerLazy(AnalyticsProviderProtocol.self, block: analyticsProvider)
+            registerLazy(AnalyticsService.self, block: AnalyticsService(provider: analyticsProvider))
         }
         
         if let deepLinkHandler = dependencies.deepLinkHandler {
@@ -104,6 +109,38 @@ final class DependenciesContainer: DependenciesContainerResolving {
         
         if let networkClient = dependencies.networkClient {
             registerLazy(NetworkClientProtocol.self, block: networkClient)
+        }
+    }
+    
+    private func registerBeagleDependenciesFactory(_ dependencies: BeagleDependenciesFactory) {
+        registerLazy(UrlBuilderProtocol.self, block: dependencies.urlBuilder.create(self))
+        registerLazy(GlobalContextProtocol.self, block: dependencies.globalContext)
+        registerLazy(NavigationProtocolInternal.self, block: dependencies.internalNavigator.create(self))
+        registerLazy(BundleProtocol.self, block: dependencies.appBundle.create(self))
+        registerLazy(WindowManagerProtocol.self, block: dependencies.windowManager)
+        registerLazy(CoderProtocol.self, block: dependencies.coder.create(self))
+        registerLazy(OperationsProviderProtocolInternal.self, block: dependencies.internalOperationsProvider.create(self))
+        registerLazy(PrefetchHelperProtocol.self, block: dependencies.preFetchHelper.create(self))
+        registerLazy(URLOpenerProtocol.self, block: dependencies.opener.create(self))
+        
+        registerFactory(LoggerProtocol.self, block: LoggerProxy(logger: dependencies.logger?.create(self)))
+        registerFactory(ThemeProtocol.self, block: dependencies.theme.create(self))
+        registerFactory(ViewClientProtocol.self, block: dependencies.viewClient.create(self))
+        registerFactory(ImageDownloaderProtocol.self, block: dependencies.imageDownloader.create(self))
+        
+        registerFactory(ImageProviderProtocol.self, block: dependencies.imageProvider.create(self))
+        
+        if let analyticsProvider = dependencies.analyticsProvider {
+            registerLazy(AnalyticsProviderProtocol.self, block: analyticsProvider.create(self))
+            registerLazy(AnalyticsService.self, block: AnalyticsService(self, provider: analyticsProvider.create(self)))
+        }
+        
+        if let deepLinkHandler = dependencies.deepLinkHandler {
+            registerLazy(DeepLinkScreenManagerProtocol.self, block: deepLinkHandler.create(self))
+        }
+        
+        if let networkClient = dependencies.networkClient {
+            registerLazy(NetworkClientProtocol.self, block: networkClient.create(self))
         }
     }
     

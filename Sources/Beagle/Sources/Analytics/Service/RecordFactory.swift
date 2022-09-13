@@ -36,6 +36,24 @@ struct ActionRecordFactory {
     let info: AnalyticsService.ActionInfo
     let globalConfig: AnalyticsConfig.AttributesByActionName
     
+    init(
+        _ resolver: DependenciesContainerResolving,
+        info: AnalyticsService.ActionInfo,
+        globalConfig: AnalyticsConfig.AttributesByActionName
+    ) {
+        _coder = Injected(resolver)
+        self.info = info
+        self.globalConfig = globalConfig
+    }
+    
+    init(
+        info: AnalyticsService.ActionInfo,
+        globalConfig: AnalyticsConfig.AttributesByActionName
+    ) {
+        self.info = info
+        self.globalConfig = globalConfig
+    }
+    
     @Injected var coder: CoderProtocol
 
     func makeRecord() -> AnalyticsRecord? {

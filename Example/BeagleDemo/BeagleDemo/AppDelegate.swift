@@ -24,10 +24,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        BeagleConfig.start()
+//        BeagleConfig.start()
+        
+        let deepLinkHandler = DeeplinkScreenManager.shared
+
+//        var dependencies = BeagleDependencies()
+//        dependencies.networkClient = NetworkClientDefault()
+//        dependencies.theme = AppTheme.theme
+//        dependencies.urlBuilder = UrlBuilder(baseUrl: URL(string: .baseURL))
+//        dependencies.deepLinkHandler = deepLinkHandler
+//
+//        dependencies.analyticsProvider = AnalyticsProviderDemo()
+//
+//        registerCustomOperations(in: dependencies)
+//        registerCustomComponents(in: dependencies)
+//        setupNavigation(in: dependencies)
+
+        var beagleDependencies = BeagleDependenciesFactory()
+        
+        beagleDependencies.networkClient = Factory { _ in
+            NetworkClientDefault()
+        }
+        beagleDependencies.theme = Factory { _ in
+            AppTheme.theme
+        }
+        beagleDependencies.urlBuilder = Factory { _ in
+            UrlBuilder(baseUrl: URL(string: .baseURL))
+        }
+        beagleDependencies.deepLinkHandler = Factory { _ in
+            deepLinkHandler
+        }
+        beagleDependencies.analyticsProvider = Factory { _ in
+            AnalyticsProviderDemo()
+        }
+        beagleDependencies.logger = Factory { _ in
+            BeagleLoggerDefault()
+        }
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint))
+        let controller = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint), config: Beagle.BeagleConfig(dependencies: beagleDependencies))
+        
+//        controller.config.environment.coder.register(type: <#T##BeagleCodable.Protocol#>)
+        
+        window?.rootViewController = controller
         window?.makeKeyAndVisible()
         
         return true

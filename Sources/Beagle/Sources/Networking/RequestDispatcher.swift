@@ -26,7 +26,13 @@ struct RequestDispatcher {
     
     // MARK: Internal Methods
     
-    public init() { }
+    init() { }
+    
+    public init(_ resolver: DependenciesContainerResolving) {
+        _urlBuilder = Injected(resolver)
+        _logger = Injected(resolver)
+        _networkClient = OptionalInjected(resolver)
+    }
 
     @discardableResult
     func dispatchRequest(

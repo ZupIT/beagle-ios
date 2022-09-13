@@ -36,7 +36,8 @@ class PageIndicatorTests: EnvironmentTestCase {
     
     func test_indicator_decoder() throws {
         let component: CustomPageIndicator = try componentFromJsonFile(
-            fileName: PageIndicatorTests.typeName
+            fileName: PageIndicatorTests.typeName,
+            coder: enviroment.coder
         )
         assertSnapshot(matching: component, as: .dump)
     }

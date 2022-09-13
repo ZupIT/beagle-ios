@@ -57,6 +57,17 @@ final class Navigator: NavigationProtocolInternal {
     @Injected var viewClient: ViewClientProtocol
     @OptionalInjected var deepLinkHandler: DeepLinkScreenManagerProtocol?
     
+    init() { }
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        _logger = Injected(resolver)
+        _opener = Injected(resolver)
+        _windowManager = Injected(resolver)
+        _urlBuilder = Injected(resolver)
+        _viewClient = Injected(resolver)
+        _deepLinkHandler = OptionalInjected(resolver)
+    }
+    
     // MARK: - Public Methods
 
     // MARK: Navigate

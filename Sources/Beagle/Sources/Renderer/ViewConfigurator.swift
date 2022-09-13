@@ -35,10 +35,6 @@ public extension UIView {
 
 class ViewConfigurator: ViewConfiguratorProtocol {
     
-    // MARK: Dependencies
-    
-    @Injected var theme: ThemeProtocol
-    
     // MARK: Properties
 
     weak var view: UIView?
@@ -86,7 +82,9 @@ class ViewConfigurator: ViewConfiguratorProtocol {
     }
 
     func applyStyle<T: UIView>(for view: T, styleId: String, with controller: BeagleController?) {
-        theme.applyStyle(for: view, withId: styleId)
+        if let theme = controller?.config.environment.theme {
+            theme.applyStyle(for: view, withId: styleId)
+        }
     }
     
     func setup(accessibility: Accessibility?) {
