@@ -130,11 +130,11 @@ public struct BeagleDependenciesFactory {
     var types: [(BeagleCodable.Type, String?)] = []
     var internalCoder: Factory<CoderProtocol> {
         Factory { resolver in
-            let coder = coder.create(resolver)
+            let result = coder.create(resolver)
             types.forEach {
-                coder.register(type: $0.0, named: $0.1)
+                result.register(type: $0.0, named: $0.1)
             }
-            return coder
+            return result
         }
     }
     
@@ -143,28 +143,28 @@ public struct BeagleDependenciesFactory {
     var navigations: [(() -> BeagleNavigationController, String)] = []
     var internalNavigator: Factory<NavigationProtocolInternal> {
         Factory { resolver in
-            let navigator = Navigator(resolver)
+            let result = Navigator(resolver)
             if let defaultAnimation = defaultAnimation {
-                navigator.setDefaultAnimation(defaultAnimation)
+                result.setDefaultAnimation(defaultAnimation)
             }
             if let navigationBuilder = navigationBuilder {
-                navigator.registerDefaultNavigationController(builder: navigationBuilder)
+                result.registerDefaultNavigationController(builder: navigationBuilder)
             }
             navigations.forEach {
-                navigator.registerNavigationController(builder: $0.0, forId: $0.1)
+                result.registerNavigationController(builder: $0.0, forId: $0.1)
             }
-            return navigator
+            return result
         }
     }
     
     var operations: [(String, OperationHandler)] = []
     var internalOperationsProvider: Factory<OperationsProviderProtocolInternal> {
         Factory { resolver in
-            let operationProvider = OperationsProvider(resolver)
+            let result = OperationsProvider(resolver)
             operations.forEach {
-                operationProvider.register(operationId: $0.0, handler: $0.1)
+                result.register(operationId: $0.0, handler: $0.1)
             }
-            return operationProvider
+            return result
         }
     }
 }
