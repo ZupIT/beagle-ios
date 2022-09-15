@@ -132,7 +132,7 @@ public struct BeagleDependenciesFactory {
         Factory { resolver in
             let result = self.coder.create(resolver)
             self.types.forEach {
-                result.register(type: $0.0, named: $0.1)
+                result.register(type: $0.0.self, named: $0.1)
             }
             return result
         }

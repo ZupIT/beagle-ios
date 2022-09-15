@@ -17,6 +17,8 @@
 import Foundation
 import Beagle
 
+import UIKit
+
 enum BeagleConfig {
 
     static func create() -> BeagleConfiguration {
@@ -56,6 +58,7 @@ enum BeagleConfig {
 
     private static func registerCustomComponents(in dependencies: inout BeagleDependenciesFactory) {
         dependencies.register(type: DSCollection.self)
+        dependencies.register(type: CustomText.self, named: "custom-text")
     }
 
     private static func setupNavigation(in dependencies: inout BeagleDependenciesFactory) {
@@ -87,5 +90,13 @@ enum BeagleConfig {
             }
             return nil
         }
+    }
+}
+
+struct CustomText: ServerDrivenComponent {
+    func toView(renderer: BeagleRenderer) -> UIView {
+        let label = UILabel()
+        label.text = "customText"
+        return label
     }
 }
