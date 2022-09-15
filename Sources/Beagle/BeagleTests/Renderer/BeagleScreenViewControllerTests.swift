@@ -440,7 +440,7 @@ class BeagleControllerStub: BeagleController {
 }
 
 extension BeagleControllerProtocol {
-    var config: BeagleConfig {
-        GlobalConfig
+    var config: BeagleConfiguration {
+        GlobalConfiguration
     }
 }

@@ -46,7 +46,7 @@ class AnalyticsService {
 
     func createRecord(action: ActionInfo) {
         ActionRecordFactory(
-            resolver ?? GlobalConfig.resolver,
+            resolver ?? GlobalConfiguration.resolver,
             info: action,
             globalConfig: provider.getConfig().actions
         )

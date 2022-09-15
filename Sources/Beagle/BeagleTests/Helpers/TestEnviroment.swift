@@ -107,17 +107,17 @@ class EnvironmentTestCase: XCTestCase {
     var enviroment = TestEnviroment()
     
     override func setUp() {
-        let config = BeagleConfig(dependencies: BeagleDependencies())
+        let config = BeagleConfiguration(dependencies: BeagleDependencies())
         config.resolver = enviroment
         config.environment = enviroment
-        GlobalConfig = config
+        GlobalConfiguration = config
         
         super.setUp()
     }
     
     override func tearDown() {
         enviroment = TestEnviroment()
-        GlobalConfig = BeagleConfig(dependencies: BeagleDependencies())
+        GlobalConfiguration = BeagleConfiguration(dependencies: BeagleDependencies())
 
         super.tearDown()
     }

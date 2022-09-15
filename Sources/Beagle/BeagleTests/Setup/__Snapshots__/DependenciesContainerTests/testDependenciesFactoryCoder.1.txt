@@ -1,0 +1,4 @@
+▿ 1 element
+  ▿ (2 elements)
+    - .0: ComponentDummy
+    - .1: Optional<String>.none

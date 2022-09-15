@@ -21,7 +21,7 @@ class ComponentHostController: BeagleController {
     let component: ServerDrivenComponent
     let renderer: BeagleRenderer
     
-    var config: BeagleConfig
+    var config: BeagleConfiguration
 
     let bindings = Bindings()
 
@@ -55,7 +55,7 @@ class ComponentHostController: BeagleController {
     init(_ component: ServerDrivenComponent, renderer: BeagleRenderer) {
         self.component = component
         self.renderer = renderer
-        self.config = renderer.controller?.config ?? GlobalConfig
+        self.config = renderer.controller?.config ?? GlobalConfiguration
         super.init(nibName: nil, bundle: nil)
     }
 

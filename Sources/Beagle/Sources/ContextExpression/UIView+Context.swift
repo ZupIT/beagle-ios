@@ -68,9 +68,9 @@ extension UIView {
         }
     }
     
-    unowned var beagleConfig: BeagleConfig {
+    unowned var beagleConfig: BeagleConfiguration {
         get {
-            objc_getAssociatedObject(self, &UIView.beagleConfigKey) as? BeagleConfig ?? GlobalConfig
+            objc_getAssociatedObject(self, &UIView.beagleConfigKey) as? BeagleConfiguration ?? GlobalConfiguration
         }
         set {
             objc_setAssociatedObject(self, &UIView.beagleConfigKey, newValue, .OBJC_ASSOCIATION_ASSIGN)

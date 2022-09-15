@@ -23,7 +23,7 @@ public protocol BeagleControllerProtocol: NSObjectProtocol {
     var screenType: ScreenType { get }
     var screen: Screen? { get }
     
-    var config: BeagleConfig { get }
+    var config: BeagleConfiguration { get }
     
     func setIdentifier(_ id: String?, in view: UIView)
     func setContext(_ context: Context, in view: UIView)
@@ -63,7 +63,7 @@ public class BeagleScreenViewController: BeagleController {
     @Injected var navigator: NavigationProtocolInternal
     @OptionalInjected var analyticsService: AnalyticsService?
     
-    public var config: BeagleConfig
+    public var config: BeagleConfiguration
     
     // MARK: - Init
     
@@ -81,22 +81,22 @@ public class BeagleScreenViewController: BeagleController {
         }
     }
     
-    public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil, config: BeagleConfig = GlobalConfig) {
+    public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.init(viewModel: .init(screenType: .remote(remote), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    public convenience init(_ json: String, controllerId: String? = nil, config: BeagleConfig = GlobalConfig) {
+    public convenience init(_ json: String, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.init(viewModel: .init(screenType: .declarativeText(json), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil, config: BeagleConfig = GlobalConfig) {
+    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.init(viewModel: .init(screenType: .declarative(component.toScreen()), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    required init(viewModel: BeagleScreenViewModel, controllerId: String? = nil, config: BeagleConfig = GlobalConfig) {
+    required init(viewModel: BeagleScreenViewModel, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.viewModel = viewModel
         self.navigationControllerId = controllerId
         self.config = config

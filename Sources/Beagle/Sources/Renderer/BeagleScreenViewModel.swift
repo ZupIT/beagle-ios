@@ -69,29 +69,24 @@ class BeagleScreenViewModel {
             }
         }
     }
-    
-    convenience init(
+
+    required init(
         screenType: ScreenType,
-        resolver: DependenciesContainerResolving
+        resolver: DependenciesContainerResolving = GlobalConfiguration.resolver
     ) {
-        self.init(screenType: screenType)
+        self.screenType = screenType
+        self.state = .started
         _coder = Injected(resolver)
         _viewClient = Injected(resolver)
         _analyticsService = OptionalInjected(resolver)
     }
-
-    public required init(
-        screenType: ScreenType
-    ) {
-        self.screenType = screenType
-        self.state = .started
-    }
     
-    public convenience init(
+    convenience init(
         screenType: ScreenType,
+        resolver: DependenciesContainerResolving = GlobalConfiguration.resolver,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
     ) {
-        self.init(screenType: screenType)
+        self.init(screenType: screenType, resolver: resolver)
         self.beagleViewStateObserver = beagleViewStateObserver
     }
     

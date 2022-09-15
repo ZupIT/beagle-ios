@@ -82,7 +82,35 @@ final class InjectedTests: EnvironmentTestCase {
         assertIdentical(newClient, sut.networkClient as! NetworkClientDummy)
     }
     
+    func testInjectedWithResolver() {
+        // Given
+        let resolver = Resolver()
+        let sut = InjectedTestWithResolver(resolver)
+        
+        // When/Then
+        XCTAssertNotNil(sut.dummy)
+        XCTAssertNotNil(sut.optionalDummy)
+    }
+    
     private func assertIdentical(_ a: AnyObject, _ b: AnyObject) {
         XCTAssertTrue(a === b)
     }
 }
+
+class InjectedTestWithResolver {
+    @Injected var dummy: DependencyDummy
+    @OptionalInjected var optionalDummy: DependencyDummy?
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        _dummy = Injected(resolver)
+        _optionalDummy = OptionalInjected(resolver)
+    }
+}
+
+struct Resolver: DependenciesContainerResolving {
+    func resolve<Dependency>() throws -> Dependency {
+        DependencyDummy() as! Dependency
+    }
+}
+
+struct DependencyDummy {}

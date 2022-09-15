@@ -18,7 +18,7 @@ import UIKit
 
 public struct BeagleConfigurator {
     public static func setup(dependencies: BeagleDependencies) {
-        GlobalConfig = BeagleConfig(dependencies: dependencies)
+        GlobalConfiguration = BeagleConfiguration(dependencies: dependencies)
     }
 }
 
@@ -53,7 +53,7 @@ public struct BeagleDependencies {
 }
 
 public struct BeagleDependenciesFactory {
-    // MARK: Custom
+    // MARK: - Public
     public var coder: Factory<CoderProtocol> = Factory { resolver in
         Coder(resolver)
     }
@@ -82,6 +82,41 @@ public struct BeagleDependenciesFactory {
         MainBundle()
     }
     
+    public mutating func register<T: BeagleCodable>(type: T.Type, named: String? = nil) {
+        types.append((type, named))
+    }
+    
+    public mutating func setDefaultAnimation(_ animation: BeagleNavigatorAnimation) {
+        defaultAnimation = animation
+    }
+    
+    /// Register the default `BeagleNavigationController` to be used when creating a new navigation flow.
+    /// - Parameter builder: will be called when a `BeagleNavigationController` custom type needs to be used.
+    public mutating func registerDefaultNavigationController(builder: @escaping () -> BeagleNavigationController) {
+        navigationBuilder = builder
+    }
+
+    /// Register a `BeagleNavigationController` to be used when creating a new navigation flow with the associated `controllerId`.
+    /// - Parameters:
+    ///   - builder: will be called when a `BeagleNavigationController` custom type needs to be used.
+    ///   - controllerId: the cross platform id that identifies the controller in the BFF.
+    public mutating func registerNavigationController(builder: @escaping () -> BeagleNavigationController, forId controllerId: String) {
+        navigations.append((builder, controllerId))
+    }
+    
+    /// Use this function to register your custom operation.
+    /// - Warning:
+    ///     - Be careful when replacing a default operation in Beagle, consider creating it using `custom()`
+    ///     - Custom Operations names must have at least 1 letter. It can also contain numbers and the character _
+    /// - Parameters:
+    ///   - operation: The custom operation you wish to register.
+    ///   - handler: A closure where you tell us what your custom operation should do.
+    public mutating func register(operationId: String, handler: @escaping OperationHandler) {
+        operations.append((operationId, handler))
+    }
+    
+    public init() { }
+    
     // MARK: Internal
     let globalContext: GlobalContextProtocol = GlobalContext()
     let windowManager: WindowManagerProtocol = WindowManager()
@@ -91,14 +126,47 @@ public struct BeagleDependenciesFactory {
     let opener: Factory<URLOpenerProtocol> = Factory { resolver in
         URLOpener(resolver)
     }
-    let internalNavigator: Factory<NavigationProtocolInternal> = Factory { resolver in
-        Navigator(resolver)
-    }
-    let internalOperationsProvider: Factory<OperationsProviderProtocolInternal> = Factory { resolver in
-        OperationsProvider(resolver)
+    
+    var types: [(BeagleCodable.Type, String?)] = []
+    var internalCoder: Factory<CoderProtocol> {
+        Factory { resolver in
+            let coder = coder.create(resolver)
+            types.forEach {
+                coder.register(type: $0.0, named: $0.1)
+            }
+            return coder
+        }
     }
     
-    public init() { }
+    var defaultAnimation: BeagleNavigatorAnimation?
+    var navigationBuilder: (() -> BeagleNavigationController)?
+    var navigations: [(() -> BeagleNavigationController, String)] = []
+    var internalNavigator: Factory<NavigationProtocolInternal> {
+        Factory { resolver in
+            let navigator = Navigator(resolver)
+            if let defaultAnimation = defaultAnimation {
+                navigator.setDefaultAnimation(defaultAnimation)
+            }
+            if let navigationBuilder = navigationBuilder {
+                navigator.registerDefaultNavigationController(builder: navigationBuilder)
+            }
+            navigations.forEach {
+                navigator.registerNavigationController(builder: $0.0, forId: $0.1)
+            }
+            return navigator
+        }
+    }
+    
+    var operations: [(String, OperationHandler)] = []
+    var internalOperationsProvider: Factory<OperationsProviderProtocolInternal> {
+        Factory { resolver in
+            let operationProvider = OperationsProvider(resolver)
+            operations.forEach {
+                operationProvider.register(operationId: $0.0, handler: $0.1)
+            }
+            return operationProvider
+        }
+    }
 }
 
 public struct Factory<T> {

@@ -45,8 +45,8 @@ final class Navigator: NavigationProtocolInternal {
 
     var defaultAnimation: BeagleNavigatorAnimation?
     
-    private var builders: [String: NavigationBuilder] = [:]
-    private var defaultBuilder: NavigationBuilder?
+    var builders: [String: NavigationBuilder] = [:]
+    var defaultBuilder: NavigationBuilder?
     
     // MARK: - Dependencies
     

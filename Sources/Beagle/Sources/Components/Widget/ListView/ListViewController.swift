@@ -35,7 +35,7 @@ protocol ListViewDelegate: NSObjectProtocol {
 
 final class ListViewController: UIViewController {
     
-    var config: BeagleConfig
+    var config: BeagleConfiguration
     
     weak var delegate: ListViewDelegate?
     
@@ -64,7 +64,7 @@ final class ListViewController: UIViewController {
     init(renderer: BeagleRenderer) {
         self.renderer = renderer
         self.beagleController = renderer.controller
-        self.config = renderer.controller?.config ?? GlobalConfig
+        self.config = renderer.controller?.config ?? GlobalConfiguration
         super.init(nibName: nil, bundle: nil)
     }
     

@@ -69,7 +69,7 @@ extension AnalyticsConfig.AttributesByActionName {
 
 extension AnalyticsConfig.ActionName {
 
-    public static func beagleActionName(_ action: Action.Type, config: BeagleConfig = GlobalConfig) -> String {
+    public static func beagleActionName(_ action: Action.Type, config: BeagleConfiguration = GlobalConfiguration) -> String {
         let isNavigate = action is Navigate.Type
         assert(!isNavigate, "This function can't be used for Navigate actions, since they are enums")
 

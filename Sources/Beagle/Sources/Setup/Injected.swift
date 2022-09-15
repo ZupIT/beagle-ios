@@ -44,7 +44,7 @@ public class Injected<Dependency> {
                         let resolvedDependency: Dependency = try resolver.resolve()
                         dependency = resolvedDependency
                     } else {
-                        let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
+                        let resolvedDependency: Dependency = try GlobalConfiguration.resolver.resolve()
                         dependency = resolvedDependency
                     }
                 } catch {
@@ -82,7 +82,7 @@ public class OptionalInjected<Dependency> {
                         let resolvedDependency: Dependency = try resolver.resolve()
                         dependency = resolvedDependency
                     } else {
-                        let resolvedDependency: Dependency = try GlobalConfig.resolver.resolve()
+                        let resolvedDependency: Dependency = try GlobalConfiguration.resolver.resolve()
                         dependency = resolvedDependency
                     }
                 } catch {

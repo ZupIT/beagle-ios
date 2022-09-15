@@ -23,7 +23,7 @@ public class BeagleView: UIView {
     
     // MARK: - Private Attributes
     
-    private var beagleController: BeagleScreenViewController
+    var beagleController: BeagleScreenViewController
     
     private var alreadyCalculateIntrinsicSize = true
     
@@ -31,28 +31,48 @@ public class BeagleView: UIView {
     
     public convenience init(
         _ remote: ScreenType.Remote,
-        config: BeagleConfig = GlobalConfig,
+        config: BeagleConfiguration = GlobalConfiguration,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
     ) {
-        self.init(viewModel: .init(screenType: .remote(remote), beagleViewStateObserver: beagleViewStateObserver), config: config)
+        self.init(
+            viewModel: .init(
+                screenType: .remote(remote),
+                resolver: config.resolver,
+                beagleViewStateObserver: beagleViewStateObserver
+            ),
+            config: config
+        )
     }
     
     public convenience init(
         _ json: String,
-        config: BeagleConfig = GlobalConfig,
+        config: BeagleConfiguration = GlobalConfiguration,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
     ) {
-        self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver), config: config)
+        self.init(
+            viewModel: .init(
+                screenType: .declarativeText(json),
+                resolver: config.resolver,
+                beagleViewStateObserver: beagleViewStateObserver
+            ),
+            config: config
+        )
     }
     
     public convenience init(
         _ component: ServerDrivenComponent,
-        config: BeagleConfig = GlobalConfig
+        config: BeagleConfiguration = GlobalConfiguration
     ) {
-        self.init(viewModel: .init(screenType: .declarative(component.toScreen())), config: config)
+        self.init(
+            viewModel: .init(
+                screenType: .declarative(component.toScreen()),
+                resolver: config.resolver
+            ),
+            config: config
+        )
     }
 
-    required init(viewModel: BeagleScreenViewModel, config: BeagleConfig = GlobalConfig) {
+    required init(viewModel: BeagleScreenViewModel, config: BeagleConfiguration = GlobalConfiguration) {
         let controller = BeagleScreenViewController(viewModel: viewModel, config: config)
         controller.skipNavigationCreation = true
         self.beagleController = controller

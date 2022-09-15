@@ -17,26 +17,36 @@
 import Foundation
 import Beagle
 
-class BeagleConfig {
+enum BeagleConfig {
 
-    private init() {  }
-
-    static func start() {
+    static func create() -> BeagleConfiguration {
         let deepLinkHandler = registerDeepLink()
 
-        var dependencies = BeagleDependencies()
-        dependencies.networkClient = NetworkClientDefault()
-        dependencies.theme = AppTheme.theme
-        dependencies.urlBuilder = UrlBuilder(baseUrl: URL(string: .baseURL))
-        dependencies.deepLinkHandler = deepLinkHandler
+        var dependencies = BeagleDependenciesFactory()
+        dependencies.networkClient = Factory { resolver in
+            NetworkClientDefault(resolver)
+        }
+        dependencies.theme = Factory { _ in
+            AppTheme.theme
+        }
+        dependencies.urlBuilder = Factory { _ in
+            UrlBuilder(baseUrl: URL(string: .baseURL))
+        }
+        dependencies.deepLinkHandler = Factory { _ in
+            deepLinkHandler
+        }
+        dependencies.analyticsProvider = Factory { _ in
+            AnalyticsProviderDemo()
+        }
+        dependencies.logger = Factory { _ in
+            BeagleLoggerDefault()
+        }
 
-        dependencies.analyticsProvider = AnalyticsProviderDemo()
+        registerCustomOperations(in: &dependencies)
+        registerCustomComponents(in: &dependencies)
+        setupNavigation(in: &dependencies)
 
-        registerCustomOperations(in: dependencies)
-        registerCustomComponents(in: dependencies)
-        setupNavigation(in: dependencies)
-
-        BeagleConfigurator.setup(dependencies: dependencies)
+        return BeagleConfiguration(dependencies: dependencies)
     }
 
     private static func registerDeepLink() -> DeeplinkScreenManager {
@@ -44,21 +54,21 @@ class BeagleConfig {
         return deepLink
     }
 
-    private static func registerCustomComponents(in dependencies: BeagleDependencies) {
-        dependencies.coder.register(type: DSCollection.self)
+    private static func registerCustomComponents(in dependencies: inout BeagleDependenciesFactory) {
+        dependencies.register(type: DSCollection.self)
     }
 
-    private static func setupNavigation(in dependencies: BeagleDependencies) {
-        dependencies.navigator.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
-        dependencies.navigator.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
-        dependencies.navigator.setDefaultAnimation(.init(
+    private static func setupNavigation(in dependencies: inout BeagleDependenciesFactory) {
+        dependencies.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
+        dependencies.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
+        dependencies.setDefaultAnimation(.init(
             pushTransition: .init(type: .fade, subtype: .fromRight, duration: 0.1),
             modalPresentationStyle: .formSheet
         ))
     }
     
-    private static func registerCustomOperations(in dependencies: BeagleDependencies) {
-        dependencies.operationsProvider.register(operationId: "sum") { parameters in
+    private static func registerCustomOperations(in dependencies: inout BeagleDependenciesFactory) {
+        dependencies.register(operationId: "sum") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let integerParameters = anyParameters as? [Int] {
                 return .int(integerParameters.reduce(0, +))
@@ -68,7 +78,7 @@ class BeagleConfig {
             return nil
         }
         
-        dependencies.operationsProvider.register(operationId: "SUBTRACT") { parameters in
+        dependencies.register(operationId: "SUBTRACT") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let integerParameters = anyParameters as? [Int] {
                 return .int(integerParameters.reduce(integerParameters[0] * 2, -))

@@ -110,7 +110,7 @@ extension Encoder {
             key = ._beagleAction_
         }
         
-        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfig.environment.coder
+        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfiguration.environment.coder
         if let identifier = coder.name(for: type(of: value)) {
             try container.encode(identifier, forKey: key)
         }
@@ -156,7 +156,7 @@ extension Decoder {
         }
         let typeID = try container.decode(String.self, forKey: key.type)
         
-        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfig.environment.coder
+        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfiguration.environment.coder
         guard let matchingType = coder.type(for: typeID, baseType: key.base) else {
             return try handleUnknown(expectedType, typeID)
         }

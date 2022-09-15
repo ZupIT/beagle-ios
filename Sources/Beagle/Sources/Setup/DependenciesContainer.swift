@@ -118,7 +118,7 @@ final class DependenciesContainer: DependenciesContainerResolving {
         registerLazy(NavigationProtocolInternal.self, block: dependencies.internalNavigator.create(self))
         registerLazy(BundleProtocol.self, block: dependencies.appBundle.create(self))
         registerLazy(WindowManagerProtocol.self, block: dependencies.windowManager)
-        registerLazy(CoderProtocol.self, block: dependencies.coder.create(self))
+        registerLazy(CoderProtocol.self, block: dependencies.internalCoder.create(self))
         registerLazy(OperationsProviderProtocolInternal.self, block: dependencies.internalOperationsProvider.create(self))
         registerLazy(PrefetchHelperProtocol.self, block: dependencies.preFetchHelper.create(self))
         registerLazy(URLOpenerProtocol.self, block: dependencies.opener.create(self))
