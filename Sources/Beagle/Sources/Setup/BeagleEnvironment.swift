@@ -19,13 +19,15 @@ import UIKit
 
 public protocol BeagleEnviromentProtocol {
     var coder: CoderProtocol { get }
+    var navigator: NavigationProtocol { get }
+    var operationsProvider: OperationsProviderProtocol { get }
     var logger: LoggerProtocol { get }
     var globalContext: GlobalContextProtocol { get }
 }
 
 protocol EnvironmentProtocol: BeagleEnviromentProtocol {
-    var navigator: NavigationProtocolInternal { get }
-    var operationsProvider: OperationsProviderProtocolInternal { get }
+    var navigatorInternal: NavigationProtocolInternal { get }
+    var operationsProviderInternal: OperationsProviderProtocolInternal { get }
     var theme: ThemeProtocol { get }
 }
 
@@ -33,10 +35,18 @@ protocol EnvironmentProtocol: BeagleEnviromentProtocol {
 final class BeagleEnvironment: EnvironmentProtocol {
     @Injected var coder: CoderProtocol
     @Injected var logger: LoggerProtocol
-    @Injected var navigator: NavigationProtocolInternal
-    @Injected var operationsProvider: OperationsProviderProtocolInternal
+    @Injected var navigatorInternal: NavigationProtocolInternal
+    @Injected var operationsProviderInternal: OperationsProviderProtocolInternal
     @Injected var globalContext: GlobalContextProtocol
     @Injected var theme: ThemeProtocol
+    
+    var navigator: NavigationProtocol {
+        navigatorInternal
+    }
+    
+    var operationsProvider: OperationsProviderProtocol {
+        operationsProviderInternal
+    }
     
     var resolver: DependenciesContainerResolving
     
@@ -44,8 +54,8 @@ final class BeagleEnvironment: EnvironmentProtocol {
         self.resolver = resolver
         _coder = Injected(resolver)
         _logger = Injected(resolver)
-        _navigator = Injected(resolver)
-        _operationsProvider = Injected(resolver)
+        _navigatorInternal = Injected(resolver)
+        _operationsProviderInternal = Injected(resolver)
         _globalContext = Injected(resolver)
         _theme = Injected(resolver)
     }

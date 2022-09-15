@@ -82,39 +82,6 @@ public struct BeagleDependenciesFactory {
         MainBundle()
     }
     
-    public mutating func register<T: BeagleCodable>(type: T.Type, named: String? = nil) {
-        types.append((type, named))
-    }
-    
-    public mutating func setDefaultAnimation(_ animation: BeagleNavigatorAnimation) {
-        defaultAnimation = animation
-    }
-    
-    /// Register the default `BeagleNavigationController` to be used when creating a new navigation flow.
-    /// - Parameter builder: will be called when a `BeagleNavigationController` custom type needs to be used.
-    public mutating func registerDefaultNavigationController(builder: @escaping () -> BeagleNavigationController) {
-        navigationBuilder = builder
-    }
-
-    /// Register a `BeagleNavigationController` to be used when creating a new navigation flow with the associated `controllerId`.
-    /// - Parameters:
-    ///   - builder: will be called when a `BeagleNavigationController` custom type needs to be used.
-    ///   - controllerId: the cross platform id that identifies the controller in the BFF.
-    public mutating func registerNavigationController(builder: @escaping () -> BeagleNavigationController, forId controllerId: String) {
-        navigations.append((builder, controllerId))
-    }
-    
-    /// Use this function to register your custom operation.
-    /// - Warning:
-    ///     - Be careful when replacing a default operation in Beagle, consider creating it using `custom()`
-    ///     - Custom Operations names must have at least 1 letter. It can also contain numbers and the character _
-    /// - Parameters:
-    ///   - operation: The custom operation you wish to register.
-    ///   - handler: A closure where you tell us what your custom operation should do.
-    public mutating func register(operationId: String, handler: @escaping OperationHandler) {
-        operations.append((operationId, handler))
-    }
-    
     public init() { }
     
     // MARK: Internal
@@ -126,45 +93,14 @@ public struct BeagleDependenciesFactory {
     let opener: Factory<URLOpenerProtocol> = Factory { resolver in
         URLOpener(resolver)
     }
-    
-    var types: [(BeagleCodable.Type, String?)] = []
-    var internalCoder: Factory<CoderProtocol> {
-        Factory { resolver in
-            let result = self.coder.create(resolver)
-            self.types.forEach {
-                result.register(type: $0.0.self, named: $0.1)
-            }
-            return result
-        }
-    }
-    
-    var defaultAnimation: BeagleNavigatorAnimation?
-    var navigationBuilder: (() -> BeagleNavigationController)?
-    var navigations: [(() -> BeagleNavigationController, String)] = []
     var internalNavigator: Factory<NavigationProtocolInternal> {
         Factory { resolver in
-            let result = Navigator(resolver)
-            if let defaultAnimation = self.defaultAnimation {
-                result.setDefaultAnimation(defaultAnimation)
-            }
-            if let navigationBuilder = self.navigationBuilder {
-                result.registerDefaultNavigationController(builder: navigationBuilder)
-            }
-            self.navigations.forEach {
-                result.registerNavigationController(builder: $0.0, forId: $0.1)
-            }
-            return result
+            Navigator(resolver)
         }
     }
-    
-    var operations: [(String, OperationHandler)] = []
     var internalOperationsProvider: Factory<OperationsProviderProtocolInternal> {
         Factory { resolver in
-            let result = OperationsProvider(resolver)
-            self.operations.forEach {
-                result.register(operationId: $0.0, handler: $0.1)
-            }
-            return result
+            OperationsProvider(resolver)
         }
     }
 }

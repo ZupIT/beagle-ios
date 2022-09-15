@@ -40,7 +40,7 @@ public class BeagleConfiguration {
     
     var resolver: DependenciesContainerResolving
     var environment: EnvironmentProtocol
-    var dependencies: BeagleEnviromentProtocol {
+    public var dependencies: BeagleEnviromentProtocol {
         environment
     }
 }

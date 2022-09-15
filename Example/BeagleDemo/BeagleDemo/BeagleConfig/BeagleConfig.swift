@@ -43,12 +43,14 @@ enum BeagleConfig {
         dependencies.logger = Factory { _ in
             BeagleLoggerDefault()
         }
+        
+        let configuration = BeagleConfiguration(dependencies: dependencies)
 
-        registerCustomOperations(in: &dependencies)
-        registerCustomComponents(in: &dependencies)
-        setupNavigation(in: &dependencies)
+        registerCustomOperations(in: configuration.dependencies)
+        registerCustomComponents(in: configuration.dependencies)
+        setupNavigation(in: configuration.dependencies)
 
-        return BeagleConfiguration(dependencies: dependencies)
+        return configuration
     }
 
     private static func registerDeepLink() -> DeeplinkScreenManager {
@@ -56,22 +58,22 @@ enum BeagleConfig {
         return deepLink
     }
 
-    private static func registerCustomComponents(in dependencies: inout BeagleDependenciesFactory) {
-        dependencies.register(type: DSCollection.self)
-        dependencies.register(type: CustomText.self, named: "custom-text")
+    private static func registerCustomComponents(in dependencies: BeagleEnviromentProtocol) {
+        dependencies.coder.register(type: DSCollection.self)
+        dependencies.coder.register(type: CustomText.self, named: "custom-text")
     }
 
-    private static func setupNavigation(in dependencies: inout BeagleDependenciesFactory) {
-        dependencies.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
-        dependencies.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
-        dependencies.setDefaultAnimation(.init(
+    private static func setupNavigation(in dependencies: BeagleEnviromentProtocol) {
+        dependencies.navigator.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
+        dependencies.navigator.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
+        dependencies.navigator.setDefaultAnimation(.init(
             pushTransition: .init(type: .fade, subtype: .fromRight, duration: 0.1),
             modalPresentationStyle: .formSheet
         ))
     }
     
-    private static func registerCustomOperations(in dependencies: inout BeagleDependenciesFactory) {
-        dependencies.register(operationId: "sum") { parameters in
+    private static func registerCustomOperations(in dependencies: BeagleEnviromentProtocol) {
+        dependencies.operationsProvider.register(operationId: "sum") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let integerParameters = anyParameters as? [Int] {
                 return .int(integerParameters.reduce(0, +))
@@ -81,7 +83,7 @@ enum BeagleConfig {
             return nil
         }
         
-        dependencies.register(operationId: "SUBTRACT") { parameters in
+        dependencies.operationsProvider.register(operationId: "SUBTRACT") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let integerParameters = anyParameters as? [Int] {
                 return .int(integerParameters.reduce(integerParameters[0] * 2, -))

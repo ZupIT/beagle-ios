@@ -121,6 +121,7 @@ final class DependenciesContainerTests: XCTestCase {
         }
     }
     
+    // MARK: - Integrated
     func testResolveForFactory() {
         // Given // When
         var customDependencies = BeagleDependenciesFactory()
@@ -156,20 +157,24 @@ final class DependenciesContainerTests: XCTestCase {
         customDependencies.coder = Factory { _ in
             coderSpy
         }
-        customDependencies.register(type: ComponentDummy.self)
-        _ = customDependencies.internalCoder.create(GlobalConfiguration.resolver)
+        
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        configuration.dependencies.coder.register(type: ComponentDummy.self)
         
         assertSnapshot(matching: coderSpy.types, as: .dump)
     }
     
     func testDependenciesFactoryNavigator() {
-        var customDependencies = BeagleDependenciesFactory()
+        let customDependencies = BeagleDependenciesFactory()
         let navDummy = NavigationDummy()
-        customDependencies.setDefaultAnimation(BeagleNavigatorAnimation())
-        customDependencies.registerDefaultNavigationController { navDummy }
-        customDependencies.registerNavigationController(builder: { navDummy }, forId: "dummy")
         
-        let navigator = customDependencies.internalNavigator.create(GlobalConfiguration.resolver) as! Navigator
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        
+        configuration.dependencies.navigator.setDefaultAnimation(BeagleNavigatorAnimation())
+        configuration.dependencies.navigator.registerDefaultNavigationController { navDummy }
+        configuration.dependencies.navigator.registerNavigationController(builder: { navDummy }, forId: "dummy")
+        
+        let navigator = configuration.dependencies.navigator as! Navigator
         
         assertSnapshot(matching: navigator.defaultAnimation, as: .dump)
         
@@ -178,10 +183,12 @@ final class DependenciesContainerTests: XCTestCase {
     }
     
     func testDependenciesFactoryOperations() {
-        var customDependencies = BeagleDependenciesFactory()
-        customDependencies.register(operationId: "dummy") { _ in .empty }
+        let customDependencies = BeagleDependenciesFactory()
         
-        let provider = customDependencies.internalOperationsProvider.create(GlobalConfiguration.resolver) as! OperationsProvider
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        configuration.environment.operationsProvider.register(operationId: "dummy") { _ in .empty }
+        
+        let provider = configuration.environment.operationsProvider as! OperationsProvider
         
         XCTAssertNotNil(provider.operations["dummy"])
     }

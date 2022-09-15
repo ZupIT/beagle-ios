@@ -29,17 +29,25 @@ class TestEnviroment: DependenciesContainerResolving, EnvironmentProtocol {
     var theme: ThemeProtocol = AppTheme()
     var viewClient: ViewClientProtocol = ViewClient()
     var imageDownloader: ImageDownloaderProtocol = ImageDownloader()
-    var navigator: NavigationProtocolInternal = Navigator()
+    var navigatorInternal: NavigationProtocolInternal = Navigator()
     var preFetchHelper: PrefetchHelperProtocol = PreFetchHelper()
     var windowManager: WindowManagerProtocol = WindowManager()
     var opener: URLOpenerProtocol = URLOpener()
     var globalContext: GlobalContextProtocol = GlobalContext()
-    var operationsProvider: OperationsProviderProtocolInternal = OperationsProvider()
+    var operationsProviderInternal: OperationsProviderProtocolInternal = OperationsProvider()
     var logger: LoggerProtocol = LoggerProxy(logger: nil)
     var analyticsProvider: AnalyticsProviderProtocol?
     var deepLinkHandler: DeepLinkScreenManagerProtocol?
     var networkClient: NetworkClientProtocol?
     var imageProvider: ImageProviderProtocol = ImageProvider()
+    
+    var navigator: NavigationProtocol {
+        navigatorInternal
+    }
+    
+    var operationsProvider: OperationsProviderProtocol {
+        operationsProviderInternal
+    }
     
     // MARK: - Builders
     
@@ -64,12 +72,12 @@ class TestEnviroment: DependenciesContainerResolving, EnvironmentProtocol {
         mapKey(for: ThemeProtocol.self): { self.theme },
         mapKey(for: ViewClientProtocol.self): { self.viewClient } ,
         mapKey(for: ImageDownloaderProtocol.self): { self.imageDownloader },
-        mapKey(for: NavigationProtocolInternal.self): { self.navigator },
+        mapKey(for: NavigationProtocolInternal.self): { self.navigatorInternal },
         mapKey(for: PrefetchHelperProtocol.self): { self.preFetchHelper },
         mapKey(for: WindowManagerProtocol.self): { self.windowManager },
         mapKey(for: URLOpenerProtocol.self): { self.opener } ,
         mapKey(for: GlobalContextProtocol.self): { self.globalContext },
-        mapKey(for: OperationsProviderProtocolInternal.self): { self.operationsProvider },
+        mapKey(for: OperationsProviderProtocolInternal.self): { self.operationsProviderInternal },
         mapKey(for: LoggerProtocol.self): { self.logger },
         mapKey(for: NetworkClientProtocol.self): { self.networkClient },
         mapKey(for: DeepLinkScreenManagerProtocol.self): { self.deepLinkHandler },
