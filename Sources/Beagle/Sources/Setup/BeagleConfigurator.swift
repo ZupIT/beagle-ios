@@ -130,8 +130,8 @@ public struct BeagleDependenciesFactory {
     var types: [(BeagleCodable.Type, String?)] = []
     var internalCoder: Factory<CoderProtocol> {
         Factory { resolver in
-            let result = coder.create(resolver)
-            types.forEach {
+            let result = self.coder.create(resolver)
+            self.types.forEach {
                 result.register(type: $0.0, named: $0.1)
             }
             return result
@@ -144,13 +144,13 @@ public struct BeagleDependenciesFactory {
     var internalNavigator: Factory<NavigationProtocolInternal> {
         Factory { resolver in
             let result = Navigator(resolver)
-            if let defaultAnimation = defaultAnimation {
+            if let defaultAnimation = self.defaultAnimation {
                 result.setDefaultAnimation(defaultAnimation)
             }
-            if let navigationBuilder = navigationBuilder {
+            if let navigationBuilder = self.navigationBuilder {
                 result.registerDefaultNavigationController(builder: navigationBuilder)
             }
-            navigations.forEach {
+            self.navigations.forEach {
                 result.registerNavigationController(builder: $0.0, forId: $0.1)
             }
             return result
@@ -161,7 +161,7 @@ public struct BeagleDependenciesFactory {
     var internalOperationsProvider: Factory<OperationsProviderProtocolInternal> {
         Factory { resolver in
             let result = OperationsProvider(resolver)
-            operations.forEach {
+            self.operations.forEach {
                 result.register(operationId: $0.0, handler: $0.1)
             }
             return result
