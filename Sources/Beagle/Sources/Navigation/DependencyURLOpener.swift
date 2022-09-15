@@ -31,7 +31,9 @@ final class URLOpener: URLOpenerProtocol {
         _logger = Injected(resolver)
     }
     
-    init() {}
+    init() {
+        // Intentionally empty
+    }
 
     // MARK: URLOpenerProtocol
 

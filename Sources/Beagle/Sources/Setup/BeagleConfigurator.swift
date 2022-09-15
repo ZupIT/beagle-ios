@@ -82,7 +82,9 @@ public struct BeagleDependenciesFactory {
         MainBundle()
     }
     
-    public init() { }
+    public init() {
+        // Intentionally empty
+    }
     
     // MARK: Internal
     let globalContext: GlobalContextProtocol = GlobalContext()

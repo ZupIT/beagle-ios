@@ -27,7 +27,9 @@ struct ImageProvider: ImageProviderProtocol {
         _mainBundle = Injected(resolver)
     }
     
-    init() {}
+    init() {
+        // Intentionally empty
+    }
     
     func loadImageProvider(id: String) -> UIImage? {
         return UIImage(named: id, in: self.mainBundle.bundle, compatibleWith: nil)

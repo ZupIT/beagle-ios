@@ -30,7 +30,9 @@ public final class PreFetchHelper: PrefetchHelperProtocol {
         _logger = Injected(resolver)
     }
     
-    init() {}
+    init() {
+        // Intentionally empty
+    }
     
     // MARK: - PrefetchHelperProtocol
     
