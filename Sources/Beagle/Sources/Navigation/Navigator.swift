@@ -305,7 +305,7 @@ final class Navigator: NavigationProtocolInternal {
         case .declarative(let screen):
             success(
                 BeagleScreenViewController(
-                    viewModel: .init(screenType: .declarative(screen)),
+                    viewModel: .init(screenType: .declarative(screen), resolver: controller.config.resolver),
                     config: controller.config
                 )
             )
