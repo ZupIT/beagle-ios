@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ extension UIView {
 
 extension Operation {
     func evaluate(in view: UIView) -> DynamicObject {
-        return CurrentEnviroment.operationsProvider.evaluate(with: self, in: view)
+        return view.beagleConfig.environment.operationsProviderInternal.evaluate(with: self, in: view)
     }
 }
 

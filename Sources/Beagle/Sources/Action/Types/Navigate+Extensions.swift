@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ import UIKit
 
 extension Navigate {
     public func execute(controller: BeagleController, origin: UIView) {
-        CurrentEnviroment.navigator.navigate(action: self, controller: controller, animated: true, origin: origin)
+        controller.config.environment.navigatorInternal.navigate(action: self, controller: controller, animated: true, origin: origin)
     }
 }
 

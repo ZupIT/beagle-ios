@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,11 +69,11 @@ extension AnalyticsConfig.AttributesByActionName {
 
 extension AnalyticsConfig.ActionName {
 
-    public static func beagleActionName(_ action: Action.Type) -> String {
+    public static func beagleActionName(_ action: Action.Type, config: BeagleConfiguration = GlobalConfiguration) -> String {
         let isNavigate = action is Navigate.Type
         assert(!isNavigate, "This function can't be used for Navigate actions, since they are enums")
 
-        let name = CurrentEnviroment.coder.name(for: action) ?? ""
+        let name = config.environment.coder.name(for: action) ?? ""
 
         assert(!name.isEmpty, "Error when using Action that was not registered")
         return name

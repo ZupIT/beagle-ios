@@ -19,7 +19,7 @@ import Foundation
 @testable import Beagle
 import XCTest
 
-class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
+class TestEnviroment: DependenciesContainerResolving, EnvironmentProtocol {
     
     // MARK: - Dependencies
     
@@ -29,29 +29,37 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
     var theme: ThemeProtocol = AppTheme()
     var viewClient: ViewClientProtocol = ViewClient()
     var imageDownloader: ImageDownloaderProtocol = ImageDownloader()
-    var navigator: NavigationProtocolInternal = Navigator()
+    var navigatorInternal: NavigationProtocolInternal = Navigator()
     var preFetchHelper: PrefetchHelperProtocol = PreFetchHelper()
     var windowManager: WindowManagerProtocol = WindowManager()
     var opener: URLOpenerProtocol = URLOpener()
     var globalContext: GlobalContextProtocol = GlobalContext()
-    var operationsProvider: OperationsProviderProtocolInternal = OperationsProvider()
+    var operationsProviderInternal: OperationsProviderProtocolInternal = OperationsProvider()
     var logger: LoggerProtocol = LoggerProxy(logger: nil)
     var analyticsProvider: AnalyticsProviderProtocol?
     var deepLinkHandler: DeepLinkScreenManagerProtocol?
     var networkClient: NetworkClientProtocol?
     var imageProvider: ImageProviderProtocol = ImageProvider()
     
+    var navigator: NavigationProtocol {
+        navigatorInternal
+    }
+    
+    var operationsProvider: OperationsProviderProtocol {
+        operationsProviderInternal
+    }
+    
     // MARK: - Builders
     
-    var renderer: (BeagleController) -> BeagleRenderer = {
+    static var renderer: (BeagleController) -> BeagleRenderer = {
         return BeagleRenderer(controller: $0)
     }
     
-    var style: (UIView) -> StyleViewConfiguratorProtocol = {
+    static var style: (UIView) -> StyleViewConfiguratorProtocol = {
         return StyleViewConfigurator(view: $0)
     }
     
-    var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
+    static var viewConfigurator: (UIView) -> ViewConfiguratorProtocol = {
         return ViewConfigurator(view: $0)
     }
     
@@ -64,12 +72,12 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
         mapKey(for: ThemeProtocol.self): { self.theme },
         mapKey(for: ViewClientProtocol.self): { self.viewClient } ,
         mapKey(for: ImageDownloaderProtocol.self): { self.imageDownloader },
-        mapKey(for: NavigationProtocolInternal.self): { self.navigator },
+        mapKey(for: NavigationProtocolInternal.self): { self.navigatorInternal },
         mapKey(for: PrefetchHelperProtocol.self): { self.preFetchHelper },
         mapKey(for: WindowManagerProtocol.self): { self.windowManager },
         mapKey(for: URLOpenerProtocol.self): { self.opener } ,
         mapKey(for: GlobalContextProtocol.self): { self.globalContext },
-        mapKey(for: OperationsProviderProtocolInternal.self): { self.operationsProvider },
+        mapKey(for: OperationsProviderProtocolInternal.self): { self.operationsProviderInternal },
         mapKey(for: LoggerProtocol.self): { self.logger },
         mapKey(for: NetworkClientProtocol.self): { self.networkClient },
         mapKey(for: DeepLinkScreenManagerProtocol.self): { self.deepLinkHandler },
@@ -102,20 +110,23 @@ class TestEnviroment: DependenciesContainerResolving, EnviromentProtocol {
 
 // MARK: - Enviroment Test Case
 
-class EnviromentTestCase: XCTestCase {
+class EnvironmentTestCase: XCTestCase {
     
     var enviroment = TestEnviroment()
     
     override func setUp() {
-        CurrentResolver = enviroment
-        CurrentEnviroment = enviroment
+        let config = BeagleConfiguration(dependencies: BeagleDependencies())
+        config.resolver = enviroment
+        config.environment = enviroment
+        GlobalConfiguration = config
+        
         super.setUp()
     }
     
     override func tearDown() {
         enviroment = TestEnviroment()
-        CurrentResolver = DependenciesContainer.global
-        CurrentEnviroment = BeagleEnviroment.global
+        GlobalConfiguration = BeagleConfiguration(dependencies: BeagleDependencies())
+
         super.tearDown()
     }
 }

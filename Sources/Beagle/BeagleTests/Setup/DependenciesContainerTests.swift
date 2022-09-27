@@ -20,6 +20,7 @@ import XCTest
 @testable import Beagle
 import SnapshotTesting
 
+// swiftlint:disable force_cast
 final class DependenciesContainerTests: XCTestCase {
     
     private let sut: DependenciesContainer = {
@@ -56,6 +57,49 @@ final class DependenciesContainerTests: XCTestCase {
         assertSnapshot(matching: sut, as: .dump)
     }
     
+    func testCustomDependenciesFactory() {
+        // Given // When
+        var customDependencies = BeagleDependenciesFactory()
+        customDependencies.networkClient = Factory { _ in
+            NetworkClientDummy()
+        }
+        customDependencies.appBundle = Factory { _ in
+            BundleDummy()
+        }
+        customDependencies.logger = Factory { _ in
+            LoggerDummy()
+        }
+        customDependencies.coder = Factory { _ in
+            CoderDummy()
+        }
+        customDependencies.urlBuilder = Factory { _ in
+            UrlBuilderDummy()
+        }
+        customDependencies.deepLinkHandler = Factory { _ in
+            DeepLinkHandlerDummy()
+        }
+        customDependencies.analyticsProvider = Factory { _ in
+            AnalyticsProviderDummy()
+        }
+        customDependencies.imageDownloader = Factory { _ in
+            ImageDownloaderDummy()
+        }
+        customDependencies.theme = Factory { _ in
+            AppThemeDummy()
+        }
+        customDependencies.viewClient = Factory { _ in
+            ViewClientDummy()
+        }
+        customDependencies.imageProvider = Factory { _ in
+            ImageProviderDummy()
+        }
+        
+        let sut = DependenciesContainer(dependencies: customDependencies)
+        
+        // Then
+        assertSnapshot(matching: sut, as: .dump)
+    }
+    
     func testResolve() {
         // Given // When
         let block = { let _: CoderProtocol = try self.sut.resolve() }
@@ -76,6 +120,103 @@ final class DependenciesContainerTests: XCTestCase {
             }
         }
     }
+    
+    // MARK: - Integrated
+    func testResolveForFactory() {
+        // Given // When
+        var customDependencies = BeagleDependenciesFactory()
+        customDependencies.deepLinkHandler = Factory { _ in
+            DeepLinkHandlerDummy()
+        }
+        customDependencies.analyticsProvider = Factory { _ in
+            AnalyticsProviderDummy()
+        }
+        let sut = DependenciesContainer(dependencies: customDependencies)
+        let block = {
+            let _: CoderProtocol = try sut.resolve()
+            let _: BundleProtocol = try sut.resolve()
+            let _: WindowManagerProtocol = try sut.resolve()
+            let _: OperationsProviderProtocolInternal = try sut.resolve()
+            let _: ThemeProtocol = try sut.resolve()
+            let _: PrefetchHelperProtocol = try sut.resolve()
+            let _: URLOpenerProtocol = try sut.resolve()
+            let _: ImageDownloaderProtocol = try sut.resolve()
+            let _: ImageProviderProtocol = try sut.resolve()
+            let _: AnalyticsProviderProtocol = try sut.resolve()
+            let _: AnalyticsService = try sut.resolve()
+            let _: DeepLinkScreenManagerProtocol = try sut.resolve()
+        }
+        
+        // Then
+        XCTAssertNoThrow(try block())
+    }
+    
+    func testDependenciesFactoryCoder() {
+        let coderSpy = CoderSpy()
+        var customDependencies = BeagleDependenciesFactory()
+        customDependencies.coder = Factory { _ in
+            coderSpy
+        }
+        
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        configuration.dependencies.coder.register(type: ComponentDummy.self)
+        
+        assertSnapshot(matching: coderSpy.types, as: .dump)
+    }
+    
+    func testDependenciesFactoryNavigator() {
+        let customDependencies = BeagleDependenciesFactory()
+        let navDummy = NavigationDummy()
+        
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        
+        configuration.dependencies.navigator.setDefaultAnimation(BeagleNavigatorAnimation())
+        configuration.dependencies.navigator.registerDefaultNavigationController { navDummy }
+        configuration.dependencies.navigator.registerNavigationController(builder: { navDummy }, forId: "dummy")
+        
+        let navigator = configuration.dependencies.navigator as! Navigator
+        
+        assertSnapshot(matching: navigator.defaultAnimation, as: .dump)
+        
+        XCTAssertTrue(navigator.defaultBuilder?() === navDummy)
+        XCTAssertTrue(navigator.builders["dummy"]?() === navDummy)
+    }
+    
+    func testDependenciesFactoryOperations() {
+        let customDependencies = BeagleDependenciesFactory()
+        
+        let configuration = BeagleConfiguration(dependencies: customDependencies)
+        configuration.environment.operationsProvider.register(operationId: "dummy") { _ in .empty }
+        
+        let provider = configuration.environment.operationsProvider as! OperationsProvider
+        
+        XCTAssertNotNil(provider.operations["dummy"])
+    }
 }
 
 protocol DummyDependency { }
+
+class NavigationDummy: BeagleNavigationController {}
+
+class CoderSpy: CoderProtocol {
+    var types: [(BeagleCodable.Type, String?)] = []
+    func register<T>(type: T.Type, named: String?) where T: Beagle.BeagleCodable {
+        types.append((type, named))
+    }
+    
+    func decode<T>(from data: Data) throws -> T {
+        fatalError("unimplemented")
+    }
+    
+    func encode<T>(value: T) throws -> Data where T: Beagle.BeagleCodable {
+        fatalError("unimplemented")
+    }
+    
+    func name(for type: Beagle.BeagleCodable.Type) -> String? {
+        fatalError("unimplemented")
+    }
+    
+    func type(for name: String, baseType: Beagle.Coder.BaseType) -> Beagle.BeagleCodable.Type? {
+        fatalError("unimplemented")
+    }
+}

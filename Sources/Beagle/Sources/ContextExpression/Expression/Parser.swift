@@ -69,10 +69,19 @@ func literal(string: String) -> Parser<Void> {
 }
 
 func prefix(with regex: String) -> Parser<String> {
-    return Parser<String> { str in
-        guard let range = str.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
-        let prefix = str[range]
-        str.removeSubrange(range)
+    return Parser<String> { substring in
+        guard let rangeOfSubstring = substring.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
+        let prefix = substring[rangeOfSubstring]
+
+        if #available(iOS 16.0, *) {
+            var string = String(substring)
+            guard let rangeOfString = string.range(of: regex, options: [.regularExpression, .anchored]) else { return nil }
+            string.removeSubrange(rangeOfString)
+            substring = string[...]
+        } else {
+            substring.removeSubrange(rangeOfSubstring)
+        }
+
         return String(prefix)
     }
 }

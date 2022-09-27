@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class ButtonTests: EnviromentTestCase {
+final class ButtonTests: EnvironmentTestCase {
     
     private let snapshotSize = CGSize(width: 150, height: 50)
     private lazy var theme = AppTheme(

@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class ImageTests: EnviromentTestCase {
+class ImageTests: EnvironmentTestCase {
     
     override func setUp() {
         super.setUp()

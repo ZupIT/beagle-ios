@@ -1,0 +1,6 @@
+▿ Optional<BeagleNavigatorAnimation>
+  ▿ some: BeagleNavigatorAnimation
+    - modalPresentationStyle: Optional<UIModalPresentationStyle>.none
+    - modalTransitionStyle: UIModalTransitionStyle.UIModalTransitionStyle
+    - popTransition: Optional<Transition>.none
+    - pushTransition: Optional<Transition>.none

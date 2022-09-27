@@ -21,7 +21,7 @@ extension AddChildren {
         guard let view = controller.view.getView(by: componentId),
               let components = evaluateValue(origin: origin) else { return }
         
-        let renderer = CurrentEnviroment.renderer(controller)
+        let renderer = BeagleEnvironment.renderer(controller)
         let views = renderer.render(components)
         
         switch mode {

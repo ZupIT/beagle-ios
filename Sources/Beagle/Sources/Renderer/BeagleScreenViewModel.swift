@@ -36,6 +36,7 @@ class BeagleScreenViewModel {
     
     @Injected var coder: CoderProtocol
     @Injected var viewClient: ViewClientProtocol
+    @OptionalInjected var analyticsService: AnalyticsService?
 
     // MARK: Observer
 
@@ -48,11 +49,12 @@ class BeagleScreenViewModel {
     static func remote(
         _ remote: ScreenType.Remote,
         viewClient: ViewClientProtocol,
+        resolver: DependenciesContainerResolving,
         completion: @escaping (Result<BeagleScreenViewModel, Request.Error>) -> Void
     ) -> RequestToken? {
         
         return fetchScreen(remote: remote, viewClient: viewClient) { result in
-            let viewModel = self.init(screenType: .remote(remote))
+            let viewModel = BeagleScreenViewModel(screenType: .remote(remote), resolver: resolver)
             switch result {
             case .success(let screen):
                 viewModel.handleRemoteScreenSuccess(screen)
@@ -68,18 +70,23 @@ class BeagleScreenViewModel {
         }
     }
 
-    public required init(
-        screenType: ScreenType
+    required init(
+        screenType: ScreenType,
+        resolver: DependenciesContainerResolving = GlobalConfiguration.resolver
     ) {
         self.screenType = screenType
         self.state = .started
+        _coder = Injected(resolver)
+        _viewClient = Injected(resolver)
+        _analyticsService = OptionalInjected(resolver)
     }
     
-    public convenience init(
+    convenience init(
         screenType: ScreenType,
+        resolver: DependenciesContainerResolving = GlobalConfiguration.resolver,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
     ) {
-        self.init(screenType: screenType)
+        self.init(screenType: screenType, resolver: resolver)
         self.beagleViewStateObserver = beagleViewStateObserver
     }
     
@@ -98,7 +105,7 @@ class BeagleScreenViewModel {
     
     public func trackEventOnScreenAppeared() {
         screenAppearEventIsPending = false
-        AnalyticsService.shared?.createRecord(screen: screenType, rootId: screen?.id)
+        analyticsService?.createRecord(screen: screenType, rootId: screen?.id)
     }
     
     public func trackEventOnScreenDisappeared() {}

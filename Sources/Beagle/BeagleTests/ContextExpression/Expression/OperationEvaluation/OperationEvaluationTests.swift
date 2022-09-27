@@ -19,7 +19,7 @@ import XCTest
 
 typealias Operation = Beagle.Operation
 
-class OperationEvaluationTests: EnviromentTestCase {
+class OperationEvaluationTests: EnvironmentTestCase {
     func evaluateOperations(_ operations: [Operation], contexts: [Context], completion: ([DynamicObject]) -> Void) {
         // Given
         let view = UIView()

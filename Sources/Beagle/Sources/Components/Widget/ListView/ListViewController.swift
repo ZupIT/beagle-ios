@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ protocol ListViewDelegate: NSObjectProtocol {
 
 final class ListViewController: UIViewController {
     
+    var config: BeagleConfiguration
+    
     weak var delegate: ListViewDelegate?
     
     private(set) lazy var collectionView: UICollectionView = {
@@ -62,6 +64,7 @@ final class ListViewController: UIViewController {
     init(renderer: BeagleRenderer) {
         self.renderer = renderer
         self.beagleController = renderer.controller
+        self.config = renderer.controller?.config ?? GlobalConfiguration
         super.init(nibName: nil, bundle: nil)
     }
     

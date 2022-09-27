@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,26 +23,57 @@ public class BeagleView: UIView {
     
     // MARK: - Private Attributes
     
-    private var beagleController: BeagleScreenViewController
+    var beagleController: BeagleScreenViewController
     
     private var alreadyCalculateIntrinsicSize = true
     
     // MARK: - Initialization
     
-    public convenience init(_ remote: ScreenType.Remote, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
-        self.init(viewModel: .init(screenType: .remote(remote), beagleViewStateObserver: beagleViewStateObserver))
+    public convenience init(
+        _ remote: ScreenType.Remote,
+        config: BeagleConfiguration = GlobalConfiguration,
+        beagleViewStateObserver: @escaping BeagleViewStateObserver
+    ) {
+        self.init(
+            viewModel: .init(
+                screenType: .remote(remote),
+                resolver: config.resolver,
+                beagleViewStateObserver: beagleViewStateObserver
+            ),
+            config: config
+        )
     }
     
-    public convenience init(_ json: String, beagleViewStateObserver: @escaping BeagleViewStateObserver) {
-        self.init(viewModel: .init(screenType: .declarativeText(json), beagleViewStateObserver: beagleViewStateObserver))
+    public convenience init(
+        _ json: String,
+        config: BeagleConfiguration = GlobalConfiguration,
+        beagleViewStateObserver: @escaping BeagleViewStateObserver
+    ) {
+        self.init(
+            viewModel: .init(
+                screenType: .declarativeText(json),
+                resolver: config.resolver,
+                beagleViewStateObserver: beagleViewStateObserver
+            ),
+            config: config
+        )
     }
     
-    public convenience init(_ component: ServerDrivenComponent) {
-        self.init(viewModel: .init(screenType: .declarative(component.toScreen())))
+    public convenience init(
+        _ component: ServerDrivenComponent,
+        config: BeagleConfiguration = GlobalConfiguration
+    ) {
+        self.init(
+            viewModel: .init(
+                screenType: .declarative(component.toScreen()),
+                resolver: config.resolver
+            ),
+            config: config
+        )
     }
 
-    required init(viewModel: BeagleScreenViewModel) {
-        let controller = BeagleScreenViewController(viewModel: viewModel)
+    required init(viewModel: BeagleScreenViewModel, config: BeagleConfiguration = GlobalConfiguration) {
+        let controller = BeagleScreenViewController(viewModel: viewModel, config: config)
         controller.skipNavigationCreation = true
         self.beagleController = controller
         super.init(frame: .zero)

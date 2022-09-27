@@ -18,8 +18,8 @@ import UIKit
 import Beagle
 import SnapshotTesting
 
-private let imageDiffPrecision: Float = 0.99
-private let diffTool = "code"
+private let imageDiffPrecision: Float = 0.98
+private let diffTool = "code --diff"
 
 enum ImageSize {
     case standard

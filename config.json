@@ -38,24 +38,18 @@
     ".editorconfig",
     ".plist",
     ".storyboard",
-    ".pbxproj",
-    ".xcscheme",
+    "**/*.pbxproj",
+    "**/*.xcscheme",
     ".xcworkspacedata",
     ".xccurrentversion",
     ".xcconfig",
-    ".xcsettings",
+    "**/*.xcsettings",
     ".factories",
     "**/*.lock",
     ".metadata",
     ".gitignore",
     ".gitkeep",
-    "**/*.sed",
-    "Example/BeagleDemo/BeagleDemo.xcodeproj/project.pbxproj",
-    "Example/BeagleDemo/BeagleDemo.xcodeproj/xcshareddata/xcschemes/BeagleDemo.xcscheme",
-    "Example/BeaglePreviewDemo/BeaglePreviewDemo.xcodeproj/project.pbxproj",
-    "Sources/Beagle/Beagle.xcodeproj/project.pbxproj",
-    "Sources/Beagle/Beagle.xcodeproj/xcshareddata/xcschemes/All.xcscheme",
-    "Sources/Beagle/Beagle.xcodeproj/xcshareddata/xcschemes/Beagle.xcscheme"
+    "**/*.sed"
   ],
   "startDateLicense": 2020
 }

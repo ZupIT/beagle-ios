@@ -1,6 +1,6 @@
 //
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,25 @@ public class Injected<Dependency> {
     private var dependency: Dependency!
     // swiftlint:enable implicitly_unwrapped_optional
     
+    private var resolver: DependenciesContainerResolving?
+    
+    public init(_ resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+    }
+    
     public init() {}
     
     public var wrappedValue: Dependency {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try CurrentResolver.resolve()
-                    dependency = resolvedDependency
+                    if let resolver = resolver {
+                        let resolvedDependency: Dependency = try resolver.resolve()
+                        dependency = resolvedDependency
+                    } else {
+                        let resolvedDependency: Dependency = try GlobalConfiguration.resolver.resolve()
+                        dependency = resolvedDependency
+                    }
                 } catch {
                     injectedFailureHandler(error)
                 }
@@ -55,14 +66,25 @@ public class OptionalInjected<Dependency> {
     
     private var dependency: Dependency?
     
+    private var resolver: DependenciesContainerResolving?
+    
+    public init(_ resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+    }
+    
     public init() {}
     
     public var wrappedValue: Dependency? {
         get {
             if dependency == nil {
                 do {
-                    let resolvedDependency: Dependency = try CurrentResolver.resolve()
-                    dependency = resolvedDependency
+                    if let resolver = resolver {
+                        let resolvedDependency: Dependency = try resolver.resolve()
+                        dependency = resolvedDependency
+                    } else {
+                        let resolvedDependency: Dependency = try GlobalConfiguration.resolver.resolve()
+                        dependency = resolvedDependency
+                    }
                 } catch {
                     return nil
                 }

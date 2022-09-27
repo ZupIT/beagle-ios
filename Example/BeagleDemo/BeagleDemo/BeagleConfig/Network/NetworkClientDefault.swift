@@ -22,10 +22,16 @@ public class NetworkClientDefault: NetworkClientProtocol {
     public var session = URLSession.shared
 
     public var httpRequestBuilder = HttpRequestBuilder()
+    
+    @OptionalInjected var logger: LoggerProtocol?
 
     enum ClientError: Swift.Error {
         case invalidHttpResponse
         case invalidHttpRequest
+    }
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        _logger = OptionalInjected(resolver)
     }
 
     public func executeRequest(
@@ -49,11 +55,11 @@ public class NetworkClientDefault: NetworkClientProtocol {
 
         let task = session.dataTask(with: urlRequest) { [weak self] data, response, error in
             guard let self = self else { return }
-            Beagle.Dependencies.logger.log(Log.network(.httpResponse(response: .init(data: data, response: response))))
+            self.logger?.log(Log.network(.httpResponse(response: .init(data: data, response: response))))
             completion(self.handleResponse(data: data, request: urlRequest, response: response, error: error))
         }
         
-        Beagle.Dependencies.logger.log(Log.network(.httpRequest(request: .init(url: urlRequest))))
+        logger?.log(Log.network(.httpRequest(request: .init(url: urlRequest))))
         task.resume()
         return task
     }

@@ -29,15 +29,11 @@ public protocol ViewConfiguratorProtocol: AnyObject {
 public extension UIView {
 
     var beagle: ViewConfiguratorProtocol {
-        return CurrentEnviroment.viewConfigurator(self)
+        return BeagleEnvironment.viewConfigurator(self)
     }
 }
 
 class ViewConfigurator: ViewConfiguratorProtocol {
-    
-    // MARK: Dependencies
-    
-    @Injected var theme: ThemeProtocol
     
     // MARK: Properties
 
@@ -86,7 +82,9 @@ class ViewConfigurator: ViewConfiguratorProtocol {
     }
 
     func applyStyle<T: UIView>(for view: T, styleId: String, with controller: BeagleController?) {
-        theme.applyStyle(for: view, withId: styleId)
+        if let theme = controller?.config.environment.theme {
+            theme.applyStyle(for: view, withId: styleId)
+        }
     }
     
     func setup(accessibility: Accessibility?) {

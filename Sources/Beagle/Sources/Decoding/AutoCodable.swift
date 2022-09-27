@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,10 +109,20 @@ extension Encoder {
         if value is Action {
             key = ._beagleAction_
         }
-        if let identifier = CurrentEnviroment.coder.name(for: type(of: value)) {
+        
+        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfiguration.environment.coder
+        if let identifier = coder.name(for: type(of: value)) {
             try container.encode(identifier, forKey: key)
         }
         try value.encode(to: self)
+    }
+}
+
+extension CodingUserInfoKey {
+    static var coderKey: CodingUserInfoKey {
+        // swiftlint:disable force_unwrapping
+        return CodingUserInfoKey(rawValue: "_beagleCoderKey_")!
+        // swiftlint:enable force_unwrapping
     }
 }
 
@@ -146,7 +156,8 @@ extension Decoder {
         }
         let typeID = try container.decode(String.self, forKey: key.type)
         
-        guard let matchingType = CurrentEnviroment.coder.type(for: typeID, baseType: key.base) else {
+        let coder = (userInfo[CodingUserInfoKey.coderKey] as? CoderProtocol) ?? GlobalConfiguration.environment.coder
+        guard let matchingType = coder.type(for: typeID, baseType: key.base) else {
             return try handleUnknown(expectedType, typeID)
         }
         let decoded = try matchingType.init(from: self)

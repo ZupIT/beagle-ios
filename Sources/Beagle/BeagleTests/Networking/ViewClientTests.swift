@@ -17,7 +17,7 @@
 import XCTest
 @testable import Beagle
 
-final class ViewClientTests: EnviromentTestCase {
+final class ViewClientTests: EnvironmentTestCase {
 
     private lazy var sut = ViewClient()
 

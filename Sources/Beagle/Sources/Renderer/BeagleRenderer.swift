@@ -41,6 +41,11 @@ public struct BeagleRenderer {
 
     internal init(controller: BeagleController) {
         self.controller = controller
+        _viewClient = Injected(controller.config.resolver)
+        _mainBundle = Injected(controller.config.resolver)
+        _preFetchHelper = Injected(controller.config.resolver)
+        _imageDownloader = Injected(controller.config.resolver)
+        _imageProvider = Injected(controller.config.resolver)
     }
     
     // MARK: Public Functions
@@ -52,7 +57,7 @@ public struct BeagleRenderer {
     /// main function of this class. Call it to transform a Component into a UIView
     public func render(_ component: ServerDrivenComponent) -> UIView {
         let view = component.toView(renderer: self)
-        
+        view.beagleConfig = controller?.config ?? GlobalConfiguration
         return setupView(resolve(view: view), of: component)
     }
     

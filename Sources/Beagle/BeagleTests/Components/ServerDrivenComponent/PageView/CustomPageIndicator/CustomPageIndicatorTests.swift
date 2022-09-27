@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class CustomPageIndicatorTests: EnviromentTestCase {
+class CustomPageIndicatorTests: EnvironmentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(

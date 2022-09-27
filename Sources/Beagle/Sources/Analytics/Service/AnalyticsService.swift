@@ -18,13 +18,19 @@ import UIKit
 
 class AnalyticsService {
 
-    static var shared: AnalyticsService?
-
-    private var provider: AnalyticsProviderProtocol
+    var provider: AnalyticsProviderProtocol
     @Injected var logger: LoggerProtocol
+    
+    var resolver: DependenciesContainerResolving?
 
     init(provider: AnalyticsProviderProtocol) {
         self.provider = provider
+    }
+    
+    init(_ resolver: DependenciesContainerResolving, provider: AnalyticsProviderProtocol) {
+        self.provider = provider
+        _logger = Injected(resolver)
+        self.resolver = resolver
     }
 
     // MARK: - Create Events
@@ -40,6 +46,7 @@ class AnalyticsService {
 
     func createRecord(action: ActionInfo) {
         ActionRecordFactory(
+            resolver ?? GlobalConfiguration.resolver,
             info: action,
             globalConfig: provider.getConfig().actions
         )

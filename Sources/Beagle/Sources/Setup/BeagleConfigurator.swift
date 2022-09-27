@@ -18,12 +18,7 @@ import UIKit
 
 public struct BeagleConfigurator {
     public static func setup(dependencies: BeagleDependencies) {
-        // swiftlint:disable resolver_change
-        CurrentResolver = DependenciesContainer(dependencies: dependencies)
-        // swiftlint:enable resolver_change
-        AnalyticsService.shared = dependencies.analyticsProvider.ifSome {
-            AnalyticsService(provider: $0)
-        }
+        GlobalConfiguration = BeagleConfiguration(dependencies: dependencies)
     }
 }
 
@@ -54,5 +49,68 @@ public struct BeagleDependencies {
     let internalNavigator: NavigationProtocolInternal = Navigator()
     let internalOperationsProvider: OperationsProviderProtocolInternal = OperationsProvider()
     
-    public init() { }
+    public init() {}
+}
+
+public struct BeagleDependenciesFactory {
+    // MARK: - Public
+    public var coder: Factory<CoderProtocol> = Factory { resolver in
+        Coder(resolver)
+    }
+    public var urlBuilder: Factory<UrlBuilderProtocol> = Factory { _ in
+        UrlBuilder()
+    }
+    public var theme: Factory<ThemeProtocol> = Factory { _ in
+        AppTheme()
+    }
+    public var viewClient: Factory<ViewClientProtocol> = Factory { resolver in
+        ViewClient(resolver)
+    }
+    public var imageDownloader: Factory<ImageDownloaderProtocol> = Factory { resolver in
+        ImageDownloader(resolver)
+    }
+    
+    public var logger: Factory<LoggerProtocol>?
+    public var analyticsProvider: Factory<AnalyticsProviderProtocol>?
+    public var deepLinkHandler: Factory<DeepLinkScreenManagerProtocol>?
+    public var networkClient: Factory<NetworkClientProtocol>?
+    
+    public var imageProvider: Factory<ImageProviderProtocol> = Factory { resolver in
+        ImageProvider(resolver)
+    }
+    public var appBundle: Factory<BundleProtocol> = Factory { _ in
+        MainBundle()
+    }
+    
+    public init() {
+        // Intentionally empty
+    }
+    
+    // MARK: Internal
+    let globalContext: GlobalContextProtocol = GlobalContext()
+    let windowManager: WindowManagerProtocol = WindowManager()
+    let preFetchHelper: Factory<PrefetchHelperProtocol> = Factory { resolver in
+        PreFetchHelper(resolver)
+    }
+    let opener: Factory<URLOpenerProtocol> = Factory { resolver in
+        URLOpener(resolver)
+    }
+    var internalNavigator: Factory<NavigationProtocolInternal> {
+        Factory { resolver in
+            Navigator(resolver)
+        }
+    }
+    var internalOperationsProvider: Factory<OperationsProviderProtocolInternal> {
+        Factory { resolver in
+            OperationsProvider(resolver)
+        }
+    }
+}
+
+public struct Factory<T> {
+    var create: (DependenciesContainerResolving) -> T
+    
+    public init(_ createBlock: @escaping (DependenciesContainerResolving) -> T) {
+        self.create = createBlock
+    }
 }

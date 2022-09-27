@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class BeagleScreenViewControllerTests: EnviromentTestCase {
+final class BeagleScreenViewControllerTests: EnvironmentTestCase {
     
     private typealias RegisterAction = (BeagleNavigationController.Type, String) -> Void
     
@@ -64,15 +64,15 @@ final class BeagleScreenViewControllerTests: EnviromentTestCase {
         
         // When
         let sut1 = initWith(controllerId: controllerId, gives: BeagleNavigationStub.self) { controllerType, controllerId in
-            self.enviroment.navigator.registerNavigationController(builder: { controllerType.init() }, forId: controllerId)
+            self.enviroment.navigatorInternal.registerNavigationController(builder: { controllerType.init() }, forId: controllerId)
         }
         
         let sut2 = initWith(gives: BeagleNavigationController.self)
         
-        enviroment.navigator = Navigator()
+        enviroment.navigatorInternal = Navigator()
         
         let sut3 = initWith(controllerId: controllerId, gives: BeagleNavigationController.self) { controllerType, _ in
-            self.enviroment.navigator.registerNavigationController(builder: { controllerType.init() }, forId: "OtherId")
+            self.enviroment.navigatorInternal.registerNavigationController(builder: { controllerType.init() }, forId: "OtherId")
         }
         
         // Then
@@ -436,5 +436,11 @@ class BeagleControllerStub: BeagleController {
     
     func execute(actions: [Action]?, with contextId: String, and contextValue: DynamicObject, origin: UIView) {
         execute(actions: actions, event: contextId, origin: origin)
+    }
+}
+
+extension BeagleControllerProtocol {
+    var config: BeagleConfiguration {
+        GlobalConfiguration
     }
 }

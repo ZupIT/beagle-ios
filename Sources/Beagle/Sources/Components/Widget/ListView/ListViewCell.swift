@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ final class ListViewCell: UICollectionViewCell {
         let template = listView.renderer.render(listView.model.templates[templateIndex].view)
         let container = TemplateContainer(template: template)
         container.parentContext = listView
-        CurrentEnviroment.style(container).setup(
+        BeagleEnvironment.style(container).setup(
             Style()
                 .size(Size().minWidth(1).minHeight(1))
                 .flex(Flex().flexDirection(flexDirection).shrink(0))
@@ -118,7 +118,7 @@ final class ListViewCell: UICollectionViewCell {
         contentView.addSubview(container)
         
         contentView.yoga.overflow = .scroll
-        CurrentEnviroment.style(contentView).setup(
+        BeagleEnvironment.style(contentView).setup(
             Style().flex(Flex().flexDirection(flexDirection))
         )
         
@@ -184,7 +184,7 @@ final class ListViewCell: UICollectionViewCell {
         rect.size[keyPath: keyPath] = (spansSpace / CGFloat(listView.model.spanCount)).rounded(.down)
         
         contentView.frame = rect
-        CurrentEnviroment.style(contentView).applyLayout()
+        BeagleEnvironment.style(contentView).applyLayout()
         
         let size = container.bounds.size
         contentView.frame.size = size

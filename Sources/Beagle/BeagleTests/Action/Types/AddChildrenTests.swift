@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class AddChildrenTests: EnviromentTestCase {
+final class AddChildrenTests: EnvironmentTestCase {
     
     func testDecodingAddChildrenWithDefaultMode() throws {
         let action: AddChildren = try componentFromString("""

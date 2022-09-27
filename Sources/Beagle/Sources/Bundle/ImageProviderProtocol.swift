@@ -20,10 +20,18 @@ public protocol ImageProviderProtocol {
     func loadImageProvider(id: String) -> UIImage?
 }
 
-struct ImageProvider : ImageProviderProtocol {
-    @Injected var mainBundle : BundleProtocol
+struct ImageProvider: ImageProviderProtocol {
+    @Injected var mainBundle: BundleProtocol
     
-     func loadImageProvider(id: String) -> UIImage? {
+    init(_ resolver: DependenciesContainerResolving) {
+        _mainBundle = Injected(resolver)
+    }
+    
+    init() {
+        // Intentionally empty
+    }
+    
+    func loadImageProvider(id: String) -> UIImage? {
         return UIImage(named: id, in: self.mainBundle.bundle, compatibleWith: nil)
     }
 }

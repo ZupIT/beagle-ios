@@ -23,6 +23,8 @@ public protocol BeagleControllerProtocol: NSObjectProtocol {
     var screenType: ScreenType { get }
     var screen: Screen? { get }
     
+    var config: BeagleConfiguration { get }
+    
     func setIdentifier(_ id: String?, in view: UIView)
     func setContext(_ context: Context, in view: UIView)
     
@@ -46,7 +48,7 @@ public class BeagleScreenViewController: BeagleController {
     
     lazy var layoutManager = LayoutManager(self)
     
-    lazy var renderer = CurrentEnviroment.renderer(self)
+    lazy var renderer = BeagleEnvironment.renderer(self)
     
     let bindings = Bindings()
     
@@ -54,12 +56,14 @@ public class BeagleScreenViewController: BeagleController {
     
     private var navigationControllerId: String?
     
-    // TODO: This workaround should be removed in BeagleView future implementation
     var skipNavigationCreation = false
     
     // MARK: - Dependencies
     
     @Injected var navigator: NavigationProtocolInternal
+    @OptionalInjected var analyticsService: AnalyticsService?
+    
+    public var config: BeagleConfiguration
     
     // MARK: - Init
     
@@ -67,36 +71,39 @@ public class BeagleScreenViewController: BeagleController {
     static func remote(
         _ remote: ScreenType.Remote,
         viewClient: ViewClientProtocol,
+        controller: BeagleController,
         completion: @escaping (Result<BeagleScreenViewController, Request.Error>) -> Void
     ) -> RequestToken? {
-        return BeagleScreenViewModel.remote(remote, viewClient: viewClient) {
+        return BeagleScreenViewModel.remote(remote, viewClient: viewClient, resolver: controller.config.resolver) {
             completion($0.map { viewModel in
-                return self.init(viewModel: viewModel)
+                return self.init(viewModel: viewModel, config: controller.config)
             })
         }
     }
     
-    public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil) {
-        self.init(viewModel: .init(screenType: .remote(remote)), controllerId: controllerId)
+    public convenience init(_ remote: ScreenType.Remote, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
+        self.init(viewModel: .init(screenType: .remote(remote), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    public convenience init(_ json: String, controllerId: String? = nil) {
-        self.init(viewModel: .init(screenType: .declarativeText(json)), controllerId: controllerId)
+    public convenience init(_ json: String, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
+        self.init(viewModel: .init(screenType: .declarativeText(json), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil) {
-        self.init(viewModel: .init(screenType: .declarative(component.toScreen())), controllerId: controllerId)
+    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
+        self.init(viewModel: .init(screenType: .declarative(component.toScreen()), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
     
-    required init(viewModel: BeagleScreenViewModel, controllerId: String? = nil) {
+    required init(viewModel: BeagleScreenViewModel, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.viewModel = viewModel
         self.navigationControllerId = controllerId
+        self.config = config
+        _navigator = Injected(config.resolver)
+        _analyticsService = OptionalInjected(config.resolver)
         super.init(nibName: nil, bundle: nil)
         extendedLayoutIncludesOpaqueBars = true
-        automaticallyAdjustsScrollViewInsets = false
     }
 
     @available(*, unavailable)
@@ -131,7 +138,7 @@ public class BeagleScreenViewController: BeagleController {
     
     public func execute(actions: [Action]?, event: String?, origin: UIView) {
         actions?.forEach {
-            AnalyticsService.shared?.createRecord(action: .init(action: $0, event: event, origin: origin, controller: self))
+            analyticsService?.createRecord(action: .init(action: $0, event: event, origin: origin, controller: self))
             $0.execute(controller: self, origin: origin)
         }
     }
@@ -195,7 +202,7 @@ public class BeagleScreenViewController: BeagleController {
     
     private func createNavigationContent() {
         let navigation = navigator.navigationController(forId: navigationControllerId)
-        navigation.viewControllers = [BeagleScreenViewController(viewModel: viewModel)]
+        navigation.viewControllers = [BeagleScreenViewController(viewModel: viewModel, config: config)]
         content = .navigation(navigation)
     }
     
@@ -289,7 +296,7 @@ public class BeagleScreenViewController: BeagleController {
 
 extension BeagleControllerProtocol {
     public func setIdentifier(_ id: String?, in view: UIView) {
-        CurrentEnviroment.viewConfigurator(view).setup(id: id)
+        BeagleEnvironment.viewConfigurator(view).setup(id: id)
     }
     
     public func setContext(_ context: Context, in view: UIView) {
@@ -299,7 +306,7 @@ extension BeagleControllerProtocol {
 
 extension BeagleControllerProtocol where Self: UIViewController {
     public func setNeedsLayout(component: UIView) {
-        CurrentEnviroment.style(component).markDirty()
+        BeagleEnvironment.style(component).markDirty()
         if let beagleView = view.superview as? BeagleView {
             beagleView.invalidateIntrinsicContentSize()
         }

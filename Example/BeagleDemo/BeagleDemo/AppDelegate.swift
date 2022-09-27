@@ -24,10 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        BeagleConfig.start()
-        
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint))
+        window?.rootViewController = BeagleScreenViewController(ScreenType.Remote(url: .componentsEndpoint), config: BeagleConfig.create())
         window?.makeKeyAndVisible()
         
         return true

@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ class ComponentHostController: BeagleController {
 
     let component: ServerDrivenComponent
     let renderer: BeagleRenderer
+    
+    var config: BeagleConfiguration
 
     let bindings = Bindings()
 
@@ -53,6 +55,7 @@ class ComponentHostController: BeagleController {
     init(_ component: ServerDrivenComponent, renderer: BeagleRenderer) {
         self.component = component
         self.renderer = renderer
+        self.config = renderer.controller?.config ?? GlobalConfiguration
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,7 +70,7 @@ class ComponentHostController: BeagleController {
 
     override func viewDidLayoutSubviews() {
         bindings.config()
-        CurrentEnviroment.style(view).applyLayout()
+        BeagleEnvironment.style(view).applyLayout()
         super.viewDidLayoutSubviews()
     }
 

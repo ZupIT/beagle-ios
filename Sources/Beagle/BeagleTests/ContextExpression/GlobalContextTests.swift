@@ -17,7 +17,7 @@
 import XCTest
 @testable import Beagle
 
-final class GlobalContextTests: EnviromentTestCase {
+final class GlobalContextTests: EnvironmentTestCase {
     
     private let globalId = "global"
     

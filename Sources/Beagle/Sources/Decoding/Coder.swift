@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,11 +58,19 @@ final public class Coder: CoderProtocol {
     }
     
     // MARK: - Initialization
+    convenience init(_ resolver: DependenciesContainerResolving) {
+        self.init()
+        _logger = Injected(resolver)
+    }
     
     public init() {
         types = [:]
         types[BaseType.action.rawValue] = [:]
         types[BaseType.component.rawValue] = [:]
+        
+        encoder.userInfo[CodingUserInfoKey.coderKey] = self
+        decoder.userInfo[CodingUserInfoKey.coderKey] = self
+        
         registerDefaultTypes()
     }
     

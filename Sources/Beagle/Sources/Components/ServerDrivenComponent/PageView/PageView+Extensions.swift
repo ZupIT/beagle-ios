@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ extension PageView {
         }
 
         view.backgroundColor = .clear
-        CurrentEnviroment.style(view).setup(Style(flex: Flex().flexDirection(.column)))
+        BeagleEnvironment.style(view).setup(Style(flex: Flex().flexDirection(.column)))
 
         view.addSubview(pagesView)
-        CurrentEnviroment.style(pagesView).setup(Style(flex: Flex(grow: 1)))
+        BeagleEnvironment.style(pagesView).setup(Style(flex: Flex(grow: 1)))
 
         return view
     }

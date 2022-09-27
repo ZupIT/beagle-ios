@@ -22,7 +22,8 @@ enum ComponentFromJsonError: Error {
 }
 
 func componentFromJsonFile<T>(
-    fileName: String
+    fileName: String,
+    coder: CoderProtocol = Coder()
 ) throws -> T {
     guard let url = Bundle(for: BeagleCoderTests.self).url(
         forResource: fileName,
@@ -32,17 +33,18 @@ func componentFromJsonFile<T>(
     }
 
     let data = try Data(contentsOf: url)
-    return try componentFromData(data)
+    return try componentFromData(data, decoder: coder)
 }
 
 func componentFromString<A: BeagleCodable>(
-    _ string: String
+    _ string: String,
+    coder: CoderProtocol = Coder()
 ) throws -> A {
     guard let data = string.data(using: .utf8) else {
         throw ComponentFromJsonError.wrongUrlPath
     }
 
-    return try componentFromData(data)
+    return try componentFromData(data, decoder: coder)
 }
 
 func componentFromData<T>(

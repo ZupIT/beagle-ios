@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,6 +33,7 @@
 		7CC2D9B624C6150E0059D5F9 /* TabBarUIComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC2D9B524C6150E0059D5F9 /* TabBarUIComponent.swift */; };
 		7CFE3A752412E3B50087F664 /* StyleBuildersExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFE3A742412E3B50087F664 /* StyleBuildersExtension.swift */; };
 		8A4DFEF02862548000C205A4 /* ImageProviderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4DFEEF2862548000C205A4 /* ImageProviderProtocol.swift */; };
+		9315334E28D399E000AF0A83 /* DependenciesFactoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9315334D28D399E000AF0A83 /* DependenciesFactoryTests.swift */; };
 		931B6E302375BA7400DE73FD /* ThemeProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B6E2F2375BA7400DE73FD /* ThemeProtocol.swift */; };
 		931B6E32237610B300DE73FD /* FunctiontalUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 931B6E31237610B300DE73FD /* FunctiontalUtils.swift */; };
 		9322336526CC23FC00CB95EF /* ActionSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9322336426CC23FC00CB95EF /* ActionSpy.swift */; };
@@ -247,7 +248,7 @@
 		A9C6F53F27288FE900576313 /* DependenciesContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F53E27288FE900576313 /* DependenciesContainer.swift */; };
 		A9C6F5412728901200576313 /* Injected.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5402728901200576313 /* Injected.swift */; };
 		A9C6F5432728975900576313 /* DependencyResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5422728975900576313 /* DependencyResolver.swift */; };
-		A9C6F5452730874700576313 /* BeagleEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5442730874700576313 /* BeagleEnviroment.swift */; };
+		A9C6F5452730874700576313 /* BeagleEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5442730874700576313 /* BeagleEnvironment.swift */; };
 		A9C6F548273312BA00576313 /* BundleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F547273312BA00576313 /* BundleProtocol.swift */; };
 		A9C6F54A2733149D00576313 /* TestEnviroment.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F5492733149D00576313 /* TestEnviroment.swift */; };
 		A9C6F54C2735C0C800576313 /* OperationEvaluationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F54B2735C0C800576313 /* OperationEvaluationTests.swift */; };
@@ -351,6 +352,7 @@
 		7CC2D9B524C6150E0059D5F9 /* TabBarUIComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarUIComponent.swift; sourceTree = "<group>"; };
 		7CFE3A742412E3B50087F664 /* StyleBuildersExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleBuildersExtension.swift; sourceTree = "<group>"; };
 		8A4DFEEF2862548000C205A4 /* ImageProviderProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageProviderProtocol.swift; sourceTree = "<group>"; };
+		9315334D28D399E000AF0A83 /* DependenciesFactoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesFactoryTests.swift; sourceTree = "<group>"; };
 		931B6E2F2375BA7400DE73FD /* ThemeProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeProtocol.swift; sourceTree = "<group>"; };
 		931B6E31237610B300DE73FD /* FunctiontalUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctiontalUtils.swift; sourceTree = "<group>"; };
 		9322336426CC23FC00CB95EF /* ActionSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSpy.swift; sourceTree = "<group>"; };
@@ -596,7 +598,7 @@
 		A9C6F53E27288FE900576313 /* DependenciesContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesContainer.swift; sourceTree = "<group>"; };
 		A9C6F5402728901200576313 /* Injected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Injected.swift; sourceTree = "<group>"; };
 		A9C6F5422728975900576313 /* DependencyResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependencyResolver.swift; sourceTree = "<group>"; };
-		A9C6F5442730874700576313 /* BeagleEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleEnviroment.swift; sourceTree = "<group>"; };
+		A9C6F5442730874700576313 /* BeagleEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeagleEnvironment.swift; sourceTree = "<group>"; };
 		A9C6F547273312BA00576313 /* BundleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleProtocol.swift; sourceTree = "<group>"; };
 		A9C6F5492733149D00576313 /* TestEnviroment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestEnviroment.swift; sourceTree = "<group>"; };
 		A9C6F54B2735C0C800576313 /* OperationEvaluationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OperationEvaluationTests.swift; sourceTree = "<group>"; };
@@ -777,7 +779,10 @@
 				932925D02327E11000A61F01 /* Products */,
 				E53524A923310F5A00D1A0C9 /* Frameworks */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
+			usesTabs = 0;
 		};
 		932925D02327E11000A61F01 /* Products */ = {
 			isa = PBXGroup;
@@ -1450,8 +1455,9 @@
 			isa = PBXGroup;
 			children = (
 				9356CEE826248D5B0021EFC6 /* __Snapshots__ */,
-				9356CD63262482820021EFC6 /* DependenciesDummies.swift */,
 				A9C6F54D273D858900576313 /* DependenciesContainerTests.swift */,
+				9356CD63262482820021EFC6 /* DependenciesDummies.swift */,
+				9315334D28D399E000AF0A83 /* DependenciesFactoryTests.swift */,
 				A9C6F54F273D90FC00576313 /* InjectedTests.swift */,
 			);
 			path = Setup;
@@ -1965,7 +1971,7 @@
 				A9C6F53E27288FE900576313 /* DependenciesContainer.swift */,
 				A9C6F5402728901200576313 /* Injected.swift */,
 				A9C6F5422728975900576313 /* DependencyResolver.swift */,
-				A9C6F5442730874700576313 /* BeagleEnviroment.swift */,
+				A9C6F5442730874700576313 /* BeagleEnvironment.swift */,
 				A9C6F553273DB73C00576313 /* Singletons.swift */,
 			);
 			path = Setup;
@@ -2058,7 +2064,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1030;
-				LastUpgradeCheck = 1250;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "Zup IT";
 				TargetAttributes = {
 					932925CE2327E11000A61F01 = {
@@ -2156,6 +2162,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		E5EB34B52330358000AC246B /* SwiftLint Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -2224,7 +2231,7 @@
 				C08D4E882485944B00AAAC0A /* Text+Extensions.swift in Sources */,
 				A057D59324C7169E001F6835 /* ComponentHostController.swift in Sources */,
 				E5A6F4CB2358F621008906F8 /* ViewClientProtocol.swift in Sources */,
-				A9C6F5452730874700576313 /* BeagleEnviroment.swift in Sources */,
+				A9C6F5452730874700576313 /* BeagleEnvironment.swift in Sources */,
 				E52236C423745CBB00E555BB /* NSObjectExtension.swift in Sources */,
 				A020A4D124FFDDC200B3DF55 /* ListViewController.swift in Sources */,
 				C048EBDB242BD78500A24075 /* Analytics.swift in Sources */,
@@ -2441,6 +2448,7 @@
 				93369CE2268128A400BBDB42 /* PullToRefreshTests.swift in Sources */,
 				9356CBB4262481BE0021EFC6 /* SendRequestTests.swift in Sources */,
 				9356CE49262482820021EFC6 /* StyleBuildersExtensionTests.swift in Sources */,
+				9315334E28D399E000AF0A83 /* DependenciesFactoryTests.swift in Sources */,
 				9356CE6F262482820021EFC6 /* BeaglePrefetchHelperTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2597,7 +2605,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2629,7 +2637,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = Resources/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

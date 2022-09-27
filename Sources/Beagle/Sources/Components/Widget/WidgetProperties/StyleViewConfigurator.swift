@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ public protocol StyleViewConfiguratorProtocol: AnyObject {
 
 extension UIView {
     public var style: StyleViewConfiguratorProtocol {
-        return CurrentEnviroment.style(self)
+        return BeagleEnvironment.style(self)
     }
 }
 

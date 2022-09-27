@@ -20,7 +20,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class AutoCodableTests: EnviromentTestCase {
+final class AutoCodableTests: EnvironmentTestCase {
     
     // swiftlint:disable force_unwrapping
     
@@ -33,12 +33,12 @@ final class AutoCodableTests: EnviromentTestCase {
     }
     
     func testPolymorphicPropertyWrapper() throws {
-        let component: PolymorphicComponent = try componentFromJsonFile(fileName: "PolymorphicComponent")
+        let component: PolymorphicComponent = try componentFromJsonFile(fileName: "PolymorphicComponent", coder: enviroment.coder)
         assertSnapshotJson(matching: component)
     }
     
     func testPolymorphicWithoutWrapper() throws {
-        let component: PolymorphicComponentWithoutWrapper = try componentFromJsonFile(fileName: "PolymorphicComponentWithoutWrapper")
+        let component: PolymorphicComponentWithoutWrapper = try componentFromJsonFile(fileName: "PolymorphicComponentWithoutWrapper", coder: enviroment.coder)
         assertSnapshotJson(matching: component)
     }
     
@@ -51,7 +51,7 @@ final class AutoCodableTests: EnviromentTestCase {
                 "_beagleComponent_": "custom:UnsuportedTypeComponent",
                 "string": "string"
             }
-            """)
+            """, coder: self.enviroment.coder)
         }
         XCTAssertThrowsError(try closure()) {
             throwError = $0

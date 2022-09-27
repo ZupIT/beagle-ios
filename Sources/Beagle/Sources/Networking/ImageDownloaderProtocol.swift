@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,15 @@ public protocol ImageDownloaderProtocol {
 
 public struct ImageDownloader: ImageDownloaderProtocol {
     
-    var dispatcher = RequestDispatcher()
+    var dispatcher: RequestDispatcher
     
-    public init() { }
+    public init() {
+        dispatcher = RequestDispatcher()
+    }
+    
+    init(_ resolver: DependenciesContainerResolving) {
+        dispatcher = RequestDispatcher(resolver)
+    }
     
     @discardableResult
     public func fetchImage(

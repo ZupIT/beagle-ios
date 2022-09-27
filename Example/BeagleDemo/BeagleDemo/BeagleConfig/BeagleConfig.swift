@@ -17,26 +17,40 @@
 import Foundation
 import Beagle
 
-class BeagleConfig {
+import UIKit
 
-    private init() {  }
+enum BeagleConfig {
 
-    static func start() {
+    static func create() -> BeagleConfiguration {
         let deepLinkHandler = registerDeepLink()
 
-        var dependencies = BeagleDependencies()
-        dependencies.networkClient = NetworkClientDefault()
-        dependencies.theme = AppTheme.theme
-        dependencies.urlBuilder = UrlBuilder(baseUrl: URL(string: .baseURL))
-        dependencies.deepLinkHandler = deepLinkHandler
+        var dependencies = BeagleDependenciesFactory()
+        dependencies.networkClient = Factory { resolver in
+            NetworkClientDefault(resolver)
+        }
+        dependencies.theme = Factory { _ in
+            AppTheme.theme
+        }
+        dependencies.urlBuilder = Factory { _ in
+            UrlBuilder(baseUrl: URL(string: .baseURL))
+        }
+        dependencies.deepLinkHandler = Factory { _ in
+            deepLinkHandler
+        }
+        dependencies.analyticsProvider = Factory { _ in
+            AnalyticsProviderDemo()
+        }
+        dependencies.logger = Factory { _ in
+            BeagleLoggerDefault()
+        }
+        
+        let configuration = BeagleConfiguration(dependencies: dependencies)
 
-        dependencies.analyticsProvider = AnalyticsProviderDemo()
+        registerCustomOperations(in: configuration.dependencies)
+        registerCustomComponents(in: configuration.dependencies)
+        setupNavigation(in: configuration.dependencies)
 
-        registerCustomOperations(in: dependencies)
-        registerCustomComponents(in: dependencies)
-        setupNavigation(in: dependencies)
-
-        BeagleConfigurator.setup(dependencies: dependencies)
+        return configuration
     }
 
     private static func registerDeepLink() -> DeeplinkScreenManager {
@@ -44,11 +58,12 @@ class BeagleConfig {
         return deepLink
     }
 
-    private static func registerCustomComponents(in dependencies: BeagleDependencies) {
+    private static func registerCustomComponents(in dependencies: BeagleEnviromentProtocol) {
         dependencies.coder.register(type: DSCollection.self)
+        dependencies.coder.register(type: CustomText.self, named: "custom-text")
     }
 
-    private static func setupNavigation(in dependencies: BeagleDependencies) {
+    private static func setupNavigation(in dependencies: BeagleEnviromentProtocol) {
         dependencies.navigator.registerNavigationController(builder: CustomBeagleNavigationController.init, forId: "CustomBeagleNavigation")
         dependencies.navigator.registerNavigationController(builder: CustomPushStackNavigationController.init, forId: "PushStackNavigation")
         dependencies.navigator.setDefaultAnimation(.init(
@@ -57,7 +72,7 @@ class BeagleConfig {
         ))
     }
     
-    private static func registerCustomOperations(in dependencies: BeagleDependencies) {
+    private static func registerCustomOperations(in dependencies: BeagleEnviromentProtocol) {
         dependencies.operationsProvider.register(operationId: "sum") { parameters in
             let anyParameters = parameters.map { $0.asAny() }
             if let integerParameters = anyParameters as? [Int] {
@@ -77,5 +92,13 @@ class BeagleConfig {
             }
             return nil
         }
+    }
+}
+
+struct CustomText: ServerDrivenComponent {
+    func toView(renderer: BeagleRenderer) -> UIView {
+        let label = UILabel()
+        label.text = "customText"
+        return label
     }
 }

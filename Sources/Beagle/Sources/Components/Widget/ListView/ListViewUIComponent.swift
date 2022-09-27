@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ final class ListViewUIComponent: UIView {
     
     private(set) var onScrollEndExecuted = false
     
-    lazy var renderer = CurrentEnviroment.renderer(listController)
+    lazy var renderer = BeagleEnvironment.renderer(listController)
     
     // MARK: - Dependencies
     
@@ -83,6 +83,9 @@ final class ListViewUIComponent: UIView {
     init(model: Model, renderer: BeagleRenderer) {
         self.model = model
         self.listController = ListViewController(renderer: renderer)
+        if let resolver = renderer.controller?.config.resolver {
+            _logger = Injected(resolver)
+        }
         super.init(frame: .zero)
         setupViews()
     }

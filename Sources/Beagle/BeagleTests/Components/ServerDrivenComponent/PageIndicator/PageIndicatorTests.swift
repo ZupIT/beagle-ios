@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-class PageIndicatorTests: EnviromentTestCase {
+class PageIndicatorTests: EnvironmentTestCase {
 
     private static let typeName = "CustomPageIndicator"
     private let indicator = CustomPageIndicator(
@@ -36,7 +36,8 @@ class PageIndicatorTests: EnviromentTestCase {
     
     func test_indicator_decoder() throws {
         let component: CustomPageIndicator = try componentFromJsonFile(
-            fileName: PageIndicatorTests.typeName
+            fileName: PageIndicatorTests.typeName,
+            coder: enviroment.coder
         )
         assertSnapshot(matching: component, as: .dump)
     }

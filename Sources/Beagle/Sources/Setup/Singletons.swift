@@ -1,6 +1,6 @@
 //
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,17 +15,32 @@
  * limitations under the License.
  */
 
-// MARK: - CurrentResolver
+public var GlobalConfiguration: BeagleConfiguration = BeagleConfiguration(dependencies: BeagleDependenciesFactory())
 
-/// Used by injected property wrapper to resolve dependencies
-var CurrentResolver: DependenciesContainerResolving = DependenciesContainer.global
+// MARK: - Environment
 
-// MARK: - CurrentEnviroment
+/// Used outside beagle to access the environment dependencies
+public var Dependencies: BeagleEnviromentProtocol { GlobalConfiguration.environment }
 
-/// Used inside beagle to access the enviroment dependencies
-var CurrentEnviroment: EnviromentProtocol = BeagleEnviroment.global
-
-// MARK: - Enviroment
-
-/// Used outside beagle to access the enviroment dependencies
-public var Dependencies: BeagleEnviromentProtocol { CurrentEnviroment }
+public class BeagleConfiguration {
+    public init(dependencies: BeagleDependenciesFactory) {
+        resolver = DependenciesContainer(dependencies: dependencies)
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    init(resolver: DependenciesContainerResolving) {
+        self.resolver = resolver
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    init(dependencies: BeagleDependencies) {
+        resolver = DependenciesContainer(dependencies: dependencies)
+        environment = BeagleEnvironment(resolver: resolver)
+    }
+    
+    var resolver: DependenciesContainerResolving
+    var environment: EnvironmentProtocol
+    public var dependencies: BeagleEnviromentProtocol {
+        environment
+    }
+}

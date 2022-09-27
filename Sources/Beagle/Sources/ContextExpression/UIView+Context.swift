@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ extension UIView {
     private static var expressionLastValueMapKey = "expressionLastValueMapKey"
     private static var parentContextKey = "parentContextKey"
     private static var componentType = "componentType"
+    
+    private static var beagleConfigKey = "beagleConfigKey"
     
     private class ObjectWrapper<T> {
         let object: T?
@@ -63,6 +65,15 @@ extension UIView {
         }
         set {
             objc_setAssociatedObject(self, &UIView.parentContextKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
+        }
+    }
+    
+    unowned var beagleConfig: BeagleConfiguration {
+        get {
+            objc_getAssociatedObject(self, &UIView.beagleConfigKey) as? BeagleConfiguration ?? GlobalConfiguration
+        }
+        set {
+            objc_setAssociatedObject(self, &UIView.beagleConfigKey, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     
@@ -154,8 +165,8 @@ extension UIView {
     // MARK: Get/Set Context
     
     func getContext(with id: String) -> Observable<Context>? {
-        if CurrentEnviroment.globalContext.isGlobal(id: id) {
-            return CurrentEnviroment.globalContext.context
+        if beagleConfig.environment.globalContext.isGlobal(id: id) {
+            return beagleConfig.environment.globalContext.context
         }
         guard let context = contextMap[id] else {
             let observable = (parentContext ?? superview)?.getContext(with: id)
@@ -165,8 +176,8 @@ extension UIView {
     }
     
     func setContext(_ context: Context) {
-        guard !CurrentEnviroment.globalContext.isGlobal(id: context.id) else {
-            CurrentEnviroment.globalContext.set(context.value)
+        guard !beagleConfig.environment.globalContext.isGlobal(id: context.id) else {
+            beagleConfig.environment.globalContext.set(context.value)
             return
         }
         if let contextObservable = contextMap[context.id] {
@@ -177,8 +188,8 @@ extension UIView {
     }
     
     func getContextValue(_ contextId: String) -> DynamicObject? {
-        guard !CurrentEnviroment.globalContext.isGlobal(id: contextId) else {
-            return CurrentEnviroment.globalContext.context.value.value
+        guard !beagleConfig.environment.globalContext.isGlobal(id: contextId) else {
+            return beagleConfig.environment.globalContext.context.value.value
         }
         return contextMap[contextId]?.value.value
     }

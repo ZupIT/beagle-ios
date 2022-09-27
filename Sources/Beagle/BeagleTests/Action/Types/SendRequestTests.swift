@@ -18,7 +18,7 @@ import XCTest
 import SnapshotTesting
 @testable import Beagle
 
-final class SendRequestTests: EnviromentTestCase {
+final class SendRequestTests: EnvironmentTestCase {
     // swiftlint:disable force_unwrapping
 
     func test_whenSendRequestWithSuccess_shouldDoRequestAndTriggerActions() {
