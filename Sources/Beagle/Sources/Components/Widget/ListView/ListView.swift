@@ -42,6 +42,9 @@ public struct ListView: Widget, HasContext, InitiableComponent {
     
     /// Is the context identifier of each cell.
     public var iteratorName: String?
+  
+    /// Is the index identifier of each cell.
+    public var indexName: String?
     
     /// List of actions performed when the list is scrolled to the end.
     @AutoCodable

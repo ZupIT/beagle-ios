@@ -27,9 +27,11 @@ extension GridView {
                 spanCount: max(1, spanCount),
                 templates: templates,
                 iteratorName: iteratorName ?? "item",
+                indexName: indexName ?? "index",
                 onScrollEnd: onScrollEnd,
                 scrollEndThreshold: CGFloat(scrollEndThreshold ?? 100),
-                isScrollIndicatorVisible: isScrollIndicatorVisible ?? false
+                isScrollIndicatorVisible: isScrollIndicatorVisible ?? false,
+                dataSourceExpression: dataSource
             ),
             renderer: renderer
         )

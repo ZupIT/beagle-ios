@@ -239,9 +239,11 @@ extension ListViewUIComponent {
         var spanCount: Int = 1
         var templates: [Template]
         var iteratorName: String
+        var indexName: String
         var onScrollEnd: [Action]?
         var scrollEndThreshold: CGFloat
         var isScrollIndicatorVisible: Bool
+        var dataSourceExpression: Expression<[DynamicObject]>
     }
 }
 
