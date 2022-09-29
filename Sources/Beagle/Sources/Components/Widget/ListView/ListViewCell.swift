@@ -109,7 +109,7 @@ final class ListViewCell: UICollectionViewCell {
            let index = Int(key) else {
              return
         }
-      
+        container.beagleConfig = listView.beagleConfig
         let observer = ContextObserver { context in
             let action = SetContext(contextId: binding.context, path: Path(nodes: binding.path.nodes + [.index(index)]), value: context.value)
             action.execute(controller: listView.listController, origin: container)

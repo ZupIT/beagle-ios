@@ -81,6 +81,7 @@ extension ListView {
         case direction
         case templates
         case iteratorName
+        case indexName
         case onScrollEnd
         case scrollEndThreshold
         case isScrollIndicatorVisible
@@ -93,6 +94,7 @@ extension ListView {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.iteratorName = try container.decodeIfPresent(String.self, forKey: .iteratorName)
+        self.indexName = try container.decodeIfPresent(String.self, forKey: .indexName)
         self.direction = try container.decodeIfPresent(Direction.self, forKey: .direction)
         
         key = try container.decodeIfPresent(String.self, forKey: .key)
