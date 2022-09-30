@@ -1,6 +1,6 @@
 //
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,9 +27,11 @@ extension GridView {
                 spanCount: max(1, spanCount),
                 templates: templates,
                 iteratorName: iteratorName ?? "item",
+                indexName: indexName ?? "index",
                 onScrollEnd: onScrollEnd,
                 scrollEndThreshold: CGFloat(scrollEndThreshold ?? 100),
-                isScrollIndicatorVisible: isScrollIndicatorVisible ?? false
+                isScrollIndicatorVisible: isScrollIndicatorVisible ?? false,
+                dataSourceExpression: dataSource
             ),
             renderer: renderer
         )

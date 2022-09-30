@@ -1,0 +1,19 @@
+{
+  "_beagleComponent_": "beagle:listview",
+  "dataSource": [
+    {
+      "name": "one"
+    },
+    {
+      "name": "two"
+    }
+  ],
+  "templates": [
+    {
+      "view": {
+        "_beagleComponent_": "beagle:text",
+        "text": "Name: @{item.name}, index: @{index}"
+      }
+    }
+  ]
+}
