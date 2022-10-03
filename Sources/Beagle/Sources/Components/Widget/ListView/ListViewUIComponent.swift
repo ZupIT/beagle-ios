@@ -239,9 +239,11 @@ extension ListViewUIComponent {
         var spanCount: Int = 1
         var templates: [Template]
         var iteratorName: String
+        var indexName: String
         var onScrollEnd: [Action]?
         var scrollEndThreshold: CGFloat
         var isScrollIndicatorVisible: Bool
+        var dataSourceExpression: Expression<[DynamicObject]>
     }
 }
 
@@ -258,10 +260,12 @@ extension ListViewUIComponent: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         let itemKey = keyFor(item)
-        let hash = hashFor(item: item, withKey: itemKey)
+        // if itemKey is not defined use index instead
+        let key = itemKey ?? String(indexPath.item)
+        let hash = key.hashValue
         
         guard let templateIndex = templateIndexFor(item: item, in: collectionView) else {
-            let info = "\(model.iteratorName):\(itemKey ?? String(indexPath.item))"
+            let info = "\(model.iteratorName):\(key)"
             logger.log(Log.collection(.templateNotFound(item: info)))
             return UICollectionViewCell()
         }
@@ -276,7 +280,6 @@ extension ListViewUIComponent: UICollectionViewDataSource {
         cellsContextManager.reuse(cell: cell)
         listController.delegate = cell
         
-        let key = itemKey ?? String(indexPath.item)
         let contexts = cellsContextManager.contexts(for: hash)
         
         cell.configure(hash: hash, key: key, item: item, templateIndex: templateIndex, contexts: contexts, listView: self)

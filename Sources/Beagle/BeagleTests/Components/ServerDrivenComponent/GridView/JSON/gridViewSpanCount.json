@@ -6,6 +6,7 @@
   },
   "dataSource": "@{grid}",
   "direction": "HORIZONTAL",
+  "indexName": "customIndex",
   "spanCount": 5,
   "numColumns": 3,
   "templates": [

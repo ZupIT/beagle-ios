@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,9 @@ public struct ListView: Widget, HasContext, InitiableComponent {
     
     /// Is the context identifier of each cell.
     public var iteratorName: String?
+  
+    /// Is the index identifier of each cell.
+    public var indexName: String?
     
     /// List of actions performed when the list is scrolled to the end.
     @AutoCodable
@@ -78,6 +81,7 @@ extension ListView {
         case direction
         case templates
         case iteratorName
+        case indexName
         case onScrollEnd
         case scrollEndThreshold
         case isScrollIndicatorVisible
@@ -90,6 +94,7 @@ extension ListView {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         self.iteratorName = try container.decodeIfPresent(String.self, forKey: .iteratorName)
+        self.indexName = try container.decodeIfPresent(String.self, forKey: .indexName)
         self.direction = try container.decodeIfPresent(Direction.self, forKey: .direction)
         
         key = try container.decodeIfPresent(String.self, forKey: .key)

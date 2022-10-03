@@ -1,0 +1,72 @@
+{
+  "_beagleComponent_": "beagle:container",
+  "children": [
+    {
+      "_beagleComponent_": "beagle:text",
+      "text": "List1:"
+    },
+    {
+      "_beagleComponent_": "beagle:listview",
+      "direction": "VERTICAL",
+      "dataSource": "@{global.listDataSource}",
+      "templates": [
+        {
+          "view": {
+            "_beagleComponent_": "beagle:container",
+            "style": {
+              "margin": {
+                "bottom": {
+                  "value": 20,
+                  "type": "REAL"
+                }
+              }
+            },
+            "onInit": [
+                {
+                  "_beagleAction_": "beagle:setContext",
+                  "contextId": "item",
+                  "value": "updated@{index}"
+                }
+            ],
+            "children": [
+              {
+                "_beagleComponent_": "beagle:text",
+                "text": "index: @{index} name: @{item}"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "_beagleComponent_": "beagle:text",
+      "text": "List2:"
+    },
+    {
+      "_beagleComponent_": "beagle:listview",
+      "direction": "VERTICAL",
+      "dataSource": "@{global.listDataSource}",
+      "templates": [
+        {
+          "view": {
+            "_beagleComponent_": "beagle:container",
+            "style": {
+              "margin": {
+                "bottom": {
+                  "value": 20,
+                  "type": "REAL"
+                }
+              }
+            },
+            "children": [
+              {
+                "_beagleComponent_": "beagle:text",
+                "text": "@{item}"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -223,6 +223,9 @@
 		93A2EE1C24EC4BB00085B3CF /* AddChildren+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A2EE1B24EC4BB00085B3CF /* AddChildren+Extensions.swift */; };
 		93B9744F23A2833600B0D1CF /* NetworkClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B9743F23A2833600B0D1CF /* NetworkClientProtocol.swift */; };
 		93C12E2228E75E3F008C051C /* OperationConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C12E2128E75E3F008C051C /* OperationConversionTests.swift */; };
+		93C12E1C28E4BE92008C051C /* listUsingIndex.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1B28E4BE92008C051C /* listUsingIndex.json */; };
+		93C12E1E28E4BF1B008C051C /* listUsingCustomIndexName.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1D28E4BF1B008C051C /* listUsingCustomIndexName.json */; };
+		93C12E2028E4C26C008C051C /* listViewUpdatingDataSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1F28E4C26C008C051C /* listViewUpdatingDataSource.json */; };
 		93D24A512513DF47005A5CBD /* AutoLayoutWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D24A502513DF47005A5CBD /* AutoLayoutWrapper.swift */; };
 		93EE0CC3252E56BC0032BE77 /* BindingConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE0CC2252E56BC0032BE77 /* BindingConfigurator.swift */; };
 		93F7072F271A021000202E36 /* AutoCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7072E271A021000202E36 /* AutoCodable.swift */; };
@@ -574,6 +577,9 @@
 		93A2EE1B24EC4BB00085B3CF /* AddChildren+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddChildren+Extensions.swift"; sourceTree = "<group>"; };
 		93B9743F23A2833600B0D1CF /* NetworkClientProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClientProtocol.swift; sourceTree = "<group>"; };
 		93C12E2128E75E3F008C051C /* OperationConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationConversionTests.swift; sourceTree = "<group>"; };
+		93C12E1B28E4BE92008C051C /* listUsingIndex.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listUsingIndex.json; sourceTree = "<group>"; };
+		93C12E1D28E4BF1B008C051C /* listUsingCustomIndexName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listUsingCustomIndexName.json; sourceTree = "<group>"; };
+		93C12E1F28E4C26C008C051C /* listViewUpdatingDataSource.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listViewUpdatingDataSource.json; sourceTree = "<group>"; };
 		93D24A502513DF47005A5CBD /* AutoLayoutWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutWrapper.swift; sourceTree = "<group>"; };
 		93EE0CC2252E56BC0032BE77 /* BindingConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingConfigurator.swift; sourceTree = "<group>"; };
 		93F7072E271A021000202E36 /* AutoCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCodable.swift; sourceTree = "<group>"; };
@@ -1185,6 +1191,9 @@
 			isa = PBXGroup;
 			children = (
 				937B585626321BF800AA5267 /* listViewWithTemplate.json */,
+				93C12E1B28E4BE92008C051C /* listUsingIndex.json */,
+				93C12E1D28E4BF1B008C051C /* listUsingCustomIndexName.json */,
+				93C12E1F28E4C26C008C051C /* listViewUpdatingDataSource.json */,
 			);
 			path = JSON;
 			sourceTree = "<group>";
@@ -2118,10 +2127,12 @@
 				9322336D26D96BD600CB95EF /* screen.json in Resources */,
 				9356CDEB262482820021EFC6 /* TouchableDecoderTest.json in Resources */,
 				B755B591268667D400A7EDC5 /* gridViewSpanCount.json in Resources */,
+				93C12E1E28E4BF1B008C051C /* listUsingCustomIndexName.json in Resources */,
 				9356CDE2262482820021EFC6 /* WebView.json in Resources */,
 				9356CBB9262481BE0021EFC6 /* pushview.json in Resources */,
 				9356CD9E262482820021EFC6 /* PushStack-2.json in Resources */,
 				937B584526321B6200AA5267 /* ContainerWithoutChildren.json in Resources */,
+				93C12E2028E4C26C008C051C /* listViewUpdatingDataSource.json in Resources */,
 				9356CD9B262482820021EFC6 /* Alert-1.json in Resources */,
 				9356CE1F262482820021EFC6 /* ImageComponent.json in Resources */,
 				9356CDED262482820021EFC6 /* TabBar.json in Resources */,
@@ -2147,6 +2158,7 @@
 				93369CE5268128EC00BBDB42 /* PullToRefresh.json in Resources */,
 				9356CD99262482820021EFC6 /* AddChildren-1.json in Resources */,
 				9356CE57262482820021EFC6 /* declarativeText1.json in Resources */,
+				93C12E1C28E4BE92008C051C /* listUsingIndex.json in Resources */,
 				9356CDDC262482820021EFC6 /* ScrollViewComponent.json in Resources */,
 				9356CDDD262482820021EFC6 /* HorizontalScrollView.json in Resources */,
 				9356CD9C262482820021EFC6 /* OpenNativeRoute-1.json in Resources */,

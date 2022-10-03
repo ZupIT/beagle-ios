@@ -355,6 +355,26 @@ final class ListViewTests: XCTestCase {
         assertSnapshotJson(matching: component)
     }
     
+    // Integrated
+    func testUpdatingDataSource() throws {
+        let component: Container = try componentFromJsonFile(fileName: "listViewUpdatingDataSource")
+        
+        let dependencies = BeagleDependenciesFactory()
+        dependencies.globalContext.set(value: ["one", "two"], path: "listDataSource")
+        let controller = BeagleScreenViewController(component, config: BeagleConfiguration(dependencies: dependencies))
+        
+        assertSnapshotImage(controller, size: imageSize)
+        assertSnapshot(matching: dependencies.globalContext.get(), as: .dump)
+    }
+    
+    func testIndexName() throws {
+        var component: ListView = try componentFromJsonFile(fileName: "listUsingIndex")
+        assertSnapshotImage(renderListView(component), size: imageSize)
+        
+        component = try componentFromJsonFile(fileName: "listUsingCustomIndexName")
+        assertSnapshotImage(renderListView(component), size: imageSize)
+    }
+    
     // MARK: - Helper
 
     private static func createText(_ string: String, position: Double) -> Text {

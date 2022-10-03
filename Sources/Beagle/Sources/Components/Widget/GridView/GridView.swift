@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,9 @@ public struct GridView: Widget, HasContext, InitiableComponent {
     
     /// Is the context identifier of each cell.
     public var iteratorName: String?
+  
+    /// Is the index identifier of each cell.
+    public var indexName: String?
     
     /// List of actions performed when the list is scrolled to the end.
     @AutoCodable

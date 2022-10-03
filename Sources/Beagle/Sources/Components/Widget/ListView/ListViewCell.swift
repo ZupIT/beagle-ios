@@ -35,6 +35,8 @@ final class ListViewCell: UICollectionViewCell {
     var hasPendingActions: Bool {
         return !pendingActions.isEmpty
     }
+  
+    var dataSourceObserver: ContextObserver?
     
     func templateSizeThatFits(_ size: CGSize) -> CGSize {
         let undefined = YGValue(value: .nan, unit: .undefined)
@@ -72,11 +74,11 @@ final class ListViewCell: UICollectionViewCell {
         let container = templateContainer(for: listView, templateIndex: templateIndex)
         if let contexts = contexts {
             restoreContexts(contexts)
-            container.setContext(Context(id: listView.model.iteratorName, value: item))
+            configContainer(container, key: key, item: item, listView: listView)
             setViewsIdentifier(viewsIdentifier)
         } else {
             initContexts()
-            container.setContext(Context(id: listView.model.iteratorName, value: item))
+            configContainer(container, key: key, item: item, listView: listView)
             setViewsIdentifier(viewsIdentifier)
             onInits.forEach {
                 listView.listController.execute(actions: $0.actions, event: "onInit", origin: $0.view)
@@ -84,6 +86,36 @@ final class ListViewCell: UICollectionViewCell {
         }
         
         addBindings()
+    }
+  
+    private func configContainer(
+        _ container: TemplateContainer,
+        key: String,
+        item: DynamicObject,
+        listView: ListViewUIComponent
+    ) {
+        if let dataSourceObserver = dataSourceObserver {
+            let observable = container.getContext(with: listView.model.iteratorName)
+            observable?.deleteObserver(dataSourceObserver)
+        }
+      
+        container.setContext(Context(id: listView.model.iteratorName, value: item))
+        container.setContext(Context(id: listView.model.indexName, value: .string(key)))
+      
+        guard case let .expression(expression) = listView.model.dataSourceExpression,
+           case let .single(single) = expression,
+           case let .value(value) = single,
+           case let .binding(binding) = value,
+           let index = Int(key) else {
+             return
+        }
+        container.beagleConfig = listView.beagleConfig
+        let observer = ContextObserver { context in
+            let action = SetContext(contextId: binding.context, path: Path(nodes: binding.path.nodes + [.index(index)]), value: context.value)
+            action.execute(controller: listView.listController, origin: container)
+        }
+        container.getContext(with: listView.model.iteratorName)?.addObserver(observer)
+        dataSourceObserver = observer
     }
     
     private func setViewsIdentifier(_ viewsIdentifier: [UIView: String]) {
