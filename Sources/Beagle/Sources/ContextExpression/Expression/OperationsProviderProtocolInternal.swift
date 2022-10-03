@@ -123,6 +123,9 @@ extension OperationsProviderProtocolInternal {
         register(operationId: "isNull", handler: isNull())
         register(operationId: "isEmpty", handler: isEmpty())
         register(operationId: "length", handler: length())
+        register(operationId: "int", handler: int())
+        register(operationId: "double", handler: double())
+        register(operationId: "string", handler: string())
     }
     
     // MARK: Number
@@ -490,6 +493,55 @@ extension OperationsProviderProtocolInternal {
                 return .int(array.count)
             } else if case let .dictionary(dictionary) = parameters.first {
                 return .int(dictionary.count)
+            }
+            
+            return nil
+        }
+    }
+    
+    // MARK: Conversion
+        
+    func int() -> OperationHandler {
+        { parameters in
+            guard parameters.count == 1 else { return nil }
+            if case let .string(string) = parameters.first, let int = Int(string) {
+                return .int(int)
+            } else if case let .double(double) = parameters.first {
+                return .int(Int(double))
+            } else if case let .int(int) = parameters.first {
+                return .int(int)
+            }
+            
+            return nil
+        }
+    }
+        
+    func double() -> OperationHandler {
+        { parameters in
+            guard parameters.count == 1 else { return nil }
+            if case let .string(string) = parameters.first, let double = Double(string) {
+                return .double(double)
+            } else if case let .int(int) = parameters.first {
+                return .double(Double(int))
+            } else if case let .double(double) = parameters.first {
+                return .double(double)
+            }
+            
+            return nil
+        }
+    }
+    
+    func string() -> OperationHandler {
+        { parameters in
+            guard parameters.count == 1 else { return nil }
+            if case let .int(int) = parameters.first {
+                return .string(String(int))
+            } else if case let .double(double) = parameters.first {
+                return .string(String(double))
+            } else if case let .bool(bool) = parameters.first {
+                return .string(String(bool))
+            } else if case let .string(string) = parameters.first {
+                return .string(string)
             }
             
             return nil
