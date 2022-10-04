@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ final class OperationNumberEvaluationTests: OperationEvaluationTests {
 
     func testEvaluateSum() {
         // Given
-        let comparableResults: [DynamicObject] = [10, 10.5, 6, 6.5, 14, 13.3, 27.5, nil, nil, nil, nil]
+        let comparableResults: [DynamicObject] = [10, 10.5, 6, 6.5, 14, 13.3, 27.5, 2.5, 3.0, 2.0, 3.5, 2, 3, nil, nil]
         
         // When
         evaluateOperation("sum") { evaluatedResults in
@@ -32,7 +32,7 @@ final class OperationNumberEvaluationTests: OperationEvaluationTests {
     
     func testEvaluateSubtract() {
         // Given
-        let comparableResults: [DynamicObject] = [2, -1.5, 2, 1.5, 2, 4.3, -1.5, nil, nil, nil, nil]
+        let comparableResults: [DynamicObject] = [2, -1.5, 2, 1.5, 2, 4.3, -1.5, -0.5, 1.0, 0.0, 1.5, 0, 1, nil, nil]
         
         // When
         evaluateOperation("subtract") { evaluatedResults in
@@ -43,7 +43,7 @@ final class OperationNumberEvaluationTests: OperationEvaluationTests {
     
     func testEvaluateMultiply() {
         // Given
-        let comparableResults: [DynamicObject] = [24, 27.0, 8, 10.0, 96, 75.6, 7290.0, nil, nil, nil, nil]
+        let comparableResults: [DynamicObject] = [24, 27.0, 8, 10.0, 96, 75.6, 7290.0, 1.5, 2.0, 1.0, 2.5, 1, 2, nil, nil]
         
         // When
         evaluateOperation("multiply") { evaluatedResults in
@@ -54,7 +54,7 @@ final class OperationNumberEvaluationTests: OperationEvaluationTests {
     
     func testEvaluateDivide() {
         // Given
-        let comparableResults: [DynamicObject] = [1, 0.75, 2, 1.6, 4, 3.733333333333333, 0.625, nil, nil, nil, nil]
+        let comparableResults: [DynamicObject] = [1, 0.75, 2, 1.6, 4, 3.733333333333333, 0.625, 0.6666666666666666, 2.0, 1.0, 2.5, 1.0, 2.0, nil, nil]
         
         // When
         evaluateOperation("divide") { evaluatedResults in
@@ -76,9 +76,10 @@ final class OperationNumberEvaluationTests: OperationEvaluationTests {
             "\(simpleOperations[1].rawValue), \(simpleOperations[3].rawValue), \(simpleOperations[1].rawValue)"
         ].toOperations(name: name)
         
-        let failingOperations = ["1, 1.5", "1, '1'", "1, true", ""].toOperations(name: name)
+        let operationsWithCoercion = ["1, 1.5", "2.0, 1", "'1', 1.0", "2.5, '1.0'", "'1', '1'", "'2', 1"].toOperations(name: name)
+        let failingOperations = ["1, true", ""].toOperations(name: name)
         
-        let operations = simpleOperations + complexOperations + failingOperations
+        let operations = simpleOperations + complexOperations + operationsWithCoercion + failingOperations
         
         // When/Then
         evaluateOperations(operations, contexts: contexts, completion: completion)

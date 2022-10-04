@@ -133,59 +133,28 @@ extension OperationsProviderProtocolInternal {
     func sum() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-            
-            let anyParameters = parameters.map { $0.asAny() }
-            if let integerParameters = anyParameters as? [Int] {
-                return .int(integerParameters.reduce(0, +))
-            } else if let doubleParameters = anyParameters as? [Double] {
-                return .double(doubleParameters.reduce(0.0, +))
-            }
-            
-            return nil
+            return parameters.reduce(.int(0), +)
         }
     }
     
     func subtract() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-
-            let anyParameters = parameters.map { $0.asAny() }
-            if let integerParameters = anyParameters as? [Int] {
-                return .int(integerParameters.reduce(integerParameters[0] * 2, -))
-            } else if let doubleParameters = anyParameters as? [Double] {
-                return .double(doubleParameters.reduce(doubleParameters[0] * 2, -))
-            }
-            return nil
+            return parameters.reduce(parameters[0] * 2, -)
         }
     }
     
     func multiply() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-
-            let anyParameters = parameters.map { $0.asAny() }
-            if let integerParameters = anyParameters as? [Int] {
-                return .int(integerParameters.reduce(1, *))
-            } else if let doubleParameters = anyParameters as? [Double] {
-                return .double(doubleParameters.reduce(1.0, *))
-            }
-            
-            return nil
+            return parameters.reduce(.int(1), *)
         }
     }
     
     func divide() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-
-            let anyParameters = parameters.map { $0.asAny() }
-            if let integerParameters = anyParameters as? [Int] {
-                return .int(integerParameters.reduce(integerParameters[0] * integerParameters[0], /))
-            } else if let doubleParameters = anyParameters as? [Double] {
-                return .double(doubleParameters.reduce(doubleParameters[0] * doubleParameters[0], /))
-            }
-            
-            return nil
+            return parameters.reduce(parameters[0] * parameters[0], /)
         }
     }
     
@@ -531,4 +500,55 @@ extension OperationsProviderProtocolInternal {
             return nil
         }
     }
+}
+
+// MARK: - Number operations utils
+
+private func combine(
+    lhs: DynamicObject,
+    rhs: DynamicObject,
+    intOperator: (Int, Int) -> Int,
+    doubleOperator: (Double, Double) -> Double
+) -> DynamicObject {
+    if case let .int(intl) = lhs, case let .int(intr) = rhs {
+        return .int(intOperator(intl, intr))
+    } else if case let .int(intl) = lhs, case let .double(doubler) = rhs {
+        return .double(doubleOperator(Double(intl), doubler))
+    } else if case let .double(doublel) = lhs, case let .int(intr) = rhs {
+        return .double(doubleOperator(doublel, Double(intr)))
+    } else if case let .double(doublel) = lhs, case let .double(doubler) = rhs {
+        return .double(doubleOperator(doublel, doubler))
+    } else if case let .string(stringl) = lhs, case let .int(intr) = rhs {
+        guard let value = Int(stringl) else { return .empty }
+        return .int(intOperator(value, intr))
+    } else if case let .int(intl) = lhs, case let .string(stringr) = rhs {
+        guard let value = Int(stringr) else { return .empty }
+        return .int(intOperator(intl, value))
+    } else if case let .string(stringl) = lhs, case let .double(doubler) = rhs {
+        guard let value = Double(stringl) else { return .empty }
+        return .double(doubleOperator(value, doubler))
+    } else if case let .double(doublel) = lhs, case let .string(stringr) = rhs {
+        guard let value = Double(stringr) else { return .empty }
+        return .double(doubleOperator(doublel, value))
+    } else if case let .string(stringl) = lhs, case let .string(stringr) = rhs {
+        guard let valuel = Double(stringl), let valuer = Double(stringr) else { return .empty }
+        return .double(doubleOperator(valuel, valuer))
+    }
+    return .empty
+}
+
+private func + (lhs: DynamicObject, rhs: DynamicObject) -> DynamicObject {
+    combine(lhs: lhs, rhs: rhs, intOperator: +, doubleOperator: +)
+}
+
+private func - (lhs: DynamicObject, rhs: DynamicObject) -> DynamicObject {
+    combine(lhs: lhs, rhs: rhs, intOperator: -, doubleOperator: -)
+}
+
+private func * (lhs: DynamicObject, rhs: DynamicObject) -> DynamicObject {
+    combine(lhs: lhs, rhs: rhs, intOperator: *, doubleOperator: *)
+}
+
+private func / (lhs: DynamicObject, rhs: DynamicObject) -> DynamicObject {
+    combine(lhs: lhs, rhs: rhs, intOperator: /, doubleOperator: /)
 }
