@@ -263,35 +263,35 @@ extension OperationsProviderProtocolInternal {
     
     func gt() -> OperationHandler {
         return { parameters in
-            guard let comparison = comparison(parameters) else { return .bool(false) }
+            guard let comparison = self.comparison(parameters) else { return .bool(false) }
             return .bool(comparison == .orderedDescending)
         }
     }
     
     func gte() -> OperationHandler {
         return { parameters in
-            guard let comparison = comparison(parameters) else { return .bool(false) }
+            guard let comparison = self.comparison(parameters) else { return .bool(false) }
             return .bool(comparison == .orderedDescending || comparison == .orderedSame)
         }
     }
     
     func lt() -> OperationHandler {
         return { parameters in
-            guard let comparison = comparison(parameters) else { return .bool(false) }
+            guard let comparison = self.comparison(parameters) else { return .bool(false) }
             return .bool(comparison == .orderedAscending)
         }
     }
     
     func lte() -> OperationHandler {
         return { parameters in
-            guard let comparison = comparison(parameters) else { return .bool(false) }
+            guard let comparison = self.comparison(parameters) else { return .bool(false) }
             return .bool(comparison == .orderedAscending || comparison == .orderedSame)
         }
     }
     
     func eq() -> OperationHandler {
         return { parameters in
-            if let comparison = comparison(parameters), comparison == .orderedSame {
+            if let comparison = self.comparison(parameters), comparison == .orderedSame {
                 return .bool(true)
             }
             guard parameters.count == 2 else { return nil }
