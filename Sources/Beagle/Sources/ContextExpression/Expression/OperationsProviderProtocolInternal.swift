@@ -238,78 +238,62 @@ extension OperationsProviderProtocolInternal {
     
     // MARK: Comparison
     
+    private func comparison(_ parameters: [DynamicObject]) -> ComparisonResult? {
+        let numbers = parameters.compactMap { (element: DynamicObject) -> NSNumber? in
+            switch element {
+            case let .int(value):
+                return NSNumber(value: value)
+            case let .double(value) :
+                return NSNumber(value: value)
+            case let .string(string):
+                if let double = Double(string) {
+                    return NSNumber(value: double)
+                }
+                return nil
+            default:
+                return nil
+            }
+        }
+        
+        guard numbers.count == 2, let first = numbers.first, let second = numbers.last else {
+            return nil
+        }
+        return first.compare(second)
+    }
+    
     func gt() -> OperationHandler {
         return { parameters in
-            guard parameters.count == 2 else { return nil }
-            
-            let anyParameters = parameters.map { $0.asAny() }
-            if let firstInt = anyParameters.first as? Int,
-                let lastInt = anyParameters.last as? Int {
-                return .bool(firstInt > lastInt)
-            } else if let firstDouble = anyParameters.first as? Double,
-                let lastDouble = anyParameters.last as? Double {
-                return .bool(firstDouble > lastDouble)
-            }
-            
-            return nil
+            guard let comparison = comparison(parameters) else { return .bool(false) }
+            return .bool(comparison == .orderedDescending)
         }
     }
     
     func gte() -> OperationHandler {
         return { parameters in
-
-            guard parameters.count == 2 else { return nil }
-            
-            let anyParameters = parameters.map { $0.asAny() }
-            if let firstInt = anyParameters.first as? Int,
-                let lastInt = anyParameters.last as? Int {
-                return .bool(firstInt >= lastInt)
-            } else if let firstDouble = anyParameters.first as? Double,
-                let lastDouble = anyParameters.last as? Double {
-                return .bool(firstDouble >= lastDouble)
-            }
-            
-            return nil
+            guard let comparison = comparison(parameters) else { return .bool(false) }
+            return .bool(comparison == .orderedDescending || comparison == .orderedSame)
         }
     }
     
     func lt() -> OperationHandler {
         return { parameters in
-
-            guard parameters.count == 2 else { return nil }
-            
-            let anyParameters = parameters.map { $0.asAny() }
-            if let firstInt = anyParameters.first as? Int,
-                let lastInt = anyParameters.last as? Int {
-                return .bool(firstInt < lastInt)
-            } else if let firstDouble = anyParameters.first as? Double,
-                let lastDouble = anyParameters.last as? Double {
-                return .bool(firstDouble < lastDouble)
-            }
-            
-            return nil
+            guard let comparison = comparison(parameters) else { return .bool(false) }
+            return .bool(comparison == .orderedAscending)
         }
     }
     
     func lte() -> OperationHandler {
         return { parameters in
-            guard parameters.count == 2 else { return nil }
-            let anyParameters = parameters.map { $0.asAny() }
-            
-            if let firstInt = anyParameters.first as? Int,
-                let lastInt = anyParameters.last as? Int {
-                return .bool(firstInt <= lastInt)
-            } else if let firstDouble = anyParameters.first as? Double,
-                let lastDouble = anyParameters.last as? Double {
-                return .bool(firstDouble <= lastDouble)
-            }
-            
-            return nil
+            guard let comparison = comparison(parameters) else { return .bool(false) }
+            return .bool(comparison == .orderedAscending || comparison == .orderedSame)
         }
     }
     
     func eq() -> OperationHandler {
         return { parameters in
+            if let comparison = comparison(parameters), comparison == .orderedSame {
+                return .bool(true)
+            }
             guard parameters.count == 2 else { return nil }
             return .bool(parameters.first == parameters.last)
         }
