@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
+ * Copyright 2020, 2022 ZUP IT SERVICOS EM TECNOLOGIA E INOVACAO SA
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,101 +17,266 @@
 import XCTest
 @testable import Beagle
 
+// swiftlint:disable force_unwrapping
+
 final class OperationComparisonEvaluationTests: OperationEvaluationTests {
     
-    func testEvaluateGt() {
-        // Given
-        let comparableResults: [DynamicObject] = [false, false, true, true, false, false, false, nil, nil, nil, nil, nil]
+    func testGt() {
+        let view = UIView()
         
-        // When
-        evaluateOperation("gt") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        let operations = [
+            Operation(rawValue: "gt(2, 1)")!,
+            Operation(rawValue: "gt(1, 1)")!,
+            Operation(rawValue: "gt(1, 2)")!,
+            
+            Operation(rawValue: "gt(2.0, 1.0)")!,
+            Operation(rawValue: "gt(2.0, 1)")!,
+            Operation(rawValue: "gt(1.0, 1)")!,
+            Operation(rawValue: "gt(1.0, 2)")!,
+            
+            Operation(rawValue: "gt('2', 1.0)")!,
+            Operation(rawValue: "gt('2', 1)")!,
+            Operation(rawValue: "gt('2', '1')")!,
+            Operation(rawValue: "gt('1', '1')")!,
+            Operation(rawValue: "gt('1', '1.0')")!,
+            Operation(rawValue: "gt('1.0', 2.0)")!,
+            Operation(rawValue: "gt('1.0', '2.0')")!,
+            
+            Operation(rawValue: "gt(true, 2)")!
+        ]
+        
+        let result = operations.map { $0.evaluate(in: view) }
+        
+        let expexted: [DynamicObject] = [
+            true,
+            false,
+            false,
+            
+            true,
+            true,
+            false,
+            false,
+            
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            
+            false
+        ]
+        
+        XCTAssertEqual(result, expexted)
     }
     
-    func testEvaluateGte() {
-        // Given
-        let comparableResults: [DynamicObject] = [true, false, true, true, false, false, true, nil, nil, nil, nil, nil]
+    func testGte() {
+        let view = UIView()
         
-        // When
-        evaluateOperation("gte") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        let operations = [
+            Operation(rawValue: "gte(2, 1)")!,
+            Operation(rawValue: "gte(1, 1)")!,
+            Operation(rawValue: "gte(1, 2)")!,
+            
+            Operation(rawValue: "gte(2.0, 1.0)")!,
+            Operation(rawValue: "gte(2.0, 1)")!,
+            Operation(rawValue: "gte(1.0, 1)")!,
+            Operation(rawValue: "gte(1.0, 2)")!,
+            
+            Operation(rawValue: "gte('2', 1.0)")!,
+            Operation(rawValue: "gte('2', 1)")!,
+            Operation(rawValue: "gte('2', '1')")!,
+            Operation(rawValue: "gte('1', '1')")!,
+            Operation(rawValue: "gte('1', '1.0')")!,
+            Operation(rawValue: "gte('1.0', 2.0)")!,
+            Operation(rawValue: "gte('1.0', '2.0')")!,
+            
+            Operation(rawValue: "gte(true, 2)")!
+        ]
+        
+        let result = operations.map { $0.evaluate(in: view) }
+        
+        let expexted: [DynamicObject] = [
+            true,
+            true,
+            false,
+            
+            true,
+            true,
+            true,
+            false,
+            
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            
+            false
+        ]
+        
+        XCTAssertEqual(result, expexted)
     }
     
-    func testEvaluateLt() {
-        // Given
-        let comparableResults: [DynamicObject] = [false, true, false, false, true, true, false, nil, nil, nil, nil, nil]
+    func testLt() {
+        let view = UIView()
         
-        // When
-        evaluateOperation("lt") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        let operations = [
+            Operation(rawValue: "lt(2, 1)")!,
+            Operation(rawValue: "lt(1, 1)")!,
+            Operation(rawValue: "lt(1, 2)")!,
+            
+            Operation(rawValue: "lt(2.0, 1.0)")!,
+            Operation(rawValue: "lt(2.0, 1)")!,
+            Operation(rawValue: "lt(1.0, 1)")!,
+            Operation(rawValue: "lt(1.0, 2)")!,
+            
+            Operation(rawValue: "lt('2', 1.0)")!,
+            Operation(rawValue: "lt('2', 1)")!,
+            Operation(rawValue: "lt('2', '1')")!,
+            Operation(rawValue: "lt('1', '1')")!,
+            Operation(rawValue: "lt('1', '1.0')")!,
+            Operation(rawValue: "lt('1.0', 2.0)")!,
+            Operation(rawValue: "lt('1.0', '2.0')")!,
+            
+            Operation(rawValue: "lt(true, 2)")!
+        ]
+        
+        let result = operations.map { $0.evaluate(in: view) }
+        
+        let expexted: [DynamicObject] = [
+            false,
+            false,
+            true,
+            
+            false,
+            false,
+            false,
+            true,
+            
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            
+            false
+        ]
+        
+        XCTAssertEqual(result, expexted)
     }
     
-    func testEvaluateLte() {
-        // Given
-        let comparableResults: [DynamicObject] = [true, true, false, false, true, true, true, nil, nil, nil, nil, nil]
+    func testLte() {
+        let view = UIView()
         
-        // When
-        evaluateOperation("lte") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        let operations = [
+            Operation(rawValue: "lte(2, 1)")!,
+            Operation(rawValue: "lte(1, 1)")!,
+            Operation(rawValue: "lte(1, 2)")!,
+            
+            Operation(rawValue: "lte(2.0, 1.0)")!,
+            Operation(rawValue: "lte(2.0, 1)")!,
+            Operation(rawValue: "lte(1.0, 1)")!,
+            Operation(rawValue: "lte(1.0, 2)")!,
+            
+            Operation(rawValue: "lte('2', 1.0)")!,
+            Operation(rawValue: "lte('2', 1)")!,
+            Operation(rawValue: "lte('2', '1')")!,
+            Operation(rawValue: "lte('1', '1')")!,
+            Operation(rawValue: "lte('1', '1.0')")!,
+            Operation(rawValue: "lte('1.0', 2.0)")!,
+            Operation(rawValue: "lte('1.0', '2.0')")!,
+            
+            Operation(rawValue: "lte(true, 2)")!
+        ]
+        
+        let result = operations.map { $0.evaluate(in: view) }
+        
+        let expexted: [DynamicObject] = [
+            false,
+            true,
+            true,
+            
+            false,
+            false,
+            true,
+            true,
+            
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            
+            false
+        ]
+        
+        XCTAssertEqual(result, expexted)
     }
     
-    func testEvaluateEq() {
-        // Given
-        let name = "eq"
-        let contexts = [Context(id: "context", value: true)]
-        let binding = contexts[0].id
+    func testEq() {
+        let view = UIView()
         
-        let simpleOperations = ["true, true", "'no', 'no'", "1, 1", "2.2, 2.2", "\(binding), \(binding)"].toOperations(name: name)
+        let operations = [
+            Operation(rawValue: "eq(2, 1)")!,
+            Operation(rawValue: "eq(1, 1)")!,
+            Operation(rawValue: "eq(1, 2)")!,
+            
+            Operation(rawValue: "eq(2.0, 1.0)")!,
+            Operation(rawValue: "eq(2.0, 1)")!,
+            Operation(rawValue: "eq(1.0, 1)")!,
+            Operation(rawValue: "eq(1.0, 2)")!,
+            
+            Operation(rawValue: "eq('2', 1.0)")!,
+            Operation(rawValue: "eq('2', 1)")!,
+            Operation(rawValue: "eq('2', '1')")!,
+            Operation(rawValue: "eq('1', '1')")!,
+            Operation(rawValue: "eq('1', '1.0')")!,
+            Operation(rawValue: "eq('1.0', 2.0)")!,
+            Operation(rawValue: "eq('1.0', '2.0')")!,
+            
+            Operation(rawValue: "eq(true, true)")!,
+            Operation(rawValue: "eq(true, false)")!,
+            Operation(rawValue: "eq('no', 'no')")!,
+            Operation(rawValue: "eq('no', 'yes')")!,
+            Operation(rawValue: "eq(true, 2)")!
+        ]
         
-        let complexOperations = ["\(simpleOperations[2].rawValue), \(simpleOperations[2].rawValue)"].toOperations(name: name)
+        let result = operations.map { $0.evaluate(in: view) }
         
-        let failingOperations = ["1, 0", "2.2, 2.5", "true, 1", "0, 0, 0", ""].toOperations(name: name)
+        let expexted: [DynamicObject] = [
+            false,
+            true,
+            false,
+            
+            false,
+            false,
+            true,
+            false,
+            
+            false,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            
+            true,
+            false,
+            true,
+            false,
+            false
+        ]
         
-        let operations = simpleOperations + complexOperations + failingOperations
-        
-        let comparableResults: [DynamicObject] = [true, true, true, true, true, true, false, false, false, nil, nil]
-        
-        // When
-        evaluateOperations(operations, contexts: contexts) { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        XCTAssertEqual(result, expexted)
     }
     
-    private func evaluateOperation(_ name: String, completion: ([DynamicObject]) -> Void) {
-        // Given
-        let contexts = [Context(id: "context1", value: 2), Context(id: "context2", value: 2.5)]
-        let bindings = contexts.map { $0.id }
-        
-        let sums = ["10, 4", "12.5, 5.5"].toOperations(name: "sum")
-        guard let subtract = "28, \(sums[0].rawValue)".toOperation(name: "subtract") else {
-            XCTFail("Failed to get operation")
-            return
-        }
-        
-        let successfulOperations = [
-            "6, 6",
-            "4.5, 6.0",
-            "4, \(bindings[0])",
-            "4.0, \(bindings[1])",
-            "4, \(sums[0].rawValue)",
-            "2.8, \(sums[1].rawValue)",
-            "\(sums[0].rawValue), \(subtract.rawValue)"
-        ].toOperations(name: name)
-        
-        let failingOperations = ["6, 4, 4", "1, 1.5", "1, '1'", "1, 'true'", ""].toOperations(name: name)
-        
-        let operations = successfulOperations + failingOperations
-        
-        // When/Then
-        evaluateOperations(operations, contexts: contexts, completion: completion)
-    }
 }
