@@ -91,7 +91,7 @@ public class BeagleScreenViewController: BeagleController {
         self.navigationControllerId = controllerId
     }
     
-    convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
+   public convenience init(_ component: ServerDrivenComponent, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.init(viewModel: .init(screenType: .declarative(component.toScreen()), resolver: config.resolver), controllerId: controllerId, config: config)
         self.navigationControllerId = controllerId
     }
