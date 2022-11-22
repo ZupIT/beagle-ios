@@ -154,7 +154,7 @@ extension OperationsProviderProtocolInternal {
     func divide() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-            let firstTerm = double()([parameters[0] * parameters[0]])
+            let firstTerm = self.double()([parameters[0] * parameters[0]])
             return parameters.reduce(firstTerm, /)
         }
     }
