@@ -17,266 +17,115 @@
 import XCTest
 @testable import Beagle
 
-// swiftlint:disable force_unwrapping
-
 final class OperationComparisonEvaluationTests: OperationEvaluationTests {
     
     func testGt() {
-        let view = UIView()
+        XCTAssertEqual(evalOperation("gt(2, 1)"), true)
+        XCTAssertEqual(evalOperation("gt(1, 1)"), false)
+        XCTAssertEqual(evalOperation("gt(1, 2)"), false)
         
-        let operations = [
-            Operation(rawValue: "gt(2, 1)")!,
-            Operation(rawValue: "gt(1, 1)")!,
-            Operation(rawValue: "gt(1, 2)")!,
-            
-            Operation(rawValue: "gt(2.0, 1.0)")!,
-            Operation(rawValue: "gt(2.0, 1)")!,
-            Operation(rawValue: "gt(1.0, 1)")!,
-            Operation(rawValue: "gt(1.0, 2)")!,
-            
-            Operation(rawValue: "gt('2', 1.0)")!,
-            Operation(rawValue: "gt('2', 1)")!,
-            Operation(rawValue: "gt('2', '1')")!,
-            Operation(rawValue: "gt('1', '1')")!,
-            Operation(rawValue: "gt('1', '1.0')")!,
-            Operation(rawValue: "gt('1.0', 2.0)")!,
-            Operation(rawValue: "gt('1.0', '2.0')")!,
-            
-            Operation(rawValue: "gt(true, 2)")!
-        ]
+        XCTAssertEqual(evalOperation("gt(2.0, 1.0)"), true)
+        XCTAssertEqual(evalOperation("gt(2.0, 1)"), true)
+        XCTAssertEqual(evalOperation("gt(1.0, 1)"), false)
+        XCTAssertEqual(evalOperation("gt(1.0, 2)"), false)
         
-        let result = operations.map { $0.evaluate(in: view) }
+        XCTAssertEqual(evalOperation("gt('2', 1.0)"), true)
+        XCTAssertEqual(evalOperation("gt('2', 1)"), true)
+        XCTAssertEqual(evalOperation("gt('2', '1')"), true)
+        XCTAssertEqual(evalOperation("gt('1', '1')"), false)
+        XCTAssertEqual(evalOperation("gt('1', '1.0')"), false)
+        XCTAssertEqual(evalOperation("gt('1.0', 2.0)"), false)
+        XCTAssertEqual(evalOperation("gt('1.0', '2.0')"), false)
         
-        let expexted: [DynamicObject] = [
-            true,
-            false,
-            false,
-            
-            true,
-            true,
-            false,
-            false,
-            
-            true,
-            true,
-            true,
-            false,
-            false,
-            false,
-            false,
-            
-            false
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("gt(true, 2)"), false)
     }
     
     func testGte() {
-        let view = UIView()
+        XCTAssertEqual(evalOperation("gte(2, 1)"), true)
+        XCTAssertEqual(evalOperation("gte(1, 1)"), true)
+        XCTAssertEqual(evalOperation("gte(1, 2)"), false)
         
-        let operations = [
-            Operation(rawValue: "gte(2, 1)")!,
-            Operation(rawValue: "gte(1, 1)")!,
-            Operation(rawValue: "gte(1, 2)")!,
-            
-            Operation(rawValue: "gte(2.0, 1.0)")!,
-            Operation(rawValue: "gte(2.0, 1)")!,
-            Operation(rawValue: "gte(1.0, 1)")!,
-            Operation(rawValue: "gte(1.0, 2)")!,
-            
-            Operation(rawValue: "gte('2', 1.0)")!,
-            Operation(rawValue: "gte('2', 1)")!,
-            Operation(rawValue: "gte('2', '1')")!,
-            Operation(rawValue: "gte('1', '1')")!,
-            Operation(rawValue: "gte('1', '1.0')")!,
-            Operation(rawValue: "gte('1.0', 2.0)")!,
-            Operation(rawValue: "gte('1.0', '2.0')")!,
-            
-            Operation(rawValue: "gte(true, 2)")!
-        ]
+        XCTAssertEqual(evalOperation("gte(2.0, 1.0)"), true)
+        XCTAssertEqual(evalOperation("gte(2.0, 1)"), true)
+        XCTAssertEqual(evalOperation("gte(1.0, 1)"), true)
+        XCTAssertEqual(evalOperation("gte(1.0, 2)"), false)
         
-        let result = operations.map { $0.evaluate(in: view) }
+        XCTAssertEqual(evalOperation("gte('2', 1.0)"), true)
+        XCTAssertEqual(evalOperation("gte('2', 1)"), true)
+        XCTAssertEqual(evalOperation("gte('2', '1')"), true)
+        XCTAssertEqual(evalOperation("gte('1', '1')"), true)
+        XCTAssertEqual(evalOperation("gte('1', '1.0')"), true)
+        XCTAssertEqual(evalOperation("gte('1.0', 2.0)"), false)
+        XCTAssertEqual(evalOperation("gte('1.0', '2.0')"), false)
         
-        let expexted: [DynamicObject] = [
-            true,
-            true,
-            false,
-            
-            true,
-            true,
-            true,
-            false,
-            
-            true,
-            true,
-            true,
-            true,
-            true,
-            false,
-            false,
-            
-            false
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("gte(true, 2)"), false)
     }
     
     func testLt() {
-        let view = UIView()
+        XCTAssertEqual(evalOperation("lt(2, 1)"), false)
+        XCTAssertEqual(evalOperation("lt(1, 1)"), false)
+        XCTAssertEqual(evalOperation("lt(1, 2)"), true)
         
-        let operations = [
-            Operation(rawValue: "lt(2, 1)")!,
-            Operation(rawValue: "lt(1, 1)")!,
-            Operation(rawValue: "lt(1, 2)")!,
-            
-            Operation(rawValue: "lt(2.0, 1.0)")!,
-            Operation(rawValue: "lt(2.0, 1)")!,
-            Operation(rawValue: "lt(1.0, 1)")!,
-            Operation(rawValue: "lt(1.0, 2)")!,
-            
-            Operation(rawValue: "lt('2', 1.0)")!,
-            Operation(rawValue: "lt('2', 1)")!,
-            Operation(rawValue: "lt('2', '1')")!,
-            Operation(rawValue: "lt('1', '1')")!,
-            Operation(rawValue: "lt('1', '1.0')")!,
-            Operation(rawValue: "lt('1.0', 2.0)")!,
-            Operation(rawValue: "lt('1.0', '2.0')")!,
-            
-            Operation(rawValue: "lt(true, 2)")!
-        ]
+        XCTAssertEqual(evalOperation("lt(2.0, 1.0)"), false)
+        XCTAssertEqual(evalOperation("lt(2.0, 1)"), false)
+        XCTAssertEqual(evalOperation("lt(1.0, 1)"), false)
+        XCTAssertEqual(evalOperation("lt(1.0, 2)"), true)
         
-        let result = operations.map { $0.evaluate(in: view) }
+        XCTAssertEqual(evalOperation("lt('2', 1.0)"), false)
+        XCTAssertEqual(evalOperation("lt('2', 1)"), false)
+        XCTAssertEqual(evalOperation("lt('2', '1')"), false)
+        XCTAssertEqual(evalOperation("lt('1', '1')"), false)
+        XCTAssertEqual(evalOperation("lt('1', '1.0')"), false)
+        XCTAssertEqual(evalOperation("lt('1.0', 2.0)"), true)
+        XCTAssertEqual(evalOperation("lt('1.0', '2.0')"), true)
         
-        let expexted: [DynamicObject] = [
-            false,
-            false,
-            true,
-            
-            false,
-            false,
-            false,
-            true,
-            
-            false,
-            false,
-            false,
-            false,
-            false,
-            true,
-            true,
-            
-            false
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("lt(true, 2)"), false)
     }
     
     func testLte() {
-        let view = UIView()
+        XCTAssertEqual(evalOperation("lte(2, 1)"), false)
+        XCTAssertEqual(evalOperation("lte(1, 1)"), true)
+        XCTAssertEqual(evalOperation("lte(1, 2)"), true)
         
-        let operations = [
-            Operation(rawValue: "lte(2, 1)")!,
-            Operation(rawValue: "lte(1, 1)")!,
-            Operation(rawValue: "lte(1, 2)")!,
-            
-            Operation(rawValue: "lte(2.0, 1.0)")!,
-            Operation(rawValue: "lte(2.0, 1)")!,
-            Operation(rawValue: "lte(1.0, 1)")!,
-            Operation(rawValue: "lte(1.0, 2)")!,
-            
-            Operation(rawValue: "lte('2', 1.0)")!,
-            Operation(rawValue: "lte('2', 1)")!,
-            Operation(rawValue: "lte('2', '1')")!,
-            Operation(rawValue: "lte('1', '1')")!,
-            Operation(rawValue: "lte('1', '1.0')")!,
-            Operation(rawValue: "lte('1.0', 2.0)")!,
-            Operation(rawValue: "lte('1.0', '2.0')")!,
-            
-            Operation(rawValue: "lte(true, 2)")!
-        ]
+        XCTAssertEqual(evalOperation("lte(2.0, 1.0)"), false)
+        XCTAssertEqual(evalOperation("lte(2.0, 1)"), false)
+        XCTAssertEqual(evalOperation("lte(1.0, 1)"), true)
+        XCTAssertEqual(evalOperation("lte(1.0, 2)"), true)
         
-        let result = operations.map { $0.evaluate(in: view) }
+        XCTAssertEqual(evalOperation("lte('2', 1.0)"), false)
+        XCTAssertEqual(evalOperation("lte('2', 1)"), false)
+        XCTAssertEqual(evalOperation("lte('2', '1')"), false)
+        XCTAssertEqual(evalOperation("lte('1', '1')"), true)
+        XCTAssertEqual(evalOperation("lte('1', '1.0')"), true)
+        XCTAssertEqual(evalOperation("lte('1.0', 2.0)"), true)
+        XCTAssertEqual(evalOperation("lte('1.0', '2.0')"), true)
         
-        let expexted: [DynamicObject] = [
-            false,
-            true,
-            true,
-            
-            false,
-            false,
-            true,
-            true,
-            
-            false,
-            false,
-            false,
-            true,
-            true,
-            true,
-            true,
-            
-            false
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("lte(true, 2)"), false)
     }
     
     func testEq() {
-        let view = UIView()
+        XCTAssertEqual(evalOperation("eq(2, 1)"), false)
+        XCTAssertEqual(evalOperation("eq(1, 1)"), true)
+        XCTAssertEqual(evalOperation("eq(1, 2)"), false)
         
-        let operations = [
-            Operation(rawValue: "eq(2, 1)")!,
-            Operation(rawValue: "eq(1, 1)")!,
-            Operation(rawValue: "eq(1, 2)")!,
-            
-            Operation(rawValue: "eq(2.0, 1.0)")!,
-            Operation(rawValue: "eq(2.0, 1)")!,
-            Operation(rawValue: "eq(1.0, 1)")!,
-            Operation(rawValue: "eq(1.0, 2)")!,
-            
-            Operation(rawValue: "eq('2', 1.0)")!,
-            Operation(rawValue: "eq('2', 1)")!,
-            Operation(rawValue: "eq('2', '1')")!,
-            Operation(rawValue: "eq('1', '1')")!,
-            Operation(rawValue: "eq('1', '1.0')")!,
-            Operation(rawValue: "eq('1.0', 2.0)")!,
-            Operation(rawValue: "eq('1.0', '2.0')")!,
-            
-            Operation(rawValue: "eq(true, true)")!,
-            Operation(rawValue: "eq(true, false)")!,
-            Operation(rawValue: "eq('no', 'no')")!,
-            Operation(rawValue: "eq('no', 'yes')")!,
-            Operation(rawValue: "eq(true, 2)")!
-        ]
+        XCTAssertEqual(evalOperation("eq(2.0, 1.0)"), false)
+        XCTAssertEqual(evalOperation("eq(2.0, 1)"), false)
+        XCTAssertEqual(evalOperation("eq(1.0, 1)"), true)
+        XCTAssertEqual(evalOperation("eq(1.0, 2)"), false)
         
-        let result = operations.map { $0.evaluate(in: view) }
+        XCTAssertEqual(evalOperation("eq('2', 1.0)"), false)
+        XCTAssertEqual(evalOperation("eq('2', 1)"), false)
+        XCTAssertEqual(evalOperation("eq('2', '1')"), false)
+        XCTAssertEqual(evalOperation("eq('1', '1')"), true)
+        XCTAssertEqual(evalOperation("eq('1', '1.0')"), true)
+        XCTAssertEqual(evalOperation("eq('1.0', 2.0)"), false)
+        XCTAssertEqual(evalOperation("eq('1.0', '2.0')"), false)
         
-        let expexted: [DynamicObject] = [
-            false,
-            true,
-            false,
-            
-            false,
-            false,
-            true,
-            false,
-            
-            false,
-            false,
-            false,
-            true,
-            true,
-            false,
-            false,
-            
-            true,
-            false,
-            true,
-            false,
-            false
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("eq(true, true)"), true)
+        XCTAssertEqual(evalOperation("eq(true, false)"), false)
+        XCTAssertEqual(evalOperation("eq('no', 'no')"), true)
+        XCTAssertEqual(evalOperation("eq('no', 'yes')"), false)
+        XCTAssertEqual(evalOperation("eq(true, 2)"), false)
     }
     
 }

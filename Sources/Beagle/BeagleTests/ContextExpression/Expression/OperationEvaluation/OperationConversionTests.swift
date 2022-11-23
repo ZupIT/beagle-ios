@@ -18,83 +18,32 @@
 import XCTest
 @testable import Beagle
 
-// swiftlint:disable force_unwrapping
-
 class OperationConversionTests: XCTestCase {
 
     func testInt() throws {
-        let view = UIView()
-        
-        let operations = [
-            Operation(rawValue: "int(1)")!,
-            Operation(rawValue: "int(1.1)")!,
-            Operation(rawValue: "int('1')")!,
-            Operation(rawValue: "int('1.1')")!,
-            Operation(rawValue: "int('string')")!
-        ]
-        
-        let result = operations.map { $0.evaluate(in: view) }
-        
-        let expexted: [DynamicObject] = [
-            1,
-            1,
-            1,
-            nil,
-            nil
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("int(1)"), 1)
+        XCTAssertEqual(evalOperation("int(1.1)"), 1)
+        XCTAssertEqual(evalOperation("int('1')"), 1)
+        XCTAssertEqual(evalOperation("int('1.1')"), 1)
+        XCTAssertEqual(evalOperation("int('string')"), nil)
     }
     
     func testDouble() throws {
-        let view = UIView()
-        
-        let operations = [
-            Operation(rawValue: "double(1)")!,
-            Operation(rawValue: "double(1.1)")!,
-            Operation(rawValue: "double('1')")!,
-            Operation(rawValue: "double('1.1')")!,
-            Operation(rawValue: "double('string')")!
-        ]
-        
-        let result = operations.map { $0.evaluate(in: view) }
-        
-        let expexted: [DynamicObject] = [
-            1.0,
-            1.1,
-            1.0,
-            1.1,
-            nil
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("double(1)"), 1.0)
+        XCTAssertEqual(evalOperation("double(1.1)"), 1.1)
+        XCTAssertEqual(evalOperation("double('1')"), 1.0)
+        XCTAssertEqual(evalOperation("double('1.1')"), 1.1)
+        XCTAssertEqual(evalOperation("double('string')"), nil)
     }
     
     func testString() throws {
-        let view = UIView()
-        view.setContext(Context(id: "context", value: ["int": 1, "array": [1, 2]]))
-        
-        let operations = [
-            Operation(rawValue: "string(1)")!,
-            Operation(rawValue: "string(1.1)")!,
-            Operation(rawValue: "string(true)")!,
-            Operation(rawValue: "string('string')")!,
-            Operation(rawValue: "string(context.int)")!,
-            Operation(rawValue: "string(context.array)")!
-        ]
-        
-        let result = operations.map { $0.evaluate(in: view) }
-        
-        let expexted: [DynamicObject] = [
-            "1",
-            "1.1",
-            "true",
-            "string",
-            "1",
-            nil
-        ]
-        
-        XCTAssertEqual(result, expexted)
+        XCTAssertEqual(evalOperation("string(1)"), "1")
+        XCTAssertEqual(evalOperation("string(1.1)"), "1.1")
+        XCTAssertEqual(evalOperation("string(true)"), "true")
+        XCTAssertEqual(evalOperation("string('string')"), "string")
+                                     
+        XCTAssertEqual(evalOperation("string(context.int)", Context(id: "context", value: ["int": 1])), "1")
+        XCTAssertEqual(evalOperation("string(context.array)", Context(id: "context", value: ["array": [1, 2]])), nil)
     }
 
 }

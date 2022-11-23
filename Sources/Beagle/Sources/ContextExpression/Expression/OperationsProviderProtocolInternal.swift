@@ -154,7 +154,8 @@ extension OperationsProviderProtocolInternal {
     func divide() -> OperationHandler {
         return { parameters in
             guard !parameters.isEmpty else { return nil }
-            return parameters.reduce(parameters[0] * parameters[0], /)
+            let firstTerm = self.double()([parameters[0] * parameters[0]])
+            return parameters.reduce(firstTerm, /)
         }
     }
     
@@ -459,6 +460,8 @@ extension OperationsProviderProtocolInternal {
             guard parameters.count == 1 else { return nil }
             if case let .string(string) = parameters.first, let int = Int(string) {
                 return .int(int)
+            } else if case let .string(string) = parameters.first, let double = Double(string) {
+                return .int(Int(double))
             } else if case let .double(double) = parameters.first {
                 return .int(Int(double))
             } else if case let .int(int) = parameters.first {
@@ -519,11 +522,17 @@ private func combine(
     } else if case let .double(doublel) = lhs, case let .double(doubler) = rhs {
         return .double(doubleOperator(doublel, doubler))
     } else if case let .string(stringl) = lhs, case let .int(intr) = rhs {
-        guard let value = Int(stringl) else { return .empty }
-        return .int(intOperator(value, intr))
+        if let value = Int(stringl) {
+            return .int(intOperator(value, intr))
+        } else if let value = Double(stringl) {
+            return .double(doubleOperator(value, Double(intr)))
+        }
     } else if case let .int(intl) = lhs, case let .string(stringr) = rhs {
-        guard let value = Int(stringr) else { return .empty }
-        return .int(intOperator(intl, value))
+        if let value = Int(stringr) {
+            return .int(intOperator(intl, value))
+        } else if let value = Double(stringr) {
+            return .double(doubleOperator(Double(intl), value))
+        }
     } else if case let .string(stringl) = lhs, case let .double(doubler) = rhs {
         guard let value = Double(stringl) else { return .empty }
         return .double(doubleOperator(value, doubler))

@@ -20,68 +20,75 @@ import XCTest
 final class OperationNumberEvaluationTests: OperationEvaluationTests {
 
     func testEvaluateSum() {
-        // Given
-        let comparableResults: [DynamicObject] = [10, 10.5, 6, 6.5, 14, 13.3, 27.5, 2.5, 3.0, 2.0, 3.5, 2, 3, nil, nil]
-        
-        // When
-        evaluateOperation("sum") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        XCTAssertEqual(evalOperation("sum(6, 4)"), 10)
+        XCTAssertEqual(evalOperation("sum(4.5, 6.0)"), 10.5)
+        XCTAssertEqual(evalOperation("sum(4, 6, 4)"), 14)
+        XCTAssertEqual(evalOperation("sum(2.8, 4.5, 6.0)"), 13.3)
+        XCTAssertEqual(evalOperation("sum(1, 1.5)"), 2.5)
+        XCTAssertEqual(evalOperation("sum(2.0, 1)"), 3.0)
+        XCTAssertEqual(evalOperation("sum('1', 1.0)"), 2.0)
+        XCTAssertEqual(evalOperation("sum(2.5, '1.0')"), 3.5)
+        XCTAssertEqual(evalOperation("sum('1', '1')"), 2)
+        XCTAssertEqual(evalOperation("sum('2', 1)"), 3)
+        XCTAssertEqual(evalOperation("sum('3.5', 2)"), 5.5)
+        XCTAssertEqual(evalOperation("sum(1, true)"), nil)
+        XCTAssertEqual(evalOperation("sum()"), nil)
     }
     
     func testEvaluateSubtract() {
-        // Given
-        let comparableResults: [DynamicObject] = [2, -1.5, 2, 1.5, 2, 4.3, -1.5, -0.5, 1.0, 0.0, 1.5, 0, 1, nil, nil]
-        
-        // When
-        evaluateOperation("subtract") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        XCTAssertEqual(evalOperation("subtract(6, 4)"), 2)
+        XCTAssertEqual(evalOperation("subtract(4.5, 6.0)"), -1.5)
+        XCTAssertEqual(evalOperation("subtract(4, 6, 4)"), -6)
+        XCTAssertEqual(evalOperation("subtract(2.8, 4.5, 6.0)"), -7.7)
+        XCTAssertEqual(evalOperation("subtract(1, 1.5)"), -0.5)
+        XCTAssertEqual(evalOperation("subtract(2.0, 1)"), 1.0)
+        XCTAssertEqual(evalOperation("subtract('1', 1.0)"), 0.0)
+        XCTAssertEqual(evalOperation("subtract(2.5, '1.0')"), 1.5)
+        XCTAssertEqual(evalOperation("subtract('1', '1')"), 0)
+        XCTAssertEqual(evalOperation("subtract('2', 1)"), 1)
+        XCTAssertEqual(evalOperation("subtract('3.5', 2)"), 1.5)
+        XCTAssertEqual(evalOperation("subtract(1, true)"), nil)
+        XCTAssertEqual(evalOperation("subtract()"), nil)
     }
     
     func testEvaluateMultiply() {
-        // Given
-        let comparableResults: [DynamicObject] = [24, 27.0, 8, 10.0, 96, 75.6, 7290.0, 1.5, 2.0, 1.0, 2.5, 1, 2, nil, nil]
-        
-        // When
-        evaluateOperation("multiply") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        XCTAssertEqual(evalOperation("multiply(6, 4)"), 24)
+        XCTAssertEqual(evalOperation("multiply(4.5, 6.0)"), 27.0)
+        XCTAssertEqual(evalOperation("multiply(4, 6, 4)"), 96)
+        XCTAssertEqual(evalOperation("multiply(2.8, 4.5, 6.0)"), 75.6)
+        XCTAssertEqual(evalOperation("multiply(1, 1.5)"), 1.5)
+        XCTAssertEqual(evalOperation("multiply(2.0, 1)"), 2.0)
+        XCTAssertEqual(evalOperation("multiply('1', 1.0)"), 1.0)
+        XCTAssertEqual(evalOperation("multiply(2.5, '1.0')"), 2.5)
+        XCTAssertEqual(evalOperation("multiply('1', '1')"), 1)
+        XCTAssertEqual(evalOperation("multiply('2', 1)"), 2)
+        XCTAssertEqual(evalOperation("multiply('3.5', 2)"), 7.0)
+        XCTAssertEqual(evalOperation("multiply(1, true)"), nil)
+        XCTAssertEqual(evalOperation("multiply()"), nil)
     }
     
     func testEvaluateDivide() {
-        // Given
-        let comparableResults: [DynamicObject] = [1, 0.75, 2, 1.6, 4, 3.733333333333333, 0.625, 0.6666666666666666, 2.0, 1.0, 2.5, 1.0, 2.0, nil, nil]
-        
-        // When
-        evaluateOperation("divide") { evaluatedResults in
-            // Then
-            XCTAssertEqual(evaluatedResults, comparableResults)
-        }
+        XCTAssertEqual(evalOperation("divide(6, 4)"), 1.5)
+        XCTAssertEqual(evalOperation("divide(4.5, 6.0)"), 0.75)
+        XCTAssertEqual(evalOperation("divide(4, 6, 4)"), 0.16666666666666666)
+        XCTAssertEqual(evalOperation("divide(2.8, 4.5, 6.0)"), 0.1037037037037037)
+        XCTAssertEqual(evalOperation("divide(1, 1.5)"), 0.6666666666666666)
+        XCTAssertEqual(evalOperation("divide(2.0, 1)"), 2.0)
+        XCTAssertEqual(evalOperation("divide('1', 1.0)"), 1.0)
+        XCTAssertEqual(evalOperation("divide(2.5, '1.0')"), 2.5)
+        XCTAssertEqual(evalOperation("divide('1', '1')"), 1.0)
+        XCTAssertEqual(evalOperation("divide('2', 1)"), 2.0)
+        XCTAssertEqual(evalOperation("divide('3.5', 2)"), 1.75)
+        XCTAssertEqual(evalOperation("divide(1, true)"), nil)
+        XCTAssertEqual(evalOperation("divide()"), nil)
     }
-    
-    private func evaluateOperation(_ name: String, completion: ([DynamicObject]) -> Void) {
-        // Given
-        let contexts = [Context(id: "context1", value: 2), Context(id: "context2", value: 2.5)]
-        let bindings = contexts.map { $0.id }
-        
-        let simpleOperations = ["6, 4", "4.5, 6.0", "4, \(bindings[0])", "4.0, \(bindings[1])"].toOperations(name: name)
-        
-        let complexOperations = [
-            "4, \(simpleOperations[0].rawValue)",
-            "2.8, \(simpleOperations[1].rawValue)",
-            "\(simpleOperations[1].rawValue), \(simpleOperations[3].rawValue), \(simpleOperations[1].rawValue)"
-        ].toOperations(name: name)
-        
-        let operationsWithCoercion = ["1, 1.5", "2.0, 1", "'1', 1.0", "2.5, '1.0'", "'1', '1'", "'2', 1"].toOperations(name: name)
-        let failingOperations = ["1, true", ""].toOperations(name: name)
-        
-        let operations = simpleOperations + complexOperations + operationsWithCoercion + failingOperations
-        
-        // When/Then
-        evaluateOperations(operations, contexts: contexts, completion: completion)
+}
+
+// swiftlint:disable force_unwrapping
+func evalOperation(_ string: String, _ context: Context? = nil) -> DynamicObject {
+    let view = UIView()
+    if let context = context {
+        view.setContext(context)
     }
+    return Operation(rawValue: string)!.evaluate(in: view)
 }
