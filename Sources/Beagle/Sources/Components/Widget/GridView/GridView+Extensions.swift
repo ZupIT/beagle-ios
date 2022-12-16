@@ -31,7 +31,8 @@ extension GridView {
                 onScrollEnd: onScrollEnd,
                 scrollEndThreshold: CGFloat(scrollEndThreshold ?? 100),
                 isScrollIndicatorVisible: isScrollIndicatorVisible ?? false,
-                dataSourceExpression: dataSource
+                dataSourceExpression: dataSource,
+                useParentScroll: useParentScroll
             ),
             renderer: renderer
         )

@@ -55,6 +55,8 @@ public struct ListView: Widget, HasContext, InitiableComponent {
     
     /// This attribute enables or disables the scroll indicator.
     public var isScrollIndicatorVisible: Bool?
+
+    public var useParentScroll: Bool?
     
     public var id: String?
     public var style: Style?
@@ -88,6 +90,7 @@ extension ListView {
         case id
         case style
         case accessibility
+        case useParentScroll
     }
     
     public init(from decoder: Decoder) throws {
@@ -106,6 +109,7 @@ extension ListView {
         id = try container.decodeIfPresent(String.self, forKey: .id)
         style = try container.decodeIfPresent(Style.self, forKey: .style) ?? Style()
         accessibility = try container.decodeIfPresent(Accessibility.self, forKey: .accessibility)
+        useParentScroll = try container.decodeIfPresent(Bool.self, forKey: .useParentScroll)
         
         self.templates = try container.decodeIfPresent([Template].self, forKey: .templates) ?? []
         self.dataSource = try container.decode(Expression<[DynamicObject]>.self, forKey: .dataSource)
