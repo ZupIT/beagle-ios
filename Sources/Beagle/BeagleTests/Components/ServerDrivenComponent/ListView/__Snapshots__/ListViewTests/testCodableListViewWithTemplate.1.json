@@ -1,0 +1,34 @@
+{
+  "_beagleComponent_" : "beagle:listview",
+  "dataSource" : [
+    {
+      "name" : "Kelsier"
+    }
+  ],
+  "direction" : "VERTICAL",
+  "style" : {
+
+  },
+  "templates" : [
+    {
+      "view" : {
+        "_beagleComponent_" : "beagle:container",
+        "children" : [
+          {
+            "_beagleComponent_" : "beagle:text",
+            "text" : "Name: @{item.name}"
+          }
+        ],
+        "style" : {
+          "margin" : {
+            "bottom" : {
+              "type" : "REAL",
+              "value" : 20
+            }
+          }
+        }
+      }
+    }
+  ],
+  "useParentScroll" : true
+}
