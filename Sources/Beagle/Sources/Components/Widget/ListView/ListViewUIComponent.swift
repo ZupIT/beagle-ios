@@ -107,6 +107,10 @@ final class ListViewUIComponent: UIView {
         collection.delegate = self
         collection.showsHorizontalScrollIndicator = model.isScrollIndicatorVisible
         collection.showsVerticalScrollIndicator = model.isScrollIndicatorVisible
+
+        if model.useParentScroll == true {
+            collection.isScrollEnabled = false
+        }
         
         let parentController = listController.renderer.controller
         parentController?.addChild(listController)
@@ -244,6 +248,7 @@ extension ListViewUIComponent {
         var scrollEndThreshold: CGFloat
         var isScrollIndicatorVisible: Bool
         var dataSourceExpression: Expression<[DynamicObject]>
+        var useParentScroll: Bool?
     }
 }
 

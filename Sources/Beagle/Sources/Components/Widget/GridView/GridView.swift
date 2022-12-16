@@ -58,6 +58,8 @@ public struct GridView: Widget, HasContext, InitiableComponent {
     
     /// This attribute enables or disables the scroll indicator.
     public var isScrollIndicatorVisible: Bool?
+
+    public var useParentScroll: Bool?
     
     public var id: String?
     public var style: Style?
