@@ -37,7 +37,7 @@ public protocol BeagleControllerProtocol: NSObjectProtocol {
     func setNeedsLayout(component: UIView)
 }
 
-public class BeagleScreenViewController: BeagleController {
+open class BeagleScreenViewController: BeagleController {
     
     private let viewModel: BeagleScreenViewModel
     
@@ -96,7 +96,7 @@ public class BeagleScreenViewController: BeagleController {
         self.navigationControllerId = controllerId
     }
     
-    required init(viewModel: BeagleScreenViewModel, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
+    required public init(viewModel: BeagleScreenViewModel, controllerId: String? = nil, config: BeagleConfiguration = GlobalConfiguration) {
         self.viewModel = viewModel
         self.navigationControllerId = controllerId
         self.config = config
@@ -107,7 +107,7 @@ public class BeagleScreenViewController: BeagleController {
     }
 
     @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -152,36 +152,40 @@ public class BeagleScreenViewController: BeagleController {
             
     // MARK: - Lifecycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         initView()
         createContent()
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
+    open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateNavigationBar(animated: animated)
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if case .view = content {
             viewModel.trackEventOnScreenAppeared()
         }
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         if case .view = content {
             viewModel.trackEventOnScreenDisappeared()
         }
     }
     
-    public override func viewDidLayoutSubviews() {
+    open override func viewDidLayoutSubviews() {
         executeOnInit()
         bindings.config()
         layoutManager.applyLayout()
         super.viewDidLayoutSubviews()
+    }
+    
+    open func didChangeState(_ state: ServerDrivenState) {
+        updateView(state: state)
     }
     
     private func executeOnInit() {
@@ -316,11 +320,7 @@ extension BeagleControllerProtocol where Self: UIViewController {
 
 // MARK: - Observer
 
-extension BeagleScreenViewController: BeagleScreenStateObserver {
-    func didChangeState(_ state: ServerDrivenState) {
-        updateView(state: state)
-    }
-}
+extension BeagleScreenViewController: BeagleScreenStateObserver {}
 
 extension BeagleScreenViewController {
     enum Content {

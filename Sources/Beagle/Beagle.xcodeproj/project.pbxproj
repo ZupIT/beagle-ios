@@ -222,10 +222,10 @@
 		9398CB10255591310003A010 /* RepresentableByParsableString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9398CB0F255591310003A010 /* RepresentableByParsableString.swift */; };
 		93A2EE1C24EC4BB00085B3CF /* AddChildren+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93A2EE1B24EC4BB00085B3CF /* AddChildren+Extensions.swift */; };
 		93B9744F23A2833600B0D1CF /* NetworkClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B9743F23A2833600B0D1CF /* NetworkClientProtocol.swift */; };
-		93C12E2228E75E3F008C051C /* OperationConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C12E2128E75E3F008C051C /* OperationConversionTests.swift */; };
 		93C12E1C28E4BE92008C051C /* listUsingIndex.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1B28E4BE92008C051C /* listUsingIndex.json */; };
 		93C12E1E28E4BF1B008C051C /* listUsingCustomIndexName.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1D28E4BF1B008C051C /* listUsingCustomIndexName.json */; };
 		93C12E2028E4C26C008C051C /* listViewUpdatingDataSource.json in Resources */ = {isa = PBXBuildFile; fileRef = 93C12E1F28E4C26C008C051C /* listViewUpdatingDataSource.json */; };
+		93C12E2228E75E3F008C051C /* OperationConversionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C12E2128E75E3F008C051C /* OperationConversionTests.swift */; };
 		93D24A512513DF47005A5CBD /* AutoLayoutWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D24A502513DF47005A5CBD /* AutoLayoutWrapper.swift */; };
 		93EE0CC3252E56BC0032BE77 /* BindingConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE0CC2252E56BC0032BE77 /* BindingConfigurator.swift */; };
 		93F7072F271A021000202E36 /* AutoCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7072E271A021000202E36 /* AutoCodable.swift */; };
@@ -259,6 +259,7 @@
 		A9C6F54E273D858B00576313 /* DependenciesContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F54D273D858900576313 /* DependenciesContainerTests.swift */; };
 		A9C6F550273D90FC00576313 /* InjectedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F54F273D90FC00576313 /* InjectedTests.swift */; };
 		A9C6F555273DB76200576313 /* Singletons.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9C6F553273DB73C00576313 /* Singletons.swift */; };
+		B253523D29D1EB2000E492E8 /* CustomBeagleScreenViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B253523C29D1EB2000E492E8 /* CustomBeagleScreenViewControllerTests.swift */; };
 		B755B58A2686602700A7EDC5 /* GridViewDecodeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B755B5892686602700A7EDC5 /* GridViewDecodeTests.swift */; };
 		B755B591268667D400A7EDC5 /* gridViewSpanCount.json in Resources */ = {isa = PBXBuildFile; fileRef = B755B590268667D400A7EDC5 /* gridViewSpanCount.json */; };
 		C0291889247D5BFA00C3AA13 /* ComponentFromJsonFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0291888247D5BFA00C3AA13 /* ComponentFromJsonFile.swift */; };
@@ -576,10 +577,10 @@
 		9398CB0F255591310003A010 /* RepresentableByParsableString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepresentableByParsableString.swift; sourceTree = "<group>"; };
 		93A2EE1B24EC4BB00085B3CF /* AddChildren+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddChildren+Extensions.swift"; sourceTree = "<group>"; };
 		93B9743F23A2833600B0D1CF /* NetworkClientProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkClientProtocol.swift; sourceTree = "<group>"; };
-		93C12E2128E75E3F008C051C /* OperationConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationConversionTests.swift; sourceTree = "<group>"; };
 		93C12E1B28E4BE92008C051C /* listUsingIndex.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listUsingIndex.json; sourceTree = "<group>"; };
 		93C12E1D28E4BF1B008C051C /* listUsingCustomIndexName.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listUsingCustomIndexName.json; sourceTree = "<group>"; };
 		93C12E1F28E4C26C008C051C /* listViewUpdatingDataSource.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = listViewUpdatingDataSource.json; sourceTree = "<group>"; };
+		93C12E2128E75E3F008C051C /* OperationConversionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationConversionTests.swift; sourceTree = "<group>"; };
 		93D24A502513DF47005A5CBD /* AutoLayoutWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayoutWrapper.swift; sourceTree = "<group>"; };
 		93EE0CC2252E56BC0032BE77 /* BindingConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingConfigurator.swift; sourceTree = "<group>"; };
 		93F7072E271A021000202E36 /* AutoCodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCodable.swift; sourceTree = "<group>"; };
@@ -613,6 +614,7 @@
 		A9C6F54D273D858900576313 /* DependenciesContainerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesContainerTests.swift; sourceTree = "<group>"; };
 		A9C6F54F273D90FC00576313 /* InjectedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InjectedTests.swift; sourceTree = "<group>"; };
 		A9C6F553273DB73C00576313 /* Singletons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Singletons.swift; sourceTree = "<group>"; };
+		B253523C29D1EB2000E492E8 /* CustomBeagleScreenViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBeagleScreenViewControllerTests.swift; sourceTree = "<group>"; };
 		B755B5892686602700A7EDC5 /* GridViewDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridViewDecodeTests.swift; sourceTree = "<group>"; };
 		B755B590268667D400A7EDC5 /* gridViewSpanCount.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = gridViewSpanCount.json; sourceTree = "<group>"; };
 		C0291888247D5BFA00C3AA13 /* ComponentFromJsonFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentFromJsonFile.swift; sourceTree = "<group>"; };
@@ -1443,6 +1445,7 @@
 			children = (
 				9356CEE726248D440021EFC6 /* __Snapshots__ */,
 				9356CD45262482810021EFC6 /* BeagleScreenViewControllerTests.swift */,
+				B253523C29D1EB2000E492E8 /* CustomBeagleScreenViewControllerTests.swift */,
 				9356CD46262482810021EFC6 /* BeagleViewBuilderTests.swift */,
 				9356CD47262482810021EFC6 /* AutoLayoutWrapperTests.swift */,
 				9356CD48262482810021EFC6 /* Json */,
@@ -2411,6 +2414,7 @@
 				9356CE43262482820021EFC6 /* UnitValueExtensionTests.swift in Sources */,
 				9356CD8F262482820021EFC6 /* BeagleLoggerTests.swift in Sources */,
 				A9C6F550273D90FC00576313 /* InjectedTests.swift in Sources */,
+				B253523D29D1EB2000E492E8 /* CustomBeagleScreenViewControllerTests.swift in Sources */,
 				9356CDA0262482820021EFC6 /* ActionRecordFactoryTests.swift in Sources */,
 				9356CE47262482820021EFC6 /* MirrorExtension.swift in Sources */,
 				C0E569152476F026003D413F /* BeaglePrefetchHelpingSpy.swift in Sources */,

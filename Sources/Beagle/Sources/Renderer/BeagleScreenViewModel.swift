@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-class BeagleScreenViewModel {
+public class BeagleScreenViewModel {
     
     // MARK: Properties
         
@@ -40,13 +40,13 @@ class BeagleScreenViewModel {
 
     // MARK: Observer
 
-    public weak var stateObserver: BeagleScreenStateObserver? {
+    weak var stateObserver: BeagleScreenStateObserver? {
         didSet { stateObserver?.didChangeState(state) }
     }
 
     // MARK: Init
     
-    static func remote(
+    internal static func remote(
         _ remote: ScreenType.Remote,
         viewClient: ViewClientProtocol,
         resolver: DependenciesContainerResolving,
@@ -70,7 +70,7 @@ class BeagleScreenViewModel {
         }
     }
 
-    required init(
+    internal required init(
         screenType: ScreenType,
         resolver: DependenciesContainerResolving = GlobalConfiguration.resolver
     ) {
@@ -81,7 +81,7 @@ class BeagleScreenViewModel {
         _analyticsService = OptionalInjected(resolver)
     }
     
-    convenience init(
+    internal convenience init(
         screenType: ScreenType,
         resolver: DependenciesContainerResolving = GlobalConfiguration.resolver,
         beagleViewStateObserver: @escaping BeagleViewStateObserver
