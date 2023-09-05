@@ -11,7 +11,7 @@ platform :ios do
 
   desc "Pull Request verification"
   lane :pull_request_verification do
-    xcversion(version: "~> 14.3.0")
+    xcversion(version: "~> 14.2")
     scan(
       workspace: "Beagle.xcworkspace",
       scheme: "All",
@@ -41,7 +41,7 @@ platform :ios do
 
   desc "Check whether Beagle is working via CocoaPods in an Example Project"
   private_lane :check_if_beagle_works_via_cocoapods_integration do
-    xcversion(version: "~> 14.3.0")
+    xcversion(version: "~> 14.2")
     cocoapods(
       clean_install: true,
       podfile: "Example/CocoaPodsTest/Podfile"
