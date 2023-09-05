@@ -96,7 +96,16 @@ let pathIndexNode: Parser<Path.Node> = zip(
     .index(int)
 }
 
-let pathKeyNode: Parser<Path.Node> = prefix(with: #"^\w+\b(?!\()"#).map { .key($0) }
+//let pathKeyNode: Parser<Path.Node> = prefix(with: #"^\w+\b(?!\()"#).map { .key($0) }
+let pathKeyNode = Parser<Path.Node> { str in
+    guard let keyNode = prefix(with: #"^\w+"#).run(&str) else { return nil }
+    if str.first == "(" {
+        str = keyNode[...] + str
+        return nil
+    } else {
+        return .key(keyNode)
+    }
+}
 
 let pathHeadNodes: Parser<[Path.Node]> = zip(
     zeroOrOne(pathKeyNode),
