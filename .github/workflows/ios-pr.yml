@@ -10,7 +10,7 @@ on:
 jobs:
     pr_verification:
         name: PR Check
-        runs-on: macos-10.15
+        runs-on: macos-11
 
         steps:
             -   name: Checkout repo
